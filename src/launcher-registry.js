@@ -66,16 +66,3 @@ export const HOME_TARGET_VERSION = '1.2.5';
 export function launcherApps(id) {
   return [HOME_LAUNCHERS.find((app) => app.id === id), HOME_REDIRECT];
 }
-
-export const FIRE_TV_UI = {
-  id: 'fire-tv-ui',
-  name: 'Fire TV UI',
-  pkg: 'com.jeremykenedy.firetv.ui',
-  service: 'com.jeremykenedy.firetv.ui/com.jeremykenedy.firetv.ui.HomeRedirectService',
-  controls: 'com.jeremykenedy.firetv.ui/com.jeremykenedy.firetv.ui.Hra',
-  repo: 'jeremykenedy/fire-tv-ui',
-  tag: 'v1.0.1',
-  private: true,
-  asset: 'fire-tv-ui-1.0.1.apk',
-  grants: ['android.permission.WRITE_SECURE_SETTINGS'],
-};

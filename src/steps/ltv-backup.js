@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import path from 'node:path';
 import chalk from 'chalk';
 import { select, input } from '../prompts.js';
@@ -6,7 +7,6 @@ import { runWizard, withBack, BACK } from '../wizard.js';
 import { startSpinner } from '../spinner.js';
 import { listPackages } from '../adb.js';
 import { listLtvBackups, pullLtvBackup } from '../apply/ltv.js';
-import { destinationError } from './fire-tv-ui.js';
 import { LTV } from '../launcher-registry.js';
 import { markFailed } from '../exit-status.js';
 import { print } from '../output.js';
@@ -14,6 +14,24 @@ import { print } from '../output.js';
 export const FLAG_SPEC = {
   pull: { type: 'string', desc: 'Save the newest LTvLauncher backup on the TV to this new file.' },
 };
+
+/**
+ * @param {string} filename
+ * @returns {string | null} why the backup cannot be saved there, or null when it can
+ */
+function destinationError(filename) {
+  const absolute = path.resolve(filename.trim());
+  if (!filename.trim()) {
+    return 'Enter a filename.';
+  }
+  if (fs.existsSync(absolute)) {
+    return 'That file already exists. Choose a new filename to keep both backups.';
+  }
+  if (!fs.existsSync(path.dirname(absolute))) {
+    return 'Choose a folder that already exists.';
+  }
+  return null;
+}
 
 const EXPORT_FIRST = 'In LTvLauncher, open Settings > Backup & Restore > Export Backup first, then run this again.';
 

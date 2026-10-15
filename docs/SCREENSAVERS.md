@@ -2,7 +2,7 @@
 
 | Id | Name | Package | Source | What it is |
 |----|------|---------|--------|------------|
-| `aerial` | Aerial Views (the default) | `com.neilturner.aerialviews` | [jeremykenedy/AerialViews](https://github.com/jeremykenedy/AerialViews) | Aerial drone footage, the Apple TV screensaver look |
+| `aerial` | Aerial Views (the default) | `com.neilturner.aerialviews` | [theothernt/AerialViews](https://github.com/theothernt/AerialViews), its author's release 1.8.5, pinned by SHA-256 | Aerial drone footage, the Apple TV screensaver look |
 | `androsaver` | AndroSaver | `com.androsaver` | [jeremykenedy/androsaver](https://github.com/jeremykenedy/androsaver) | Photo slideshow or music visualizer |
 | `snoozy` | Snoozy | `com.overdevs.snoozy` | [jeremykenedy/Snoozy](https://github.com/jeremykenedy/Snoozy) | Animated Snoopy screensaver |
 | `aquarium-live` | Aquarium Live | `com.jeremykenedy.aquariumlive` | [jeremykenedy/aquarium-live](https://github.com/jeremykenedy/aquarium-live) | A living aquarium drawn in real time: four scenes, six looks, day and night |
@@ -31,8 +31,9 @@
 | `pulse-circuit` | Pulse Circuit | `com.jeremykenedy.pulsecircuit` | [jeremykenedy/pulse-circuit](https://github.com/jeremykenedy/pulse-circuit) | Animated geometric patterns with adjustable arena, shape density, geometry, motion, palette, pulse rhythm and light intensity |
 | `helios-lightfield` | Helios Lightfield | `com.jeremykenedy.helioslightfield` | [jeremykenedy/helios-lightfield](https://github.com/jeremykenedy/helios-lightfield) | Animated luminous filaments looping around a dark field, with adjustable solar or polar palette, strand density, motion speed and glow |
 
-The first three are forks of third-party projects (see Credits in the
-README). Aquarium Live, Aquarium 4K, Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit and Helios Lightfield are original projects.
+Aerial Views installs from its author's own release, pinned by tag and SHA-256
+because its releases publish no checksum. AndroSaver and Snoozy are forks of
+third-party projects (see Credits in the README). Aquarium Live, Aquarium 4K, Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit and Helios Lightfield are original projects.
 
 Aerial Views is the default: on a TV with none of these installed it starts
 checked in `firetv-screensavers`, and `screensaver --yes` picks it whenever it
@@ -71,19 +72,13 @@ its own private temporary folder that is deleted afterwards.
 ## Integration contract
 
 For each released saver, keep the installer ID, Android package, DreamService
-component, GitHub release asset, asset byte count and SHA-256 aligned across the
-Toolkit registry and Fire TV UI catalog. The UI catalog preview must point to a
-visually reviewed running-app capture; record its source path and hashes in
-`fire-tv-ui/app/previews/sources.json`. Keep each app's settings schema and
+component, GitHub release asset, asset byte count and SHA-256 aligned between
+the Toolkit registry and the table below. Keep each app's settings schema and
 provider documented in its own configuration guide. Register the saver in
-`src/screensaver-registry.js`, `app/screensavers.json`, and both README galleries.
-Run `npm test` in this repository, then run `bash scripts/test.sh` and
-`FIRE_TV_UI_TEST_SERIAL=emulator-PORT python3 -m unittest tests.test_settings_routes -v`
-in the Fire TV UI checkout before publishing the host projects.
-Toolkit gallery files use `docs/screenshots/screensaver-<id>.jpg` and the two
-responsive files under `docs/screenshots/grid/`. Fire TV UI uses the
-component-hash JPEG named by `app/previews/index.json`; its source capture,
-device, preview hash, and source hash belong in `app/previews/sources.json`.
+`src/screensaver-registry.js` and both README galleries, and run `npm test` in
+this repository before publishing. Toolkit gallery files use
+`docs/screenshots/screensaver-<id>.jpg` and the two responsive files under
+`docs/screenshots/grid/`.
 
 | Id | Package and DreamService | Release asset | Bytes | SHA-256 | Settings provider |
 |----|--------------------------|---------------|-------|---------|-------------------|

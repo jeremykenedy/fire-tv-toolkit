@@ -17,10 +17,9 @@ import { probeTimeouts, msToLabel } from './timeouts-shared.js';
 import { launcherState, useHome, removeLauncherApp } from '../apply/launcher.js';
 import { ltvNotificationsOn } from '../apply/ltv.js';
 import { applyLtvNotifications } from './ltv-notifications.js';
-import { AT4K, LTV, HOME_REDIRECT, FIRE_TV_UI } from '../launcher-registry.js';
+import { AT4K, LTV, HOME_REDIRECT } from '../launcher-registry.js';
 
 const REMOVABLE_LAUNCHER_APPS = [AT4K, LTV, HOME_REDIRECT];
-import { uninstallFireTvUi } from '../apply/fire-tv-ui.js';
 import { savedOriginals, revertOptimizations } from '../apply/optimize.js';
 import { guardState } from '../guard-config.js';
 import { turnGuardOff } from '../apply/guard.js';
@@ -49,7 +48,7 @@ export function buildTimeoutRevertOptions(probed) {
 
 /**
  * Pure: revert options for the optional AT4K and LTvLauncher home screens.
- * @param {{home: 'at4k' | 'ltv' | 'amazon' | 'fire-tv-ui', installed: string[]}} state
+ * @param {{home: 'at4k' | 'ltv' | 'amazon', installed: string[]}} state
  * @returns {Array<{name: string, value: string}>}
  */
 export function buildLauncherRevertOptions(state) {
@@ -63,9 +62,6 @@ export function buildLauncherRevertOptions(state) {
     options.push(app === HOME_REDIRECT
       ? { name: `Remove ${app.name} from the TV`, value: `launcher:${app.id}` }
       : { name: `Remove ${app.name} and its home screen settings from the TV`, value: `launcher:${app.id}`, keep: true });
-  }
-  if (state.installed.includes(FIRE_TV_UI.id)) {
-    options.push({ name: 'Remove Fire TV UI and keep its TV layout backup', value: 'launcher:fire-tv-ui' });
   }
   return options;
 }
@@ -150,15 +146,6 @@ async function applySelection(ip, selected, installedScreensavers, probedTimeout
   }
   for (const app of REMOVABLE_LAUNCHER_APPS.filter((a) => selected.includes(`launcher:${a.id}`))) {
     results.push(await applyLauncherRemoval(ip, app));
-  }
-  if (selected.includes('launcher:fire-tv-ui')) {
-    try {
-      await uninstallFireTvUi(ip);
-      print(chalk.green('Fire TV UI removed. The layout backup remains on the TV.'));
-      results.push(true);
-    } catch (error) {
-      results.push(reportFailure(error.message));
-    }
   }
   if (selected.includes('iptv')) {
     results.push(await applyIptvRemoval(ip));

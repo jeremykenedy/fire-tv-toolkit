@@ -59,10 +59,12 @@ test('every dreamComponent starts with its own package name', () => {
   }
 });
 
-test('every repo is under jeremykenedy (a fork or his own), not an upstream author repo', () => {
-  for (const entry of SCREENSAVERS) {
-    assert.match(entry.repo, /^jeremykenedy\//, `${entry.id}: repo "${entry.repo}" is not under jeremykenedy/`);
+test('every repo is under jeremykenedy, or is a trusted author pinned by tag, asset and SHA-256', () => {
+  for (const entry of SCREENSAVERS.filter((s) => !s.repo.startsWith('jeremykenedy/'))) {
+    assert.ok(entry.tag && entry.asset, `${entry.id}: "${entry.repo}" needs a pinned tag and asset`);
+    assert.match(entry.sha256 || '', /^[0-9a-f]{64}$/, `${entry.id}: "${entry.repo}" needs a pinned SHA-256`);
   }
+  assert.equal(SCREENSAVERS.find((s) => s.id === 'aerial').repo, 'theothernt/AerialViews');
 });
 
 test('AMAZON_DEFAULT has the fields the rest of the code relies on', () => {
