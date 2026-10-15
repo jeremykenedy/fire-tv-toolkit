@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.11.1] - 2026-10-15
+
+### Fixed in 3.11.1
+
+- `firetv-ltv-backup` copies the backup into a private temporary folder and checks it there, then writes it to the file you named only if that file still does not exist. Before, the copy went straight to the destination and a file created there between the check and the copy could be overwritten. Saved backups are readable only by you.
+- LTvLauncher backups are listed newest first with a locale-aware comparison. The order is unchanged.
+
+### Upgrade
+
+Run `git pull` on the Toolkit checkout. No commands were added, so `node setup.js` is not needed.
+
 ## [3.11.0] - 2026-10-15
 
 ### Added in 3.11.0

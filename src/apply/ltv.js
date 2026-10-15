@@ -1,4 +1,6 @@
 import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { getSetting, setNotificationListener, listRemoteFiles, pullFile } from '../adb.js';
 import { parseServices } from './launcher.js';
 import { LTV } from '../launcher-registry.js';
@@ -34,7 +36,7 @@ export async function setLtvNotifications(ip, on) {
  * @returns {string[]}
  */
 export function ltvBackupNames(names) {
-  return names.filter((name) => /^ltv_backup_\d{8}_\d{6}\.json$/.test(name)).sort().reverse();
+  return names.filter((name) => /^ltv_backup_\d{8}_\d{6}\.json$/.test(name)).sort((a, b) => b.localeCompare(a));
 }
 
 /**
@@ -46,21 +48,37 @@ export async function listLtvBackups(ip) {
 }
 
 /**
- * Copies one backup from the TV and checks it is an LTvLauncher backup, so a
- * failed or partial transfer is never left behind looking like a good one.
+ * @param {Buffer} bytes
+ * @returns {boolean} whether bytes hold an LTvLauncher version 1 backup
+ */
+function isLtvBackup(bytes) {
+  try {
+    return JSON.parse(bytes.toString('utf8')).version === 1;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Copies one backup from the TV into a private temporary folder and checks it
+ * is an LTvLauncher backup there, so only a good backup is ever written to
+ * the destination, and never over an existing file.
  * @param {string} ip
  * @param {string} name
  * @param {string} destination a file that does not exist yet
  * @returns {Promise<void>}
  */
 export async function pullLtvBackup(ip, name, destination) {
-  await pullFile(ip, `${LTV_BACKUP_DIR}/${name}`, destination);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'firetv-ltv-backup-'));
   try {
-    if (JSON.parse(fs.readFileSync(destination, 'utf8')).version !== 1) {
-      throw new Error('not version 1');
+    const temporary = path.join(dir, 'backup.json');
+    await pullFile(ip, `${LTV_BACKUP_DIR}/${name}`, temporary);
+    const bytes = fs.readFileSync(temporary);
+    if (!isLtvBackup(bytes)) {
+      throw new Error(`${name} did not come through as an LTvLauncher backup, so nothing was saved.`);
     }
-  } catch {
-    fs.rmSync(destination, { force: true });
-    throw new Error(`${name} did not come through as an LTvLauncher backup, so nothing was saved.`);
+    fs.writeFileSync(destination, bytes, { flag: 'wx', mode: 0o600 });
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
   }
 }
