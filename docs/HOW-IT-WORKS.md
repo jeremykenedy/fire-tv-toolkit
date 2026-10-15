@@ -67,6 +67,11 @@ adb shell settings put secure accessibility_enabled 1
 adb shell pm grant com.jeremykenedy.firetv.homeredirect android.permission.WRITE_SECURE_SETTINGS
 adb shell am broadcast -n com.jeremykenedy.firetv.homeredirect/.GuardReceiver \
   -a com.jeremykenedy.firetv.homeredirect.GUARD --es cmd home --es value ltv   # or at4k
+adb shell cmd notification allow_listener \
+  com.leanbitlab.ltvL/com.leanbitlab.ltvL.LauncherNotificationListenerService   # or disallow_listener
+adb shell settings get secure enabled_notification_listeners                   # read back
+adb shell ls -1 /sdcard/Download                                               # find ltv_backup_*.json
+adb pull /sdcard/Download/ltv_backup_<date>_<time>.json <file>
 ```
 
 See [Home screen](LAUNCHER.md).

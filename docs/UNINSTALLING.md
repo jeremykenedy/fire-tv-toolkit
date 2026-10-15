@@ -18,6 +18,7 @@ want to keep:
 - the Home button (back to the Amazon menu) and the launcher apps. AT4K and
   LTvLauncher start unchecked, because removing them deletes your home screen
   layout; check them to remove them
+- LTvLauncher's notification access
 - OwnTV, unchecked, because removing it deletes the playlists added in it
 - the screensaver optimizations, each put back to the value it had before `optimize` changed it
 - the local screensaver source in `./screensavers`

@@ -68,7 +68,7 @@ so you can run just the part you need later.
 - **Alexa deep-sleep fix**: keeps Alexa able to reach the TV while it sleeps. Fire OS has a setting for this that its own toggle never writes.
 - **Ad-free screensavers**: replaces Amazon's ad-serving screensaver with Aerial Views (the default), AndroSaver, Snoozy, Aquarium Live, Aquarium 4K, Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit, or Helios Lightfield, each an optional install. Android's built-in Colors, and Amazon with Ads, stay available to switch back to.
 - **Verified downloads**: every APK comes from a GitHub release and is checked against a published SHA-256 before it is installed.
-- **Optional AT4K or LTvLauncher home screen**: an ad-free home screen in place of the Amazon menu, switched on or off, or between the two, with one command.
+- **Optional AT4K or LTvLauncher home screen**: an ad-free home screen in place of the Amazon menu, switched on or off, or between the two, with one command. LTvLauncher gets the notification access Android TV only grants over adb, and its backups can be copied to your computer.
 - **Fire TV UI**: install a fully customizable launcher with on-TV screensaver previews, timer controls, memory and storage usage, persistent backups, and local settings protection. Its installer collects all choices before making changes.
 - **Free live TV**: install OwnTV, a free, open source IPTV player, and add the [iptv-org](https://github.com/iptv-org/iptv) playlist of publicly available United States channels to it from your phone.
 - **On-TV screensaver picker**: a Screensavers tile on the TV for switching the screensaver from the couch, since Fire OS Settings only offers Amazon's.
@@ -186,7 +186,7 @@ Captured on an Insignia Fire TV Edition TV, Android TV emulators, and in macOS T
     <a href="docs/screenshots/cli-timeouts.jpg"><picture><source media="(min-width: 1280px)" srcset="docs/screenshots/grid/cli-timeouts-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="docs/screenshots/grid/cli-timeouts-tablet.jpg 2x"><img src="docs/screenshots/cli-timeouts.jpg" alt="Reviewing the sleep and screensaver timeouts" title="Reviewing the sleep and screensaver timeouts"></picture></a>
     <a href="docs/screenshots/cli-timeouts-current.jpg"><picture><source media="(min-width: 1280px)" srcset="docs/screenshots/grid/cli-timeouts-current-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="docs/screenshots/grid/cli-timeouts-current-tablet.jpg 2x"><img src="docs/screenshots/cli-timeouts-current.jpg" alt="The current timeout values" title="The current timeout values"></picture></a>
     <a href="docs/screenshots/cli-revert.jpg"><picture><source media="(min-width: 1280px)" srcset="docs/screenshots/grid/cli-revert-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="docs/screenshots/grid/cli-revert-tablet.jpg 2x"><img src="docs/screenshots/cli-revert.jpg" alt="Putting the TV back how it was" title="Putting the TV back how it was"></picture></a>
-    <a href="docs/screenshots/cli-info.jpg"><picture><source media="(min-width: 1280px)" srcset="docs/screenshots/grid/cli-info-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="docs/screenshots/grid/cli-info-tablet.jpg 2x"><img src="docs/screenshots/cli-info.jpg" alt="Every command, from info" title="Every command, from info"></picture></a>
+    <a href="docs/screenshots/cli-info.jpg"><picture><source media="(min-width: 1280px)" srcset="docs/screenshots/grid/cli-info-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="docs/screenshots/grid/cli-info-tablet.jpg 2x"><img src="docs/screenshots/cli-info.jpg" alt="Every command in a table grouped by area, from info" title="Every command in a table grouped by area, from info"></picture></a>
 </p>
 
 ## Platform support
@@ -282,7 +282,7 @@ each one are listed in [Commands](docs/COMMANDS.md).
 | `start` | Opens the guided menu. Runs setup the first time, then hands off to `update`. |
 | `update` | Re-runs setup, replacing the saved values. |
 | `fire-tv-toolkit` | Runs the full guided installer. |
-| `info`, `information`, `guide`, `firetv` | Lists every command and what it does. |
+| `info`, `information`, `guide`, `firetv` | Lists every command and what it does in a table grouped by area. The guided menu's "List all commands" shows the same table. |
 | `enable-alexa-fix` | Turns on the Alexa deep-sleep fix. |
 | `disable-alexa-fix` | Turns the fix off again (factory behavior). |
 | `firetv-screensavers` | Installs or removes the ad-free screensavers. |
@@ -290,6 +290,8 @@ each one are listed in [Commands](docs/COMMANDS.md).
 | `optimize`, `firetv-optimize` | Sets the TV up for screensavers, changing only settings it has. |
 | `guard`, `firetv-guard` | Keeps Amazon from undoing your setup. `--check` puts back anything that changed, `--unlock=screensaver` frees the screensaver choice, `--off` turns it off. |
 | `launcher`, `firetv-launcher` | Installs the AT4K or LTvLauncher home screen and switches the Home button between them and the Amazon menu. |
+| `firetv-ltv-notifications` | Lets LTvLauncher read notifications, which Android TV only allows over adb. Installing LTvLauncher turns it on; `--off` turns it off. |
+| `firetv-ltv-backup` | Copies a backup you exported in LTvLauncher from the TV to this computer. `--pull=<file>` takes the newest. |
 | `firetv-ui` | Installs or updates Fire TV UI, chooses a saved simple layout or restored settings, configures Home and screensavers, transfers backups, or uninstalls while keeping the backup. |
 | `firetv-iptv` | Installs or updates OwnTV, opens it, and shows the iptv-org playlist of US channels to add. `--uninstall` removes it. |
 | `firetv-timeouts` | Reviews, edits or resets the sleep and screensaver timeouts in one flow. |

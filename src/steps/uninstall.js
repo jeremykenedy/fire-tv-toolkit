@@ -15,6 +15,8 @@ import { markFailed } from '../exit-status.js';
 import { setTimeoutMs } from '../apply/timeouts.js';
 import { probeTimeouts, msToLabel } from './timeouts-shared.js';
 import { launcherState, useHome, removeLauncherApp } from '../apply/launcher.js';
+import { ltvNotificationsOn } from '../apply/ltv.js';
+import { applyLtvNotifications } from './ltv-notifications.js';
 import { AT4K, LTV, HOME_REDIRECT, FIRE_TV_UI } from '../launcher-registry.js';
 
 const REMOVABLE_LAUNCHER_APPS = [AT4K, LTV, HOME_REDIRECT];
@@ -94,6 +96,9 @@ async function findOptions(ip) {
     options.push({ name: `Remove ${s.name} from the TV`, value: `pkg:${s.id}` });
   }
   options.push(...buildTimeoutRevertOptions(probedTimeouts), ...buildLauncherRevertOptions(await launcherState(ip)));
+  if (installedPkgs.includes(LTV.pkg) && await ltvNotificationsOn(ip)) {
+    options.push({ name: 'Turn off LTvLauncher notification access', value: 'ltv-notifications' });
+  }
   if (installedPkgs.includes(OWNTV.pkg)) {
     // Uninstalling OwnTV deletes the playlists added in it, so it is only removed when picked by hand.
     options.push({ name: 'Remove OwnTV and its playlists from the TV', value: 'iptv', keep: true });
@@ -138,6 +143,10 @@ async function applySelection(ip, selected, installedScreensavers, probedTimeout
   }
   if (selected.includes('home')) {
     results.push(await applyHomeRevert(ip));
+  }
+  // Before LTvLauncher can be removed below, while its listener still exists.
+  if (selected.includes('ltv-notifications')) {
+    results.push(await applyLtvNotifications(ip, false));
   }
   for (const app of REMOVABLE_LAUNCHER_APPS.filter((a) => selected.includes(`launcher:${a.id}`))) {
     results.push(await applyLauncherRemoval(ip, app));

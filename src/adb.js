@@ -416,6 +416,29 @@ export async function openApp(ip, pkg) {
   return /Events injected: 1/.test(out ?? '');
 }
 
+/**
+ * Allows or stops an app's notification listener. Android TV has no screen
+ * for this, so adb is the only way to grant it.
+ * @param {string} ip
+ * @param {string} component package/class of the listener service
+ * @param {boolean} allowed
+ * @returns {Promise<string | null>}
+ */
+export async function setNotificationListener(ip, component, allowed) {
+  return run(['-s', target(ip), 'shell', 'cmd', 'notification',
+    allowed ? 'allow_listener' : 'disallow_listener', component]);
+}
+
+/**
+ * @param {string} ip
+ * @param {string} dir
+ * @returns {Promise<string[]>} the file names in dir, or none when it cannot be read
+ */
+export async function listRemoteFiles(ip, dir) {
+  const out = await run(['-s', target(ip), 'shell', 'ls', '-1', dir], { allowFail: true });
+  return (out || '').split('\n').map((line) => line.trim()).filter(Boolean);
+}
+
 export async function openLauncher(ip, pkg) {
   return run(['-s', target(ip), 'shell', 'am', 'start', '-f', '0x10008000',
     '-n', `${pkg}/.MainActivity`]);

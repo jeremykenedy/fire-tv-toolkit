@@ -29,6 +29,8 @@ export const LTV = {
   tag: 'v2026.10.03',
   asset: 'LTvLauncher-universal-release.apk',
   sha256: '9ec0dd7941642ed68ace39d013890e360dfa77c0eeb1ab9589097626be99f459',
+  // Android TV has no screen for granting notification access, so adb grants it.
+  notificationListener: 'com.leanbitlab.ltvL/com.leanbitlab.ltvL.LauncherNotificationListenerService',
 };
 
 /**
