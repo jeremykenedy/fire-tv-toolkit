@@ -53,7 +53,6 @@ else if (cmd === 'shell' && a === 'ls') {
   for (const f of Object.keys(state.files || {})) if (f.startsWith(dir + '/')) out(f.slice(dir.length + 1));
 }
 else if (cmd === 'shell' && a === 'settings' && b === 'delete') {
-  if (state.nativeHomeGuard && state.preferences?.fire_tv_ui_home_enabled && ['enabled_accessibility_services','accessibility_enabled'].includes(d)) process.exit(0);
   if (state[c]) delete state[c][d];
   save(); out('Deleted 1 rows');
 }
@@ -120,7 +119,6 @@ else if (cmd === 'shell' && a === 'settings' && b === 'get') {
   const v = (state[c] || {})[d];
   out(v === undefined ? 'null' : v);
 } else if (cmd === 'shell' && a === 'settings' && b === 'put') {
-  if (state.nativeHomeGuard && state.preferences?.fire_tv_ui_home_enabled && ['enabled_accessibility_services','accessibility_enabled'].includes(d)) process.exit(0);
   if (state.rejectOverMax && c === 'system' && d === 'screen_off_timeout' && Number(process.argv.slice(-1)[0]) > 2147460000) fail('java.lang.IllegalArgumentException: value too large');
   // lockedKeys: the TV takes the write without error but nothing changes.
   if ((state.lockedKeys || []).includes(d)) { process.exit(0); }
@@ -144,63 +142,6 @@ else if (cmd === 'shell' && a === 'settings' && b === 'get') {
   if (!Object.hasOwn(state.files || {}, c)) process.exit(1);
 } else if (cmd === 'shell' && a === 'rm') {
   if (state.files) delete state.files[c]; save();
-} else if (cmd === 'shell' && a === 'am' && b === 'broadcast') {
-  const value = (name) => args[args.indexOf(name) + 1];
-  const pkg = value('-n').split('/')[0];
-  if (!state.installed.includes(pkg) || state.backupFail) { out('Broadcast completed: result=1, data="backup failed"'); process.exit(0); }
-  const operation = value('operation');
-  if (operation === 'home-on' && state.homeFailuresRemaining > 0) {
-    state.homeFailuresRemaining--; save();
-    out('Broadcast completed: result=1, data="Home binding is still settling"'); process.exit(0);
-  }
-  state.files = state.files || {};
-  if (operation === 'save') {
-    if (!state.backupMissing) state.files['/sdcard/Download/fire-tv-ui-backup.txt'] = JSON.stringify(state.preferences || {apps_per_row:5});
-  }
-  else if (operation === 'simple') state.preferences = {apps_per_row:5, hide_watch_next:true};
-  else if (operation === 'restore') state.preferences = JSON.parse(state.files[value('source') === 'import' ? '/sdcard/Download/fire-tv-ui-import.txt' : '/sdcard/Download/fire-tv-ui-backup.txt']);
-  else if (['home-preference-on','home-preference-off'].includes(operation)) {
-    state.preferences = state.preferences || {}; state.preferences.fire_tv_ui_home_enabled = operation === 'home-preference-on';
-  }
-  else if (['home-on','home-off'].includes(operation)) {
-    const keys = ['enabled_accessibility_services','accessibility_enabled'];
-    if (keys.some((key) => (state.lockedKeys || []).includes(key) || (state.dropWrites || []).includes(key))) {
-      out('Broadcast completed: result=1, data="Home routing refused"'); process.exit(0);
-    }
-    const on = operation === 'home-on';
-    const own = ['com.jeremykenedy.firetv.ui/com.jeremykenedy.firetv.ui.Hra', 'com.jeremykenedy.firetv.ui/com.jeremykenedy.firetv.ui.HomeRedirectService'];
-    const replaced = [...own, 'com.overdevs.at4k/com.overdevs.at4k.Hra', 'com.jeremykenedy.firetv.homeredirect/com.jeremykenedy.firetv.homeredirect.HomeRedirectService', 'com.overdevs.at4khelper/com.overdevs.at4khelper.HomeRedirectAccessibilityService'];
-    state.secure = state.secure || {};
-    const current = (state.secure.enabled_accessibility_services || '').split(':').filter(Boolean);
-    const requested = current.filter((service) => !(on ? replaced : own).includes(service));
-    if (on) requested.push(...own);
-    state.secure.enabled_accessibility_services = requested.join(':');
-    state.secure.accessibility_enabled = requested.length ? '1' : '0';
-    state.preferences = state.preferences || {}; state.preferences.fire_tv_ui_home_enabled = on;
-  }
-  else if (['protection-on','protection-off'].includes(operation)) {
-    state.preferences = state.preferences || {}; state.preferences.fire_tv_ui_protect_settings = operation === 'protection-on';
-    state.preferences.fire_tv_ui_dream_unlocked = false;
-  }
-  else if (operation === 'dream-unlock') {
-    state.preferences = state.preferences || {}; state.preferences.fire_tv_ui_dream_unlocked = true;
-  }
-  else if (operation === 'setting') {
-    const namespace = value('namespace');
-    const key = value('key');
-    const requested = value('value');
-    if ((state.lockedKeys || []).includes(key)) {
-      out('Broadcast completed: result=1, data="java.lang.IllegalStateException: setting refused"'); process.exit(0);
-    }
-    if (state.rejectOverMax && namespace === 'system' && key === 'screen_off_timeout' && Number(requested) > 2147460000) {
-      out('Broadcast completed: result=1, data="java.lang.IllegalArgumentException: value too large"'); process.exit(0);
-    }
-    state[namespace] = state[namespace] || {}; state[namespace][key] = requested;
-    state.preferences = state.preferences || {};
-    const desired = {sleep_timeout:'fire_tv_ui_sleep',screen_off_timeout:'fire_tv_ui_idle',screensaver_components:'fire_tv_ui_dream',screensaver_enabled:'fire_tv_ui_dream_enabled','str.auto_wake_up_enabled':'fire_tv_ui_auto_wake'}[key];
-    state.preferences[desired] = key === 'screensaver_components' ? requested : key === 'screensaver_enabled' ? requested === '1' : Number(requested);
-  }
-  save(); out('Broadcast completed: result=0, data="ok"');
 } else if (cmd === 'shell' && a === 'am' && ['start','force-stop'].includes(b)) {
   state.opened = args[args.length - 1]; save();
 } else { fail('fake adb: unsupported ' + args.join(' ')); }

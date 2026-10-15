@@ -277,7 +277,7 @@ test('start offers the guard, and firetv-revert turns it off before anything els
     { expect: 'optimize the TV for screensavers', send: 'n' },
     { expect: 'guard these settings', send: 'y' },
     { expect: 'Nothing has been changed yet. Continue?', send: ENTER },
-    { expect: 'What would you like to do?', send: `${DOWN.repeat(14)}${ENTER}` },
+    { expect: 'What would you like to do?', send: `${DOWN.repeat(13)}${ENTER}` },
   ]);
   assert.equal(r.code, 0, r.out);
   assert.equal(fake.readState().guard.locked, true);

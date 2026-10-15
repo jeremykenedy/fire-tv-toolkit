@@ -53,8 +53,7 @@ Screensaver ids: `aerial` (the default), `androsaver`, `snoozy`,
 
 | Command | What it does | Flags |
 |---------|--------------|-------|
-| `launcher`, `firetv-launcher` | Installs AT4K or LTvLauncher with the Home Redirect app, or switches Home between AT4K, LTvLauncher, installed Fire TV UI, and Amazon. | `--install`, `--install-ltv`, `--use=<at4k\|ltv\|fire-tv-ui\|amazon>`, `--yes` (still needs `--install`, `--install-ltv` or `--use`) |
-| `firetv-ui` | Installs or removes Fire TV UI with layout, Home, screensaver, protection, and backup choices. | See [Fire TV UI](FIRE-TV-UI.md) for every flag. |
+| `launcher`, `firetv-launcher` | Installs AT4K or LTvLauncher with the Home Redirect app, or switches Home between AT4K, LTvLauncher and Amazon. | `--install`, `--install-ltv`, `--use=<at4k\|ltv\|amazon>`, `--yes` (still needs `--install`, `--install-ltv` or `--use`) |
 | `firetv-ltv-notifications` | Lets LTvLauncher read notifications, which Android TV only allows over adb. `launcher --install-ltv` turns it on too. See [Home screen](LAUNCHER.md). | `--yes` allows it without asking, `--off` turns it off |
 | `firetv-ltv-backup` | Copies a backup exported in LTvLauncher from the TV's Download folder to this computer. Never overwrites a file. | `--pull=<file>` saves the newest backup to that new file |
 
@@ -65,8 +64,6 @@ Screensaver ids: `aerial` (the default), `androsaver`, `snoozy`,
 | `firetv-iptv` | Installs or updates OwnTV, opens it, and shows the iptv-org playlist of US channels to add from your phone. See [Free live TV](IPTV.md). | `--install`, `--uninstall` (also deletes the playlists saved in OwnTV), `--yes` (still needs `--install` or `--uninstall`) |
 
 ## Timeouts
-
-For the Fire TV UI launcher, use `firetv-ui` to collect installation, layout, Home, screensaver, protection, and backup choices before applying them. See [Fire TV UI](FIRE-TV-UI.md) for every flag and transfer example. Timer and screensaver commands below also update Fire TV UI's local protection settings when it is installed.
 
 | Command | What it does | Flags |
 |---------|--------------|-------|

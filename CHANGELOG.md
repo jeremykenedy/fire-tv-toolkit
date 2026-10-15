@@ -1,5 +1,20 @@
 # Changelog
 
+## [4.0.0] - 2026-10-15
+
+### Removed in 4.0.0
+
+- The `firetv-ui` command and `launcher --use=fire-tv-ui`, with their menu entry, revert option and guide. Fire TV UI was a private launcher build, and it leaves the toolkit until it is rebuilt. The toolkit no longer routes screensaver and timer changes through it, and `guard` no longer switches its protection on or off. An installed copy on a TV is left as it is.
+
+### Changed in 4.0.0
+
+- Aerial Views installs from its author's own release, [theothernt/AerialViews](https://github.com/theothernt/AerialViews) 1.8.5, pinned by tag and SHA-256, instead of a mirror in a fork. It is signed with the same key as before, so an installed copy updates in place and keeps its settings.
+- The package lockfile lists the current version and commands.
+
+### Upgrade
+
+Run `git pull` on the Toolkit checkout, then `node setup.js` so the `firetv-ui` link is removed. Run `firetv-screensavers --install=aerial --yes` to update Aerial Views to 1.8.5.
+
 ## [3.11.1] - 2026-10-15
 
 ### Fixed in 3.11.1

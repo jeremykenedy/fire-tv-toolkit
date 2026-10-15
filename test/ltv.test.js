@@ -139,7 +139,7 @@ test('firetv-revert turns LTvLauncher notification access off, ticked by default
 
 test('ltvBackupNames keeps LTvLauncher exports only, newest first', () => {
   assert.deepEqual(
-    ltvBackupNames(['ltv_backup_20261015_120105.json', 'fire-tv-ui-backup.txt', 'ltv_backup.json', 'ltv_backup_20261016_080000.json', 'ltv_backup_20261015_120107.json']),
+    ltvBackupNames(['ltv_backup_20261015_120105.json', 'other-backup.txt', 'ltv_backup.json', 'ltv_backup_20261016_080000.json', 'ltv_backup_20261015_120107.json']),
     ['ltv_backup_20261016_080000.json', 'ltv_backup_20261015_120107.json', 'ltv_backup_20261015_120105.json'],
   );
 });
@@ -203,6 +203,21 @@ test('the firetv-ltv-backup menu can go back a step, and saves to the current fo
   ], { cwd: scratch });
   assert.equal(r.code, 0, r.out);
   assert.equal(fs.readFileSync(path.join(scratch, 'ltv_backup_20261016_080000.json'), 'utf8'), BACKUP);
+});
+
+test('firetv-ltv-backup --pull needs a filename in a folder that exists', async () => {
+  ltvInstalled();
+  backupsOnTv({ 'ltv_backup_20261016_080000.json': BACKUP });
+  const empty = await captured(() => manageLtvBackup(ip, { pull: ' ' }));
+  assert.match(empty.out, /Enter a filename/);
+  assert.equal(process.exitCode, 1);
+
+  process.exitCode = undefined;
+  const nowhere = path.join(scratch, 'missing-folder', 'saved.json');
+  const missing = await captured(() => manageLtvBackup(ip, { pull: nowhere }));
+  assert.match(missing.out, /Choose a folder that already exists/);
+  assert.equal(fs.existsSync(path.dirname(nowhere)), false);
+  assert.equal(process.exitCode, 1);
 });
 
 test('firetv-ltv-backup says how to export when the TV has no backup, and refuses without LTvLauncher', async () => {

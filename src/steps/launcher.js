@@ -8,18 +8,18 @@ import { versionAtLeast } from '../apply/guard.js';
 import { ltvNotificationsOn } from '../apply/ltv.js';
 import { applyLtvNotifications } from './ltv-notifications.js';
 import { packageVersion } from '../adb.js';
-import { AT4K, LTV, HOME_REDIRECT, FIRE_TV_UI, HOME_LAUNCHERS, HOME_TARGET_VERSION, launcherApps } from '../launcher-registry.js';
+import { AT4K, LTV, HOME_REDIRECT, HOME_LAUNCHERS, HOME_TARGET_VERSION, launcherApps } from '../launcher-registry.js';
 import { markFailed } from '../exit-status.js';
 import { print } from '../output.js';
 
 export const FLAG_SPEC = {
   install: { type: 'boolean', desc: 'Install or update AT4K and the Home Redirect app.' },
   'install-ltv': { type: 'boolean', desc: 'Install or update LTvLauncher and the Home Redirect app.' },
-  use: { type: 'string', choices: ['at4k', 'ltv', 'amazon', 'fire-tv-ui'], desc: 'Where the Home button goes: at4k, ltv, amazon or fire-tv-ui.' },
+  use: { type: 'string', choices: ['at4k', 'ltv', 'amazon'], desc: 'Where the Home button goes: at4k, ltv or amazon.' },
   yes: { type: 'boolean', desc: 'For scripts; --install, --install-ltv or --use is still required.' },
 };
 
-const HOME_NAMES = { at4k: 'AT4K', ltv: 'LTvLauncher', amazon: 'the Amazon menu', 'fire-tv-ui': 'Fire TV UI' };
+const HOME_NAMES = { at4k: 'AT4K', ltv: 'LTvLauncher', amazon: 'the Amazon menu' };
 
 /**
  * Installs a launcher and the Home Redirect app, reporting each one.
@@ -57,16 +57,11 @@ const INSTALL_FLAGS = { at4k: 'install', ltv: 'install-ltv' };
 
 /**
  * @param {string} ip
- * @param {'at4k' | 'ltv' | 'amazon' | 'fire-tv-ui'} mode
+ * @param {'at4k' | 'ltv' | 'amazon'} mode
  * @returns {Promise<void>}
  */
 async function switchHome(ip, mode) {
   const state = await launcherState(ip);
-  if (mode === FIRE_TV_UI.id && !state.installed.includes(FIRE_TV_UI.id)) {
-    print(chalk.red('\nFire TV UI needs to be installed first. Run firetv-ui --install.\n'));
-    markFailed();
-    return;
-  }
   if (INSTALL_FLAGS[mode] && !launcherApps(mode).every((app) => state.installed.includes(app.id))) {
     print(chalk.red(`\n${HOME_NAMES[mode]} and the Home Redirect app both need to be installed first. Run firetv-launcher --${INSTALL_FLAGS[mode]}.\n`));
     markFailed();
@@ -91,7 +86,7 @@ async function switchHome(ip, mode) {
 
 /**
  * @param {string} ip
- * @param {{install?: boolean, 'install-ltv'?: boolean, use?: 'at4k' | 'ltv' | 'amazon' | 'fire-tv-ui'}} flags
+ * @param {{install?: boolean, 'install-ltv'?: boolean, use?: 'at4k' | 'ltv' | 'amazon'}} flags
  */
 async function runFromFlags(ip, flags) {
   for (const id of [AT4K.id, LTV.id]) {
@@ -122,9 +117,6 @@ function menuChoices(state) {
   if (state.home !== 'amazon') {
     choices.push({ name: 'Go back to the Amazon home screen', value: 'amazon' });
   }
-  if (state.installed.includes(FIRE_TV_UI.id) && state.home !== FIRE_TV_UI.id) {
-    choices.push({ name: 'Use Fire TV UI as the home screen', value: FIRE_TV_UI.id });
-  }
   if (state.installed.includes(LTV.id) && !state.ltvNotifications) {
     choices.push({ name: 'Allow LTvLauncher to read notifications', value: 'ltv-notifications' });
   }
@@ -135,7 +127,7 @@ function menuChoices(state) {
  * `firetv-launcher`: installs the optional AT4K or LTvLauncher home screen and
  * switches the Home button between installed launchers and the Amazon menu.
  * @param {string} ip
- * @param {{install?: boolean, 'install-ltv'?: boolean, use?: 'at4k' | 'ltv' | 'amazon' | 'fire-tv-ui', yes?: boolean}} [flags]
+ * @param {{install?: boolean, 'install-ltv'?: boolean, use?: 'at4k' | 'ltv' | 'amazon', yes?: boolean}} [flags]
  * @returns {Promise<void>}
  */
 export async function manageLauncher(ip, flags = {}) {
@@ -144,7 +136,7 @@ export async function manageLauncher(ip, flags = {}) {
     return;
   }
   if (flags.yes) {
-    print(chalk.red('\n--yes alone does not pick anything. Pass --install, --install-ltv, --use=at4k, --use=ltv, --use=amazon or --use=fire-tv-ui.\n'));
+    print(chalk.red('\n--yes alone does not pick anything. Pass --install, --install-ltv, --use=at4k, --use=ltv or --use=amazon.\n'));
     markFailed();
     return;
   }

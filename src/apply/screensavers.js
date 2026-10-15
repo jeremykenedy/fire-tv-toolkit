@@ -155,7 +155,7 @@ async function githubToken() {
       const result = await execFileAsync('gh', ['auth', 'token', '--hostname', 'github.com'], { timeout: 10000 });
       token = result.stdout.trim();
     } catch {
-      throw new Error('Fire TV UI is private. Sign in with gh auth login, set GH_TOKEN with repository access, or supply --apk and --sha256');
+      throw new Error('This release is in a private repository. Sign in with gh auth login, or set GH_TOKEN with access to it');
     }
   }
   if (!/^[A-Za-z0-9_]+$/.test(token)) {
