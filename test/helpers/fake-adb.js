@@ -35,7 +35,11 @@ else if (cmd === 'install') {
   save(); console.log('Success');
 }
 else if (cmd === 'shell' && a === 'input') { console.log(''); }
-else if (cmd === 'shell' && a === 'monkey') { console.log('Events injected: 1'); }
+else if (cmd === 'shell' && a === 'monkey') {
+  const p = args[args.indexOf('-p') + 1];
+  if (!state.installed.includes(p) || (state.unopenable || []).includes(p)) fail('** No activities found to run, monkey aborted.');
+  state.opened = p; save(); console.log('Events injected: 1');
+}
 else if (cmd === 'shell' && a === 'settings' && b === 'delete') {
   if (state.nativeHomeGuard && state.preferences?.fire_tv_ui_home_enabled && ['enabled_accessibility_services','accessibility_enabled'].includes(d)) process.exit(0);
   if (state[c]) delete state[c][d];

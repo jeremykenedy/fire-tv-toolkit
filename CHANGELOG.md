@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.10.0] - 2026-10-15
+
+### Added in 3.10.0
+
+- `firetv-iptv` installs OwnTV, a free, open source IPTV player, opens it on the TV, and shows the iptv-org playlist of publicly available United States channels with the steps to add it from your phone. OwnTV is installed unmodified from its own release, pinned by tag and SHA-256. `--uninstall` removes it, and the guided menu offers it as a new step.
+- `firetv-revert` and `uninstall` offer to remove OwnTV. It starts unticked, because removing it deletes the playlists saved in it, and `firetv-revert --all` leaves it installed.
+
+### Upgrade
+
+Run `git pull` on the Toolkit checkout, then `node setup.js` to link the new `firetv-iptv` command. Run `firetv-iptv --install` to add OwnTV.
+
 ## [3.9.1] - 2026-10-09
 
 ### Fixed in 3.9.1

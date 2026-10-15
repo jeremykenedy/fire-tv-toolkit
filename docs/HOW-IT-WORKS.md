@@ -71,6 +71,17 @@ adb shell am broadcast -n com.jeremykenedy.firetv.homeredirect/.GuardReceiver \
 
 See [Home screen](LAUNCHER.md).
 
+## Free live TV
+
+```bash
+adb install -r <OwnTV apk>                                             # install or update, keeping its playlists
+adb shell pm enable tv.own.owntv                                       # switch it back on if it was disabled
+adb shell monkey -p tv.own.owntv -c android.intent.category.LEANBACK_LAUNCHER 1   # open it
+adb shell pm uninstall tv.own.owntv                                    # remove it and its playlists
+```
+
+The playlist itself is added in OwnTV from your phone. See [Free live TV](IPTV.md).
+
 ## Changes are read back
 
 The Alexa fix, the timeouts, the Home button switch and every revert are read

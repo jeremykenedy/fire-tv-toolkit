@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { LAUNCHER_APPS, LTV } from '../../src/launcher-registry.js';
+import { OWNTV } from '../../src/iptv-registry.js';
 
 const sha = (text) => crypto.createHash('sha256').update(text).digest('hex');
 
@@ -11,7 +12,7 @@ const sha = (text) => crypto.createHash('sha256').update(text).digest('hex');
  * APK bytes are "pkg:<package>", which the fake adb installs as that package,
  * and the release notes carry their checksum. AT4K's pinned hash never
  * matches these bytes, so the real AT4K entry always fails its checksum, and
- * the same goes for LTvLauncher.
+ * the same goes for LTvLauncher and OwnTV.
  * Anything else throws, so nothing can reach the network.
  * @returns {typeof fetch}
  */
@@ -20,7 +21,7 @@ export function launcherFetch() {
     const u = String(url);
     const api = u.match(/^https:\/\/api\.github\.com\/repos\/([^/]+\/[^/]+)\/releases\//);
     const dl = u.match(/^https:\/\/github\.com\/([^/]+\/[^/]+)\/releases\/download\//);
-    const app = [...LAUNCHER_APPS, LTV].find((a) => a.repo === (api || dl || [])[1]);
+    const app = [...LAUNCHER_APPS, LTV, OWNTV].find((a) => a.repo === (api || dl || [])[1]);
     if (!app) {
       throw new Error(`unexpected fetch in a test: ${u}`);
     }

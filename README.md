@@ -70,6 +70,7 @@ so you can run just the part you need later.
 - **Verified downloads**: every APK comes from a GitHub release and is checked against a published SHA-256 before it is installed.
 - **Optional AT4K or LTvLauncher home screen**: an ad-free home screen in place of the Amazon menu, switched on or off, or between the two, with one command.
 - **Fire TV UI**: install a fully customizable launcher with on-TV screensaver previews, timer controls, memory and storage usage, persistent backups, and local settings protection. Its installer collects all choices before making changes.
+- **Free live TV**: install OwnTV, a free, open source IPTV player, and add the [iptv-org](https://github.com/iptv-org/iptv) playlist of publicly available United States channels to it from your phone.
 - **On-TV screensaver picker**: a Screensavers tile on the TV for switching the screensaver from the couch, since Fire OS Settings only offers Amazon's.
 - **Optimize for screensavers**: checks the TV for settings that stop or spoil a screensaver (screensaver switched off, sleep coming before the screensaver, Amazon's Ambient Experience, Aerial Views' frame rate permission) and fixes only the ones it has. Offered during `start` and `update`, or run `optimize` any time.
 - **Guard against Amazon**: Home Redirect saves the screensaver, Alexa fix, Home and timeout settings and puts them back the moment Amazon changes them, after a reboot, after an app update, and every 15 minutes. Amazon's updaters are held back as far as Fire OS allows. `guard --check` reports and fixes anything that slipped through.
@@ -223,6 +224,8 @@ Captured on an Insignia Fire TV Edition TV, Android TV emulators, and in macOS T
 - **GitHub Releases**: screensaver and Home Redirect APKs are downloaded from releases and checked against their published SHA-256.
 - **AT4K launcher**: installed from its author's own release and checked against a hash pinned in this tool. See [Home screen](docs/LAUNCHER.md).
 - **LTvLauncher**: installed from its authors' own release, pinned by tag and hash in this tool because its releases publish no checksum. It has no internet permission. See [Home screen](docs/LAUNCHER.md).
+- **OwnTV**: installed unmodified from its author's own release, pinned by tag and hash because its releases publish no checksum. See [Free live TV](docs/IPTV.md).
+- **iptv-org**: the United States playlist OwnTV is pointed at. This tool only shows its URL; OwnTV fetches it.
 - **Fire OS settings**: the Alexa fix, the active screensaver, the timeouts and the accessibility services the home screen uses.
 
 ## Putting your Fire TV in developer mode
@@ -288,6 +291,7 @@ each one are listed in [Commands](docs/COMMANDS.md).
 | `guard`, `firetv-guard` | Keeps Amazon from undoing your setup. `--check` puts back anything that changed, `--unlock=screensaver` frees the screensaver choice, `--off` turns it off. |
 | `launcher`, `firetv-launcher` | Installs the AT4K or LTvLauncher home screen and switches the Home button between them and the Amazon menu. |
 | `firetv-ui` | Installs or updates Fire TV UI, chooses a saved simple layout or restored settings, configures Home and screensavers, transfers backups, or uninstalls while keeping the backup. |
+| `firetv-iptv` | Installs or updates OwnTV, opens it, and shows the iptv-org playlist of US channels to add. `--uninstall` removes it. |
 | `firetv-timeouts` | Reviews, edits or resets the sleep and screensaver timeouts in one flow. |
 | `firetv-timeout-sleep` | Changes the sleep timeout. |
 | `firetv-timeout-screensaver` | Changes the screensaver timeout. |
@@ -329,6 +333,7 @@ fire-tv-toolkit/
 │   ├── apply/               # The adb changes themselves
 │   ├── steps/               # Each command's prompts and flags
 │   ├── adb.js               # Talking to the TV
+│   ├── iptv-registry.js     # OwnTV and the iptv-org playlist, with its source and checksum
 │   ├── launcher-registry.js # AT4K, LTvLauncher and Home Redirect, with their sources and checksums
 │   └── screensaver-registry.js # The vetted screensavers
 ├── test/                    # Tests, with a fake TV so no real device is needed
@@ -349,6 +354,7 @@ Every guide is also on the project site: [jeremykenedy.github.io/fire-tv-toolkit
 | [Home screen](docs/LAUNCHER.md) | The AT4K and LTvLauncher home screens, Home Redirect and the on-TV picker |
 | [Guard](docs/GUARD.md) | What the guard keeps, how it fights Amazon's updates, and its limits |
 | [Fire TV UI](docs/FIRE-TV-UI.md) | The launcher wizard, persistent TV backups, Home routing, timers and update protection |
+| [Free live TV](docs/IPTV.md) | Installing OwnTV and adding the iptv-org playlist of US channels |
 | [Optimizing](docs/OPTIMIZE.md) | What `optimize` checks, what it changes, and how it is undone |
 | [Timeouts](docs/TIMEOUTS.md) | The sleep and screensaver timeouts and their baselines |
 | [Uninstalling](docs/UNINSTALLING.md) | Reverting the TV and removing the tool |

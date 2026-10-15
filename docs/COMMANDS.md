@@ -56,6 +56,12 @@ Screensaver ids: `aerial` (the default), `androsaver`, `snoozy`,
 | `launcher`, `firetv-launcher` | Installs AT4K or LTvLauncher with the Home Redirect app, or switches Home between AT4K, LTvLauncher, installed Fire TV UI, and Amazon. | `--install`, `--install-ltv`, `--use=<at4k\|ltv\|fire-tv-ui\|amazon>`, `--yes` (still needs `--install`, `--install-ltv` or `--use`) |
 | `firetv-ui` | Installs or removes Fire TV UI with layout, Home, screensaver, protection, and backup choices. | See [Fire TV UI](FIRE-TV-UI.md) for every flag. |
 
+## Free live TV
+
+| Command | What it does | Flags |
+|---------|--------------|-------|
+| `firetv-iptv` | Installs or updates OwnTV, opens it, and shows the iptv-org playlist of US channels to add from your phone. See [Free live TV](IPTV.md). | `--install`, `--uninstall` (also deletes the playlists saved in OwnTV), `--yes` (still needs `--install` or `--uninstall`) |
+
 ## Timeouts
 
 For the Fire TV UI launcher, use `firetv-ui` to collect installation, layout, Home, screensaver, protection, and backup choices before applying them. See [Fire TV UI](FIRE-TV-UI.md) for every flag and transfer example. Timer and screensaver commands below also update Fire TV UI's local protection settings when it is installed.
@@ -73,7 +79,7 @@ For the Fire TV UI launcher, use `firetv-ui` to collect installation, layout, Ho
 
 | Command | What it does | Flags |
 |---------|--------------|-------|
-| `firetv-revert` | Puts the TV back how it was with a checklist: the Alexa fix, the active screensaver, installed screensavers, changed timeouts, the Home button, the launcher apps, the screensaver optimizations and the guard. AT4K and LTvLauncher start unticked, because removing them deletes your home screen layout. | `--all` reverts everything except removing AT4K and LTvLauncher, `--force` skips the typed confirmation, `--yes` (reverts nothing without `--all`) |
+| `firetv-revert` | Puts the TV back how it was with a checklist: the Alexa fix, the active screensaver, installed screensavers, changed timeouts, the Home button, the launcher apps, OwnTV, the screensaver optimizations and the guard. AT4K and LTvLauncher start unticked, because removing them deletes your home screen layout, and so does OwnTV, because removing it deletes its playlists. | `--all` reverts everything except removing AT4K, LTvLauncher and OwnTV, `--force` skips the typed confirmation, `--yes` (reverts nothing without `--all`) |
 | `uninstall` | Runs `firetv-revert` first, then removes the commands and resets `.env`, then offers to delete the repo. | none |
 | `delete`, `remove` | Deletes this repo from your computer after you type `confirm`. Does not touch the TV. | none |
 
@@ -109,6 +115,7 @@ guard --check
 guard --unlock=screensaver
 launcher --install --use=at4k
 launcher --install-ltv --use=ltv
+firetv-iptv --install
 firetv-timeout-sleep --minutes=30 --yes
 firetv-revert --all --force
 ```
