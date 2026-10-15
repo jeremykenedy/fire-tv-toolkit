@@ -5,6 +5,8 @@ import { runWizard } from '../wizard.js';
 import { startSpinner } from '../spinner.js';
 import { launcherState, installLauncherApp, useHome } from '../apply/launcher.js';
 import { versionAtLeast } from '../apply/guard.js';
+import { ltvNotificationsOn } from '../apply/ltv.js';
+import { applyLtvNotifications } from './ltv-notifications.js';
 import { packageVersion } from '../adb.js';
 import { AT4K, LTV, HOME_REDIRECT, FIRE_TV_UI, HOME_LAUNCHERS, HOME_TARGET_VERSION, launcherApps } from '../launcher-registry.js';
 import { markFailed } from '../exit-status.js';
@@ -44,6 +46,9 @@ async function installAll(ip, id) {
   const state = await launcherState(ip);
   if (HOME_LAUNCHERS.some((app) => app.id === homeBefore) && state.home !== homeBefore) {
     await useHome(ip, homeBefore);
+  }
+  if (id === LTV.id && state.installed.includes(LTV.id) && !(await ltvNotificationsOn(ip))) {
+    await applyLtvNotifications(ip, true);
   }
   return ok || apps.every((app) => state.installed.includes(app.id));
 }
@@ -120,6 +125,9 @@ function menuChoices(state) {
   if (state.installed.includes(FIRE_TV_UI.id) && state.home !== FIRE_TV_UI.id) {
     choices.push({ name: 'Use Fire TV UI as the home screen', value: FIRE_TV_UI.id });
   }
+  if (state.installed.includes(LTV.id) && !state.ltvNotifications) {
+    choices.push({ name: 'Allow LTvLauncher to read notifications', value: 'ltv-notifications' });
+  }
   return choices;
 }
 
@@ -142,6 +150,7 @@ export async function manageLauncher(ip, flags = {}) {
   }
 
   const state = await launcherState(ip);
+  state.ltvNotifications = state.installed.includes(LTV.id) && await ltvNotificationsOn(ip);
   explainStep({
     title: 'Step: Choose the home screen',
     body: [
@@ -165,6 +174,8 @@ export async function manageLauncher(ip, flags = {}) {
       if (answers.action.startsWith('install:')) {
         const id = answers.action.slice('install:'.length);
         await runFromFlags(ip, { [INSTALL_FLAGS[id]]: true });
+      } else if (answers.action === 'ltv-notifications') {
+        await applyLtvNotifications(ip, true);
       } else {
         await switchHome(ip, answers.action);
       }

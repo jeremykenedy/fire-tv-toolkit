@@ -10,8 +10,13 @@ import { setScreensaver } from './set-screensaver.js';
 import { reviewTimeoutsIfWanted, manageAllTimeoutsStep } from './timeout-manage.js';
 import { manageLauncher } from './launcher.js';
 import { manageFireTvUi } from './fire-tv-ui.js';
-import { optimizeIfWanted } from './optimize.js';
-import { guardIfWanted } from './guard.js';
+import { manageIptv } from './iptv.js';
+import { manageLtvNotifications } from './ltv-notifications.js';
+import { manageLtvBackup } from './ltv-backup.js';
+import { optimizeIfWanted, optimizeForScreensavers } from './optimize.js';
+import { guardIfWanted, manageGuard } from './guard.js';
+import { uninstallEverything } from './uninstall.js';
+import { printCommandList } from '../command-list.js';
 import { print } from '../output.js';
 
 const MENU_CHOICES = [
@@ -22,6 +27,13 @@ const MENU_CHOICES = [
   { name: 'Review or adjust TV timeouts', value: 'timeouts' },
   { name: 'Choose the home screen (AT4K, LTvLauncher or Amazon)', value: 'launcher' },
   { name: 'Install, update, or uninstall Fire TV UI and manage backups', value: 'fire-tv-ui' },
+  { name: 'Install or remove OwnTV for free live TV channels', value: 'iptv' },
+  { name: 'Allow or remove LTvLauncher notification access', value: 'ltv-notifications' },
+  { name: 'Copy an LTvLauncher backup to this computer', value: 'ltv-backup' },
+  { name: 'Optimize the TV for screensavers', value: 'optimize' },
+  { name: 'Guard your setup so Amazon cannot undo it', value: 'guard' },
+  { name: 'Revert the TV, item by item', value: 'revert' },
+  { name: 'List all commands', value: 'commands' },
 ];
 
 const MENU_ACTIONS = {
@@ -32,6 +44,13 @@ const MENU_ACTIONS = {
   timeouts: (ip) => manageAllTimeoutsStep(ip),
   launcher: (ip) => manageLauncher(ip),
   'fire-tv-ui': (ip) => manageFireTvUi(ip),
+  iptv: (ip) => manageIptv(ip),
+  'ltv-notifications': (ip) => manageLtvNotifications(ip),
+  'ltv-backup': (ip) => manageLtvBackup(ip),
+  optimize: (ip) => optimizeForScreensavers(ip),
+  guard: (ip) => manageGuard(ip),
+  revert: (ip) => uninstallEverything(ip),
+  commands: () => printCommandList(),
 };
 
 function printIntro() {
@@ -43,6 +62,9 @@ function printIntro() {
   print(chalk.gray('  5. Review or change the TV sleep and screensaver timeouts, optimize the TV for screensavers, and guard it all (optional).'));
   print(chalk.gray('  6. Switch the home screen to AT4K or LTvLauncher, or back to the Amazon menu (optional).'));
   print(chalk.gray('  7. Install Fire TV UI with a saved layout, or manage its TV backups (optional).'));
+  print(chalk.gray('  8. Install OwnTV and add the iptv-org playlist of free US channels (optional).'));
+  print(chalk.gray('  9. Let LTvLauncher read notifications, or copy its backups to this computer (optional).'));
+  print(chalk.gray(' 10. Optimize, guard or revert the TV, or list every command, any time from the menu.'));
   print(chalk.gray('\nEach standalone command is named after its step in the README.\n'));
 }
 

@@ -66,7 +66,7 @@ export function optionsFromFlags(flags) {
     screensaver: flags.screensaver || 'keep', protection: flags.protection || 'keep', backup: flags.backup || 'keep' };
 }
 
-function destinationError(filename) {
+export function destinationError(filename) {
   const absolute = path.resolve(filename.trim());
   if (!filename.trim()) {
     return 'Enter a filename.';

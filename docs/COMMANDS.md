@@ -16,7 +16,7 @@ and `remove` refuses to run and points you at `start`.
 | `start` | Opens the guided menu. Runs setup the first time, then hands off to `update`. | none |
 | `update` | Re-runs setup, replacing the saved values. | none |
 | `fire-tv-toolkit` | Runs the full guided installer. | none |
-| `info`, `information`, `guide`, `firetv` | Lists every command. Shows only `start` until setup has finished. | none |
+| `info`, `information`, `guide`, `firetv` | Lists every command in a table grouped by area, the same table as "List all commands" in the guided menu. Shows only `start` until setup has finished. | none |
 | `firetv-install-adb` | Installs adb with Homebrew on macOS or apt on Linux. | `--yes` installs without asking |
 
 ## Alexa deep-sleep fix
@@ -55,6 +55,14 @@ Screensaver ids: `aerial` (the default), `androsaver`, `snoozy`,
 |---------|--------------|-------|
 | `launcher`, `firetv-launcher` | Installs AT4K or LTvLauncher with the Home Redirect app, or switches Home between AT4K, LTvLauncher, installed Fire TV UI, and Amazon. | `--install`, `--install-ltv`, `--use=<at4k\|ltv\|fire-tv-ui\|amazon>`, `--yes` (still needs `--install`, `--install-ltv` or `--use`) |
 | `firetv-ui` | Installs or removes Fire TV UI with layout, Home, screensaver, protection, and backup choices. | See [Fire TV UI](FIRE-TV-UI.md) for every flag. |
+| `firetv-ltv-notifications` | Lets LTvLauncher read notifications, which Android TV only allows over adb. `launcher --install-ltv` turns it on too. See [Home screen](LAUNCHER.md). | `--yes` allows it without asking, `--off` turns it off |
+| `firetv-ltv-backup` | Copies a backup exported in LTvLauncher from the TV's Download folder to this computer. Never overwrites a file. | `--pull=<file>` saves the newest backup to that new file |
+
+## Free live TV
+
+| Command | What it does | Flags |
+|---------|--------------|-------|
+| `firetv-iptv` | Installs or updates OwnTV, opens it, and shows the iptv-org playlist of US channels to add from your phone. See [Free live TV](IPTV.md). | `--install`, `--uninstall` (also deletes the playlists saved in OwnTV), `--yes` (still needs `--install` or `--uninstall`) |
 
 ## Timeouts
 
@@ -73,7 +81,7 @@ For the Fire TV UI launcher, use `firetv-ui` to collect installation, layout, Ho
 
 | Command | What it does | Flags |
 |---------|--------------|-------|
-| `firetv-revert` | Puts the TV back how it was with a checklist: the Alexa fix, the active screensaver, installed screensavers, changed timeouts, the Home button, the launcher apps, the screensaver optimizations and the guard. AT4K and LTvLauncher start unticked, because removing them deletes your home screen layout. | `--all` reverts everything except removing AT4K and LTvLauncher, `--force` skips the typed confirmation, `--yes` (reverts nothing without `--all`) |
+| `firetv-revert` | Puts the TV back how it was with a checklist: the Alexa fix, the active screensaver, installed screensavers, changed timeouts, the Home button, the launcher apps, LTvLauncher's notification access, OwnTV, the screensaver optimizations and the guard. AT4K and LTvLauncher start unticked, because removing them deletes your home screen layout, and so does OwnTV, because removing it deletes its playlists. | `--all` reverts everything except removing AT4K, LTvLauncher and OwnTV, `--force` skips the typed confirmation, `--yes` (reverts nothing without `--all`) |
 | `uninstall` | Runs `firetv-revert` first, then removes the commands and resets `.env`, then offers to delete the repo. | none |
 | `delete`, `remove` | Deletes this repo from your computer after you type `confirm`. Does not touch the TV. | none |
 
@@ -109,6 +117,7 @@ guard --check
 guard --unlock=screensaver
 launcher --install --use=at4k
 launcher --install-ltv --use=ltv
+firetv-iptv --install
 firetv-timeout-sleep --minutes=30 --yes
 firetv-revert --all --force
 ```

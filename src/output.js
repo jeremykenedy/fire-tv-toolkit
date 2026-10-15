@@ -3,7 +3,7 @@ import { format } from 'node:util';
 /**
  * The one place this CLI writes to the terminal. Plain stdout/stderr writes
  * keep every command's output going through a single function.
- * @param {...any} args printf-style arguments, like console.log
+ * @param {...any} args printf-style arguments, as util.format takes them
  */
 export function print(...args) {
   process.stdout.write(`${format(...args)}\n`);

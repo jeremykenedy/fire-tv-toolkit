@@ -99,7 +99,7 @@ test('setup.js runs with only Node built-ins on PATH and declines cleanly with n
 });
 
 test('environment variables cannot redirect where .env or the clones are written', () => {
-  const script = `Promise.all([import('${path.join(ROOT, 'src/device-config.js')}'), import('${path.join(ROOT, 'src/apply/screensavers.js')}')]).then(([d, s]) => console.log(JSON.stringify([d.getEnvPath(), s.getScreensaversDir()])));`;
+  const script = `Promise.all([import('${path.join(ROOT, 'src/device-config.js')}'), import('${path.join(ROOT, 'src/apply/screensavers.js')}')]).then(([d, s]) => process.stdout.write(JSON.stringify([d.getEnvPath(), s.getScreensaversDir()])));`;
   const r = spawnSync(process.execPath, ['-e', script], {
     env: { ...process.env, FIRE_TV_ENV_FILE: '/tmp/elsewhere/.env', FIRE_TV_SCREENSAVERS_DIR: '/tmp/elsewhere/clones', FIRE_TV_TEST_ENV_FILE: '/tmp/elsewhere/.env' },
     encoding: 'utf8',

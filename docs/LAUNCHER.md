@@ -32,6 +32,26 @@ screensaver installed on the TV and makes the one you pick active, from the
 couch. Fire OS Settings only offers Amazon's own. The picker needs the
 `WRITE_SECURE_SETTINGS` permission, which the install grants over adb.
 
+## LTvLauncher notifications
+
+LTvLauncher can show notifications from other apps, but Android TV has no
+settings screen for allowing that, so LTvLauncher asks for it over adb.
+`launcher --install-ltv` grants it right after installing, and
+`firetv-ltv-notifications` turns it on or off at any time. `firetv-revert`
+turns it off.
+
+## LTvLauncher backups
+
+LTvLauncher's **Settings > Backup & Restore > Export Backup** saves a backup
+in its own folder, which adb cannot read on Fire OS, and also copies it to the
+TV's Download folder. `firetv-ltv-backup` copies one of those to this
+computer. Export the backup in LTvLauncher first, since nothing outside the app
+can start an export.
+
+Restoring stays in LTvLauncher's **Import Backup**. It only lists backups it
+exported itself, so a file copied back to the TV from a computer does not
+show up there.
+
 ## Commands
 
 ```bash
@@ -41,6 +61,9 @@ launcher --install-ltv      # install or update LTvLauncher and Home Redirect
 launcher --use=at4k         # Home goes to AT4K
 launcher --use=ltv          # Home goes to LTvLauncher
 launcher --use=amazon       # Home goes back to the Amazon menu
+firetv-ltv-notifications --yes   # let LTvLauncher read notifications
+firetv-ltv-notifications --off   # stop it
+firetv-ltv-backup --pull=ltv-backup.json   # copy the newest LTvLauncher backup here
 ```
 
 ## Where the apps come from

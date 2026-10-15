@@ -67,9 +67,25 @@ adb shell settings put secure accessibility_enabled 1
 adb shell pm grant com.jeremykenedy.firetv.homeredirect android.permission.WRITE_SECURE_SETTINGS
 adb shell am broadcast -n com.jeremykenedy.firetv.homeredirect/.GuardReceiver \
   -a com.jeremykenedy.firetv.homeredirect.GUARD --es cmd home --es value ltv   # or at4k
+adb shell cmd notification allow_listener \
+  com.leanbitlab.ltvL/com.leanbitlab.ltvL.LauncherNotificationListenerService   # or disallow_listener
+adb shell settings get secure enabled_notification_listeners                   # read back
+adb shell ls -1 /sdcard/Download                                               # find ltv_backup_*.json
+adb pull /sdcard/Download/ltv_backup_<date>_<time>.json <file>
 ```
 
 See [Home screen](LAUNCHER.md).
+
+## Free live TV
+
+```bash
+adb install -r <OwnTV apk>                                             # install or update, keeping its playlists
+adb shell pm enable tv.own.owntv                                       # switch it back on if it was disabled
+adb shell monkey -p tv.own.owntv -c android.intent.category.LEANBACK_LAUNCHER 1   # open it
+adb shell pm uninstall tv.own.owntv                                    # remove it and its playlists
+```
+
+The playlist itself is added in OwnTV from your phone. See [Free live TV](IPTV.md).
 
 ## Changes are read back
 

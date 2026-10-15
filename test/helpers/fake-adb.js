@@ -13,13 +13,14 @@ const save = () => fs.writeFileSync(statePath, JSON.stringify(state));
 let args = process.argv.slice(2);
 if (args[0] === '-s') args = args.slice(2);
 const fail = (msg) => { process.stderr.write(msg + '\\n'); process.exit(1); };
+const out = (text) => process.stdout.write(text + '\\n');
 if (state.offline && args[0] !== 'version') fail("adb: device '" + (process.env.FAKE_ADB_TARGET || 'x') + "' not found");
 // state.offlineIps: only these TV addresses are unreachable.
 const host = (process.argv[2] === '-s' ? process.argv[3] : args[0] === 'connect' ? args[1] : '') || '';
 if ((state.offlineIps || []).includes(host.split(':')[0])) fail("adb: device '" + host + "' not found");
 const [cmd, a, b, c, d] = args;
-if (cmd === 'version') { console.log('Android Debug Bridge version 1.0.41'); }
-else if (cmd === 'connect') { console.log('connected to ' + a); }
+if (cmd === 'version') { out('Android Debug Bridge version 1.0.41'); }
+else if (cmd === 'connect') { out('connected to ' + a); }
 else if (cmd === 'install') {
   state.lastInstallPath = args[args.length - 1]; save();
   if (state.installFail) fail(state.installFail);
@@ -32,25 +33,40 @@ else if (cmd === 'install') {
   }
   // Like Android dropping an updated accessibility app from the enabled list.
   if (state.dropServicesOnInstall && state.secure) delete state.secure.enabled_accessibility_services;
-  save(); console.log('Success');
+  save(); out('Success');
 }
-else if (cmd === 'shell' && a === 'input') { console.log(''); }
-else if (cmd === 'shell' && a === 'monkey') { console.log('Events injected: 1'); }
+else if (cmd === 'shell' && a === 'input') { out(''); }
+else if (cmd === 'shell' && a === 'monkey') {
+  const p = args[args.indexOf('-p') + 1];
+  if (!state.installed.includes(p) || (state.unopenable || []).includes(p)) fail('** No activities found to run, monkey aborted.');
+  state.opened = p; save(); out('Events injected: 1');
+}
+else if (cmd === 'shell' && a === 'cmd' && b === 'notification') {
+  // state.listenerIgnored: the TV accepts the command and keeps its old list.
+  const key = 'enabled_notification_listeners';
+  const list = (state.secure[key] || '').split(':').filter(Boolean).filter((x) => x !== d);
+  if (c === 'allow_listener') list.push(d);
+  if (!state.listenerIgnored) { if (list.length) state.secure[key] = list.join(':'); else delete state.secure[key]; save(); }
+}
+else if (cmd === 'shell' && a === 'ls') {
+  const dir = args[args.length - 1].endsWith('/') ? args[args.length - 1].slice(0, -1) : args[args.length - 1];
+  for (const f of Object.keys(state.files || {})) if (f.startsWith(dir + '/')) out(f.slice(dir.length + 1));
+}
 else if (cmd === 'shell' && a === 'settings' && b === 'delete') {
   if (state.nativeHomeGuard && state.preferences?.fire_tv_ui_home_enabled && ['enabled_accessibility_services','accessibility_enabled'].includes(d)) process.exit(0);
   if (state[c]) delete state[c][d];
-  save(); console.log('Deleted 1 rows');
+  save(); out('Deleted 1 rows');
 }
 else if (cmd === 'shell' && a === 'pm' && b === 'enable') {
   if (!state.installed.includes(c)) fail('Error: Unknown package: ' + c);
-  state.disabled = (state.disabled || []).filter((p) => p !== c); save(); console.log('Package ' + c + ' new state: enabled');
+  state.disabled = (state.disabled || []).filter((p) => p !== c); save(); out('Package ' + c + ' new state: enabled');
 }
 else if (cmd === 'shell' && a === 'pm' && b === 'grant') {
   state.grants = state.grants || {}; state.grants[c] = [...(state.grants[c] || []), d]; save();
 }
 else if (cmd === 'shell' && a === 'appops' && b === 'get') {
   const mode = ((state.appops || {})[c] || {})[d];
-  console.log(mode ? d + ': ' + mode + '; time=+1d' : 'No operations.');
+  out(mode ? d + ': ' + mode + '; time=+1d' : 'No operations.');
 }
 else if (cmd === 'shell' && a === 'appops' && b === 'set') {
   const pkg = c === '--uid' ? d : c;
@@ -69,7 +85,7 @@ else if (cmd === 'shell' && a === 'am' && b === 'broadcast' && args.includes('co
   if (extra('cmd') === 'home' && state.homeDisconnects > 0) {
     state.homeDisconnects--; save(); process.exit(255);
   }
-  if (!state.installed.includes('com.jeremykenedy.firetv.homeredirect')) { console.log('Broadcasting: Intent\\nBroadcast completed: result=0'); }
+  if (!state.installed.includes('com.jeremykenedy.firetv.homeredirect')) { out('Broadcasting: Intent\\nBroadcast completed: result=0'); }
   else {
     const g = state.guard = state.guard || { locked: false, remembered: {} };
     const cmdName = extra('cmd');
@@ -86,23 +102,23 @@ else if (cmd === 'shell' && a === 'am' && b === 'broadcast' && args.includes('co
         reply = 'home=' + (g.home || 'at4k');
       }
     }
-    save(); console.log('Broadcasting: Intent\\nBroadcast completed: result=0, data="' + reply + '"');
+    save(); out('Broadcasting: Intent\\nBroadcast completed: result=0, data="' + reply + '"');
   }
 }
 else if (cmd === 'shell' && a === 'dumpsys' && b === 'package') {
   const v = (state.versions || {})[c];
-  console.log(state.installed.includes(c) ? 'Packages:\\n    versionName=' + (v || '1.0.0') : 'Unable to find package: ' + c);
+  out(state.installed.includes(c) ? 'Packages:\\n    versionName=' + (v || '1.0.0') : 'Unable to find package: ' + c);
 }
 else if (cmd === 'shell' && a === 'pm' && b === 'disable-user') {
   const pkg = args[args.length - 1];
   if ((state.protectedPkgs || []).includes(pkg)) fail('java.lang.SecurityException: Cannot disable a protected package: ' + pkg);
   if (!(state.lockedKeys || []).includes(pkg)) { state.disabled = [...new Set([...(state.disabled || []), pkg])]; save(); }
-  console.log('Package ' + pkg + ' new state: disabled-user');
+  out('Package ' + pkg + ' new state: disabled-user');
 }
-else if (cmd === 'shell' && a === 'echo') { console.log(state.echoReply === undefined ? b : state.echoReply); }
+else if (cmd === 'shell' && a === 'echo') { out(state.echoReply === undefined ? b : state.echoReply); }
 else if (cmd === 'shell' && a === 'settings' && b === 'get') {
   const v = (state[c] || {})[d];
-  console.log(v === undefined ? 'null' : v);
+  out(v === undefined ? 'null' : v);
 } else if (cmd === 'shell' && a === 'settings' && b === 'put') {
   if (state.nativeHomeGuard && state.preferences?.fire_tv_ui_home_enabled && ['enabled_accessibility_services','accessibility_enabled'].includes(d)) process.exit(0);
   if (state.rejectOverMax && c === 'system' && d === 'screen_off_timeout' && Number(process.argv.slice(-1)[0]) > 2147460000) fail('java.lang.IllegalArgumentException: value too large');
@@ -110,15 +126,15 @@ else if (cmd === 'shell' && a === 'settings' && b === 'get') {
   if ((state.lockedKeys || []).includes(d)) { process.exit(0); }
   state[c] = state[c] || {}; state[c][d] = process.argv.slice(-1)[0]; save();
 } else if (cmd === 'shell' && a === 'settings' && b === 'list') {
-  for (const [k, v] of Object.entries(state[c] || {})) console.log(k + '=' + v);
+  for (const [k, v] of Object.entries(state[c] || {})) out(k + '=' + v);
 } else if (cmd === 'shell' && a === 'pm' && b === 'list') {
   const only = args.includes('-d') ? state.disabled || [] : state.installed;
-  for (const p of only) console.log('package:' + p);
+  for (const p of only) out('package:' + p);
 } else if (cmd === 'shell' && a === 'pm' && b === 'uninstall') {
-  if (state.installed.includes(c) && !state.stuck) { state.installed = state.installed.filter((p) => p !== c); save(); console.log('Success'); }
-  else console.log('Failure [DELETE_FAILED_INTERNAL_ERROR]');
+  if (state.installed.includes(c) && !state.stuck) { state.installed = state.installed.filter((p) => p !== c); save(); out('Success'); }
+  else out('Failure [DELETE_FAILED_INTERNAL_ERROR]');
 } else if (cmd === 'shell' && a === 'getprop') {
-  console.log(state.sdk === undefined ? '30' : state.sdk);
+  out(state.sdk === undefined ? '30' : state.sdk);
 } else if (cmd === 'push') {
   state.files = state.files || {}; state.files[b] = fs.readFileSync(a,'utf8'); save();
 } else if (cmd === 'pull') {
@@ -131,11 +147,11 @@ else if (cmd === 'shell' && a === 'settings' && b === 'get') {
 } else if (cmd === 'shell' && a === 'am' && b === 'broadcast') {
   const value = (name) => args[args.indexOf(name) + 1];
   const pkg = value('-n').split('/')[0];
-  if (!state.installed.includes(pkg) || state.backupFail) { console.log('Broadcast completed: result=1, data="backup failed"'); process.exit(0); }
+  if (!state.installed.includes(pkg) || state.backupFail) { out('Broadcast completed: result=1, data="backup failed"'); process.exit(0); }
   const operation = value('operation');
   if (operation === 'home-on' && state.homeFailuresRemaining > 0) {
     state.homeFailuresRemaining--; save();
-    console.log('Broadcast completed: result=1, data="Home binding is still settling"'); process.exit(0);
+    out('Broadcast completed: result=1, data="Home binding is still settling"'); process.exit(0);
   }
   state.files = state.files || {};
   if (operation === 'save') {
@@ -149,7 +165,7 @@ else if (cmd === 'shell' && a === 'settings' && b === 'get') {
   else if (['home-on','home-off'].includes(operation)) {
     const keys = ['enabled_accessibility_services','accessibility_enabled'];
     if (keys.some((key) => (state.lockedKeys || []).includes(key) || (state.dropWrites || []).includes(key))) {
-      console.log('Broadcast completed: result=1, data="Home routing refused"'); process.exit(0);
+      out('Broadcast completed: result=1, data="Home routing refused"'); process.exit(0);
     }
     const on = operation === 'home-on';
     const own = ['com.jeremykenedy.firetv.ui/com.jeremykenedy.firetv.ui.Hra', 'com.jeremykenedy.firetv.ui/com.jeremykenedy.firetv.ui.HomeRedirectService'];
@@ -174,17 +190,17 @@ else if (cmd === 'shell' && a === 'settings' && b === 'get') {
     const key = value('key');
     const requested = value('value');
     if ((state.lockedKeys || []).includes(key)) {
-      console.log('Broadcast completed: result=1, data="java.lang.IllegalStateException: setting refused"'); process.exit(0);
+      out('Broadcast completed: result=1, data="java.lang.IllegalStateException: setting refused"'); process.exit(0);
     }
     if (state.rejectOverMax && namespace === 'system' && key === 'screen_off_timeout' && Number(requested) > 2147460000) {
-      console.log('Broadcast completed: result=1, data="java.lang.IllegalArgumentException: value too large"'); process.exit(0);
+      out('Broadcast completed: result=1, data="java.lang.IllegalArgumentException: value too large"'); process.exit(0);
     }
     state[namespace] = state[namespace] || {}; state[namespace][key] = requested;
     state.preferences = state.preferences || {};
     const desired = {sleep_timeout:'fire_tv_ui_sleep',screen_off_timeout:'fire_tv_ui_idle',screensaver_components:'fire_tv_ui_dream',screensaver_enabled:'fire_tv_ui_dream_enabled','str.auto_wake_up_enabled':'fire_tv_ui_auto_wake'}[key];
     state.preferences[desired] = key === 'screensaver_components' ? requested : key === 'screensaver_enabled' ? requested === '1' : Number(requested);
   }
-  save(); console.log('Broadcast completed: result=0, data="ok"');
+  save(); out('Broadcast completed: result=0, data="ok"');
 } else if (cmd === 'shell' && a === 'am' && ['start','force-stop'].includes(b)) {
   state.opened = args[args.length - 1]; save();
 } else { fail('fake adb: unsupported ' + args.join(' ')); }

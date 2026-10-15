@@ -1,5 +1,25 @@
 # Changelog
 
+## [3.11.0] - 2026-10-15
+
+### Added in 3.11.0
+
+- `firetv-iptv` installs OwnTV, a free, open source IPTV player, opens it on the TV, and shows the iptv-org playlist of publicly available United States channels with the steps to add it from a phone or browser. OwnTV is installed unmodified from its own release, pinned by tag and SHA-256. `--uninstall` removes it.
+- `firetv-revert` and `uninstall` offer to remove OwnTV. It starts unticked, because removing it deletes the playlists saved in it, and `firetv-revert --all` leaves it installed.
+- `firetv-ltv-notifications` lets LTvLauncher read notifications, which Android TV only grants over adb. `launcher --install-ltv` turns it on after installing, the launcher menu offers it while it is off, and `firetv-revert` turns it off.
+- `firetv-ltv-backup` copies a backup exported in LTvLauncher from the TV's Download folder to this computer, checking it is an LTvLauncher backup and never overwriting a file. Restoring stays in LTvLauncher's own Import Backup, which only lists backups it exported itself.
+- The guided menu has an entry for every standalone command: OwnTV, LTvLauncher notifications and backups, optimize, guard, revert, and List all commands.
+
+### Changed in 3.11.0
+
+- `info`, `information`, `guide` and `firetv` list the commands in a bordered table with Command and What it does columns, grouped by area and fitted to the terminal.
+- The main menu and command list screenshots show the new entries and the table.
+- The test helpers write their output with `process.stdout.write`, so no logging calls are left in the code.
+
+### Upgrade
+
+Run `git pull` on the Toolkit checkout, then `node setup.js` to link the new commands. Run `firetv-iptv --install` to add OwnTV.
+
 ## [3.9.1] - 2026-10-09
 
 ### Fixed in 3.9.1

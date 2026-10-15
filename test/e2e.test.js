@@ -12,7 +12,7 @@ before(() => {
 beforeEach(() => fake.reset());
 after(() => fake.restore());
 
-const EXIT_MENU = [{ expect: 'What would you like to do?', send: `${DOWN.repeat(7)}${ENTER}` }];
+const EXIT_MENU = [{ expect: 'What would you like to do?', send: `${DOWN.repeat(14)}${ENTER}` }];
 
 test('start on a fresh setup walks through connecting and reaches the menu, then exits', async () => {
   const r = await drive('bin/start.js', [], [
@@ -40,7 +40,7 @@ const CONNECT = [
 ];
 const CONTINUE = { expect: 'Nothing has been changed yet. Continue?', send: ENTER };
 const MENU = (n) => ({ expect: 'What would you like to do?', send: `${DOWN.repeat(n)}${ENTER}` });
-const BYE = { expect: /What would you like to do\?[\s\S]*What would you like to do\?/, send: `${DOWN.repeat(7)}${ENTER}` };
+const BYE = { expect: /What would you like to do\?[\s\S]*What would you like to do\?/, send: `${DOWN.repeat(14)}${ENTER}` };
 
 function installedEnv() {
   fs.writeFileSync(fake.envFile, 'FIRE_TV_IP=192.168.1.49\nINSTALLED=true\n');
@@ -67,13 +67,13 @@ test('declining the developer-mode question makes no changes and exits 0', async
 });
 
 test('menu: turn the Alexa fix off, then it is off on the device', async () => {
-  const r = await drive('bin/start.js', [], [...CONNECT, MENU(1), { expect: 'Revert now? [y/N]', send: 'y' }, { expect: 'Type "yes" to continue', send: `yes${ENTER}` }, { expect: 'What would you like to do?', send: `${DOWN.repeat(7)}${ENTER}` }]);
+  const r = await drive('bin/start.js', [], [...CONNECT, MENU(1), { expect: 'Revert now? [y/N]', send: 'y' }, { expect: 'Type "yes" to continue', send: `yes${ENTER}` }, { expect: 'What would you like to do?', send: `${DOWN.repeat(14)}${ENTER}` }]);
   assert.equal(r.code, 0, r.out);
   assert.equal(fake.readState().secure['str.auto_wake_up_enabled'], '0');
 });
 
 test('menu: declining the Alexa revert leaves the fix on', async () => {
-  const r = await drive('bin/start.js', [], [...CONNECT, MENU(1), { expect: 'Revert now? [y/N]', send: 'n' }, { expect: 'What would you like to do?', send: `${DOWN.repeat(7)}${ENTER}` }]);
+  const r = await drive('bin/start.js', [], [...CONNECT, MENU(1), { expect: 'Revert now? [y/N]', send: 'n' }, { expect: 'What would you like to do?', send: `${DOWN.repeat(14)}${ENTER}` }]);
   assert.equal(r.code, 0, r.out);
   assert.equal(fake.readState().secure['str.auto_wake_up_enabled'], '1');
 });
@@ -84,7 +84,7 @@ test('menu: choose Amazon with Ads as the active screensaver', async () => {
     MENU(3),
     { expect: 'Set the active screensaver to:', send: `${DOWN}${ENTER}` },
     CONTINUE,
-    { expect: 'What would you like to do?', send: `${DOWN.repeat(7)}${ENTER}` },
+    { expect: 'What would you like to do?', send: `${DOWN.repeat(14)}${ENTER}` },
   ]);
   assert.equal(r.code, 0, r.out);
   assert.match(fake.readState().secure.screensaver_components, /amazon/);
@@ -97,7 +97,7 @@ test('menu: edit the sleep timeout to 20 minutes', async () => {
     { expect: 'What would you like to do?', send: `${DOWN} ${ENTER}` },
     { expect: 'minutes', send: `20${ENTER}` },
     CONTINUE,
-    { expect: 'What would you like to do?', send: `${DOWN.repeat(7)}${ENTER}` },
+    { expect: 'What would you like to do?', send: `${DOWN.repeat(14)}${ENTER}` },
   ]);
   assert.equal(r.code, 0, r.out);
   assert.equal(fake.readState().secure.sleep_timeout, '1200000');
@@ -109,18 +109,18 @@ test('menu: skipping the timeout checklist changes nothing', async () => {
     MENU(4),
     { expect: 'What would you like to do?', send: ENTER },
     { expect: /No timeout changes/, send: '' },
-    { expect: 'What would you like to do?', send: `${DOWN.repeat(7)}${ENTER}` },
+    { expect: 'What would you like to do?', send: `${DOWN.repeat(14)}${ENTER}` },
   ]);
   assert.equal(r.code, 0, r.out);
   assert.equal(fake.readState().secure.sleep_timeout, '840000');
 });
 
 test('menu: adb step reports adb is already installed', async () => {
-  const r = await drive('bin/start.js', [], [...CONNECT, MENU(0), { expect: 'already installed', send: '' }, { expect: 'What would you like to do?', send: `${DOWN.repeat(7)}${ENTER}` }]);
+  const r = await drive('bin/start.js', [], [...CONNECT, MENU(0), { expect: 'already installed', send: '' }, { expect: 'What would you like to do?', send: `${DOWN.repeat(14)}${ENTER}` }]);
   assert.equal(r.code, 0, r.out);
 });
 
-const EXIT_AFTER = { expect: 'What would you like to do?', send: `${DOWN.repeat(7)}${ENTER}` };
+const EXIT_AFTER = { expect: 'What would you like to do?', send: `${DOWN.repeat(14)}${ENTER}` };
 
 test('menu: uncheck Aerial Views to remove it from the TV', async () => {
   const r = await drive('bin/start.js', [], [
@@ -166,6 +166,28 @@ test('menu: resetting every timeout puts the baselines back', async () => {
     EXIT_AFTER,
   ]);
   assert.equal(fake.readState().secure.sleep_timeout, '840000', again.out);
+});
+
+test('menu: LTvLauncher, optimize, guard, revert and the command list each have an entry', async () => {
+  const CANCEL = { expect: 'Nothing has been changed yet. Continue?', send: `${DOWN}${DOWN}${ENTER}` };
+  const r = await drive('bin/start.js', [], [
+    ...CONNECT,
+    MENU(8), { expect: 'LTvLauncher is not installed', send: '' },
+    MENU(9), { expect: 'LTvLauncher is not installed', send: '' },
+    MENU(10), { expect: 'Which changes should be made?', send: ENTER }, CANCEL,
+    MENU(11), CANCEL,
+    MENU(12), { expect: 'What should be reverted?', send: ENTER }, CANCEL,
+    MENU(13), { expect: '└', send: '' },
+    EXIT_AFTER,
+  ]);
+  assert.equal(r.code, 1, 'both LTvLauncher entries report it is not installed');
+  assert.match(r.out, /Bye!/);
+  assert.match(r.out, /Step: Optimize the TV for screensavers/);
+  assert.match(r.out, /Step: Guard against Amazon undoing your setup/);
+  assert.match(r.out, /Revert the TV: put back what this tool changed/);
+  assert.match(r.out, /│ Command +│ What it does/);
+  assert.equal(fake.readState().secure['str.auto_wake_up_enabled'], '1', 'nothing was reverted');
+  assert.deepEqual(fake.readState().installed, [AERIAL]);
 });
 
 test('uninstall: reverts the TV, then resets .env and reports it could not unlink without npm', async () => {
