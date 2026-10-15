@@ -8,7 +8,7 @@ import { installFakeAdb, captured, AERIAL } from './helpers/fake-adb.js';
 import { drive, DOWN, ENTER } from './helpers/drive.js';
 import { launcherFetch, useDroppingAdb } from './helpers/launcher-fakes.js';
 import { LTV, HOME_REDIRECT } from '../src/launcher-registry.js';
-import { ltvBackupNames, LTV_BACKUP_DIR } from '../src/apply/ltv.js';
+import { ltvBackupNames, pullLtvBackup, LTV_BACKUP_DIR } from '../src/apply/ltv.js';
 import { manageLtvNotifications } from '../src/steps/ltv-notifications.js';
 import { manageLtvBackup } from '../src/steps/ltv-backup.js';
 import { manageLauncher } from '../src/steps/launcher.js';
@@ -142,6 +142,14 @@ test('ltvBackupNames keeps LTvLauncher exports only, newest first', () => {
     ltvBackupNames(['ltv_backup_20261015_120105.json', 'fire-tv-ui-backup.txt', 'ltv_backup.json', 'ltv_backup_20261016_080000.json', 'ltv_backup_20261015_120107.json']),
     ['ltv_backup_20261016_080000.json', 'ltv_backup_20261015_120107.json', 'ltv_backup_20261015_120105.json'],
   );
+});
+
+test('pullLtvBackup never writes over a file that appears before it saves', async () => {
+  backupsOnTv({ 'ltv_backup_20261016_080000.json': BACKUP });
+  const destination = path.join(scratch, 'taken.json');
+  fs.writeFileSync(destination, 'keep me');
+  await assert.rejects(pullLtvBackup(ip, 'ltv_backup_20261016_080000.json', destination), { code: 'EEXIST' });
+  assert.equal(fs.readFileSync(destination, 'utf8'), 'keep me');
 });
 
 test('firetv-ltv-backup --pull saves the newest backup and checks it came through', async () => {
