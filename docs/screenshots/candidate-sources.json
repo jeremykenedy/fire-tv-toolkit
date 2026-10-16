@@ -36,5 +36,15 @@
     "source_sha256": "eee8cc749c033c902883dbc35faf74d4b5846a1bf86266872ef0f3da23efba69",
     "source_repository": "https://github.com/jeremykenedy/blue-meridian/pull/1",
     "state": "Candidate native rendering; final release and physical acceptance pending"
+  },
+  "rainforest-cascade": {
+    "capture": "Physical Fire TV AFTDEC012E API30 garden daylight wide framing natural speed; original animated matte garden, not real footage",
+    "source_sha256": "214dd8d65d6c5380de0ef96b29686b13c73e309d62d38df08f0c1a9516365c29",
+    "thumbnail_sha256": "9103e4cbc11430831bfb60571b4e86a11a7705e54115d9d1f98c18d77ec7551d",
+    "source_repository": "https://github.com/jeremykenedy/rainforest-cascade/tree/v1.1.0",
+    "release": "https://github.com/jeremykenedy/rainforest-cascade/releases/tag/v1.1.0",
+    "apk_sha256": "88602f840deae1e9a7fa8de5b1dda03601c70d0d70399ab11262e1817e7de31f",
+    "apk_bytes": 72053957,
+    "state": "Published downloaded/checksummed signed artifact physically tested; existing registry fetches latest release"
   }
 }
