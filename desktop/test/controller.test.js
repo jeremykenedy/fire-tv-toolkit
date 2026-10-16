@@ -83,6 +83,7 @@ function harness(t) {
     dataDir,
     api,
     onProgress: (text) => progress.push(text),
+    executeShell: (...args) => api.executeShell(...args),
   });
   return { controller, api, state, writes, progress, dataDir, baselines };
 }
@@ -100,7 +101,10 @@ test('connecting reads state and preserves the first captured timer values', asy
   h.state.sleep = 60000;
   await h.controller.refresh();
   assert.equal(h.baselines.get(`${originalDirectory}:sleep`), 1200000);
-  assert.deepEqual(h.controller.initial(), { savedIp: '192.168.1.10' });
+  assert.deepEqual(h.controller.initial(), {
+    savedIp: '192.168.1.10',
+    advanced: false,
+  });
   await h.controller.connect('192.168.1.11');
   assert.notEqual(h.state.directory, originalDirectory);
   assert.equal(h.baselines.get(`${h.state.directory}:sleep`), 60000);
@@ -314,4 +318,199 @@ test('an incomplete connection leaves every action unavailable', async (t) => {
     /Connect/,
   );
   assert.deepEqual(h.writes, []);
+});
+
+test('advanced tools default off, require approval and persist only after approval', async (t) => {
+  const h = harness(t);
+  assert.equal(h.controller.initial().advanced, false);
+  await assert.rejects(h.controller.shell('id'), /Enable Advanced/);
+  assert.deepEqual(await h.controller.setAdvanced(true, async () => false), {
+    advanced: false,
+    cancelled: true,
+  });
+  assert.equal(
+    fs.existsSync(path.join(h.dataDir, 'desktop-settings.json')),
+    false,
+  );
+  await h.controller.setAdvanced(true, async () => true);
+  assert.equal(
+    createController({ dataDir: h.dataDir, api: h.api }).initial().advanced,
+    true,
+  );
+  await h.controller.setAdvanced(false, () => {
+    throw new Error('Disabling must not ask');
+  });
+  await assert.rejects(h.controller.shell('id'), /Enable Advanced/);
+  assert.equal(
+    createController({ dataDir: h.dataDir, api: h.api }).initial().advanced,
+    false,
+  );
+});
+
+test('TV commands use the connected target and lock other tasks until stopped', async (t) => {
+  const h = harness(t);
+  await h.controller.setAdvanced(true, async () => true);
+  await assert.rejects(h.controller.shell('id'), /Connect/);
+  await h.controller.connect('192.168.1.10');
+  for (const command of ['', 'x'.repeat(8193), null, 'id\0'])
+    await assert.rejects(h.controller.shell(command), /Enter a command/);
+  let ready;
+  const started = new Promise((resolve) => {
+    ready = resolve;
+  });
+  h.api.executeShell = async (ip, command, { signal }) => {
+    assert.equal(ip, '192.168.1.10');
+    assert.equal(command, 'id; getprop ro.product.model');
+    ready();
+    await new Promise((resolve) =>
+      signal.addEventListener('abort', resolve, { once: true }),
+    );
+    return { code: null, stopped: 'stopped' };
+  };
+  const pending = h.controller.shell('id; getprop ro.product.model');
+  await started;
+  await assert.rejects(
+    h.controller.setAdvanced(false, async () => true),
+    /current task/,
+  );
+  await assert.rejects(h.controller.connect('192.168.1.11'), /current task/);
+  assert.equal(h.controller.stopShell(), true);
+  assert.equal((await pending).stopped, 'stopped');
+  assert.equal(h.controller.stopShell(), false);
+  assert.equal(h.controller.isBusy(), false);
+  h.state.online = false;
+  await assert.rejects(h.controller.shell('id'), /disconnected/);
+});
+
+const setup = {
+  mode: 'setup',
+  screensaver: 'keep',
+  home: 'keep',
+  ownTv: false,
+  optimize: false,
+};
+
+test('guided setup reviews changes once, respects cancellation and applies selections in order', async (t) => {
+  const h = harness(t);
+  await h.controller.connect('192.168.1.10');
+  const request = { ...setup, optimize: true, alexa: false, sleepMs: 1800000 };
+  let proposal;
+  assert.deepEqual(
+    await h.controller.assistant(request, async (value) => {
+      proposal = value;
+      return false;
+    }),
+    { cancelled: true },
+  );
+  assert.match(proposal.detail, /Optimize for screensavers/);
+  assert.match(proposal.detail, /30 minutes/);
+  assert.match(proposal.detail, /Disable Alexa/);
+  assert.equal(proposal.ip, '192.168.1.10');
+  assert.deepEqual(h.writes, []);
+  let confirmations = 0;
+  const result = await h.controller.assistant(request, async () => {
+    confirmations++;
+    return true;
+  });
+  assert.equal(confirmations, 1);
+  assert.deepEqual(
+    h.writes.map((write) => write.type),
+    ['optimize', 'timeout', 'alexa'],
+  );
+  assert.equal(result.state.sleepMs, 1800000);
+  assert.equal(result.state.alexaEnabled, false);
+  assert.match(result.message, /3 changes verified/);
+});
+
+test('guided setup installs before activation and reports a failed step without running later changes', async (t) => {
+  const h = harness(t);
+  const entry = SCREENSAVERS.find((entry) => entry.id === 'aquarium-4k');
+  let installed = false;
+  h.api.downloadApk = async (selected) => {
+    assert.equal(selected.id, entry.id);
+    return '/download/verified.apk';
+  };
+  h.api.installApk = async () => {
+    installed = true;
+    h.writes.push({ type: 'install' });
+  };
+  h.api.removeDownload = () => {};
+  h.api.listPackages = async () =>
+    installed ? [aerial.pkg, entry.pkg] : [aerial.pkg];
+  h.api.setActiveScreensaver = async (_ip, component) => {
+    h.state.active = component;
+    h.writes.push({ type: 'activate' });
+  };
+  await h.controller.connect('192.168.1.10');
+  const result = await h.controller.assistant(
+    { ...setup, screensaver: entry.id },
+    async () => true,
+  );
+  assert.deepEqual(
+    h.writes.map((write) => write.type),
+    ['install', 'activate'],
+  );
+  assert.equal(
+    result.state.screensavers.find((item) => item.id === entry.id).active,
+    true,
+  );
+  h.writes.length = 0;
+  h.api.setTimeoutMs = async () => ({ applied: false });
+  await assert.rejects(
+    h.controller.assistant(
+      { ...setup, sleepMs: 1800000, alexa: true },
+      async () => true,
+    ),
+    (error) => {
+      assert.match(error.message, /0 of 2 changes completed/);
+      assert.match(error.message, /Remaining changes were not run/);
+      assert.equal(error.state.alexaEnabled, false);
+      return true;
+    },
+  );
+  assert.deepEqual(h.writes, []);
+});
+
+test('the updater only accepts installed supported apps and preserves app selection', async (t) => {
+  const h = harness(t);
+  await h.controller.connect('192.168.1.10');
+  for (const request of [
+    {
+      mode: 'update',
+      screensavers: ['aquarium-4k'],
+      launchers: [],
+      ownTv: false,
+    },
+    { mode: 'update', screensavers: [], launchers: ['bad'], ownTv: false },
+    { mode: 'update', screensavers: [], launchers: [], ownTv: true },
+    { ...setup, home: 'bad' },
+    { ...setup, sleepMs: -1 },
+  ])
+    await assert.rejects(
+      h.controller.assistant(request, () => {
+        throw new Error('Must validate first');
+      }),
+      /Choose|Install|valid/,
+    );
+  h.api.downloadApk = async (entry) => {
+    assert.equal(entry.id, aerial.id);
+    return '/download/verified.apk';
+  };
+  h.api.installApk = async (ip) => h.writes.push({ type: 'install', ip });
+  h.api.removeDownload = () => {};
+  const result = await h.controller.assistant(
+    {
+      mode: 'update',
+      screensavers: [aerial.id, aerial.id],
+      launchers: [],
+      ownTv: false,
+    },
+    async () => true,
+  );
+  assert.deepEqual(h.writes, [{ type: 'install', ip: '192.168.1.10' }]);
+  assert.equal(
+    result.state.screensavers.find((entry) => entry.id === aerial.id).active,
+    true,
+  );
+  assert.equal(result.state.sleepMs, 1200000);
 });

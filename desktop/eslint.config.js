@@ -12,6 +12,7 @@ export default [
         Response: 'readonly',
         fetch: 'readonly',
         AbortSignal: 'readonly',
+        AbortController: 'readonly',
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
       },

@@ -114,6 +114,8 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
   page.on('pageerror', (error) => errors.push(error.message));
   assert.equal(await page.evaluate(() => typeof window.require), 'undefined');
   assert.equal(await page.evaluate(() => typeof window.process), 'undefined');
+  assert.equal(await page.locator('[data-view="activity"]').isVisible(), false);
+  assert.equal(await page.locator('[data-view="terminal"]').isVisible(), false);
   assert.equal(await page.locator('.channel-row').count(), 100);
   await page.getByRole('button', { name: 'Next', exact: true }).click();
   await page
@@ -163,10 +165,63 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
   await page.screenshot({
     path: path.join(output, `${process.platform}-device-setup.png`),
   });
+  await page.getByRole('button', { name: 'About', exact: true }).click();
+  await page
+    .getByRole('heading', { name: 'Where it works', exact: true })
+    .waitFor();
+  assert.match(await page.locator('#view-about').innerText(), /Jeremy Kenedy/);
+  assert.match(
+    await page.locator('#view-about').innerText(),
+    /without warranty/,
+  );
+  await page.screenshot({
+    path: path.join(output, `${process.platform}-about.png`),
+  });
+  await page
+    .getByRole('button', { name: 'Advanced settings', exact: true })
+    .click();
+  await application.evaluate(({ dialog }) => {
+    dialog.showMessageBox = async (...args) => {
+      dialog.testWarning = args.at(-1);
+      return { response: 0 };
+    };
+  });
+  await page.getByRole('switch', { name: 'Enable Advanced settings' }).click();
+  await page.locator('#notice').filter({ hasText: 'remain off' }).waitFor();
+  const warning = await application.evaluate(
+    ({ dialog }) => dialog.testWarning,
+  );
+  assert.equal(warning.type, 'warning');
+  assert.equal(warning.defaultId, 0);
+  assert.match(warning.detail, /erase data/);
+  assert.equal(await page.locator('[data-view="terminal"]').isVisible(), false);
+  assert.match(
+    (await page.evaluate(() => window.toolkit.shell('id'))).error,
+    /Enable Advanced/,
+  );
+  await application.evaluate(({ dialog }) => {
+    dialog.showMessageBox = async () => ({ response: 1 });
+  });
+  await page.getByRole('switch', { name: 'Enable Advanced settings' }).click();
+  await page.locator('[data-view="terminal"]').waitFor({ state: 'visible' });
+  await page.getByRole('button', { name: 'TV terminal', exact: true }).click();
+  assert.equal(
+    await page
+      .getByRole('button', { name: 'Run on TV', exact: true })
+      .isEnabled(),
+    false,
+  );
+  await page
+    .getByRole('button', { name: 'Advanced settings', exact: true })
+    .click();
+  await page.screenshot({
+    path: path.join(output, `${process.platform}-advanced.png`),
+  });
   assert.deepEqual(errors, []);
   await application.close();
   application = null;
   page = await launch();
+  assert.equal(await page.locator('[data-view="terminal"]').isVisible(), true);
   await page.getByLabel('Favorites', { exact: true }).check();
   await page
     .getByRole('button', { name: 'Remove Channel 000 from favorites' })

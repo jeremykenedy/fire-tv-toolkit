@@ -56,10 +56,21 @@ export function createController({
   dataDir,
   api = toolkit,
   onProgress = () => {},
+  executeShell,
+  onShellOutput = () => {},
 }) {
   fs.mkdirSync(dataDir, { recursive: true });
   let device = null;
   let busy = false;
+  let shellAbort = null;
+  const preferencesFile = path.join(dataDir, 'desktop-settings.json');
+  let advanced = false;
+  try {
+    advanced =
+      JSON.parse(fs.readFileSync(preferencesFile, 'utf8')).advanced === true;
+  } catch {
+    // Advanced tools stay off when preferences are absent or unreadable.
+  }
 
   async function exclusive(work) {
     if (busy) throw new Error('Wait for the current task to finish.');
@@ -459,6 +470,74 @@ export function createController({
     }
   }
 
+  function assistantActions(request, state) {
+    if (!request || !['setup', 'update'].includes(request.mode))
+      throw new Error('Choose setup or update.');
+    const actions = [];
+    const add = (type, values = {}) =>
+      actions.push(validate({ type, ...values }));
+    if (request.mode === 'update') {
+      for (const [key, entries, type] of [
+        [
+          'screensavers',
+          state.screensavers.filter((entry) => entry.downloadable),
+          'install-screensaver',
+        ],
+        ['launchers', state.launchers, 'install-launcher'],
+      ]) {
+        if (
+          !Array.isArray(request[key]) ||
+          request[key].length > entries.length
+        )
+          throw new Error('Choose installed apps to update.');
+        for (const id of new Set(request[key])) {
+          if (!entries.some((entry) => entry.id === id && entry.installed))
+            throw new Error('Choose installed apps to update.');
+          add(type, { id });
+        }
+      }
+      if (typeof request.ownTv !== 'boolean')
+        throw new Error('Choose whether to update OwnTV.');
+      if (request.ownTv) {
+        if (!state.ownTvInstalled)
+          throw new Error('Install OwnTV before updating it.');
+        add('install-owntv');
+      }
+      return actions;
+    }
+    if (request.screensaver !== 'keep') {
+      const entry = state.screensavers.find(
+        (item) => item.id === request.screensaver,
+      );
+      if (!entry || (!entry.downloadable && !entry.installed))
+        throw new Error('Choose a supported screensaver.');
+      if (!entry.installed) add('install-screensaver', { id: entry.id });
+      if (!entry.active) add('activate-screensaver', { id: entry.id });
+    }
+    if (request.home !== 'keep' && request.home !== state.home) {
+      if (request.home !== 'amazon') {
+        const entry = state.launchers.find((item) => item.id === request.home);
+        if (!entry) throw new Error('Choose a supported home screen.');
+        if (!entry.installed || !state.homeRedirectInstalled)
+          add('install-launcher', { id: entry.id });
+      }
+      add('home', { id: request.home });
+    }
+    if (typeof request.ownTv !== 'boolean')
+      throw new Error('Choose whether to install OwnTV.');
+    if (request.ownTv && !state.ownTvInstalled) add('install-owntv');
+    if (typeof request.optimize !== 'boolean')
+      throw new Error('Choose whether to optimize this TV.');
+    if (request.optimize) add('optimize');
+    for (const id of ['sleep', 'screensaver']) {
+      const value = request[`${id}Ms`];
+      if (value !== undefined) add('timeout', { id, value });
+    }
+    if (request.alexa !== undefined) add('alexa', { value: request.alexa });
+    if (request.guard !== undefined) add('guard', { value: request.guard });
+    return actions;
+  }
+
   return {
     initial() {
       let savedIp = '';
@@ -470,9 +549,110 @@ export function createController({
         /* First launch has no saved device. */
       }
       return {
+        advanced,
         savedIp:
           typeof savedIp === 'string' && api.isValidIp(savedIp) ? savedIp : '',
       };
+    },
+    setAdvanced(value, confirm) {
+      return exclusive(async () => {
+        if (typeof value !== 'boolean') throw new Error('Choose on or off.');
+        if (value && !advanced && !(await confirm()))
+          return { advanced, cancelled: true };
+        writeJson(preferencesFile, { advanced: value });
+        advanced = value;
+        return { advanced };
+      });
+    },
+    shell(command) {
+      return exclusive(async () => {
+        if (!advanced)
+          throw new Error(
+            'Enable Advanced settings before using the TV terminal.',
+          );
+        if (
+          typeof command !== 'string' ||
+          !command.trim() ||
+          command.length > 8192 ||
+          command.includes('\0')
+        )
+          throw new Error('Enter a command of up to 8,192 characters.');
+        const ip = await requireConnection();
+        if (!executeShell)
+          throw new Error('The TV terminal is unavailable in this build.');
+        shellAbort = new AbortController();
+        onProgress(`TV terminal: running a command on ${ip}.`);
+        try {
+          const result = await executeShell(ip, command, {
+            signal: shellAbort.signal,
+            onOutput: onShellOutput,
+          });
+          onProgress(
+            `TV terminal: ${result.stopped || `exit ${result.code ?? result.signal}`}.`,
+          );
+          return { ...result, ip };
+        } finally {
+          shellAbort = null;
+        }
+      });
+    },
+    stopShell() {
+      if (!shellAbort) return false;
+      shellAbort.abort();
+      return true;
+    },
+    assistant(request, confirm) {
+      return exclusive(async () => {
+        const state = await readState();
+        const ip = state.device.ip;
+        const actions = assistantActions(request, state);
+        const proposals = [];
+        for (const action of actions) proposals.push(await plan(action, ip));
+        if (!actions.length)
+          return {
+            message: 'No changes are needed for these selections.',
+            state,
+          };
+        if (
+          !(await confirm({
+            title:
+              request.mode === 'update'
+                ? 'Apply selected app updates'
+                : 'Apply guided setup',
+            ip,
+            detail: proposals
+              .map(
+                (proposal, index) =>
+                  `${index + 1}. ${proposal.title}\n${proposal.detail}`,
+              )
+              .join('\n\n'),
+          }))
+        )
+          return { cancelled: true };
+        for (const [index, action] of actions.entries()) {
+          const title = proposals[index].title;
+          onProgress(`${index + 1} of ${actions.length}: ${title}...`);
+          try {
+            await requireConnection();
+            await apply(action, ip);
+            const updated = await readState();
+            verifyState(action, updated);
+          } catch (error) {
+            error.message = `${index} of ${actions.length} changes completed. ${title}: ${error.message} Remaining changes were not run.`;
+            try {
+              error.state = await readState();
+            } catch {
+              /* Keep the original failure. */
+            }
+            throw error;
+          }
+          onProgress(`${title}: complete.`);
+        }
+        return {
+          message: `${request.mode === 'update' ? 'Guided update' : 'Guided setup'} complete. ${actions.length} changes verified.`,
+          state: await readState(),
+        };
+      });
     },
     connect(value) {
       return exclusive(async () => {

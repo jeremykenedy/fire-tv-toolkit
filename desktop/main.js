@@ -17,6 +17,7 @@ import { setAdbExecutable } from 'fire-tv-toolkit/src/adb.js';
 import { createController } from './controller.js';
 import { createIptvCatalog, streamUrl } from './iptv.js';
 import { configurePlayerNetwork } from './player-network.js';
+import { runTvShell } from './tv-shell.js';
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const pageUrl = 'app://toolkit/index.html';
@@ -36,6 +37,20 @@ function message(error) {
   return error instanceof Error
     ? error.message
     : 'The task could not finish. Try again.';
+}
+
+async function confirmChanges(proposal) {
+  const result = await dialog.showMessageBox(window, {
+    type: 'question',
+    title: proposal.title,
+    message: proposal.title,
+    detail: `Fire TV at ${proposal.ip}\n\n${proposal.detail}`,
+    buttons: ['Cancel', 'Continue'],
+    defaultId: 0,
+    cancelId: 0,
+    noLink: true,
+  });
+  return result.response === 1;
 }
 
 async function uninstall() {
@@ -198,16 +213,20 @@ if (!app.requestSingleInstanceLock()) {
       const resources = app.isPackaged
         ? process.resourcesPath
         : path.join(directory, 'resources');
-      setAdbExecutable(
-        path.join(
-          resources,
-          'platform-tools',
-          process.platform === 'win32' ? 'adb.exe' : 'adb',
-        ),
-        { rememberDeviceGuard: true },
+      const adbExecutable = path.join(
+        resources,
+        'platform-tools',
+        process.platform === 'win32' ? 'adb.exe' : 'adb',
       );
+      setAdbExecutable(adbExecutable, { rememberDeviceGuard: true });
       controller = createController({
         dataDir: app.getPath('userData'),
+        executeShell: (ip, command, options) =>
+          runTvShell(adbExecutable, ip, command, options),
+        onShellOutput: (output) => {
+          if (window && !window.isDestroyed())
+            window.webContents.send('toolkit:shell-output', output);
+        },
         onProgress: (text) => {
           if (window && !window.isDestroyed())
             window.webContents.send('toolkit:progress', text);
@@ -241,20 +260,42 @@ if (!app.requestSingleInstanceLock()) {
       }));
       handle('toolkit:connect', (ip) => controller.connect(ip));
       handle('toolkit:refresh', () => controller.refresh());
-      handle('toolkit:action', (request) =>
-        controller.action(request, async (proposal) => {
+      handle('toolkit:advanced', (value) =>
+        controller.setAdvanced(value, async () => {
           const result = await dialog.showMessageBox(window, {
-            type: 'question',
-            title: proposal.title,
-            message: proposal.title,
-            detail: `Fire TV at ${proposal.ip}\n\n${proposal.detail}`,
-            buttons: ['Cancel', 'Continue'],
+            type: 'warning',
+            title: 'Enable Advanced settings?',
+            message:
+              'Only enable Advanced settings if you know what you are doing.',
+            detail:
+              'Advanced settings reveal Activity and the TV terminal. Shell commands run directly on your connected Fire TV and can change settings, remove apps or erase data. If you do not understand these tools, do not enable them.',
+            buttons: ['Cancel', 'I understand, enable'],
             defaultId: 0,
             cancelId: 0,
             noLink: true,
           });
           return result.response === 1;
         }),
+      );
+      handle('toolkit:shell', (command) => controller.shell(command));
+      handle('toolkit:stop-shell', () => controller.stopShell());
+      handle('toolkit:open-link', (name) => {
+        const links = {
+          repository: 'https://github.com/jeremykenedy/fire-tv-toolkit',
+          license:
+            'https://github.com/jeremykenedy/fire-tv-toolkit/blob/main/LICENSE',
+          releases:
+            'https://github.com/jeremykenedy/fire-tv-toolkit/releases/latest',
+        };
+        if (!Object.hasOwn(links, name))
+          throw new Error('Choose a supported link.');
+        return shell.openExternal(links[name]);
+      });
+      handle('toolkit:assistant', (request) =>
+        controller.assistant(request, confirmChanges),
+      );
+      handle('toolkit:action', (request) =>
+        controller.action(request, confirmChanges),
       );
       Menu.setApplicationMenu(
         Menu.buildFromTemplate([

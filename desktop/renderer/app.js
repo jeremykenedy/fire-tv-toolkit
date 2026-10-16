@@ -4,6 +4,10 @@ let state = null;
 let selectedView = 'live';
 let busy = false;
 let hasActivity = false;
+let advanced = false;
+let shellRunning = false;
+let wizardStep = 0;
+let wizardIdentity = '';
 const titles = {
   live: 'Live TV',
   overview: 'Overview',
@@ -11,6 +15,11 @@ const titles = {
   home: 'Home & live TV',
   settings: 'Device settings',
   activity: 'Activity',
+  advanced: 'Advanced settings',
+  terminal: 'TV terminal',
+  setup: 'Setup assistant',
+  update: 'Guided updater',
+  about: 'About',
 };
 let channelPage = null;
 let channelOffset = 0;
@@ -28,6 +37,7 @@ function element(tag, className, text) {
 }
 
 function log(text) {
+  if (!advanced) return;
   if (!hasActivity) {
     $('#activity-list').replaceChildren();
     hasActivity = true;
@@ -58,30 +68,55 @@ function showNotice(text, error = false) {
 }
 
 function navigate(view) {
+  if ((view === 'activity' || view === 'terminal') && !advanced)
+    view = 'advanced';
+  const changed = view !== selectedView;
   selectedView = view;
+  const standalone = [
+    'live',
+    'activity',
+    'advanced',
+    'terminal',
+    'about',
+  ].includes(view);
+  const wizard = view === 'setup' || view === 'update';
+  if (
+    wizard &&
+    state &&
+    (changed || wizardIdentity !== `${view}:${state.device.ip}`)
+  )
+    initializeWizard();
   $('#page-title').textContent = titles[view];
   $('#page-subtitle').textContent =
     view === 'live'
       ? 'Public IPTV channels from around the world.'
-      : 'Screensavers, home screens and device settings.';
+      : view === 'about'
+        ? 'Independent tools for online TV and your Fire TV.'
+        : wizard
+          ? 'Choose, review and apply changes to your connected TV.'
+          : 'Screensavers, home screens and device settings.';
   $('#footer-note').textContent =
     view === 'live'
       ? 'Channel sources provided by iptv-org.'
-      : 'Changes are confirmed before they run.';
-  $('#connection-form').hidden = view === 'live' || view === 'activity';
-  $('#refresh').hidden = view === 'live' || view === 'activity';
+      : view === 'terminal'
+        ? 'Shell commands run directly on the connected TV.'
+        : 'Changes are confirmed before they run.';
+  $('#connection-form').hidden = standalone && view !== 'terminal';
+  $('#refresh').hidden = standalone && view !== 'terminal';
   document.querySelectorAll('.nav-button').forEach((button) => {
     button.classList.toggle('selected', button.dataset.view === view);
     if (button.dataset.view === view)
       button.setAttribute('aria-current', 'page');
     else button.removeAttribute('aria-current');
   });
-  $('#welcome').hidden = !!state || view === 'activity' || view === 'live';
-  $('#connected-views').hidden =
-    !state || view === 'activity' || view === 'live';
+  $('#welcome').hidden = !!state || standalone;
+  $('#connected-views').hidden = !state || standalone;
   document.querySelectorAll('.view').forEach((section) => {
-    section.hidden = section.id !== `view-${view}`;
+    section.hidden =
+      section.id !== `view-${wizard ? 'assistant' : view}` ||
+      (wizard && !state);
   });
+  if (changed) window.scrollTo(0, 0);
 }
 
 function updateControls() {
@@ -94,6 +129,24 @@ function updateControls() {
   $('#connect').disabled = busy;
   $('#address').disabled = busy;
   $('#refresh').disabled = busy || !state;
+  $('#advanced-toggle').disabled = busy;
+  $('#run-shell').disabled = busy || !advanced || !state;
+  $('#terminal-command').disabled = busy || !advanced || !state;
+  $('#stop-shell').disabled = !shellRunning;
+  $('#clear-terminal').disabled = shellRunning;
+  $('#assistant-apply').disabled = busy || !state;
+  $('#assistant-next').disabled = busy || !state;
+  $('#assistant-back').disabled = busy || wizardStep === 0;
+  $('#assistant-form')
+    .querySelectorAll('input, select')
+    .forEach((input) => {
+      input.disabled = busy;
+    });
+  $('#setup-sleep').disabled = busy || !$('#setup-timers').checked;
+  $('#setup-delay').disabled = busy || !$('#setup-timers').checked;
+  $('#terminal-target').textContent = state
+    ? `Commands run on ${state.device.model} at ${state.device.ip}:5555.`
+    : 'Connect a Fire TV to run commands.';
   $('#connect').textContent = busy
     ? 'Working...'
     : state
@@ -283,6 +336,13 @@ document.addEventListener('click', (event) => {
   if (!button || button.disabled) return;
   if (button.dataset.view || button.dataset.navigate)
     navigate(button.dataset.view || button.dataset.navigate);
+  if (button.dataset.link)
+    bridge
+      .openLink(button.dataset.link)
+      .then((result) => {
+        if (!result.ok) showNotice(result.error, true);
+      })
+      .catch((error) => showNotice(error.message, true));
   if (button.dataset.task) {
     const request = { type: button.dataset.task };
     if (button.dataset.id) request.id = button.dataset.id;
@@ -332,10 +392,299 @@ $('#clear-activity').addEventListener('click', () => {
   hasActivity = false;
 });
 
+function option(value, text) {
+  const node = element('option', '', text);
+  node.value = value;
+  return node;
+}
+
+function initializeWizard() {
+  wizardIdentity = `${selectedView}:${state.device.ip}`;
+  wizardStep = 0;
+  $('#setup-screensaver').replaceChildren(
+    option('keep', 'Keep current screensaver'),
+  );
+  for (const entry of state.screensavers.filter(
+    (entry) => entry.downloadable || entry.installed,
+  ))
+    $('#setup-screensaver').append(option(entry.id, entry.name));
+  $('#setup-home').replaceChildren(
+    option('keep', 'Keep current home screen'),
+    option('amazon', 'Amazon Home'),
+  );
+  for (const entry of state.launchers)
+    $('#setup-home').append(option(entry.id, entry.name));
+  $('#setup-owntv').checked = !state.ownTvInstalled;
+  $('#setup-timers').checked = false;
+  $('#setup-sleep').value = state.sleepMs === null ? 20 : state.sleepMs / 60000;
+  $('#setup-delay').value =
+    state.screensaverMs === null ? 5 : state.screensaverMs / 60000;
+  $('#setup-alexa').value = 'keep';
+  $('#setup-guard').value = 'keep';
+  $('#setup-optimize').checked = false;
+  const list = $('#update-app-list');
+  list.replaceChildren();
+  const updates = [
+    ...state.screensavers
+      .filter((entry) => entry.downloadable && entry.installed)
+      .map((entry) => ({ ...entry, kind: 'screensavers' })),
+    ...state.launchers
+      .filter((entry) => entry.installed)
+      .map((entry) => ({ ...entry, kind: 'launchers' })),
+    ...(state.ownTvInstalled
+      ? [{ id: 'owntv', name: 'OwnTV', kind: 'ownTv' }]
+      : []),
+  ];
+  for (const entry of updates) {
+    const label = element('label', 'check-choice');
+    const input = element('input');
+    input.type = 'checkbox';
+    input.checked = true;
+    input.dataset.updateKind = entry.kind;
+    input.value = entry.id;
+    label.append(input, document.createTextNode(entry.name));
+    list.append(label);
+  }
+  if (!updates.length)
+    list.append(
+      element(
+        'p',
+        'empty',
+        'No supported apps are installed yet. Use Setup assistant to add them.',
+      ),
+    );
+  $('#assistant-progress').textContent = '';
+  renderWizardStep();
+}
+
+function wizardRequest() {
+  if (selectedView === 'update') {
+    const request = {
+      mode: 'update',
+      screensavers: [],
+      launchers: [],
+      ownTv: false,
+    };
+    $('#update-app-list')
+      .querySelectorAll('input:checked')
+      .forEach((input) => {
+        if (input.dataset.updateKind === 'ownTv') request.ownTv = true;
+        else request[input.dataset.updateKind].push(input.value);
+      });
+    return request;
+  }
+  const request = {
+    mode: 'setup',
+    screensaver: $('#setup-screensaver').value,
+    home: $('#setup-home').value,
+    ownTv: $('#setup-owntv').checked,
+    optimize: $('#setup-optimize').checked,
+  };
+  if ($('#setup-timers').checked) {
+    request.sleepMs = Math.round(Number($('#setup-sleep').value) * 60000);
+    request.screensaverMs = Math.round(Number($('#setup-delay').value) * 60000);
+  }
+  for (const key of ['alexa', 'guard']) {
+    const value = $(`#setup-${key}`).value;
+    if (value !== 'keep') request[key] = value === 'on';
+  }
+  return request;
+}
+
+function renderWizardStep() {
+  const updating = selectedView === 'update';
+  $('#setup-app-choices').hidden = updating;
+  $('#update-app-choices').hidden = !updating;
+  $('#setup-setting-choices').hidden = updating;
+  $('#update-setting-note').hidden = !updating;
+  for (const [index, name] of ['apps', 'settings', 'review'].entries())
+    $(`#assistant-${name}`).hidden = wizardStep !== index;
+  document.querySelectorAll('[data-step]').forEach((node) => {
+    if (Number(node.dataset.step) === wizardStep)
+      node.setAttribute('aria-current', 'step');
+    else node.removeAttribute('aria-current');
+  });
+  $('#assistant-next').hidden = wizardStep === 2;
+  $('#assistant-apply').hidden = wizardStep !== 2;
+  $('#assistant-target').textContent =
+    `Apply to ${state.device.model} at ${state.device.ip}:5555.`;
+  $('#assistant-apply').textContent = updating
+    ? 'Review and update'
+    : 'Review and install';
+  if (wizardStep === 2) {
+    const summary = $('#assistant-summary');
+    summary.replaceChildren();
+    const add = (text) => summary.append(element('li', '', text));
+    const request = wizardRequest();
+    if (updating) {
+      $('#update-app-list')
+        .querySelectorAll('input:checked')
+        .forEach((input) => add(`Refresh ${input.parentElement.textContent}`));
+      if (!summary.children.length) add('No app updates selected.');
+      add('Keep current home screen, screensaver selection and timers.');
+    } else {
+      add(
+        `Screensaver: ${$('#setup-screensaver').selectedOptions[0].textContent}`,
+      );
+      add(`Home screen: ${$('#setup-home').selectedOptions[0].textContent}`);
+      if (request.ownTv)
+        add(
+          'Install OwnTV if needed. Add the IPTV playlist in OwnTV after setup.',
+        );
+      if (request.sleepMs !== undefined)
+        add(
+          `Sleep: ${request.sleepMs / 60000} minutes. Screensaver: ${request.screensaverMs / 60000} minutes.`,
+        );
+      for (const key of ['alexa', 'guard'])
+        if (request[key] !== undefined)
+          add(
+            `${key === 'alexa' ? 'Alexa wake' : 'Protection'}: ${request[key] ? 'on' : 'off'}`,
+          );
+      if (request.optimize) add('Apply recommended screensaver optimizations.');
+      if (
+        request.sleepMs !== undefined &&
+        request.sleepMs > 0 &&
+        request.screensaverMs >= request.sleepMs
+      )
+        add(
+          'Your screensaver timer is at least as long as the sleep timer. The TV may sleep before showing the screensaver.',
+        );
+    }
+  }
+  updateControls();
+}
+
+$('#assistant-next').addEventListener('click', () => {
+  if (
+    wizardStep === 1 &&
+    selectedView === 'setup' &&
+    $('#setup-timers').checked &&
+    (!$('#setup-sleep').reportValidity() || !$('#setup-delay').reportValidity())
+  )
+    return;
+  wizardStep = Math.min(2, wizardStep + 1);
+  renderWizardStep();
+});
+$('#assistant-back').addEventListener('click', () => {
+  wizardStep = Math.max(0, wizardStep - 1);
+  renderWizardStep();
+});
+$('#setup-timers').addEventListener('change', updateControls);
+$('#assistant-form').addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (wizardStep !== 2) return;
+  run(
+    () => bridge.assistant(wizardRequest()),
+    (result) => {
+      if (result.cancelled) {
+        showNotice('Guided changes cancelled.');
+        return;
+      }
+      state = result.state;
+      render();
+      showNotice(result.message);
+      $('#assistant-progress').textContent = result.message;
+      log(result.message);
+    },
+  );
+});
+
+function addIcons() {
+  const ns = 'http://www.w3.org/2000/svg';
+  for (const button of document.querySelectorAll('.nav-button, [data-link]')) {
+    const icon = document.createElementNS(ns, 'svg');
+    icon.setAttribute('class', 'icon');
+    icon.setAttribute('aria-hidden', 'true');
+    const use = document.createElementNS(ns, 'use');
+    use.setAttribute('href', `#icon-${button.dataset.view || 'link'}`);
+    icon.append(use);
+    button.prepend(icon);
+  }
+}
+addIcons();
+
+function renderAdvanced() {
+  document.querySelectorAll('[data-advanced]').forEach((node) => {
+    node.hidden = !advanced;
+  });
+  $('#advanced-toggle').setAttribute('aria-checked', String(advanced));
+  $('#advanced-toggle').textContent = advanced
+    ? 'Disable Advanced settings'
+    : 'Enable Advanced settings';
+  $('#advanced-status').textContent = advanced
+    ? 'Advanced settings are on. Activity and TV terminal are available in the sidebar.'
+    : 'Advanced settings are off.';
+  if (!advanced) {
+    $('#activity-list').replaceChildren();
+    hasActivity = false;
+    $('#terminal-output').textContent = 'Command output appears here.';
+    $('#terminal-command').value = '';
+  }
+  navigate(selectedView);
+  updateControls();
+}
+
+function terminalOutput(text) {
+  const output = $('#terminal-output');
+  output.textContent = (output.textContent + text).slice(-262144);
+  output.scrollTop = output.scrollHeight;
+}
+
+$('#advanced-toggle').addEventListener('click', () =>
+  run(
+    () => bridge.advanced(!advanced),
+    (result) => {
+      advanced = result.advanced;
+      renderAdvanced();
+      if (result.cancelled) showNotice('Advanced settings remain off.');
+    },
+  ),
+);
+$('#terminal-form').addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (!advanced || !state || busy) return;
+  const command = $('#terminal-command').value;
+  $('#terminal-output').textContent = `${state.device.ip}:5555 $ ${command}\n`;
+  $('#terminal-status').textContent = 'Running...';
+  shellRunning = true;
+  run(
+    () => bridge.shell(command),
+    (result) => {
+      const status =
+        result.stopped === 'timeout'
+          ? 'Stopped after 60 seconds'
+          : result.stopped === 'output-limit'
+            ? 'Stopped at the output limit'
+            : result.stopped
+              ? 'Stopped'
+              : `Exit ${result.code ?? result.signal}`;
+      $('#terminal-status').textContent = status;
+      terminalOutput(`\n[${status}]\n`);
+    },
+  ).finally(() => {
+    shellRunning = false;
+    if ($('#terminal-status').textContent === 'Running...')
+      $('#terminal-status').textContent = 'Command failed';
+    updateControls();
+  });
+});
+$('#stop-shell').addEventListener('click', async () => {
+  const result = await bridge.stopShell();
+  if (!result.ok) showNotice(result.error, true);
+});
+$('#clear-terminal').addEventListener('click', () => {
+  $('#terminal-output').textContent = '';
+});
+
 if (bridge) {
+  bridge.onShellOutput((output) => {
+    if (advanced && shellRunning) terminalOutput(output.text);
+  });
   bridge.onProgress((text) => {
     log(text);
     $('#task-status').textContent = text;
+    if (selectedView === 'setup' || selectedView === 'update')
+      $('#assistant-progress').textContent = text;
   });
   bridge
     .initial()
@@ -346,6 +695,10 @@ if (bridge) {
       }
       $('#address').value = result.data.savedIp;
       $('#version').textContent = `Desktop ${result.data.version}`;
+      $('#about-version').textContent =
+        `Desktop version ${result.data.version}`;
+      advanced = result.data.advanced;
+      renderAdvanced();
     })
     .catch((error) => showNotice(error.message, true));
   loadChannels();
