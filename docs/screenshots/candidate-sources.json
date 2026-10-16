@@ -6,10 +6,14 @@
     "state": "Candidate native rendering; final release and physical acceptance pending"
   },
   "hearth-presence": {
-    "capture": "Native Android TV or Google TV emulator output",
-    "source_sha256": "8272cae610c5629f304171c6c2b7968ae8c42c2436bc97f55796e49105847c74",
-    "source_repository": "https://github.com/jeremykenedy/hearth-presence",
-    "state": "Candidate native rendering; final release and physical acceptance pending"
+    "capture": "Physical Fire TV AFTDEC012E API30; modern linear slate wide large lively flames; actual1920x1080 capture resized640x360",
+    "source_sha256": "7db765d6b3f2735c36dbbb0fe7e819bbd98946d2f1e67b7def0ea7bcc009a80b",
+    "thumbnail_sha256": "f672851f6a98fec030b74a01d2412ab46a97e9138f1c3f26ecf92caa5c3b0381",
+    "source_repository": "https://github.com/jeremykenedy/hearth-presence/tree/v1.0.0",
+    "release": "https://github.com/jeremykenedy/hearth-presence/releases/tag/v1.0.0",
+    "apk_sha256": "96067a79be86a0f29f034ee4bcc647e9da7195978b690a7d982f28a17b78278f",
+    "apk_bytes": 69011424,
+    "state": "Published release downloaded and verified; physical native playback/Back/preservation passed; host catalog integration in progress"
   },
   "pipeworks-dream": {
     "capture": "Native Android TV or Google TV emulator output",

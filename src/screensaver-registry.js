@@ -177,6 +177,7 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.hearthpresence',
     dreamComponent: 'com.jeremykenedy.hearthpresence/.HearthDreamService',
     repo: 'jeremykenedy/hearth-presence',
+    asset: 'hearth-presence.apk',
     blurb: 'Moving wood and gas fireplaces with adjustable surrounds, frame width, flame speed, light and sound controls.',
   },
   {
