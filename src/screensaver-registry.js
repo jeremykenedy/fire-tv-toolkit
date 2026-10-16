@@ -169,6 +169,7 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.reelatrium',
     dreamComponent: 'com.jeremykenedy.reelatrium/.ReelAtriumDreamService',
     repo: 'jeremykenedy/slot-vision',
+    asset: 'slot-vision.apk',
     blurb: 'Classic and multi-row reels with cabinet or fullscreen views, seasonal themes, slow camera drift and payout coin showers.',
   },
   {

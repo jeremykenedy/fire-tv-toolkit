@@ -1,9 +1,13 @@
 {
   "slot-vision": {
-    "capture": "Native Android TV or Google TV emulator output",
-    "source_sha256": "4aabfdbef911549e08f1dcef72e655745ea2f22dd349125b7e5c850e4a31a0af",
-    "source_repository": "https://github.com/jeremykenedy/slot-vision/tree/261ded87f25fdc40295903380ce88b45b43a51b8",
-    "state": "Candidate native rendering; final release and physical acceptance pending"
+    "capture": "Native Google TV API34 emulator1920x1080display1280x720internal; classic casino jackpot",
+    "source_sha256": "7ed36dfe88e85d04e809505a62b2008cb3ae2f7a1325b614652a54550126c95d",
+    "thumbnail_sha256": "5f32b6b551a87236f888b816b29bdb96899e7c6cc85cff2928b7438b4584b7b8",
+    "source_repository": "https://github.com/jeremykenedy/slot-vision/tree/v1.0.0",
+    "release": "https://github.com/jeremykenedy/slot-vision/releases/tag/v1.0.0",
+    "apk_sha256": "0ee21b586f3b306e6da57cacc149bebece35a01e6ef2c7af1512c0ddc51354e4",
+    "apk_bytes": 62076478,
+    "state": "Published signed release independently downloaded and verified; physical cabinet and fullscreen pacing near30buffers/s; hostintegrationinprogress"
   },
   "hearth-presence": {
     "capture": "Physical Fire TV AFTDEC012E API30; modern linear slate wide large lively flames; actual1920x1080 capture resized640x360",
