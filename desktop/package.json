@@ -17,7 +17,8 @@
     "lint": "eslint .",
     "prepare:adb": "node scripts/prepare-adb.js",
     "pack": "npm run prepare:adb && electron-builder --dir --publish never",
-    "dist": "npm run prepare:adb && electron-builder --publish never"
+    "dist": "npm run prepare:adb && electron-builder --publish never",
+    "dist:signed": "npm run prepare:adb && electron-builder --config electron-builder.signed.js --publish never"
   },
   "dependencies": {
     "fire-tv-toolkit": "file:..",

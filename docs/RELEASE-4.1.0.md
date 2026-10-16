@@ -55,4 +55,4 @@ The desktop installers are unsigned. Apple notarization and trusted Windows publ
 
 A separately installed app can protect its own Fire TV settings. Review that app's protection settings if it restores a timer, screensaver or home setting after a desktop change. The toolkit does not disable another app's protection automatically.
 
-**Full changelog:** https://github.com/jeremykenedy/fire-tv-toolkit/compare/v4.0.0...v4.1.0
+**Full changelog:** [v4.0.0 to v4.1.0](https://github.com/jeremykenedy/fire-tv-toolkit/compare/v4.0.0...v4.1.0)

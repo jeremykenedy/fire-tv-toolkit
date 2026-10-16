@@ -36,6 +36,8 @@ Removing the desktop application leaves TV apps and settings in place. Restore c
 
 ## Run and build from source
 
+See [Signing desktop installers](SIGNING.md) for Apple Developer ID, notarization and Windows Artifact Signing setup.
+
 Use Node.js 22.13 or newer. From the repository root:
 
 ```sh

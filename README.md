@@ -362,6 +362,7 @@ Every guide is also on the project site: [jeremykenedy.github.io/fire-tv-toolkit
 | Guide | What it covers |
 |-------|----------------|
 | [4.1.0 release and upgrade guide](docs/RELEASE-4.1.0.md) | Desktop release changes, upgrade steps, validation and known limits |
+| [Signing desktop installers](docs/SIGNING.md) | Apple Developer ID, notarization and Windows Artifact Signing setup |
 | [Desktop app](docs/DESKTOP.md) | Installing, watching worldwide IPTV, managing Fire TV and removing the app |
 | [Commands](docs/COMMANDS.md) | Every command and every flag |
 | [Configuration](docs/CONFIGURATION.md) | The `.env` file and each saved value |
