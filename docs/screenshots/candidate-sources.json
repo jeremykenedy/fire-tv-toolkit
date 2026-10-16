@@ -13,8 +13,8 @@
   },
   "pipeworks-dream": {
     "capture": "Native Android TV or Google TV emulator output",
-    "source_sha256": "70b09a7b6c2fefd608408b69dd00f3af99335a3e2a2cd2d6a94edcf5650b6908",
-    "source_repository": "https://github.com/jeremykenedy/pipeworks-dream",
+    "source_sha256": "5c46d8ea6cebe3265ac526f964a0cf1bb0935776b66e21a53cf7d92bb71e0d3e",
+    "source_repository": "https://github.com/jeremykenedy/pipeworks-dream/tree/9277932bb989f709cba7e9f281621c2264497ed3",
     "state": "Candidate native rendering; final release and physical acceptance pending"
   },
   "rain-on-glass": {
