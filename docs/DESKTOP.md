@@ -18,7 +18,7 @@ Advanced settings are off by default. Enabling them opens a warning: only contin
 
 Activity shows tasks and results from the current session. The TV terminal runs commands on the connected Fire TV over ADB. It shows the target address, streams standard output and errors, and reports the exit status. It does not run commands in a local computer shell. Each command starts a new TV shell, without an interactive terminal. Commands stop after sixty seconds or 256 KB of output. Stop closes the ADB session, but background tasks started by a command may continue on the TV. Commands and their output are not saved to disk by the terminal.
 
-About explains the app, platform support, device limitations, intended use, warranty and liability terms. It includes links to the repository, MIT license and releases, and credits Jeremy Kenedy.
+About explains the app, platform support, device limitations, intended use, warranty and liability terms. It includes links to the repository, Apache License 2.0 and releases, and credits Jeremy Kenedy.
 
 ## Install
 

@@ -35,7 +35,7 @@
 
 Aerial Views installs from its author's own release, pinned by tag and SHA-256
 because its releases publish no checksum. AndroSaver and Snoozy are forks of
-third-party projects (see Credits in the README). Aquarium Live, Aquarium 4K, Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit, Helios Lightfield, Slot Vision and Hearth Presence are original projects.
+third-party projects (see [upstream sources](INTEGRATIONS.md#upstream-sources)). Aquarium Live, Aquarium 4K, Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit, Helios Lightfield, Slot Vision and Hearth Presence are original projects.
 
 Aerial Views is the default: on a TV with none of these installed it starts
 checked in `firetv-screensavers`, and `screensaver --yes` picks it whenever it
@@ -85,7 +85,7 @@ For each released saver, keep the installer ID, Android package, DreamService
 component, GitHub release asset, asset byte count and SHA-256 aligned between
 the Toolkit registry and the table below. Keep each app's settings schema and
 provider documented in its own configuration guide. Register the saver in
-`src/screensaver-registry.js` and both README galleries, and run `npm test` in
+`src/screensaver-registry.js` and the [screenshot gallery](SCREENSHOTS.md), and run `npm test` in
 this repository before publishing. Toolkit gallery files use
 `docs/screenshots/screensaver-<id>.jpg` and the two responsive files under
 `docs/screenshots/grid/`.
