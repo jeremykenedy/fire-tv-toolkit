@@ -55,6 +55,7 @@
     ],
     "artifactName": "Fire-TV-Toolkit-${version}-${os}-${arch}.${ext}",
     "mac": {
+      "icon": "build/icon.png",
       "category": "public.app-category.utilities",
       "target": [
         "dmg",
@@ -62,6 +63,7 @@
       ]
     },
     "win": {
+      "icon": "build/icon.ico",
       "target": [
         "nsis"
       ]
@@ -74,6 +76,7 @@
       "deleteAppDataOnUninstall": false
     },
     "linux": {
+      "icon": "build/icon.png",
       "category": "Utility",
       "target": [
         "AppImage",

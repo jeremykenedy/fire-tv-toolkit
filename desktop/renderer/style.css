@@ -194,7 +194,7 @@ header p,
 nav {
   display: grid;
   gap: 6px;
-  overflow: auto;
+  overflow: hidden auto;
   min-height: 0;
   scrollbar-width: thin;
 }
@@ -209,6 +209,7 @@ nav {
   align-items: center;
   gap: 9px;
   font-size: 12px;
+  white-space: normal;
 }
 
 .nav-button:hover {
