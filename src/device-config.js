@@ -14,6 +14,14 @@ const PROJECT_ROOT = path.join(__dirname, '..');
 const DEFAULT_ENV_PATH = path.join(PROJECT_ROOT, '.env');
 let envPath = DEFAULT_ENV_PATH;
 
+/** Keep desktop settings in a writable folder belonging to the selected TV. */
+export function setConfigDirectory(directory) {
+  if (directory !== null && !path.isAbsolute(directory)) {
+    throw new Error('The settings directory must have an absolute path.');
+  }
+  envPath = directory === null ? DEFAULT_ENV_PATH : path.join(directory, '.env');
+}
+
 /** @returns {string} the .env file this tool reads and writes */
 export function getEnvPath() {
   return envPath;

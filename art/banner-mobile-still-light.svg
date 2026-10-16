@@ -1,19 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 392 408" width="392" height="408" role="img" aria-label="Fire TV Toolkit">
-  <rect width="392" height="408" fill="#fff" stroke="#e5e7eb" rx="16" />
-  <text x="20" y="76" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="36" fill="#0f172a" font-weight="700" letter-spacing="-.5">Fire TV Toolkit</text>
-  <text x="20" y="104" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="12.5" fill="#64748b">Ad-free screensavers, a better home screen,</text>
-  <text x="20" y="122" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="12.5" fill="#64748b">and the Alexa deep-sleep fix.</text>
-  <rect width="65" height="22" x="20" y="140" fill="#f5f3ff" stroke="#8b5cf6" stroke-width=".8" rx="11" />
-  <text x="52.5" y="154" fill="#6d28d9" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="8.5" font-weight="500" text-anchor="middle">Alexa Fix</text>
-  <rect width="118" height="22" x="93" y="140" fill="#eff6ff" stroke="#3b82f6" stroke-width=".8" rx="11" />
-  <text x="152.0" y="154" fill="#1e40af" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="8.5" font-weight="500" text-anchor="middle">Ad-Free Screensavers</text>
-  <rect width="100" height="22" x="219" y="140" fill="#f0fdf4" stroke="#22c55e" stroke-width=".8" rx="11" />
-  <text x="269.0" y="154" fill="#166534" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="8.5" font-weight="500" text-anchor="middle">AT4K or LTV Home</text>
-  <rect width="86" height="22" x="20" y="170" fill="#fffbeb" stroke="#f59e0b" stroke-width=".8" rx="11" />
-  <text x="63.0" y="184" fill="#b45309" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="8.5" font-weight="500" text-anchor="middle">On-TV Picker</text>
-  <rect width="80" height="22" x="114" y="170" fill="#fef2f2" stroke="#ef4444" stroke-width=".8" rx="11" />
-  <text x="154.0" y="184" fill="#b91c1c" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="8.5" font-weight="500" text-anchor="middle">No Tracking</text>
-  <g transform="translate(89.75,244) scale(1.25)">
+<svg xmlns="http://www.w3.org/2000/svg" width="392" height="408" viewBox="0 0 392 408">
+  <rect width="392" height="408" fill="#fff" stroke="#e5e7eb" rx="16" x="0" y="0" />
+  <g font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+    <text x="20" y="72" fill="#0f172a" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="36" font-weight="700" letter-spacing="-.5">Fire TV Toolkit</text>
+    <text x="20" y="101" fill="#64748b" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="12">Worldwide IPTV, screensavers,</text>
+    <text x="20" y="119" fill="#64748b" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="12">and Fire TV controls.</text>
+    <rect width="65" height="22" x="20" y="140" fill="#f5f3ff" stroke="#8b5cf6" stroke-width=".8" rx="11" />
+    <text x="52.5" y="154.5" fill="#6d28d9" font-size="8.5" text-anchor="middle">Alexa Fix</text>
+    <rect width="102" height="22" x="93" y="140" fill="#eff6ff" stroke="#3b82f6" stroke-width=".8" rx="11" />
+    <text x="144" y="154.5" fill="#1e40af" font-size="8.5" text-anchor="middle">Ad-Free Screensavers</text>
+    <rect width="84.4" height="22" x="203" y="140" fill="#f0fdf4" stroke="#22c55e" stroke-width=".8" rx="11" />
+    <text x="245.2" y="154.5" fill="#166534" font-size="8.5" text-anchor="middle">AT4K or LTV Home</text>
+    <rect width="66.8" height="22" x="295.4" y="140" fill="#fffbeb" stroke="#f59e0b" stroke-width=".8" rx="11" />
+    <text x="328.8" y="154.5" fill="#b45309" font-size="8.5" text-anchor="middle">On-TV Picker</text>
+    <rect width="65" height="22" x="20" y="170" fill="#fef2f2" stroke="#ef4444" stroke-width=".8" rx="11" />
+    <text x="52.5" y="184.5" fill="#b91c1c" font-size="8.5" text-anchor="middle">Online IPTV</text>
+  </g>
+  <g transform="translate(84,218) scale(1.32)">
     <rect width="170" height="112" fill="none" stroke="#6d28d9" stroke-width="3" rx="10" />
     <rect width="146" height="88" x="12" y="12" fill="#eff6ff" rx="4" />
     <rect width="146" height="56" x="12" y="32" fill="#bfdbfe" />

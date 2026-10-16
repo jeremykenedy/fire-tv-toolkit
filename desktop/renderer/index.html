@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src http: https:; media-src http: https: blob:; base-uri 'none'; form-action 'none'"
+    />
+    <title>Fire TV Toolkit</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="hls.min.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <svg
+      class="icon-definitions"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <symbol id="icon-live" viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="13" rx="2" />
+        <path d="m9 2 3 3 3-3M8 22h8m-4-4v4" />
+      </symbol>
+      <symbol id="icon-overview" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+      </symbol>
+      <symbol id="icon-screensavers" viewBox="0 0 24 24">
+        <rect x="3" y="4" width="18" height="16" rx="2" />
+        <path d="m3 16 5-5 5 5 3-3 5 5" />
+        <circle cx="16" cy="9" r="2" />
+      </symbol>
+      <symbol id="icon-home" viewBox="0 0 24 24">
+        <path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z" />
+      </symbol>
+      <symbol id="icon-settings" viewBox="0 0 24 24">
+        <path d="M4 6h16M4 12h16M4 18h16" />
+        <circle cx="8" cy="6" r="2" />
+        <circle cx="16" cy="12" r="2" />
+        <circle cx="10" cy="18" r="2" />
+      </symbol>
+      <symbol id="icon-setup" viewBox="0 0 24 24">
+        <path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5" />
+      </symbol>
+      <symbol id="icon-update" viewBox="0 0 24 24">
+        <path
+          d="M20 8a8 8 0 0 0-14-3L3 8m0-5v5h5M4 16a8 8 0 0 0 14 3l3-3m0 5v-5h-5"
+        />
+      </symbol>
+      <symbol id="icon-advanced" viewBox="0 0 24 24">
+        <path
+          d="m14 6 4 4m-8 4-6 6-2-2 6-6m1-8a6 6 0 0 0 8 8l4-4-5 1-1-5-4 4"
+        />
+      </symbol>
+      <symbol id="icon-activity" viewBox="0 0 24 24">
+        <path d="M2 12h5l3-8 4 16 3-8h5" />
+      </symbol>
+      <symbol id="icon-terminal" viewBox="0 0 24 24">
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+        <path d="m6 9 4 3-4 3m7 0h5" />
+      </symbol>
+      <symbol id="icon-about" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 11v6m0-10v1" />
+      </symbol>
+      <symbol id="icon-heart" viewBox="0 0 24 24">
+        <path
+          d="M20 4a5 5 0 0 0-8 2 5 5 0 0 0-8-2c-4 4 0 9 8 16 8-7 12-12 8-16Z"
+        />
+      </symbol>
+      <symbol id="icon-link" viewBox="0 0 24 24">
+        <path d="M14 3h7v7m0-7L10 14m0-10H4v16h16v-6" />
+      </symbol>
+    </svg>
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="tv-icon" aria-hidden="true"></span>
+        <div>Fire TV<span class="brand-subtitle">Toolkit</span></div>
+      </div>
+      <nav aria-label="Toolkit sections">
+        <button
+          class="nav-button selected"
+          data-view="live"
+          aria-current="page"
+        >
+          Live TV
+        </button>
+        <span class="nav-group">Fire TV tools</span>
+        <button class="nav-button" data-view="overview">Overview</button>
+        <button class="nav-button" data-view="screensavers">
+          Screensavers
+        </button>
+        <button class="nav-button" data-view="home">Home &amp; live TV</button>
+        <button class="nav-button" data-view="settings">Device settings</button>
+        <span class="nav-group">Guided tools</span>
+        <button class="nav-button" data-view="setup">Setup assistant</button>
+        <button class="nav-button" data-view="update">Guided updater</button>
+        <button class="nav-button" data-view="advanced">
+          Advanced settings
+        </button>
+        <button class="nav-button" data-view="activity" data-advanced hidden>
+          Activity
+        </button>
+        <button class="nav-button" data-view="terminal" data-advanced hidden>
+          TV terminal
+        </button>
+        <button class="nav-button" data-view="about">About</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <span class="connection-dot"></span
+        ><span id="connection-label">No TV connected</span
+        ><small id="version">Desktop app</small>
+      </div>
+    </aside>
+    <main>
+      <header>
+        <div>
+          <h1 id="page-title">Live TV</h1>
+          <p id="page-subtitle">Public IPTV channels from around the world.</p>
+        </div>
+        <button id="refresh" class="quiet" disabled hidden>Refresh TV</button>
+      </header>
+      <form id="connection-form" class="connection-bar" hidden>
+        <div>
+          <label for="address">Fire TV address</label
+          ><input
+            id="address"
+            name="address"
+            placeholder="192.168.1.50"
+            autocomplete="off"
+            spellcheck="false"
+            inputmode="decimal"
+            required
+          />
+        </div>
+        <button id="connect" type="submit">Connect</button>
+        <p id="device-summary">
+          Use the IP address shown in your TV's network settings.
+        </p>
+      </form>
+      <div
+        id="notice"
+        class="notice"
+        role="status"
+        aria-live="polite"
+        hidden
+      ></div>
+      <section id="view-live" class="view">
+        <div class="catalog-heading">
+          <p id="catalog-count">Loading the worldwide channel catalog...</p>
+          <button id="reload-channels" class="quiet">Refresh channels</button>
+        </div>
+        <div class="channel-filters">
+          <label
+            >Search channels<input
+              id="channel-search"
+              type="search"
+              placeholder="Channel name" /></label
+          ><label
+            >Country<select id="channel-country" aria-label="Country">
+              <option value="">All countries</option>
+            </select></label
+          ><label
+            >Language<select id="channel-language" aria-label="Language">
+              <option value="">All languages</option>
+            </select></label
+          ><label
+            >Category<select id="channel-category" aria-label="Category">
+              <option value="">All categories</option>
+            </select></label
+          ><label class="favorite-filter"
+            ><input id="channel-favorites" type="checkbox" /> Favorites</label
+          >
+        </div>
+        <div class="iptv-layout">
+          <div class="channel-browser">
+            <div
+              id="channel-list"
+              class="channel-list"
+              aria-label="IPTV channels"
+            ></div>
+            <div class="channel-pagination">
+              <button id="previous-channels" class="quiet" disabled>
+                Previous</button
+              ><span id="channel-page"></span
+              ><button id="next-channels" class="quiet" disabled>Next</button>
+            </div>
+          </div>
+          <div class="player-pane">
+            <div class="video-frame">
+              <video id="iptv-video" controls muted playsinline></video>
+              <p id="player-placeholder">Choose a channel to start watching.</p>
+            </div>
+            <h2 id="playing-title">Live IPTV</h2>
+            <p id="player-status" role="status">
+              Browse the full catalog. No Fire TV connection is needed to watch
+              here.
+            </p>
+            <div class="source-controls" hidden>
+              <label for="stream-source">Stream source</label
+              ><select id="stream-source"></select>
+              <div class="actions">
+                <button id="next-source" class="secondary">
+                  Try next source</button
+                ><button id="stop-stream" class="quiet">Stop</button>
+              </div>
+            </div>
+            <section class="tv-playlist">
+              <h3>Watch on your Fire TV</h3>
+              <p>
+                Install fire-iptv from Home &amp; live TV for automatic guide
+                and sports setup. OwnTV can also import the worldwide playlist.
+              </p>
+              <label for="all-playlist">All channels playlist</label
+              ><input
+                id="all-playlist"
+                value="https://iptv-org.github.io/iptv/index.m3u"
+                readonly
+              /><button data-navigate="home" class="secondary">
+                Set up Fire TV
+              </button>
+            </section>
+          </div>
+        </div>
+      </section>
+      <section id="welcome" class="welcome" hidden>
+        <div class="welcome-illustration" aria-hidden="true">
+          <div class="tv-screen">
+            <span></span><span class="tile-middle"></span
+            ><span class="tile-last"></span>
+          </div>
+          <div class="tv-foot"></div>
+        </div>
+        <h2>Connect your Fire TV</h2>
+        <p>
+          Keep your computer and TV on the same network. Then enter the TV's IP
+          address above.
+        </p>
+        <ol>
+          <li>Enable Developer options on the TV.</li>
+          <li>Turn on ADB debugging.</li>
+          <li>Connect here and accept the debugging prompt on the TV.</li>
+        </ol>
+        <p class="muted">
+          Find the full setup guide in the Help menu. Connecting reads device
+          settings. Each change asks for confirmation.
+        </p>
+      </section>
+      <div id="connected-views" hidden>
+        <section id="view-overview" class="view">
+          <div class="device-heading">
+            <div>
+              <span class="eyebrow">Connected television</span>
+              <h2 id="model"></h2>
+              <p id="device-details"></p>
+            </div>
+            <span class="status-pill">Connected</span>
+          </div>
+          <div class="overview-grid">
+            <section class="setup-intro">
+              <div>
+                <h3>Make this TV yours</h3>
+                <p>Choose your apps and settings in a guided walkthrough.</p>
+              </div>
+              <button data-navigate="setup">Start setup</button>
+              <button data-navigate="update" class="secondary">
+                Update TV apps
+              </button>
+            </section>
+            <section class="utility-panel">
+              <h3>Your screensaver</h3>
+              <p id="active-saver" class="current-value"></p>
+              <p class="muted">
+                Choose an installed screensaver or add another from the catalog.
+              </p>
+              <button data-navigate="screensavers">Choose screensaver</button>
+            </section>
+            <section class="utility-panel">
+              <h3>Your home screen</h3>
+              <p id="active-home" class="current-value"></p>
+              <p class="muted">Keep Amazon Home or use AT4K or LTvLauncher.</p>
+              <button data-navigate="home">Manage home screen</button>
+            </section>
+            <section class="utility-panel">
+              <h3>Alexa wake</h3>
+              <p id="alexa-state" class="current-value"></p>
+              <p class="muted">
+                Let Alexa reach the TV while it is in deep sleep.
+              </p>
+              <button id="alexa-toggle" data-task="alexa"></button>
+            </section>
+            <section class="utility-panel">
+              <h3>Screensaver setup</h3>
+              <p class="current-value">Check this TV</p>
+              <p class="muted">
+                Review recommended changes for idle playback and frame rate.
+              </p>
+              <button data-task="optimize">Review optimizations</button>
+            </section>
+          </div>
+        </section>
+        <section id="view-screensavers" class="view" hidden>
+          <div class="section-heading">
+            <div>
+              <h2>Screensavers</h2>
+              <p>Verified releases, installed directly on your TV.</p>
+            </div>
+            <label class="search-label"
+              >Filter screensavers<input
+                type="search"
+                id="saver-search"
+                placeholder="Search by name"
+            /></label>
+          </div>
+          <div id="saver-list" class="app-list"></div>
+          <p id="no-savers" class="empty" hidden>
+            No screensavers match your search.
+          </p>
+        </section>
+        <section id="view-home" class="view" hidden>
+          <section class="live-tv">
+            <div>
+              <span class="eyebrow">TV guide, sports, movies and shows</span>
+              <h2>fire-iptv</h2>
+              <p>
+                Install and open Discover. Public live TV and guide feeds are
+                prepared automatically. Add your provider in the app for movie
+                and series posters.
+              </p>
+            </div>
+            <div class="actions">
+              <button data-task="install-fire-iptv">Install fire-iptv</button>
+              <button id="open-fire-iptv" data-task="open-fire-iptv" class="secondary">
+                Open on TV
+              </button>
+            </div>
+          </section>
+          <div class="section-heading">
+            <div>
+              <h2>Home screen</h2>
+              <p>Choose where the remote's Home button takes you.</p>
+            </div>
+          </div>
+          <div id="launcher-list" class="app-list"></div>
+          <section class="live-tv">
+            <div>
+              <span class="eyebrow">Alternative player</span>
+              <h2>OwnTV</h2>
+              <p>
+                Install the player, then add the guide-matched live TV and sports
+                playlist in OwnTV setup on your TV or phone.
+              </p>
+            </div>
+            <div class="actions">
+              <button data-task="install-owntv">Install OwnTV</button
+              ><button id="open-owntv" data-task="open-owntv" class="secondary">
+                Open on TV
+              </button>
+            </div>
+            <label for="playlist">Guide-matched playlist</label
+            ><input id="playlist" readonly />
+            <p class="muted">
+              In OwnTV, choose Add playlist, then Remote. Open the address or QR
+              code shown on the TV, enter its PIN, paste this playlist, choose
+              Send to TV, then Start Import. Set it as the default playlist and
+              select a six-hour refresh. Under Sources &amp; guide, add both EPG
+              feeds below, select a six-hour refresh and sync.
+            </p>
+            <label for="pluto-guide">Pluto TV guide</label>
+            <input id="pluto-guide" readonly value="https://i.mjh.nz/PlutoTV/us.xml.gz" />
+            <label for="samsung-guide">Samsung TV Plus guide</label>
+            <input id="samsung-guide" readonly value="https://i.mjh.nz/SamsungTVPlus/us.xml.gz" />
+          </section>
+        </section>
+        <section id="view-settings" class="view" hidden>
+          <div class="section-heading">
+            <div>
+              <h2>Idle timers</h2>
+              <p>Changes are checked against the value saved by your TV.</p>
+            </div>
+          </div>
+          <form id="sleep-form" class="setting-row">
+            <div>
+              <label for="sleep-minutes">Sleep after</label>
+              <p>Minutes of inactivity. Use 0 to keep the TV awake.</p>
+            </div>
+            <input
+              id="sleep-minutes"
+              type="number"
+              min="0"
+              max="35791"
+              step="0.1"
+              required
+            /><span>minutes</span
+            ><button type="submit">Save sleep timer</button>
+          </form>
+          <form id="screensaver-form" class="setting-row">
+            <div>
+              <label for="screensaver-minutes">Start screensaver after</label>
+              <p>Choose a value shorter than the sleep timer.</p>
+            </div>
+            <input
+              id="screensaver-minutes"
+              type="number"
+              min="0.1"
+              max="35791"
+              step="0.1"
+              required
+            /><span>minutes</span
+            ><button type="submit">Save screensaver timer</button>
+          </form>
+          <button class="secondary restore-button" data-task="reset-timeouts">
+            Restore captured timers
+          </button>
+          <section class="protection">
+            <h2>Protect your setup</h2>
+            <p>
+              Home Redirect can keep your settings in place and limit Amazon's
+              updater apps where Fire OS allows it.
+            </p>
+            <p id="guard-state" class="muted"></p>
+            <div class="actions">
+              <button data-task="guard" data-value="true">
+                Turn protection on</button
+              ><button class="secondary" data-task="check-guard">
+                Check and repair</button
+              ><button class="quiet" data-task="guard" data-value="false">
+                Turn off
+              </button>
+            </div>
+          </section>
+          <section class="protection">
+            <h2>Restore optimization settings</h2>
+            <p>
+              Put back the values captured before this desktop app optimized
+              this TV.
+            </p>
+            <button class="secondary" data-task="undo-optimize">
+              Undo optimizations
+            </button>
+          </section>
+        </section>
+      </div>
+      <section id="view-assistant" class="view" hidden>
+        <ol class="wizard-steps" aria-label="Setup progress">
+          <li data-step="0" aria-current="step">1. Choose apps</li>
+          <li data-step="1">2. Settings</li>
+          <li data-step="2">3. Review</li>
+        </ol>
+        <form id="assistant-form">
+          <div id="assistant-apps" class="wizard-panel">
+            <div id="setup-app-choices">
+              <h2>Choose your TV experience</h2>
+              <p class="muted">Keep what you like, then choose what to add.</p>
+              <label for="setup-screensaver">Screensaver</label
+              ><select id="setup-screensaver">
+                <option value="keep">Keep current screensaver</option>
+              </select>
+              <label for="setup-home">Home screen</label
+              ><select id="setup-home">
+                <option value="keep">Keep current home screen</option>
+              </select>
+              <label class="check-choice">
+                <input id="setup-fire-iptv" type="checkbox" checked />
+                <span><strong>Install fire-iptv</strong><small>
+                  Automatic live TV, sports and guide setup. Add your provider
+                  for movies and series.
+                </small></span>
+              </label>
+              <label class="check-choice"
+                ><input id="setup-owntv" type="checkbox" /><span
+                  ><strong>Install OwnTV for online IPTV</strong
+                  ><small
+                    >Add the guide-matched playlist and XMLTV feeds after
+                    installation.</small
+                  ></span
+                ></label
+              >
+            </div>
+            <div id="update-app-choices" hidden>
+              <h2>Refresh your installed TV apps</h2>
+              <p class="muted">
+                Download and reinstall selected apps from their supported GitHub
+                releases. Each APK is checked against a published or pinned
+                SHA-256. Some apps use a pinned version until the toolkit is
+                updated. App data is kept where Android permits.
+              </p>
+              <div class="actions">
+                <button id="select-updates" class="quiet" type="button">
+                  Select all</button
+                ><button id="clear-updates" class="quiet" type="button">
+                  Clear selection
+                </button>
+              </div>
+              <div id="update-app-list" class="update-app-list"></div>
+              <button class="quiet" type="button" data-link="releases">
+                Check desktop releases
+              </button>
+            </div>
+          </div>
+          <div id="assistant-settings" class="wizard-panel" hidden>
+            <h2>Choose your settings</h2>
+            <p class="muted">
+              Leave any setting unchanged to keep the TV's current value.
+            </p>
+            <p id="update-setting-note" class="muted" hidden>
+              The updater keeps your home screen and screensaver selection.
+              Choose any settings to change below, or leave them unchanged.
+            </p>
+            <div id="setup-setting-choices">
+              <label class="check-choice"
+                ><input id="setup-timers" type="checkbox" /><span
+                  >Set idle timers</span
+                ></label
+              >
+              <div class="wizard-timers">
+                <label
+                  >Sleep after (minutes)<input
+                    id="setup-sleep"
+                    type="number"
+                    min="0"
+                    max="35791"
+                    step="0.1"
+                    value="20"
+                    disabled /></label
+                ><label
+                  >Start screensaver after (minutes)<input
+                    id="setup-delay"
+                    type="number"
+                    min="0.1"
+                    max="35791"
+                    step="0.1"
+                    value="5"
+                    disabled
+                /></label>
+              </div>
+              <label for="setup-alexa">Alexa wake</label
+              ><select id="setup-alexa">
+                <option value="keep">Leave unchanged</option>
+                <option value="on">Enable</option>
+                <option value="off">Disable</option>
+              </select>
+              <label class="check-choice"
+                ><input id="setup-optimize" type="checkbox" /><span
+                  ><strong>Apply screensaver optimizations</strong
+                  ><small
+                    >Review the exact recommended changes in the
+                    confirmation.</small
+                  ></span
+                ></label
+              >
+              <label for="setup-guard"
+                >Protect settings with Home Redirect</label
+              ><select id="setup-guard">
+                <option value="keep">Leave unchanged</option>
+                <option value="on">Turn on</option>
+                <option value="off">Turn off</option>
+              </select>
+            </div>
+          </div>
+          <div id="assistant-review" class="wizard-panel" hidden>
+            <h2>Review your selections</h2>
+            <p id="assistant-target" class="muted"></p>
+            <ul id="assistant-summary" class="review-list"></ul>
+            <p class="muted">
+              The next confirmation lists the actual changes. The app applies
+              them in order and verifies each step. If one fails, it stops and
+              reports what completed. Keep the TV powered on and connected.
+            </p>
+          </div>
+          <div class="wizard-actions">
+            <button id="assistant-back" type="button" class="quiet" disabled>
+              Back</button
+            ><button id="assistant-next" type="button">Next</button
+            ><button id="assistant-apply" type="submit" hidden>
+              Review and apply</button
+            ><span id="assistant-progress" role="status"></span>
+          </div>
+        </form>
+      </section>
+      <section id="view-about" class="view" hidden>
+        <div class="about-hero">
+          <span class="tv-icon" aria-hidden="true"></span>
+          <div>
+            <h2>Fire TV Toolkit</h2>
+            <p id="about-version" class="muted"></p>
+          </div>
+        </div>
+        <p class="about-lead">
+          Online television and practical tools for your Fire TV, in one place.
+        </p>
+        <div class="about-grid">
+          <section>
+            <h3>What it does</h3>
+            <p>
+              Browse worldwide public IPTV channels, save favorites and watch
+              online streams. Connect a Fire TV to install TV apps, choose
+              screensavers and home screens, and manage Alexa wake, idle timers
+              and protection.
+            </p>
+          </section>
+          <section>
+            <h3>Where it works</h3>
+            <p>
+              The desktop app is built for macOS on Intel and Apple silicon,
+              Windows x64 and Linux x64. TV tools are intended for Fire TV
+              devices that allow ADB debugging. They were checked on an Insignia
+              Fire TV Edition running Android 11. Other Fire TV models and
+              Android TV devices may work, but features depend on the device and
+              operating system.
+            </p>
+          </section>
+          <section>
+            <h3>Its purpose</h3>
+            <p>
+              This is a setup and playback tool, with changes you choose and
+              review. It does not host or provide media, unlock paid channels,
+              bypass subscriptions or act as a personal media server. Public
+              streams may stop working, require regional access or be
+              unavailable on your device.
+            </p>
+          </section>
+          <section>
+            <h3>Use with care</h3>
+            <p>
+              The app is designed for deliberate, reviewable changes. It does
+              not intentionally damage devices, but changing system settings,
+              uninstalling TV apps or running shell commands can have lasting
+              effects. Some changes can be restored using the captured values;
+              recovery cannot be guaranteed.
+            </p>
+            <p>
+              This software is provided as is, without warranty. You are
+              responsible for the changes you make and for lawful use of stream
+              sources. To the extent permitted by law, the authors are not
+              liable for damage, data loss or other losses from its use. See the
+              MIT license for the full terms.
+            </p>
+          </section>
+        </div>
+        <div class="about-links">
+          <button class="secondary" data-link="repository">
+            View repository</button
+          ><button class="quiet" data-link="license">MIT license</button
+          ><button class="quiet" data-link="releases">Releases</button>
+        </div>
+        <p class="author-credit">
+          Made with
+          <svg class="icon heart-icon" role="img" aria-label="love">
+            <use href="#icon-heart" />
+          </svg>
+          by Jeremy Kenedy
+        </p>
+        <p class="muted about-affiliation">
+          An independent open source project. Not affiliated with Amazon, Google
+          or the channel providers.
+        </p>
+      </section>
+      <section id="view-advanced" class="view" hidden>
+        <div class="section-heading">
+          <div>
+            <h2>Advanced tools</h2>
+            <p>Show Activity and a shell for your connected Fire TV.</p>
+          </div>
+          <button id="advanced-toggle" role="switch" aria-checked="false">
+            Enable Advanced settings
+          </button>
+        </div>
+        <section class="advanced-warning">
+          <h3>Know what you are doing before enabling these tools.</h3>
+          <p>
+            Shell commands run directly on your Fire TV. They can change
+            settings, remove apps or erase data. If you do not understand these
+            tools, do not enable Advanced settings.
+          </p>
+        </section>
+        <p id="advanced-status" class="muted">Advanced settings are off.</p>
+      </section>
+      <section id="view-terminal" class="view" hidden>
+        <div class="section-heading">
+          <div>
+            <h2>Fire TV shell</h2>
+            <p id="terminal-target">Connect a Fire TV to run commands.</p>
+          </div>
+          <button id="clear-terminal" class="quiet">Clear terminal</button>
+        </div>
+        <pre
+          id="terminal-output"
+          class="terminal-output"
+          role="region"
+          aria-label="TV terminal output"
+          tabindex="0"
+        >
+Command output appears here.</pre
+        >
+        <form id="terminal-form">
+          <label for="terminal-command">Shell command</label>
+          <textarea
+            id="terminal-command"
+            rows="3"
+            maxlength="8192"
+            placeholder="getprop ro.product.model"
+            spellcheck="false"
+            autocomplete="off"
+            required
+          ></textarea>
+          <div class="actions">
+            <button id="run-shell" type="submit" disabled>Run on TV</button>
+            <button id="stop-shell" type="button" class="secondary" disabled>
+              Stop
+            </button>
+            <span id="terminal-status" role="status">Ready</span>
+          </div>
+        </form>
+        <p class="terminal-help muted">
+          Each command starts a new TV shell. Interactive programs are not
+          supported. Commands stop after 60 seconds or 256 KB of output.
+          Stopping closes the ADB session; a command that started a background
+          task may continue on the TV.
+        </p>
+      </section>
+      <section id="view-activity" class="view" hidden>
+        <div class="section-heading">
+          <div>
+            <h2>Activity</h2>
+            <p>Tasks and results from this session.</p>
+          </div>
+          <button id="clear-activity" class="quiet">Clear activity</button>
+        </div>
+        <ol id="activity-list" class="activity-list" aria-live="polite">
+          <li class="muted">Connect a TV to get started.</li>
+        </ol>
+      </section>
+      <footer>
+        <span id="task-status">Ready</span
+        ><span id="footer-note">Channel sources provided by iptv-org.</span>
+      </footer>
+    </main>
+  </body>
+</html>

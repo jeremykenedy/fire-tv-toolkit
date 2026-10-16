@@ -1,25 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 392 408" width="392" height="408" role="img" aria-label="Fire TV Toolkit">
+<svg xmlns="http://www.w3.org/2000/svg" width="392" height="408" viewBox="0 0 392 408">
   <defs>
     <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
       <stop offset="0" stop-color="#0c0a09" />
       <stop offset="1" stop-color="#1c1917" />
     </linearGradient>
   </defs>
-  <rect width="392" height="408" fill="url(#bg)" rx="16" />
-  <text x="20" y="76" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="36" fill="#fff" font-weight="700" letter-spacing="-.5">Fire TV Toolkit</text>
-  <text x="20" y="104" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="12.5" fill="#a8a29e">Ad-free screensavers, a better home screen,</text>
-  <text x="20" y="122" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="12.5" fill="#a8a29e">and the Alexa deep-sleep fix.</text>
-  <rect width="65" height="22" x="20" y="140" fill="#1a1a1a" stroke="#a78bfa" stroke-width=".8" opacity=".8" rx="11" />
-  <text x="52.5" y="154" fill="#a78bfa" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="8.5" font-weight="500" text-anchor="middle">Alexa Fix</text>
-  <rect width="118" height="22" x="93" y="140" fill="#1a1a1a" stroke="#60a5fa" stroke-width=".8" opacity=".8" rx="11" />
-  <text x="152.0" y="154" fill="#60a5fa" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="8.5" font-weight="500" text-anchor="middle">Ad-Free Screensavers</text>
-  <rect width="100" height="22" x="219" y="140" fill="#1a1a1a" stroke="#4ade80" stroke-width=".8" opacity=".8" rx="11" />
-  <text x="269.0" y="154" fill="#4ade80" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="8.5" font-weight="500" text-anchor="middle">AT4K or LTV Home</text>
-  <rect width="86" height="22" x="20" y="170" fill="#1a1a1a" stroke="#fbbf24" stroke-width=".8" opacity=".8" rx="11" />
-  <text x="63.0" y="184" fill="#fbbf24" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="8.5" font-weight="500" text-anchor="middle">On-TV Picker</text>
-  <rect width="80" height="22" x="114" y="170" fill="#1a1a1a" stroke="#f87171" stroke-width=".8" opacity=".8" rx="11" />
-  <text x="154.0" y="184" fill="#f87171" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="8.5" font-weight="500" text-anchor="middle">No Tracking</text>
-  <g transform="translate(89.75,244) scale(1.25)">
+  <rect width="392" height="408" fill="url(#bg)" rx="16" x="0" y="0" />
+  <g font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+    <text x="20" y="72" fill="#fff" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="36" font-weight="700" letter-spacing="-.5">Fire TV Toolkit</text>
+    <text x="20" y="101" fill="#a8a29e" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="12">Worldwide IPTV, screensavers,</text>
+    <text x="20" y="119" fill="#a8a29e" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="12">and Fire TV controls.</text>
+    <rect width="65" height="22" x="20" y="140" fill="#1a1a1a" stroke="#a78bfa" stroke-width=".8" opacity=".8" rx="11" />
+    <text x="52.5" y="154.5" fill="#a78bfa" font-size="8.5" text-anchor="middle">Alexa Fix</text>
+    <rect width="102" height="22" x="93" y="140" fill="#1a1a1a" stroke="#60a5fa" stroke-width=".8" opacity=".8" rx="11" />
+    <text x="144" y="154.5" fill="#60a5fa" font-size="8.5" text-anchor="middle">Ad-Free Screensavers</text>
+    <rect width="84.4" height="22" x="203" y="140" fill="#1a1a1a" stroke="#4ade80" stroke-width=".8" opacity=".8" rx="11" />
+    <text x="245.2" y="154.5" fill="#4ade80" font-size="8.5" text-anchor="middle">AT4K or LTV Home</text>
+    <rect width="66.8" height="22" x="295.4" y="140" fill="#1a1a1a" stroke="#fbbf24" stroke-width=".8" opacity=".8" rx="11" />
+    <text x="328.8" y="154.5" fill="#fbbf24" font-size="8.5" text-anchor="middle">On-TV Picker</text>
+    <rect width="65" height="22" x="20" y="170" fill="#1a1a1a" stroke="#f87171" stroke-width=".8" opacity=".8" rx="11" />
+    <text x="52.5" y="184.5" fill="#f87171" font-size="8.5" text-anchor="middle">Online IPTV</text>
+  </g>
+  <g transform="translate(84,218) scale(1.32)">
     <rect width="170" height="112" fill="none" stroke="#a78bfa" stroke-width="3" rx="10" />
     <rect width="146" height="88" x="12" y="12" fill="#0b1f3a" rx="4" />
     <rect width="146" height="56" x="12" y="32" fill="#12406b" />

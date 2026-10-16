@@ -5,7 +5,7 @@ import { explainStep } from '../ui.js';
 import { runWizard } from '../wizard.js';
 import { enforceGuardrail } from '../guardrail.js';
 import { listPackages, uninstallPackage } from '../adb.js';
-import { OWNTV } from '../iptv-registry.js';
+import { OWNTV, FIRE_IPTV } from '../iptv-registry.js';
 import { isAlexaFixEnabled } from '../apply/alexa-fix.js';
 import { getActiveScreensaver } from '../apply/set-screensaver.js';
 import { hasLocalClones } from '../apply/screensavers.js';
@@ -99,6 +99,9 @@ async function findOptions(ip) {
     // Uninstalling OwnTV deletes the playlists added in it, so it is only removed when picked by hand.
     options.push({ name: 'Remove OwnTV and its playlists from the TV', value: 'iptv', keep: true });
   }
+  if (installedPkgs.includes(FIRE_IPTV.pkg)) {
+    options.push({ name: 'Remove fire-iptv and its playlists from the TV', value: 'iptv:fire-iptv', keep: true });
+  }
   const optimized = Object.keys(savedOriginals()).length;
   if (optimized > 0) {
     options.push({ name: `Undo the screensaver optimizations (${optimized} ${optimized === 1 ? 'setting' : 'settings'})`, value: 'optimize' });
@@ -149,6 +152,9 @@ async function applySelection(ip, selected, installedScreensavers, probedTimeout
   }
   if (selected.includes('iptv')) {
     results.push(await applyIptvRemoval(ip));
+  }
+  if (selected.includes('iptv:fire-iptv')) {
+    results.push(await applyIptvRemoval(ip, FIRE_IPTV));
   }
   for (const r of probedTimeouts.filter((x) => selected.includes(`timeout:${x.def.id}`))) {
     results.push(await applyTimeoutRevert(ip, r));
@@ -236,11 +242,11 @@ async function applyLauncherRemoval(ip, app) {
   return true;
 }
 
-async function applyIptvRemoval(ip) {
-  if (!(await uninstallPackage(ip, OWNTV.pkg))) {
-    return reportFailure(`${OWNTV.name} could not be removed. It may still be installed.`);
+async function applyIptvRemoval(ip, app = OWNTV) {
+  if (!(await uninstallPackage(ip, app.pkg))) {
+    return reportFailure(`${app.name} could not be removed. It may still be installed.`);
   }
-  print(chalk.green(`${OWNTV.name} removed.`));
+  print(chalk.green(`${app.name} removed.`));
   return true;
 }
 

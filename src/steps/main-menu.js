@@ -26,7 +26,7 @@ const MENU_CHOICES = [
   { name: 'Choose the active screensaver', value: 'set-screensaver' },
   { name: 'Review or adjust TV timeouts', value: 'timeouts' },
   { name: 'Choose the home screen (AT4K, LTvLauncher or Amazon)', value: 'launcher' },
-  { name: 'Install or remove OwnTV for free live TV channels', value: 'iptv' },
+  { name: 'Install or remove fire-iptv or OwnTV', value: 'iptv' },
   { name: 'Allow or remove LTvLauncher notification access', value: 'ltv-notifications' },
   { name: 'Copy an LTvLauncher backup to this computer', value: 'ltv-backup' },
   { name: 'Optimize the TV for screensavers', value: 'optimize' },
@@ -61,7 +61,7 @@ function printIntro() {
   print(chalk.gray('  4. Choose which installed screensaver is active.'));
   print(chalk.gray('  5. Review or change the TV sleep and screensaver timeouts, optimize the TV for screensavers, and guard it all (optional).'));
   print(chalk.gray('  6. Switch the home screen to AT4K or LTvLauncher, or back to the Amazon menu (optional).'));
-  print(chalk.gray('  7. Install OwnTV and add the iptv-org playlist of free US channels (optional).'));
+  print(chalk.gray('  7. Install fire-iptv for automatic live TV setup, or choose OwnTV (optional).'));
   print(chalk.gray('  8. Let LTvLauncher read notifications, or copy its backups to this computer (optional).'));
   print(chalk.gray('  9. Optimize, guard or revert the TV, or list every command, any time from the menu.'));
   print(chalk.gray('\nEach standalone command is named after its step in the README.\n'));

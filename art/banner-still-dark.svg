@@ -6,7 +6,7 @@
     </linearGradient>
   </defs>
   <rect width="800" height="200" fill="url(#bg)" rx="16" />
-  <g transform="translate(600,34)">
+  <g transform="translate(575,34)">
     <rect width="170" height="112" fill="none" stroke="#a78bfa" stroke-width="3" rx="10" />
     <rect width="146" height="88" x="12" y="12" fill="#0b1f3a" rx="4" />
     <rect width="146" height="56" x="12" y="32" fill="#12406b" />
@@ -35,7 +35,7 @@
     <rect width="40" height="5" x="65" y="118" fill="#a78bfa" rx="2.5" />
   </g>
   <text x="40" y="80" fill="#fff" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="40" font-weight="700" letter-spacing="-.5">Fire TV Toolkit</text>
-  <text x="40" y="110" fill="#a8a29e" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="14">Ad-free screensavers, a better home screen, and the Alexa deep-sleep fix.</text>
+  <text x="40" y="110" fill="#a8a29e" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="14">Worldwide IPTV, ad-free screensavers, and Fire TV controls.</text>
   <g font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="10" font-weight="500" text-anchor="middle">
     <rect width="70" height="22" x="40" y="128" fill="#1a1a1a" stroke="#a78bfa" stroke-width=".8" opacity=".8" rx="11" />
     <text x="75" y="142.5" fill="#a78bfa">Alexa Fix</text>
@@ -46,6 +46,6 @@
     <rect width="86" height="22" x="364" y="128" fill="#1a1a1a" stroke="#fbbf24" stroke-width=".8" opacity=".8" rx="11" />
     <text x="407" y="142.5" fill="#fbbf24">On-TV Picker</text>
     <rect width="80" height="22" x="458" y="128" fill="#1a1a1a" stroke="#f87171" stroke-width=".8" opacity=".8" rx="11" />
-    <text x="498" y="142.5" fill="#f87171">No Tracking</text>
+    <text x="498" y="142.5" fill="#f87171">Online IPTV</text>
   </g>
 </svg>

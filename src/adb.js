@@ -1,13 +1,31 @@
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
+import path from 'node:path';
 import chalk from 'chalk';
 import { startSpinner } from './spinner.js';
 import { getSavedIp, saveIp, promptForIp } from './device-config.js';
-import { isGuardedNow } from './guard-config.js';
+import { isGuardedNow, GUARDED_SETTINGS } from './guard-config.js';
 import { print } from './output.js';
 
 const execFileAsync = promisify(execFile);
 const PORT = 5555;
+let adbExecutable = 'adb';
+let rememberDeviceGuard = false;
+
+/** Use the desktop app's bundled adb without changing the terminal's PATH. */
+export function setAdbExecutable(filePath, options = {}) {
+  if (filePath !== null && !path.isAbsolute(filePath)) {
+    throw new Error('The adb executable must have an absolute path.');
+  }
+  adbExecutable = filePath ?? 'adb';
+  rememberDeviceGuard = options.rememberDeviceGuard === true;
+}
+
+export async function deviceInfo(ip) {
+  const values = await Promise.all(['ro.product.model', 'ro.build.version.release', 'ro.serialno'].map((key) =>
+    run(['-s', target(ip), 'shell', 'getprop', key])));
+  return { model: values[0] || 'Fire TV', android: values[1], serial: values[2] };
+}
 
 function target(ip) {
   return `${ip}:${PORT}`;
@@ -51,7 +69,7 @@ export function getLastAdbError() {
 
 async function run(args, { allowFail = false, timeout = 15000, remember = false } = {}) {
   try {
-    const { stdout } = await execFileAsync('adb', args, { timeout });
+    const { stdout } = await execFileAsync(adbExecutable, args, { timeout, windowsHide: true });
     return stdout.trim();
   } catch (err) {
     if (remember) {
@@ -67,7 +85,7 @@ async function run(args, { allowFail = false, timeout = 15000, remember = false 
 /** @returns {Promise<boolean>} */
 export async function isAdbInstalled() {
   try {
-    await execFileAsync('adb', ['version']);
+    await execFileAsync(adbExecutable, ['version'], { timeout: CONNECT_TIMEOUT_MS, windowsHide: true });
     return true;
   } catch {
     return false;
@@ -289,7 +307,7 @@ export async function sendGuard(ip, cmd, extras = {}) {
  * it instead of putting the old one back.
  */
 async function rememberIfGuarded(ip, namespace, key, value) {
-  if (isGuardedNow(namespace, key)) {
+  if (isGuardedNow(namespace, key) || (rememberDeviceGuard && GUARDED_SETTINGS.includes(`${namespace}/${key}`))) {
     await sendGuard(ip, 'remember', { setting: `${namespace}/${key}`, value });
   }
 }

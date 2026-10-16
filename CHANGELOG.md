@@ -1,21 +1,64 @@
 # Changelog
 
-## [4.1.0] - 2026-10-15
+## [4.3.0] - 2026-10-16
 
-### Added in 4.1.0
+### Added in 4.3.0
 
 - Slot Vision is an optional screensaver with a dimensional slot-machine cabinet, classic and multi-row games, seasonal symbols, rotating reels and slow camera movement.
 - Hearth Presence is an optional fireplace screensaver with adjustable surrounds, frame width, frameless presentation and burn speed, including a wide rectangular modern gas layout.
 
-### Changed in 4.1.0
+### Changed in 4.3.0
 
-- Pipeworks Dream uses rounded 3D tube meshes with lighting and continuous growth. Its own settings add individual colors, tube shapes, thickness and an optional following tail with a delay.
 - Screensaver documentation records a visual quality gate: review moving native output, source detail, frame pacing and lifecycle before publishing.
-- Animated banners include mobile layouts and still versions for reduced motion.
+- Advanced diagnostics reports device and screensaver state locally without changing TV settings.
 
 ### Upgrade
 
 Run `git pull` on the Toolkit checkout. Existing commands and saved settings remain supported. Use `firetv-screensavers --install=<id> --yes` to install or update an individual saver. Installation keeps the active screensaver; use `screensaver --set=<id>` when you want to select it.
+
+## [4.2.0] - 2026-10-16
+
+### Major changes
+
+- `fire-iptv --install` installs the signed fire-iptv v1.0.0 APK, verifies its SHA-256, preserves app data and opens Discover. Its starter prepares live TV and matched guide feeds automatically; movie and series libraries come from a provider added in the app.
+- The shared IPTV menu recommends fire-iptv and retains OwnTV. The desktop Home screen and setup/update assistants also support fire-iptv.
+- OwnTV setup instructions use the guide-matched live/sports preset and two XMLTV feeds.
+
+### Minor changes and fixes
+
+- Revert offers both players individually and preserves both with `--all`.
+- Installer tests cover checksum rejection, player selection and preservation of the other installed player.
+
+### Upgrade guide
+
+From 4.1.x or 4.0.x, pull the toolkit checkout and run `node setup.js` to link the new `fire-iptv` command. Desktop users install the new desktop package. Node 18 remains the CLI minimum; the desktop development toolchain requires Node 22.13 or newer.
+
+Run `fire-iptv --install` to install or update the TV app. It is separate from OpenIPTV and OwnTV. No TV library or configuration migration is required. Add a provider inside the TV app to populate modern on-demand movies and series. Removing a player deletes its private library; back up inside it first.
+
+### Breaking changes
+
+None. Legacy `firetv-iptv --install` and `--uninstall` without `--app` still target OwnTV. Existing toolkit device settings, timers and installed player data are preserved. The recommended interactive player is now fire-iptv.
+
+## [4.1.0] - 2026-10-16
+
+### Added in 4.1.0
+
+- A desktop app for worldwide online IPTV, with search, country, language and category filters, favorites, alternate sources and HLS playback.
+- Native confirmation for Fire TV controls, bundled verified ADB, per-device timer baselines, and installers for macOS, Windows and Linux.
+- Guided setup and app updates with reviewed selections, ordered installation and verification, and clear partial completion when a step fails.
+- Advanced settings with an enable warning, hidden Activity and TV terminal controls, streamed TV command output, exit status and cancellation.
+- Navigation icons and an About page with compatibility, intended use, liability information, repository and license links, and author credit.
+- Packaged application checks on all three operating systems, including HLS decoding, saved favorites and Windows/Linux installer removal.
+
+### Changed in 4.1.0
+
+- OwnTV setup now offers the worldwide iptv-org playlist.
+- README banners animate at a moderate pace and include mobile layouts and reduced-motion stills.
+- Final device state is checked before reporting completion, including changes reverted by another app.
+
+### Upgrade
+
+See the [4.1.0 upgrade guide](docs/RELEASE-4.1.0.md). Desktop packages are currently unsigned.
 
 ## [4.0.0] - 2026-10-15
 

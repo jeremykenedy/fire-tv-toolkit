@@ -85,7 +85,7 @@ adb shell monkey -p tv.own.owntv -c android.intent.category.LEANBACK_LAUNCHER 1 
 adb shell pm uninstall tv.own.owntv                                    # remove it and its playlists
 ```
 
-The playlist itself is added in OwnTV from your phone. See [Free live TV](IPTV.md).
+fire-iptv uses the same checksum-verified APK installation with package `com.jeremykenedy.fireiptv`. Its starter catalog is prepared by the app on first launch. OwnTV playlists are added through its TV or phone setup. See [Free live TV](IPTV.md).
 
 ## Changes are read back
 

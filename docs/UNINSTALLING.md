@@ -7,7 +7,7 @@ firetv-revert
 ```
 
 A checklist of everything this tool changed that is still in place. Everything
-starts checked except removing AT4K, LTvLauncher or OwnTV; uncheck anything you
+starts checked except removing AT4K, LTvLauncher, fire-iptv or OwnTV; uncheck anything you
 want to keep:
 
 - the guard, first, so it does not put the reverts below straight back
@@ -19,13 +19,13 @@ want to keep:
   LTvLauncher start unchecked, because removing them deletes your home screen
   layout; check them to remove them
 - LTvLauncher's notification access
-- OwnTV, unchecked, because removing it deletes the playlists added in it
+- fire-iptv and OwnTV, unchecked, because removal deletes their private libraries
 - the screensaver optimizations, each put back to the value it had before `optimize` changed it
 - the local screensaver source in `./screensavers`
 
 Reverting is a risky change, so it asks you to type `yes`. In scripts, use
 `firetv-revert --all --force`, which reverts everything except removing AT4K,
-LTvLauncher and OwnTV.
+LTvLauncher, fire-iptv and OwnTV.
 
 ## Remove everything
 
