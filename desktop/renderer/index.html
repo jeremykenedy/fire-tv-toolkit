@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src http: https:; media-src http: https: blob:; base-uri 'none'; form-action 'none'"
+    />
+    <title>Fire TV Toolkit</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="hls.min.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="tv-icon" aria-hidden="true"></span>
+        <div>Fire TV<span>Toolkit</span></div>
+      </div>
+      <nav aria-label="Toolkit sections">
+        <button
+          class="nav-button selected"
+          data-view="live"
+          aria-current="page"
+        >
+          Live TV
+        </button>
+        <span class="nav-group">Fire TV tools</span>
+        <button class="nav-button" data-view="overview">Overview</button>
+        <button class="nav-button" data-view="screensavers">
+          Screensavers
+        </button>
+        <button class="nav-button" data-view="home">Home &amp; live TV</button>
+        <button class="nav-button" data-view="settings">Device settings</button>
+        <button class="nav-button" data-view="activity">Activity</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <span class="connection-dot"></span
+        ><span id="connection-label">No TV connected</span
+        ><small id="version">Desktop app</small>
+      </div>
+    </aside>
+    <main>
+      <header>
+        <div>
+          <h1 id="page-title">Live TV</h1>
+          <p id="page-subtitle">Public IPTV channels from around the world.</p>
+        </div>
+        <button id="refresh" class="quiet" disabled hidden>Refresh TV</button>
+      </header>
+      <form id="connection-form" class="connection-bar" hidden>
+        <div>
+          <label for="address">Fire TV address</label
+          ><input
+            id="address"
+            name="address"
+            placeholder="192.168.1.50"
+            autocomplete="off"
+            spellcheck="false"
+            inputmode="decimal"
+            required
+          />
+        </div>
+        <button id="connect" type="submit">Connect</button>
+        <p id="device-summary">
+          Use the IP address shown in your TV's network settings.
+        </p>
+      </form>
+      <div
+        id="notice"
+        class="notice"
+        role="status"
+        aria-live="polite"
+        hidden
+      ></div>
+      <section id="view-live" class="view">
+        <div class="catalog-heading">
+          <p id="catalog-count">Loading the worldwide channel catalog...</p>
+          <button id="reload-channels" class="quiet">Refresh channels</button>
+        </div>
+        <div class="channel-filters">
+          <label
+            >Search channels<input
+              id="channel-search"
+              type="search"
+              placeholder="Channel name" /></label
+          ><label
+            >Country<select id="channel-country">
+              <option value="">All countries</option>
+            </select></label
+          ><label
+            >Language<select id="channel-language">
+              <option value="">All languages</option>
+            </select></label
+          ><label
+            >Category<select id="channel-category">
+              <option value="">All categories</option>
+            </select></label
+          ><label class="favorite-filter"
+            ><input id="channel-favorites" type="checkbox" /> Favorites</label
+          >
+        </div>
+        <div class="iptv-layout">
+          <div class="channel-browser">
+            <div
+              id="channel-list"
+              class="channel-list"
+              aria-label="IPTV channels"
+            ></div>
+            <div class="channel-pagination">
+              <button id="previous-channels" class="quiet" disabled>
+                Previous</button
+              ><span id="channel-page"></span
+              ><button id="next-channels" class="quiet" disabled>Next</button>
+            </div>
+          </div>
+          <div class="player-pane">
+            <div class="video-frame">
+              <video id="iptv-video" controls muted playsinline></video>
+              <p id="player-placeholder">Choose a channel to start watching.</p>
+            </div>
+            <h2 id="playing-title">Live IPTV</h2>
+            <p id="player-status" role="status">
+              Browse the full catalog. No Fire TV connection is needed to watch
+              here.
+            </p>
+            <div class="source-controls" hidden>
+              <label for="stream-source">Stream source</label
+              ><select id="stream-source"></select>
+              <div class="actions">
+                <button id="next-source" class="secondary">
+                  Try next source</button
+                ><button id="stop-stream" class="quiet">Stop</button>
+              </div>
+            </div>
+            <section class="tv-playlist">
+              <h3>Watch on your Fire TV</h3>
+              <p>
+                Use the worldwide playlist in OwnTV. Set up the player from Home
+                &amp; live TV.
+              </p>
+              <label for="all-playlist">All channels playlist</label
+              ><input
+                id="all-playlist"
+                value="https://iptv-org.github.io/iptv/index.m3u"
+                readonly
+              /><button data-navigate="home" class="secondary">
+                Set up Fire TV
+              </button>
+            </section>
+          </div>
+        </div>
+      </section>
+      <section id="welcome" class="welcome" hidden>
+        <div class="welcome-illustration" aria-hidden="true">
+          <div class="tv-screen"><span></span><span></span><span></span></div>
+          <div class="tv-foot"></div>
+        </div>
+        <h2>Connect your Fire TV</h2>
+        <p>
+          Keep your computer and TV on the same network. Then enter the TV's IP
+          address above.
+        </p>
+        <ol>
+          <li>Enable Developer options on the TV.</li>
+          <li>Turn on ADB debugging.</li>
+          <li>Connect here and accept the debugging prompt on the TV.</li>
+        </ol>
+        <p class="muted">
+          Find the full setup guide in the Help menu. Connecting reads device
+          settings. Each change asks for confirmation.
+        </p>
+      </section>
+      <div id="connected-views" hidden>
+        <section id="view-overview" class="view">
+          <div class="device-heading">
+            <div>
+              <span class="eyebrow">Connected television</span>
+              <h2 id="model"></h2>
+              <p id="device-details"></p>
+            </div>
+            <span class="status-pill">Connected</span>
+          </div>
+          <div class="overview-grid">
+            <section class="utility-panel">
+              <h3>Your screensaver</h3>
+              <p id="active-saver" class="current-value"></p>
+              <p class="muted">
+                Choose an installed screensaver or add another from the catalog.
+              </p>
+              <button data-navigate="screensavers">Choose screensaver</button>
+            </section>
+            <section class="utility-panel">
+              <h3>Your home screen</h3>
+              <p id="active-home" class="current-value"></p>
+              <p class="muted">Keep Amazon Home or use AT4K or LTvLauncher.</p>
+              <button data-navigate="home">Manage home screen</button>
+            </section>
+            <section class="utility-panel">
+              <h3>Alexa wake</h3>
+              <p id="alexa-state" class="current-value"></p>
+              <p class="muted">
+                Let Alexa reach the TV while it is in deep sleep.
+              </p>
+              <button id="alexa-toggle" data-task="alexa"></button>
+            </section>
+            <section class="utility-panel">
+              <h3>Screensaver setup</h3>
+              <p class="current-value">Check this TV</p>
+              <p class="muted">
+                Review recommended changes for idle playback and frame rate.
+              </p>
+              <button data-task="optimize">Review optimizations</button>
+            </section>
+          </div>
+        </section>
+        <section id="view-screensavers" class="view" hidden>
+          <div class="section-heading">
+            <div>
+              <h2>Screensavers</h2>
+              <p>Verified releases, installed directly on your TV.</p>
+            </div>
+            <label class="search-label"
+              >Filter screensavers<input
+                type="search"
+                id="saver-search"
+                placeholder="Search by name"
+            /></label>
+          </div>
+          <div id="saver-list" class="app-list"></div>
+          <p id="no-savers" class="empty" hidden>
+            No screensavers match your search.
+          </p>
+        </section>
+        <section id="view-home" class="view" hidden>
+          <div class="section-heading">
+            <div>
+              <h2>Home screen</h2>
+              <p>Choose where the remote's Home button takes you.</p>
+            </div>
+          </div>
+          <div id="launcher-list" class="app-list"></div>
+          <section class="live-tv">
+            <div>
+              <span class="eyebrow">Free live TV</span>
+              <h2>OwnTV</h2>
+              <p>
+                Install the player, then add the worldwide iptv-org playlist in
+                OwnTV setup on your TV or phone.
+              </p>
+            </div>
+            <div class="actions">
+              <button data-task="install-owntv">Install OwnTV</button
+              ><button id="open-owntv" data-task="open-owntv" class="secondary">
+                Open on TV
+              </button>
+            </div>
+            <label for="playlist">All channels playlist</label
+            ><input id="playlist" readonly />
+            <p class="muted">
+              In OwnTV, choose Add playlist, then Remote. Open the address or QR
+              code shown on the TV, enter its PIN, paste this playlist, choose
+              Send to TV, then Start Import.
+            </p>
+          </section>
+        </section>
+        <section id="view-settings" class="view" hidden>
+          <div class="section-heading">
+            <div>
+              <h2>Idle timers</h2>
+              <p>Changes are checked against the value saved by your TV.</p>
+            </div>
+          </div>
+          <form id="sleep-form" class="setting-row">
+            <div>
+              <label for="sleep-minutes">Sleep after</label>
+              <p>Minutes of inactivity. Use 0 to keep the TV awake.</p>
+            </div>
+            <input
+              id="sleep-minutes"
+              type="number"
+              min="0"
+              max="35791"
+              step="0.1"
+              required
+            /><span>minutes</span
+            ><button type="submit">Save sleep timer</button>
+          </form>
+          <form id="screensaver-form" class="setting-row">
+            <div>
+              <label for="screensaver-minutes">Start screensaver after</label>
+              <p>Choose a value shorter than the sleep timer.</p>
+            </div>
+            <input
+              id="screensaver-minutes"
+              type="number"
+              min="0.1"
+              max="35791"
+              step="0.1"
+              required
+            /><span>minutes</span
+            ><button type="submit">Save screensaver timer</button>
+          </form>
+          <button class="secondary restore-button" data-task="reset-timeouts">
+            Restore captured timers
+          </button>
+          <section class="protection">
+            <h2>Protect your setup</h2>
+            <p>
+              Home Redirect can keep your settings in place and limit Amazon's
+              updater apps where Fire OS allows it.
+            </p>
+            <p id="guard-state" class="muted"></p>
+            <div class="actions">
+              <button data-task="guard" data-value="true">
+                Turn protection on</button
+              ><button class="secondary" data-task="check-guard">
+                Check and repair</button
+              ><button class="quiet" data-task="guard" data-value="false">
+                Turn off
+              </button>
+            </div>
+          </section>
+          <section class="protection">
+            <h2>Restore optimization settings</h2>
+            <p>
+              Put back the values captured before this desktop app optimized
+              this TV.
+            </p>
+            <button class="secondary" data-task="undo-optimize">
+              Undo optimizations
+            </button>
+          </section>
+        </section>
+      </div>
+      <section id="view-activity" class="view" hidden>
+        <div class="section-heading">
+          <div>
+            <h2>Activity</h2>
+            <p>Tasks and results from this session.</p>
+          </div>
+          <button id="clear-activity" class="quiet">Clear activity</button>
+        </div>
+        <ol id="activity-list" class="activity-list" aria-live="polite">
+          <li class="muted">Connect a TV to get started.</li>
+        </ol>
+      </section>
+      <footer>
+        <span id="task-status">Ready</span
+        ><span id="footer-note">Channel sources provided by iptv-org.</span>
+      </footer>
+    </main>
+  </body>
+</html>

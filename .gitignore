@@ -37,3 +37,7 @@ coverage/
 # Android build output
 android/*/build/
 /_site
+
+# Desktop installers and bundled build resources
+desktop/dist/
+desktop/resources/
