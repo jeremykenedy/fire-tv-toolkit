@@ -390,6 +390,25 @@ const setup = {
   optimize: false,
 };
 
+test('stopping during the reachability check prevents the command from starting', async (t) => {
+  const h = harness(t);
+  await h.controller.connect('192.168.1.10');
+  await h.controller.setAdvanced(true, async () => true);
+  let reachable;
+  h.api.isReachable = () =>
+    new Promise((resolve) => {
+      reachable = resolve;
+    });
+  h.api.executeShell = () => {
+    throw new Error('The command must not start');
+  };
+  const pending = h.controller.shell('id');
+  assert.equal(h.controller.stopShell(), true);
+  reachable(true);
+  assert.equal((await pending).stopped, 'stopped');
+  assert.equal(h.controller.isBusy(), false);
+});
+
 test('guided setup reviews changes once, respects cancellation and applies selections in order', async (t) => {
   const h = harness(t);
   await h.controller.connect('192.168.1.10');

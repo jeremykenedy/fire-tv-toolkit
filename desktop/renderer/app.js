@@ -79,28 +79,8 @@ function navigate(view) {
     'terminal',
     'about',
   ].includes(view);
-  const wizard = view === 'setup' || view === 'update';
-  if (
-    wizard &&
-    state &&
-    (changed || wizardIdentity !== `${view}:${state.device.ip}`)
-  )
-    initializeWizard();
-  $('#page-title').textContent = titles[view];
-  $('#page-subtitle').textContent =
-    view === 'live'
-      ? 'Public IPTV channels from around the world.'
-      : view === 'about'
-        ? 'Independent tools for online TV and your Fire TV.'
-        : wizard
-          ? 'Choose, review and apply changes to your connected TV.'
-          : 'Screensavers, home screens and device settings.';
-  $('#footer-note').textContent =
-    view === 'live'
-      ? 'Channel sources provided by iptv-org.'
-      : view === 'terminal'
-        ? 'Shell commands run directly on the connected TV.'
-        : 'Changes are confirmed before they run.';
+  const wizard = prepareWizard(view, changed);
+  renderPageHeading(view, wizard);
   $('#connection-form').hidden = standalone && view !== 'terminal';
   $('#refresh').hidden = standalone && view !== 'terminal';
   document.querySelectorAll('.nav-button').forEach((button) => {
@@ -117,6 +97,35 @@ function navigate(view) {
       (wizard && !state);
   });
   if (changed) window.scrollTo(0, 0);
+}
+
+function prepareWizard(view, changed) {
+  const wizard = view === 'setup' || view === 'update';
+  if (
+    wizard &&
+    state &&
+    (changed || wizardIdentity !== `${view}:${state.device.ip}`)
+  )
+    initializeWizard();
+  return wizard;
+}
+
+function renderPageHeading(view, wizard) {
+  $('#page-title').textContent = titles[view];
+  $('#page-subtitle').textContent =
+    view === 'live'
+      ? 'Public IPTV channels from around the world.'
+      : view === 'about'
+        ? 'Independent tools for online TV and your Fire TV.'
+        : wizard
+          ? 'Choose, review and apply changes to your connected TV.'
+          : 'Screensavers, home screens and device settings.';
+  $('#footer-note').textContent =
+    view === 'live'
+      ? 'Channel sources provided by iptv-org.'
+      : view === 'terminal'
+        ? 'Shell commands run directly on the connected TV.'
+        : 'Changes are confirmed before they run.';
 }
 
 function updateControls() {
@@ -456,6 +465,19 @@ function initializeWizard() {
   $('#assistant-progress').textContent = '';
   renderWizardStep();
 }
+
+for (const [id, checked] of [
+  ['select-updates', true],
+  ['clear-updates', false],
+])
+  $(`#${id}`).addEventListener('click', () => {
+    if (!busy)
+      $('#update-app-list')
+        .querySelectorAll('input')
+        .forEach((input) => {
+          input.checked = checked;
+        });
+  });
 
 function wizardRequest() {
   if (selectedView === 'update') {

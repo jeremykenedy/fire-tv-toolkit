@@ -453,10 +453,18 @@
             <div id="update-app-choices" hidden>
               <h2>Refresh your installed TV apps</h2>
               <p class="muted">
-                Reinstall selected apps from the verified releases included with
-                this version of the toolkit. App data is kept where Android
-                permits. Newer upstream versions may require a toolkit update.
+                Download and reinstall selected apps from their supported GitHub
+                releases. Each APK is checked against a published or pinned
+                SHA-256. Some apps use a pinned version until the toolkit is
+                updated. App data is kept where Android permits.
               </p>
+              <div class="actions">
+                <button id="select-updates" class="quiet" type="button">
+                  Select all</button
+                ><button id="clear-updates" class="quiet" type="button">
+                  Clear selection
+                </button>
+              </div>
               <div id="update-app-list" class="update-app-list"></div>
               <button class="quiet" type="button" data-link="releases">
                 Check desktop releases

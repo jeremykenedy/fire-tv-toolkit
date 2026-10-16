@@ -470,41 +470,40 @@ export function createController({
     }
   }
 
-  function assistantActions(request, state) {
-    if (!request || !['setup', 'update'].includes(request.mode))
-      throw new Error('Choose setup or update.');
+  function updateActions(request, state) {
     const actions = [];
     const add = (type, values = {}) =>
       actions.push(validate({ type, ...values }));
-    if (request.mode === 'update') {
-      for (const [key, entries, type] of [
-        [
-          'screensavers',
-          state.screensavers.filter((entry) => entry.downloadable),
-          'install-screensaver',
-        ],
-        ['launchers', state.launchers, 'install-launcher'],
-      ]) {
-        if (
-          !Array.isArray(request[key]) ||
-          request[key].length > entries.length
-        )
+    for (const [key, entries, type] of [
+      [
+        'screensavers',
+        state.screensavers.filter((entry) => entry.downloadable),
+        'install-screensaver',
+      ],
+      ['launchers', state.launchers, 'install-launcher'],
+    ]) {
+      if (!Array.isArray(request[key]) || request[key].length > entries.length)
+        throw new Error('Choose installed apps to update.');
+      for (const id of new Set(request[key])) {
+        if (!entries.some((entry) => entry.id === id && entry.installed))
           throw new Error('Choose installed apps to update.');
-        for (const id of new Set(request[key])) {
-          if (!entries.some((entry) => entry.id === id && entry.installed))
-            throw new Error('Choose installed apps to update.');
-          add(type, { id });
-        }
+        add(type, { id });
       }
-      if (typeof request.ownTv !== 'boolean')
-        throw new Error('Choose whether to update OwnTV.');
-      if (request.ownTv) {
-        if (!state.ownTvInstalled)
-          throw new Error('Install OwnTV before updating it.');
-        add('install-owntv');
-      }
-      return actions;
     }
+    if (typeof request.ownTv !== 'boolean')
+      throw new Error('Choose whether to update OwnTV.');
+    if (request.ownTv) {
+      if (!state.ownTvInstalled)
+        throw new Error('Install OwnTV before updating it.');
+      add('install-owntv');
+    }
+    return actions;
+  }
+
+  function setupAppActions(request, state) {
+    const actions = [];
+    const add = (type, values = {}) =>
+      actions.push(validate({ type, ...values }));
     if (request.screensaver !== 'keep') {
       const entry = state.screensavers.find(
         (item) => item.id === request.screensaver,
@@ -526,6 +525,16 @@ export function createController({
     if (typeof request.ownTv !== 'boolean')
       throw new Error('Choose whether to install OwnTV.');
     if (request.ownTv && !state.ownTvInstalled) add('install-owntv');
+    return actions;
+  }
+
+  function assistantActions(request, state) {
+    if (!request || !['setup', 'update'].includes(request.mode))
+      throw new Error('Choose setup or update.');
+    if (request.mode === 'update') return updateActions(request, state);
+    const actions = setupAppActions(request, state);
+    const add = (type, values = {}) =>
+      actions.push(validate({ type, ...values }));
     if (typeof request.optimize !== 'boolean')
       throw new Error('Choose whether to optimize this TV.');
     if (request.optimize) add('optimize');
@@ -577,12 +586,14 @@ export function createController({
           command.includes('\0')
         )
           throw new Error('Enter a command of up to 8,192 characters.');
-        const ip = await requireConnection();
         if (!executeShell)
           throw new Error('The TV terminal is unavailable in this build.');
         shellAbort = new AbortController();
-        onProgress(`TV terminal: running a command on ${ip}.`);
         try {
+          const ip = await requireConnection();
+          if (shellAbort.signal.aborted)
+            return { code: null, stopped: 'stopped', ip };
+          onProgress(`TV terminal: running a command on ${ip}.`);
           const result = await executeShell(ip, command, {
             signal: shellAbort.signal,
             onOutput: onShellOutput,
@@ -649,7 +660,7 @@ export function createController({
           onProgress(`${title}: complete.`);
         }
         return {
-          message: `${request.mode === 'update' ? 'Guided update' : 'Guided setup'} complete. ${actions.length} changes verified.`,
+          message: `${request.mode === 'update' ? 'Guided update' : 'Guided setup'} complete. ${actions.length} ${actions.length === 1 ? 'change' : 'changes'} verified.`,
           state: await readState(),
         };
       });
