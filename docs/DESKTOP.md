@@ -10,6 +10,8 @@ Connect your TV, then open Setup assistant. Choose a screensaver, a home screen 
 
 Open Guided updater to select supported apps already installed on the TV and revisit timer, Alexa, optimization or protection settings. Choices start unchanged. It downloads supported GitHub releases and verifies each APK against a published or pinned SHA-256. Apps pinned to a specific version require a toolkit update to change that version; other supported apps use their latest published release. App data is retained where Android permits. The desktop releases button opens GitHub so you can download a newer toolkit version.
 
+![Device settings in the guided updater](../art/screenshots/desktop-updater-settings.jpg)
+
 ## Advanced settings
 
 Advanced settings are off by default. Enabling them opens a warning: only continue if you understand the tools and the effects of your commands. Accepting the warning reveals Activity and TV terminal. The preference is saved on this computer; turning it off hides both tools and clears their displayed session history.
