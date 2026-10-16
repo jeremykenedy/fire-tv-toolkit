@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { createController } from '../controller.js';
+import { FIRE_IPTV, OWNTV } from 'fire-tv-toolkit/src/iptv-registry.js';
 import { SCREENSAVERS } from 'fire-tv-toolkit/src/screensaver-registry.js';
 
 const aerial = SCREENSAVERS.find((entry) => entry.id === 'aerial');
@@ -560,4 +561,45 @@ test('the guided updater reviews and applies optional settings with the selected
   );
   assert.equal(result.state.sleepMs, 1800000);
   assert.equal(result.state.alexaEnabled, true);
+});
+
+
+test('fire-iptv setup installs the pinned player, opens it and preserves OwnTV', async (t) => {
+  const h = harness(t);
+  const installed = [OWNTV.pkg];
+  h.api.listPackages = async () => [...installed];
+  h.api.downloadApk = async (entry) => {
+    assert.equal(entry.id, FIRE_IPTV.id);
+    return '/private/test-fire-iptv.apk';
+  };
+  h.api.installApk = async (ip, file) => {
+    h.writes.push({ ip, file });
+    installed.push(FIRE_IPTV.pkg);
+  };
+  const removed = [];
+  h.api.removeDownload = (file) => removed.push(file);
+  h.api.openApp = async (_ip, pkg) => pkg === FIRE_IPTV.pkg;
+  await h.controller.connect('192.168.1.10');
+  const result = await h.controller.assistant(
+    { ...setup, fireIptv: true }, async () => true,
+  );
+  assert.equal(result.state.fireIptvInstalled, true);
+  assert.equal(result.state.ownTvInstalled, true);
+  assert.deepEqual(removed, ['/private/test-fire-iptv.apk']);
+  assert.equal(h.writes.length, 1);
+  await h.controller.assistant({ ...setup, fireIptv: true }, async () => true);
+  assert.equal(h.writes.length, 1);
+});
+
+test('fire-iptv download rejection prevents desktop installation and launch', async (t) => {
+  const h = harness(t);
+  await h.controller.connect('192.168.1.10');
+  h.api.downloadApk = async () => { throw new Error('Checksum mismatch'); };
+  h.api.installApk = async () => { throw new Error('Must not install'); };
+  h.api.openApp = async () => { throw new Error('Must not launch'); };
+  await assert.rejects(
+    h.controller.action({ type: 'install-fire-iptv' }, async () => true),
+    /Checksum mismatch/,
+  );
+  assert.deepEqual(h.writes, []);
 });

@@ -283,6 +283,7 @@ function renderHome() {
     list.append(row);
   }
   $('#open-owntv').dataset.unavailable = String(!state.ownTvInstalled);
+  $('#open-fire-iptv').dataset.unavailable = String(!state.fireIptvInstalled);
   $('#playlist').value = state.playlist;
 }
 
@@ -423,7 +424,8 @@ function initializeWizard() {
   );
   for (const entry of state.launchers)
     $('#setup-home').append(option(entry.id, entry.name));
-  $('#setup-owntv').checked = !state.ownTvInstalled;
+  $('#setup-owntv').checked = false;
+  $('#setup-fire-iptv').checked = !state.fireIptvInstalled;
   $('#setup-timers').checked = false;
   $('#setup-sleep').value = state.sleepMs === null ? 20 : state.sleepMs / 60000;
   $('#setup-delay').value =
@@ -440,6 +442,9 @@ function initializeWizard() {
     ...state.launchers
       .filter((entry) => entry.installed)
       .map((entry) => ({ ...entry, kind: 'launchers' })),
+    ...(state.fireIptvInstalled
+      ? [{ id: 'fire-iptv', name: 'fire-iptv', kind: 'fireIptv' }]
+      : []),
     ...(state.ownTvInstalled
       ? [{ id: 'owntv', name: 'OwnTV', kind: 'ownTv' }]
       : []),
@@ -487,11 +492,13 @@ function wizardRequest() {
       screensavers: [],
       launchers: [],
       ownTv: false,
+      fireIptv: false,
     };
     $('#update-app-list')
       .querySelectorAll('input:checked')
       .forEach((input) => {
         if (input.dataset.updateKind === 'ownTv') request.ownTv = true;
+        else if (input.dataset.updateKind === 'fireIptv') request.fireIptv = true;
         else request[input.dataset.updateKind].push(input.value);
       });
   } else
@@ -500,6 +507,7 @@ function wizardRequest() {
       screensaver: $('#setup-screensaver').value,
       home: $('#setup-home').value,
       ownTv: $('#setup-owntv').checked,
+      fireIptv: $('#setup-fire-iptv').checked,
     };
   request.optimize = $('#setup-optimize').checked;
   if ($('#setup-timers').checked) {
@@ -533,47 +541,51 @@ function renderWizardStep() {
   $('#assistant-apply').textContent = updating
     ? 'Review and update'
     : 'Review and install';
-  if (wizardStep === 2) {
-    const summary = $('#assistant-summary');
-    summary.replaceChildren();
-    const add = (text) => summary.append(element('li', '', text));
-    const request = wizardRequest();
-    if (updating) {
-      $('#update-app-list')
-        .querySelectorAll('input:checked')
-        .forEach((input) => add(`Refresh ${input.parentElement.textContent}`));
-      if (!summary.children.length) add('No app updates selected.');
-      add('Keep the current home screen and screensaver selection.');
-    } else {
+  if (wizardStep === 2) renderWizardSummary(updating);
+  updateControls();
+}
+
+function renderWizardSummary(updating) {
+  const summary = $('#assistant-summary');
+  summary.replaceChildren();
+  const add = (text) => summary.append(element('li', '', text));
+  const request = wizardRequest();
+  if (updating) {
+    $('#update-app-list')
+      .querySelectorAll('input:checked')
+      .forEach((input) => add(`Refresh ${input.parentElement.textContent}`));
+    if (!summary.children.length) add('No app updates selected.');
+    add('Keep the current home screen and screensaver selection.');
+  } else {
+    add(
+      `Screensaver: ${$('#setup-screensaver').selectedOptions[0].textContent}`,
+    );
+    add(`Home screen: ${$('#setup-home').selectedOptions[0].textContent}`);
+    if (request.fireIptv)
+      add('Install fire-iptv if needed. Live TV and guides are prepared automatically.');
+    if (request.ownTv)
       add(
-        `Screensaver: ${$('#setup-screensaver').selectedOptions[0].textContent}`,
-      );
-      add(`Home screen: ${$('#setup-home').selectedOptions[0].textContent}`);
-      if (request.ownTv)
-        add(
-          'Install OwnTV if needed. Add the IPTV playlist in OwnTV after setup.',
-        );
-    }
-    if (request.sleepMs !== undefined)
-      add(
-        `Sleep: ${request.sleepMs / 60000} minutes. Screensaver: ${request.screensaverMs / 60000} minutes.`,
-      );
-    for (const key of ['alexa', 'guard'])
-      if (request[key] !== undefined)
-        add(
-          `${key === 'alexa' ? 'Alexa wake' : 'Protection'}: ${request[key] ? 'on' : 'off'}`,
-        );
-    if (request.optimize) add('Apply recommended screensaver optimizations.');
-    if (
-      request.sleepMs !== undefined &&
-      request.sleepMs > 0 &&
-      request.screensaverMs >= request.sleepMs
-    )
-      add(
-        'Your screensaver timer is at least as long as the sleep timer. The TV may sleep before showing the screensaver.',
+        'Install OwnTV if needed. Add the playlist and guide feeds in OwnTV after setup.',
       );
   }
-  updateControls();
+  if (request.sleepMs !== undefined)
+    add(
+      `Sleep: ${request.sleepMs / 60000} minutes. Screensaver: ${request.screensaverMs / 60000} minutes.`,
+    );
+  for (const key of ['alexa', 'guard'])
+    if (request[key] !== undefined)
+      add(
+        `${key === 'alexa' ? 'Alexa wake' : 'Protection'}: ${request[key] ? 'on' : 'off'}`,
+      );
+  if (request.optimize) add('Apply recommended screensaver optimizations.');
+  if (
+    request.sleepMs !== undefined &&
+    request.sleepMs > 0 &&
+    request.screensaverMs >= request.sleepMs
+  )
+    add(
+      'Your screensaver timer is at least as long as the sleep timer. The TV may sleep before showing the screensaver.',
+    );
 }
 
 $('#assistant-next').addEventListener('click', () => {

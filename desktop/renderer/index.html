@@ -211,8 +211,8 @@
             <section class="tv-playlist">
               <h3>Watch on your Fire TV</h3>
               <p>
-                Use the worldwide playlist in OwnTV. Set up the player from Home
-                &amp; live TV.
+                Install fire-iptv from Home &amp; live TV for automatic guide
+                and sports setup. OwnTV can also import the worldwide playlist.
               </p>
               <label for="all-playlist">All channels playlist</label
               ><input
@@ -321,6 +321,23 @@
           </p>
         </section>
         <section id="view-home" class="view" hidden>
+          <section class="live-tv">
+            <div>
+              <span class="eyebrow">TV guide, sports, movies and shows</span>
+              <h2>fire-iptv</h2>
+              <p>
+                Install and open Discover. Public live TV and guide feeds are
+                prepared automatically. Add your provider in the app for movie
+                and series posters.
+              </p>
+            </div>
+            <div class="actions">
+              <button data-task="install-fire-iptv">Install fire-iptv</button>
+              <button id="open-fire-iptv" data-task="open-fire-iptv" class="secondary">
+                Open on TV
+              </button>
+            </div>
+          </section>
           <div class="section-heading">
             <div>
               <h2>Home screen</h2>
@@ -330,11 +347,11 @@
           <div id="launcher-list" class="app-list"></div>
           <section class="live-tv">
             <div>
-              <span class="eyebrow">Free live TV</span>
+              <span class="eyebrow">Alternative player</span>
               <h2>OwnTV</h2>
               <p>
-                Install the player, then add the worldwide iptv-org playlist in
-                OwnTV setup on your TV or phone.
+                Install the player, then add the guide-matched live TV and sports
+                playlist in OwnTV setup on your TV or phone.
               </p>
             </div>
             <div class="actions">
@@ -343,13 +360,19 @@
                 Open on TV
               </button>
             </div>
-            <label for="playlist">All channels playlist</label
+            <label for="playlist">Guide-matched playlist</label
             ><input id="playlist" readonly />
             <p class="muted">
               In OwnTV, choose Add playlist, then Remote. Open the address or QR
               code shown on the TV, enter its PIN, paste this playlist, choose
-              Send to TV, then Start Import.
+              Send to TV, then Start Import. Set it as the default playlist and
+              select a six-hour refresh. Under Sources &amp; guide, add both EPG
+              feeds below, select a six-hour refresh and sync.
             </p>
+            <label for="pluto-guide">Pluto TV guide</label>
+            <input id="pluto-guide" readonly value="https://i.mjh.nz/PlutoTV/us.xml.gz" />
+            <label for="samsung-guide">Samsung TV Plus guide</label>
+            <input id="samsung-guide" readonly value="https://i.mjh.nz/SamsungTVPlus/us.xml.gz" />
           </section>
         </section>
         <section id="view-settings" class="view" hidden>
@@ -440,11 +463,18 @@
               ><select id="setup-home">
                 <option value="keep">Keep current home screen</option>
               </select>
+              <label class="check-choice">
+                <input id="setup-fire-iptv" type="checkbox" checked />
+                <span><strong>Install fire-iptv</strong><small>
+                  Automatic live TV, sports and guide setup. Add your provider
+                  for movies and series.
+                </small></span>
+              </label>
               <label class="check-choice"
-                ><input id="setup-owntv" type="checkbox" checked /><span
+                ><input id="setup-owntv" type="checkbox" /><span
                   ><strong>Install OwnTV for online IPTV</strong
                   ><small
-                    >Add the worldwide playlist in OwnTV after
+                    >Add the guide-matched playlist and XMLTV feeds after
                     installation.</small
                   ></span
                 ></label

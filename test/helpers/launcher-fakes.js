@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { LAUNCHER_APPS, LTV } from '../../src/launcher-registry.js';
-import { OWNTV } from '../../src/iptv-registry.js';
+import { OWNTV, FIRE_IPTV } from '../../src/iptv-registry.js';
 
 const sha = (text) => crypto.createHash('sha256').update(text).digest('hex');
 
@@ -21,7 +21,7 @@ export function launcherFetch() {
     const u = String(url);
     const api = u.match(/^https:\/\/api\.github\.com\/repos\/([^/]+\/[^/]+)\/releases\//);
     const dl = u.match(/^https:\/\/github\.com\/([^/]+\/[^/]+)\/releases\/download\//);
-    const app = [...LAUNCHER_APPS, LTV, OWNTV].find((a) => a.repo === (api || dl || [])[1]);
+    const app = [...LAUNCHER_APPS, LTV, OWNTV, FIRE_IPTV].find((a) => a.repo === (api || dl || [])[1]);
     if (!app) {
       throw new Error(`unexpected fetch in a test: ${u}`);
     }

@@ -23,8 +23,7 @@ import {
   HOME_REDIRECT,
   launcherApps,
 } from 'fire-tv-toolkit/src/launcher-registry.js';
-import { OWNTV } from 'fire-tv-toolkit/src/iptv-registry.js';
-import { ALL_CHANNELS_PLAYLIST } from './iptv.js';
+import { OWNTV, FIRE_IPTV, IPTV_PLAYLIST } from 'fire-tv-toolkit/src/iptv-registry.js';
 
 const toolkit = {
   ...adb,
@@ -118,6 +117,7 @@ export function createController({
       home: launcher.home,
       guardConfigured: api.guardState().on,
       ownTvInstalled: installed.includes(OWNTV.pkg),
+      fireIptvInstalled: installed.includes(FIRE_IPTV.pkg),
       homeRedirectInstalled: installed.includes(HOME_REDIRECT.pkg),
       screensavers: savers.map((entry) => ({
         id: entry.id,
@@ -132,7 +132,7 @@ export function createController({
         name: entry.name,
         installed: installed.includes(entry.pkg),
       })),
-      playlist: ALL_CHANNELS_PLAYLIST,
+      playlist: IPTV_PLAYLIST,
     };
   }
 
@@ -181,6 +181,8 @@ export function createController({
       case 'check-guard':
       case 'install-owntv':
       case 'open-owntv':
+      case 'install-fire-iptv':
+      case 'open-fire-iptv':
         return { type };
       default:
         throw new Error('Choose a supported task.');
@@ -266,11 +268,22 @@ export function createController({
           detail:
             'Restore guarded settings and apply the updater restrictions recorded by this desktop app.',
         };
+      case 'install-fire-iptv':
+        return {
+          title: 'Install fire-iptv',
+          detail:
+            'Download, verify and install fire-iptv. Live TV and guide feeds are prepared automatically. Add your provider in the app for movies and series.',
+        };
+      case 'open-fire-iptv':
+        return {
+          title: 'Open fire-iptv',
+          detail: 'Open Discover on your television.',
+        };
       case 'install-owntv':
         return {
           title: 'Install OwnTV',
           detail:
-            'Download, verify and install OwnTV. Add the playlist using OwnTV setup on your TV or phone.',
+            'Download, verify and install OwnTV. Add the playlist and guide feeds using OwnTV setup on your TV or phone.',
         };
       case 'open-owntv':
         return {
@@ -420,6 +433,19 @@ export function createController({
       case 'undo-optimize':
         requireResults(await api.revertOptimizations(ip));
         break;
+      case 'install-fire-iptv':
+        await install(ip, FIRE_IPTV);
+        requireVerified(
+          await api.openApp(ip, FIRE_IPTV.pkg),
+          'fire-iptv installed but did not open. Open it from your TV apps.',
+        );
+        break;
+      case 'open-fire-iptv':
+        requireVerified(
+          await api.openApp(ip, FIRE_IPTV.pkg),
+          'fire-iptv did not open. Install it first.',
+        );
+        break;
       case 'install-owntv':
         await install(ip, OWNTV);
         break;
@@ -470,6 +496,24 @@ export function createController({
     }
   }
 
+  function playerActions(request, state, updating) {
+    const actions = [];
+    for (const [key, entry, installed] of [
+      ['ownTv', OWNTV, state.ownTvInstalled],
+      ['fireIptv', FIRE_IPTV, state.fireIptvInstalled],
+    ]) {
+      if (key === 'fireIptv' && request[key] === undefined) continue;
+      if (typeof request[key] !== 'boolean')
+        throw new Error(`Choose whether to ${updating ? 'update' : 'install'} ${entry.name}.`);
+      if (!request[key]) continue;
+      if (updating && !installed)
+        throw new Error(`Install ${entry.name} before updating it.`);
+      if (updating || !installed)
+        actions.push(validate({ type: `install-${entry.id}` }));
+    }
+    return actions;
+  }
+
   function updateActions(request, state) {
     const actions = [];
     const add = (type, values = {}) =>
@@ -490,13 +534,7 @@ export function createController({
         add(type, { id });
       }
     }
-    if (typeof request.ownTv !== 'boolean')
-      throw new Error('Choose whether to update OwnTV.');
-    if (request.ownTv) {
-      if (!state.ownTvInstalled)
-        throw new Error('Install OwnTV before updating it.');
-      add('install-owntv');
-    }
+    actions.push(...playerActions(request, state, true));
     return actions;
   }
 
@@ -522,9 +560,7 @@ export function createController({
       }
       add('home', { id: request.home });
     }
-    if (typeof request.ownTv !== 'boolean')
-      throw new Error('Choose whether to install OwnTV.');
-    if (request.ownTv && !state.ownTvInstalled) add('install-owntv');
+    actions.push(...playerActions(request, state, false));
     return actions;
   }
 

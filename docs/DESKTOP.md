@@ -10,7 +10,7 @@ Connect your TV, then open Setup assistant. Choose a screensaver, a home screen 
 
 Open Guided updater to select supported apps already installed on the TV and revisit timer, Alexa, optimization or protection settings. Choices start unchanged. It downloads supported GitHub releases and verifies each APK against a published or pinned SHA-256. Apps pinned to a specific version require a toolkit update to change that version; other supported apps use their latest published release. App data is retained where Android permits. The desktop releases button opens GitHub so you can download a newer toolkit version.
 
-![Device settings in the guided updater](../art/screenshots/desktop-updater-settings.jpg)
+![Device settings in the guided updater](../art/screenshots/desktop-updater-settings.png)
 
 ## Advanced settings
 
@@ -82,3 +82,9 @@ npm --prefix desktop run lint
 The terminal commands retain their existing dependencies and supported Node.js versions. Desktop dependencies live in their own package. Run `npm --prefix desktop ci` again after changing shared toolkit code so the desktop dependency contains the current source.
 
 Packaged application tests run on native macOS, Windows and Linux CI runners. They check catalog browsing, filters, favorite persistence, actual HLS video decoding, the bundled ADB executable, About, advanced warning cancellation and saved preferences, and installer removal on Windows and Linux. They use a generated test broadcast and isolated application data, so they do not contact a TV.
+
+## fire-iptv on your TV
+
+In Home screen, choose **Install fire-iptv**. The desktop app verifies the pinned release, installs it while keeping existing app data, and opens Discover on the TV. Live TV and guide feeds are prepared automatically. Choose Add provider in the TV app for movies and series.
+
+The setup assistant recommends fire-iptv and keeps OwnTV as an optional alternative. The update assistant includes fire-iptv when it is installed. The desktop Live TV browser remains a separate worldwide channel browser; it does not import provider credentials into the TV app.

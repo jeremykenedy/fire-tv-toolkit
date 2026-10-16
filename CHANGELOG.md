@@ -1,5 +1,28 @@
 # Changelog
 
+## [4.2.0] - 2026-10-16
+
+### Major changes
+
+- `fire-iptv --install` installs the signed fire-iptv v1.0.0 APK, verifies its SHA-256, preserves app data and opens Discover. Its starter prepares live TV and matched guide feeds automatically; movie and series libraries come from a provider added in the app.
+- The shared IPTV menu recommends fire-iptv and retains OwnTV. The desktop Home screen and setup/update assistants also support fire-iptv.
+- OwnTV setup instructions use the guide-matched live/sports preset and two XMLTV feeds.
+
+### Minor changes and fixes
+
+- Revert offers both players individually and preserves both with `--all`.
+- Installer tests cover checksum rejection, player selection and preservation of the other installed player.
+
+### Upgrade guide
+
+From 4.1.x or 4.0.x, pull the toolkit checkout and run `node setup.js` to link the new `fire-iptv` command. Desktop users install the new desktop package. Node 18 remains the CLI minimum; the desktop development toolchain requires Node 22.13 or newer.
+
+Run `fire-iptv --install` to install or update the TV app. It is separate from OpenIPTV and OwnTV. No TV library or configuration migration is required. Add a provider inside the TV app to populate modern on-demand movies and series. Removing a player deletes its private library; back up inside it first.
+
+### Breaking changes
+
+None. Legacy `firetv-iptv --install` and `--uninstall` without `--app` still target OwnTV. Existing toolkit device settings, timers and installed player data are preserved. The recommended interactive player is now fire-iptv.
+
 ## [4.1.0] - 2026-10-16
 
 ### Added in 4.1.0
