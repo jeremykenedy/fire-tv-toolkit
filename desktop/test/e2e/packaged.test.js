@@ -78,7 +78,7 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
     }));
     assert.equal(runtime.packaged, true);
     assert.equal(runtime.version, version);
-    assert.equal(path.resolve(runtime.data), data);
+    assert.equal(fs.realpathSync(runtime.data), fs.realpathSync(data));
     const adb = path.join(
       runtime.resources,
       'platform-tools',
@@ -96,7 +96,17 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
     return page;
   }
   t.after(async () => {
-    if (application) await application.close();
+    if (application) {
+      const page = application.windows()[0];
+      if (page)
+        await page
+          .screenshot({
+            path: path.join(output, `${process.platform}-final-state.png`),
+            timeout: 5000,
+          })
+          .catch(() => {});
+      await application.close();
+    }
     fs.rmSync(data, { recursive: true, force: true });
   });
   let page = await launch();
