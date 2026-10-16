@@ -296,6 +296,7 @@ each one are listed in [Commands](docs/COMMANDS.md).
 | `firetv-timeout-screensaver` | Changes the screensaver timeout. |
 | `firetv-timeouts-reset` | Resets timeouts to the values first seen on your TV. |
 | `firetv-timeouts-current` | Shows the current timeout values and their baselines. |
+| `firetv-diagnostics` | Reads device, display, memory, storage, installed screensaver versions and selected app exit/frame summaries. Also available from the menu's Advanced diagnostics entry. |
 | `firetv-timeouts-possible` | Shows which timeouts this TV supports. |
 | `firetv-install-adb` | Installs adb if it is missing. |
 | `firetv-revert` | Puts the TV back how it was, item by item. Keeps the tool installed. |

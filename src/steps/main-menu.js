@@ -17,6 +17,7 @@ import { guardIfWanted, manageGuard } from './guard.js';
 import { uninstallEverything } from './uninstall.js';
 import { printCommandList } from '../command-list.js';
 import { print } from '../output.js';
+import { diagnosticsReport } from './diagnostics.js';
 
 const MENU_CHOICES = [
   { name: 'Install Android SDK Platform Tools (adb)', value: 'adb' },
@@ -32,6 +33,7 @@ const MENU_CHOICES = [
   { name: 'Guard your setup so Amazon cannot undo it', value: 'guard' },
   { name: 'Revert the TV, item by item', value: 'revert' },
   { name: 'List all commands', value: 'commands' },
+  { name: 'Advanced: read device and screensaver diagnostics', value: 'diagnostics' },
 ];
 
 const MENU_ACTIONS = {
@@ -46,6 +48,7 @@ const MENU_ACTIONS = {
   'ltv-backup': (ip) => manageLtvBackup(ip),
   optimize: (ip) => optimizeForScreensavers(ip),
   guard: (ip) => manageGuard(ip),
+  diagnostics: (ip) => diagnosticsReport(ip),
   revert: (ip) => uninstallEverything(ip),
   commands: () => printCommandList(),
 };

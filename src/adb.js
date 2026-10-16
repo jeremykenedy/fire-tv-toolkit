@@ -20,6 +20,11 @@ const CONNECT_TIMEOUT_MS = 6000;
 // A large APK over Wi-Fi can take much longer than an ordinary adb call.
 const INSTALL_TIMEOUT_MS = 180000;
 
+/** Runs a diagnostic read with bounded output and execution time. */
+export async function readDiagnostic(ip, args) {
+  return run(['-s', target(ip), 'shell', ...args], { timeout: 6000 });
+}
+
 /**
  * One short line saying why an adb call failed, so a failure can be reported
  * as more than "could not reach the TV".

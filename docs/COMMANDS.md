@@ -11,6 +11,8 @@ and `remove` refuses to run and points you at `start`.
 
 ## Setup and help
 
+`firetv-diagnostics` reads a device snapshot without changing TV settings or starting or stopping apps. The guided menu also has an Advanced diagnostics entry. It reports the selected and running screensaver separately, Android display modes, window sizes, system memory, app storage, installed catalog versions, and available exit and UI frame summaries for the selected screensaver. Unsupported or permission-protected reads show as unavailable. Android UI frame counters do not measure OpenGL, Filament or video playback FPS, and a reported display mode does not prove an app's rendering resolution. Redirect the text to a local file if needed: `firetv-diagnostics > diagnostics.txt`.
+
 | Command | What it does | Flags |
 |---------|--------------|-------|
 | `start` | Opens the guided menu. Runs setup the first time, then hands off to `update`. | none |

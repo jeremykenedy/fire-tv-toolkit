@@ -12,6 +12,7 @@ export const GROUPS = ['Setup and help', 'Alexa deep-sleep fix', 'Screensavers',
  * two, so this can never silently drift out of date.
  */
 export const COMMANDS = [
+  { group: 'Setup and help', name: 'firetv-diagnostics', desc: 'Reads device, display, memory, installed screensaver versions and selected app exit/frame summaries. Changes nothing on the TV.' },
   { group: 'Setup and help', name: 'fire-tv-toolkit', desc: 'Runs the full guided installer: adb, device setup, Alexa fix, screensavers, timeouts and optimizing.' },
   { group: 'Revert and remove', name: 'firetv-revert', desc: 'Puts the TV back how it was, item by item. Keeps these commands installed; see uninstall.' },
   { group: 'Setup and help', name: 'firetv-install-adb', desc: 'Installs adb (Android SDK Platform Tools) if it is not already on your machine.' },

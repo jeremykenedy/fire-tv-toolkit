@@ -13,6 +13,7 @@
     "coverage": "node --test --test-timeout=600000 --experimental-test-coverage --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=lcov.info test/*.test.js"
   },
   "bin": {
+    "firetv-diagnostics": "./bin/firetv-diagnostics.js",
     "fire-tv-toolkit": "./bin/fire-tv-toolkit.js",
     "firetv-revert": "./bin/firetv-revert.js",
     "enable-alexa-fix": "./bin/enable-alexa-fix.js",
