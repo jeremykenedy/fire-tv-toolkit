@@ -1,9 +1,11 @@
 // The vetted screensavers. Each one was reviewed this way before being added
 // here: pulled its latest GitHub release APK, checked its requested Android
 // permissions, checked its actual network traffic and any hardcoded endpoints
-// in its code, and confirmed no ads, analytics, or trackers. `repo` is always
-// under github.com/jeremykenedy: a fork for the third-party ones (see the
-// Credits section in the README for the originals), or one of Jeremy's own.
+// in its code, and confirmed no ads, analytics, or trackers. `repo` is under
+// github.com/jeremykenedy, a fork for the third-party ones (see the Credits
+// section in the README for the originals) or one of Jeremy's own, except for
+// authors trusted directly. Those install from the author's own release,
+// pinned by tag, asset and SHA-256 because their releases publish no checksum.
 
 export const SCREENSAVERS = [
   {
@@ -11,7 +13,10 @@ export const SCREENSAVERS = [
     name: 'Aerial Views',
     pkg: 'com.neilturner.aerialviews',
     dreamComponent: 'com.neilturner.aerialviews/.ui.screensaver.DreamActivity',
-    repo: 'jeremykenedy/AerialViews',
+    repo: 'theothernt/AerialViews',
+    tag: '1.8.5',
+    asset: 'aerial-views-1.8.5.apk',
+    sha256: 'a20b4bc748da5ce890d96536494952aa4f50a6b589c50dee176415c021407070',
     blurb: 'Aerial drone footage, the Apple TV screensaver look. No ads.',
   },
   {
