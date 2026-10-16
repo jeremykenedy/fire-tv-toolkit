@@ -1,14 +1,9 @@
 <p align="center">
-    <picture>
-        <source media="(prefers-color-scheme: dark) and (prefers-reduced-motion: reduce)" srcset="art/banner-still-dark.svg">
-        <source media="(prefers-color-scheme: dark)" srcset="art/banner-dark.svg">
-        <source media="(prefers-reduced-motion: reduce)" srcset="art/banner-still-light.svg">
-        <source media="(prefers-color-scheme: light)" srcset="art/banner-light.svg">
-        <img src="art/banner-light.svg" alt="Fire TV Toolkit" width="800">
-    </picture>
+  <a href="https://github.com/jeremykenedy/fire-tv-toolkit#gh-light-mode-only"><picture><source media="(max-width: 600px) and (prefers-reduced-motion: reduce)" srcset="art/banner-mobile-still-light.be835efd4e0b.svg"><source media="(prefers-reduced-motion: reduce)" srcset="art/banner-still-light.ac99d0318bde.svg"><source media="(max-width: 600px)" srcset="art/banner-mobile-light.6e48e8453961.svg"><img src="art/banner-light.b1ee5b0d1bd2.svg#gh-light-mode-only" alt="Fire TV Toolkit" width="800"></picture></a>
+  <a href="https://github.com/jeremykenedy/fire-tv-toolkit#gh-dark-mode-only"><picture><source media="(max-width: 600px) and (prefers-reduced-motion: reduce)" srcset="art/banner-mobile-still-dark.7d4d6d35a31d.svg"><source media="(prefers-reduced-motion: reduce)" srcset="art/banner-still-dark.02953d749d03.svg"><source media="(max-width: 600px)" srcset="art/banner-mobile-dark.6b997743de7a.svg"><img src="art/banner-dark.adc74a3d5b20.svg#gh-dark-mode-only" alt="Fire TV Toolkit" width="800"></picture></a>
 </p>
 
-<p align="center">Ad-free screensavers, a better home screen, and the Alexa deep-sleep fix for your Fire TV, set up from your terminal.</p>
+<p align="center">Worldwide online IPTV and Fire TV tools, from your desktop or terminal.</p>
 
 <p align="center">
     <a href="https://github.com/jeremykenedy/fire-tv-toolkit/releases/latest"><img src="https://img.shields.io/github/v/release/jeremykenedy/fire-tv-toolkit" alt="Latest release"></a>
@@ -54,9 +49,13 @@
 
 ## What it does
 
+The desktop app browses and plays the worldwide iptv-org catalog. Search channels, filter by country, language or category, save favorites, and choose alternate stream sources. Download the installer for your computer from [Releases](https://github.com/jeremykenedy/fire-tv-toolkit/releases/latest), or follow the [desktop guide](docs/DESKTOP.md).
+
 Fire TV Toolkit is a command-line tool that takes your Fire TV back from the
 ads and the bugs. It talks to the TV over adb from your computer, and every
-change is explained before it happens, confirmed by you, and reversible.
+guided change is explained before it happens and confirmed by you. Captured
+settings can be restored; removing TV apps or using the advanced shell can
+have lasting effects.
 
 Run `start` and it walks you through it: connect to the TV, turn on the Alexa
 deep-sleep fix, install ad-free screensavers, pick the one you want, and
@@ -65,18 +64,21 @@ so you can run just the part you need later.
 
 ## Features
 
+- **Desktop guides**: Setup assistant walks through apps and settings before applying approved selections. Guided updater refreshes selected installed TV apps from verified releases.
+- **Advanced tools**: a warning must be accepted before Activity and the TV terminal appear. Commands run on the connected TV, with output, exit status and a Stop button.
+- **About and credits**: device compatibility, intended use, liability information, repository and MIT license links, and author credit are available in the app.
 - **Alexa deep-sleep fix**: keeps Alexa able to reach the TV while it sleeps. Fire OS has a setting for this that its own toggle never writes.
 - **Ad-free screensavers**: replaces Amazon's ad-serving screensaver with Aerial Views (the default), AndroSaver, Snoozy, Aquarium Live, Aquarium 4K, Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit, or Helios Lightfield, each an optional install. Android's built-in Colors, and Amazon with Ads, stay available to switch back to.
 - **Verified downloads**: every APK comes from a GitHub release and is checked against a published SHA-256 before it is installed.
 - **Optional AT4K or LTvLauncher home screen**: an ad-free home screen in place of the Amazon menu, switched on or off, or between the two, with one command. LTvLauncher gets the notification access Android TV only grants over adb, and its backups can be copied to your computer.
-- **Free live TV**: install OwnTV, a free, open source IPTV player, and add the [iptv-org](https://github.com/iptv-org/iptv) playlist of publicly available United States channels to it from your phone.
+- **Free live TV**: install OwnTV, a free, open source IPTV player, and add the [iptv-org](https://github.com/iptv-org/iptv) playlist of publicly available channels from around the world to it from your phone.
 - **On-TV screensaver picker**: a Screensavers tile on the TV for switching the screensaver from the couch, since Fire OS Settings only offers Amazon's.
 - **Optimize for screensavers**: checks the TV for settings that stop or spoil a screensaver (screensaver switched off, sleep coming before the screensaver, Amazon's Ambient Experience, Aerial Views' frame rate permission) and fixes only the ones it has. Offered during `start` and `update`, or run `optimize` any time.
 - **Guard against Amazon**: Home Redirect saves the screensaver, Alexa fix, Home and timeout settings and puts them back the moment Amazon changes them, after a reboot, after an app update, and every 15 minutes. Amazon's updaters are held back as far as Fire OS allows. `guard --check` reports and fixes anything that slipped through.
 - **Timeout control**: view, change and reset the sleep and screensaver timeouts, with the first value seen on your TV saved as its baseline.
 - **Full revert**: put the TV back how it was, item by item, then remove the tool from your computer.
 - **Script friendly**: every command takes flags, answers `--help`, and exits non-zero on failure.
-- **Safe by default**: nothing changes until you confirm, Esc cancels any prompt, and risky steps need a typed confirmation.
+- **Reviewed changes**: guided TV changes require confirmation. Advanced shell access is off by default and requires acknowledgement of its warning before commands can run.
 
 ## Available screensavers
 
@@ -126,6 +128,38 @@ screensaver --set=contour-flow
 ```
 
 ## Screenshots
+
+### Desktop app
+
+Captured from the packaged macOS 4.1.0 app.
+
+<table>
+<tr>
+<td><a href="art/screenshots/desktop-live-tv.jpg"><img src="art/screenshots/desktop-live-tv.jpg" alt="Worldwide IPTV playback"></a></td>
+<td><a href="art/screenshots/desktop-overview.jpg"><img src="art/screenshots/desktop-overview.jpg" alt="Connected Fire TV overview"></a></td>
+<td><a href="art/screenshots/desktop-screensavers.jpg"><img src="art/screenshots/desktop-screensavers.jpg" alt="Screensaver controls"></a></td>
+</tr>
+<tr>
+<td><a href="art/screenshots/desktop-home.jpg"><img src="art/screenshots/desktop-home.jpg" alt="Home screen and OwnTV controls"></a></td>
+<td><a href="art/screenshots/desktop-settings.jpg"><img src="art/screenshots/desktop-settings.jpg" alt="Fire TV device settings"></a></td>
+<td><a href="art/screenshots/desktop-activity.jpg"><img src="art/screenshots/desktop-activity.jpg" alt="Device activity and verification results"></a></td>
+</tr>
+<tr>
+<td><a href="art/screenshots/desktop-setup.jpg"><img src="art/screenshots/desktop-setup.jpg" alt="Guided setup app choices"></a></td>
+<td><a href="art/screenshots/desktop-setup-settings.jpg"><img src="art/screenshots/desktop-setup-settings.jpg" alt="Guided setup settings"></a></td>
+<td><a href="art/screenshots/desktop-setup-review.jpg"><img src="art/screenshots/desktop-setup-review.jpg" alt="Guided setup selection review"></a></td>
+</tr>
+<tr>
+<td><a href="art/screenshots/desktop-updater.jpg"><img src="art/screenshots/desktop-updater.jpg" alt="Guided installed app updater"></a></td>
+<td><a href="art/screenshots/desktop-advanced.jpg"><img src="art/screenshots/desktop-advanced.jpg" alt="Advanced settings and warning"></a></td>
+<td><a href="art/screenshots/desktop-terminal.jpg"><img src="art/screenshots/desktop-terminal.jpg" alt="Read-only Fire TV shell command output"></a></td>
+</tr>
+<tr>
+<td><a href="art/screenshots/desktop-about.jpg"><img src="art/screenshots/desktop-about.jpg" alt="About, compatibility, license and author"></a></td>
+<td><a href="art/screenshots/desktop-advanced-warning.jpg"><img src="art/screenshots/desktop-advanced-warning.jpg" alt="Warning before enabling advanced controls"></a></td>
+<td><a href="art/screenshots/desktop-updater-review.jpg"><img src="art/screenshots/desktop-updater-review.jpg" alt="Guided updater review before applying changes"></a></td>
+</tr>
+</table>
 
 Captured on an Insignia Fire TV Edition TV, Android TV emulators, and in macOS Terminal. Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit and Helios Lightfield use screenshots from their own repositories. Select any screenshot to see it full size.
 
@@ -194,12 +228,17 @@ Captured on an Insignia Fire TV Edition TV, Android TV emulators, and in macOS T
 |----------|--------|
 | Fire TV Edition TVs (Fire OS 8, Android 11) | Tested on an Insignia Fire TV Edition, model AFTDEC012E, Fire OS 8.1.8.5 |
 | Fire TV Stick and Cube | Not tested yet |
-| macOS | Tested |
-| Linux | Tests pass in CI; not tested against a TV |
-| Windows | Not supported |
-| Node.js | 18, 20, 22 and 26 tested |
+| macOS desktop | Native app checked; Intel and Apple silicon packages |
+| Windows x64 desktop | Installer, playback and removal checked in native CI; not tested against a TV |
+| Linux x64 desktop | Debian installation, playback and removal checked in native CI; not tested against a TV |
+| Terminal CLI | macOS tested; Linux tests pass in CI; Windows CLI is not supported |
+| Node.js for the CLI | 18 or later; desktop source builds require 22.13 or later |
 
 ## Requirements
+
+Desktop installers include the application runtime and ADB. Watching IPTV in the desktop app does not require a TV connection. Fire TV tools require a TV on the same network with ADB debugging enabled. See the [desktop guide](docs/DESKTOP.md).
+
+To run the terminal CLI:
 
 - Node.js 18 or later
 - A Fire TV on the same network as your computer, with ADB debugging turned on
@@ -224,7 +263,7 @@ Captured on an Insignia Fire TV Edition TV, Android TV emulators, and in macOS T
 - **AT4K launcher**: installed from its author's own release and checked against a hash pinned in this tool. See [Home screen](docs/LAUNCHER.md).
 - **LTvLauncher**: installed from its authors' own release, pinned by tag and hash in this tool because its releases publish no checksum. It has no internet permission. See [Home screen](docs/LAUNCHER.md).
 - **OwnTV**: installed unmodified from its author's own release, pinned by tag and hash because its releases publish no checksum. See [Free live TV](docs/IPTV.md).
-- **iptv-org**: the United States playlist OwnTV is pointed at. This tool only shows its URL; OwnTV fetches it.
+- **iptv-org**: the worldwide channel catalog and playlist. The desktop app browses the catalog and plays streams directly; OwnTV imports the playlist on the TV.
 - **Fire OS settings**: the Alexa fix, the active screensaver, the timeouts and the accessibility services the home screen uses.
 
 ## Putting your Fire TV in developer mode
@@ -255,6 +294,10 @@ The installer asks you to confirm this and prompts for the IP address before
 doing anything else.
 
 ## Installation
+
+For the desktop app, download your operating system's installer from [Releases](https://github.com/jeremykenedy/fire-tv-toolkit/releases/latest) and follow the [desktop guide](docs/DESKTOP.md). The installers are currently unsigned.
+
+For the terminal CLI:
 
 1. Clone the repo and run the setup script:
 
@@ -291,7 +334,7 @@ each one are listed in [Commands](docs/COMMANDS.md).
 | `launcher`, `firetv-launcher` | Installs the AT4K or LTvLauncher home screen and switches the Home button between them and the Amazon menu. |
 | `firetv-ltv-notifications` | Lets LTvLauncher read notifications, which Android TV only allows over adb. Installing LTvLauncher turns it on; `--off` turns it off. |
 | `firetv-ltv-backup` | Copies a backup you exported in LTvLauncher from the TV to this computer. `--pull=<file>` takes the newest. |
-| `firetv-iptv` | Installs or updates OwnTV, opens it, and shows the iptv-org playlist of US channels to add. `--uninstall` removes it. |
+| `firetv-iptv` | Installs or updates OwnTV, opens it, and shows the iptv-org worldwide channel playlist to add. `--uninstall` removes it. |
 | `firetv-timeouts` | Reviews, edits or resets the sleep and screensaver timeouts in one flow. |
 | `firetv-timeout-sleep` | Changes the sleep timeout. |
 | `firetv-timeout-screensaver` | Changes the screensaver timeout. |
@@ -328,6 +371,7 @@ fire-tv-toolkit/
 ├── android/home-redirect/   # The Home Redirect app: sends Home to AT4K or LTvLauncher, adds the Screensavers tile
 ├── art/                     # README banners
 ├── bin/                     # One entry point per command
+├── desktop/                 # Cross-platform IPTV player, Fire TV tools and installers
 ├── docs/                    # Guides, references and screenshots
 ├── src/
 │   ├── apply/               # The adb changes themselves
@@ -347,13 +391,16 @@ Every guide is also on the project site: [jeremykenedy.github.io/fire-tv-toolkit
 
 | Guide | What it covers |
 |-------|----------------|
+| [4.1.0 release and upgrade guide](docs/RELEASE-4.1.0.md) | Desktop release changes, upgrade steps, validation and known limits |
+| [Signing desktop installers](docs/SIGNING.md) | Apple Developer ID, notarization and Windows Artifact Signing setup |
+| [Desktop app](docs/DESKTOP.md) | Installing, watching worldwide IPTV, managing Fire TV and removing the app |
 | [Commands](docs/COMMANDS.md) | Every command and every flag |
 | [Configuration](docs/CONFIGURATION.md) | The `.env` file and each saved value |
 | [How it works](docs/HOW-IT-WORKS.md) | The exact adb settings each command changes |
 | [Screensavers](docs/SCREENSAVERS.md) | Each screensaver, where it comes from, and how downloads are verified |
 | [Home screen](docs/LAUNCHER.md) | The AT4K and LTvLauncher home screens, Home Redirect and the on-TV picker |
 | [Guard](docs/GUARD.md) | What the guard keeps, how it fights Amazon's updates, and its limits |
-| [Free live TV](docs/IPTV.md) | Installing OwnTV and adding the iptv-org playlist of US channels |
+| [Free live TV](docs/IPTV.md) | Installing OwnTV and adding the iptv-org worldwide channel playlist |
 | [Optimizing](docs/OPTIMIZE.md) | What `optimize` checks, what it changes, and how it is undone |
 | [Timeouts](docs/TIMEOUTS.md) | The sleep and screensaver timeouts and their baselines |
 | [Uninstalling](docs/UNINSTALLING.md) | Reverting the TV and removing the tool |

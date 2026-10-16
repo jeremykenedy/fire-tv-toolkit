@@ -2,7 +2,7 @@
 
 `firetv-iptv` installs OwnTV, a free, open source IPTV player for Android TV,
 opens it on the TV, and shows the [iptv-org](https://github.com/iptv-org/iptv)
-playlist of publicly available United States channels to add to it.
+playlist of publicly available channels from around the world to add to it.
 
 ## Adding the channels
 
@@ -18,11 +18,10 @@ the TV:
 3. Choose **M3U / M3U8** and paste:
 
    ```text
-   https://iptv-org.github.io/iptv/countries/us.m3u
+   https://iptv-org.github.io/iptv/index.m3u
    ```
 
-4. Press **Send to TV**, then **Start Import** on the TV. OwnTV lists about
-   1,500 channels under **Live TV**.
+4. Press **Send to TV**, then **Start Import** on the TV. OwnTV lists the imported channels under **Live TV**.
 
 iptv-org also publishes playlists for every other country, category and
 language in its [PLAYLISTS.md](https://github.com/iptv-org/iptv/blob/master/PLAYLISTS.md).

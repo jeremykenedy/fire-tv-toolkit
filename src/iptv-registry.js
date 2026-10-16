@@ -13,5 +13,5 @@ export const OWNTV = {
   sha256: '39a81165fafc1eec24bbd9d5d2769e54de24441a5de20993550170abad22c295',
 };
 
-/** iptv-org's playlist of publicly available United States channels. */
-export const IPTV_PLAYLIST = 'https://iptv-org.github.io/iptv/countries/us.m3u';
+/** iptv-org's playlist of publicly available channels from around the world. */
+export const IPTV_PLAYLIST = 'https://iptv-org.github.io/iptv/index.m3u';

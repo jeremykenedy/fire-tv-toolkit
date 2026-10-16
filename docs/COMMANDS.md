@@ -61,7 +61,7 @@ Screensaver ids: `aerial` (the default), `androsaver`, `snoozy`,
 
 | Command | What it does | Flags |
 |---------|--------------|-------|
-| `firetv-iptv` | Installs or updates OwnTV, opens it, and shows the iptv-org playlist of US channels to add from your phone. See [Free live TV](IPTV.md). | `--install`, `--uninstall` (also deletes the playlists saved in OwnTV), `--yes` (still needs `--install` or `--uninstall`) |
+| `firetv-iptv` | Installs or updates OwnTV, opens it, and shows the iptv-org worldwide channel playlist to add from your phone. See [Free live TV](IPTV.md). | `--install`, `--uninstall` (also deletes the playlists saved in OwnTV), `--yes` (still needs `--install` or `--uninstall`) |
 
 ## Timeouts
 

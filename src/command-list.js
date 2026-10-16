@@ -23,7 +23,7 @@ export const COMMANDS = [
   { group: 'Home screen and apps', name: 'firetv-launcher', desc: 'Installs the optional AT4K or LTvLauncher home screen and switches the Home button between them and the Amazon menu.' },
   { group: 'Home screen and apps', name: 'firetv-ltv-notifications', desc: 'Lets LTvLauncher read notifications, which Android TV only allows over adb. --off turns it off.' },
   { group: 'Home screen and apps', name: 'firetv-ltv-backup', desc: 'Copies an LTvLauncher backup exported on the TV to this computer. --pull=<file> takes the newest.' },
-  { group: 'Home screen and apps', name: 'firetv-iptv', desc: 'Installs OwnTV, a free IPTV player, opens it and shows the iptv-org playlist of US channels to add. --uninstall removes it.' },
+  { group: 'Home screen and apps', name: 'firetv-iptv', desc: 'Installs OwnTV, a free IPTV player, opens it and shows the iptv-org worldwide channel playlist to add. --uninstall removes it.' },
   { group: 'Home screen and apps', name: 'launcher', desc: 'Short for firetv-launcher: installs AT4K or LTvLauncher, or switches the Home button.' },
   { group: 'Screensavers', name: 'firetv-optimize', desc: 'Checks the TV for settings that stop or spoil screensavers and fixes only those it has. firetv-revert puts them back.' },
   { group: 'Screensavers', name: 'optimize', desc: 'Short for firetv-optimize: sets the TV up for screensavers.' },
