@@ -32,8 +32,13 @@
 - [Features](#features)
 - [Available screensavers](#available-screensavers)
 - [Screenshots](#screenshots)
+  - [Desktop app](#desktop-app)
+  - [The home screen and the on-TV picker](#the-home-screen-and-the-on-tv-picker)
+  - [Screensavers](#screensavers)
+  - [The command line](#the-command-line)
 - [Platform support](#platform-support)
 - [Requirements](#requirements)
+  - [Required packages](#required-packages)
 - [Integrations](#integrations)
 - [Putting your Fire TV in developer mode](#putting-your-fire-tv-in-developer-mode)
 - [Installation](#installation)
@@ -131,33 +136,33 @@ screensaver --set=contour-flow
 
 ### Desktop app
 
-Captured from the packaged macOS 4.1.0 app.
+Captured from the packaged macOS 4.2.0 app connected to a physical Fire TV.
 
 <table>
 <tr>
-<td><a href="art/screenshots/desktop-live-tv.jpg"><img src="art/screenshots/desktop-live-tv.jpg" alt="Worldwide IPTV playback"></a></td>
-<td><a href="art/screenshots/desktop-overview.jpg"><img src="art/screenshots/desktop-overview.jpg" alt="Connected Fire TV overview"></a></td>
-<td><a href="art/screenshots/desktop-screensavers.jpg"><img src="art/screenshots/desktop-screensavers.jpg" alt="Screensaver controls"></a></td>
+<td><a href="art/screenshots/desktop-live-tv.png"><img src="art/screenshots/desktop-live-tv.png" alt="Worldwide IPTV channel browser"></a></td>
+<td><a href="art/screenshots/desktop-overview.png"><img src="art/screenshots/desktop-overview.png" alt="Connected Fire TV overview"></a></td>
+<td><a href="art/screenshots/desktop-screensavers.png"><img src="art/screenshots/desktop-screensavers.png" alt="Screensaver controls"></a></td>
 </tr>
 <tr>
-<td><a href="art/screenshots/desktop-home.jpg"><img src="art/screenshots/desktop-home.jpg" alt="Home screen and OwnTV controls"></a></td>
-<td><a href="art/screenshots/desktop-settings.jpg"><img src="art/screenshots/desktop-settings.jpg" alt="Fire TV device settings"></a></td>
-<td><a href="art/screenshots/desktop-activity.jpg"><img src="art/screenshots/desktop-activity.jpg" alt="Device activity and verification results"></a></td>
+<td><a href="art/screenshots/desktop-home.png"><img src="art/screenshots/desktop-home.png" alt="fire-iptv installer, home screen and OwnTV controls"></a></td>
+<td><a href="art/screenshots/desktop-settings.png"><img src="art/screenshots/desktop-settings.png" alt="Fire TV device settings"></a></td>
+<td><a href="art/screenshots/desktop-activity.png"><img src="art/screenshots/desktop-activity.png" alt="Device activity and verification results"></a></td>
 </tr>
 <tr>
-<td><a href="art/screenshots/desktop-setup.jpg"><img src="art/screenshots/desktop-setup.jpg" alt="Guided setup app choices"></a></td>
-<td><a href="art/screenshots/desktop-setup-settings.jpg"><img src="art/screenshots/desktop-setup-settings.jpg" alt="Guided setup settings"></a></td>
-<td><a href="art/screenshots/desktop-setup-review.jpg"><img src="art/screenshots/desktop-setup-review.jpg" alt="Guided setup selection review"></a></td>
+<td><a href="art/screenshots/desktop-setup.png"><img src="art/screenshots/desktop-setup.png" alt="Guided setup app choices"></a></td>
+<td><a href="art/screenshots/desktop-setup-settings.png"><img src="art/screenshots/desktop-setup-settings.png" alt="Guided setup settings"></a></td>
+<td><a href="art/screenshots/desktop-setup-review.png"><img src="art/screenshots/desktop-setup-review.png" alt="Guided setup selection review"></a></td>
 </tr>
 <tr>
-<td><a href="art/screenshots/desktop-updater.jpg"><img src="art/screenshots/desktop-updater.jpg" alt="Guided installed app updater"></a></td>
-<td><a href="art/screenshots/desktop-advanced.jpg"><img src="art/screenshots/desktop-advanced.jpg" alt="Advanced settings and warning"></a></td>
-<td><a href="art/screenshots/desktop-terminal.jpg"><img src="art/screenshots/desktop-terminal.jpg" alt="Read-only Fire TV shell command output"></a></td>
+<td><a href="art/screenshots/desktop-updater.png"><img src="art/screenshots/desktop-updater.png" alt="Guided installed app updater"></a></td>
+<td><a href="art/screenshots/desktop-advanced.png"><img src="art/screenshots/desktop-advanced.png" alt="Advanced settings and warning"></a></td>
+<td><a href="art/screenshots/desktop-terminal.png"><img src="art/screenshots/desktop-terminal.png" alt="Read-only Fire TV shell command output"></a></td>
 </tr>
 <tr>
-<td><a href="art/screenshots/desktop-about.jpg"><img src="art/screenshots/desktop-about.jpg" alt="About, compatibility, license and author"></a></td>
-<td><a href="art/screenshots/desktop-advanced-warning.jpg"><img src="art/screenshots/desktop-advanced-warning.jpg" alt="Warning before enabling advanced controls"></a></td>
-<td><a href="art/screenshots/desktop-updater-review.jpg"><img src="art/screenshots/desktop-updater-review.jpg" alt="Guided updater review before applying changes"></a></td>
+<td><a href="art/screenshots/desktop-about.png"><img src="art/screenshots/desktop-about.png" alt="About, compatibility, license and author"></a></td>
+<td><a href="art/screenshots/desktop-advanced-warning.png"><img src="art/screenshots/desktop-advanced-warning.png" alt="Warning before enabling advanced controls"></a></td>
+<td><a href="art/screenshots/desktop-updater-review.png"><img src="art/screenshots/desktop-updater-review.png" alt="Guided updater review before applying changes"></a></td>
 </tr>
 </table>
 
@@ -393,6 +398,7 @@ Every guide is also on the project site: [jeremykenedy.github.io/fire-tv-toolkit
 
 | Guide | What it covers |
 |-------|----------------|
+| [4.2.0 release and upgrade guide](docs/RELEASE-4.2.0.md) | fire-iptv installation, guide setup, upgrade steps and validation |
 | [4.1.0 release and upgrade guide](docs/RELEASE-4.1.0.md) | Desktop release changes, upgrade steps, validation and known limits |
 | [Signing desktop installers](docs/SIGNING.md) | Apple Developer ID, notarization and Windows Artifact Signing setup |
 | [Desktop app](docs/DESKTOP.md) | Installing, watching worldwide IPTV, managing Fire TV and removing the app |
