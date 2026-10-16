@@ -44,6 +44,7 @@ const savers = [
   ...BUILT_IN_SCREENSAVERS,
   AMAZON_DEFAULT,
 ];
+const MAX_TIMEOUT_MS = 35_791 * 60_000;
 
 function writeJson(file, value) {
   const temporary = `${file}.tmp`;
@@ -158,7 +159,7 @@ export function createController({
           !definition ||
           !Number.isInteger(value) ||
           value < (id === 'sleep' ? 0 : 1) ||
-          value > 2147460000
+          value > MAX_TIMEOUT_MS
         )
           throw new Error('Enter a valid timeout in minutes.');
         return { type, id, value, definition };

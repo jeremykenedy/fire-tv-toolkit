@@ -239,6 +239,25 @@ test('resetting timers restores captured values', async (t) => {
   assert.equal(h.writes.filter((write) => write.type === 'timeout').length, 3);
 });
 
+test('timer changes accept the supported ceiling and reject values above it', async (t) => {
+  const h = harness(t);
+  await h.controller.connect('192.168.1.10');
+  const ceiling = 35_791 * 60_000;
+  const result = await h.controller.action(
+    { type: 'timeout', id: 'screensaver', value: ceiling },
+    async () => true,
+  );
+  assert.equal(result.state.screensaverMs, ceiling);
+  await assert.rejects(
+    h.controller.action(
+      { type: 'timeout', id: 'screensaver', value: ceiling + 1 },
+      async () => true,
+    ),
+    /valid timeout/,
+  );
+  assert.equal(h.writes.length, 1);
+});
+
 test('optimization changes are computed from the TV and ignore supplied commands', async (t) => {
   const h = harness(t);
   await h.controller.connect('192.168.1.10');
