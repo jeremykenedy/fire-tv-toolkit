@@ -20,7 +20,9 @@
 | `vortex-spiral` | Vortex Spiral | `com.jeremykenedy.vortexspiral` | [jeremykenedy/vortex-spiral](https://github.com/jeremykenedy/vortex-spiral) | Animated spiral ribbons with adjustable arms, winding, color, brightness and motion |
 | `signal-rain` | Signal Rain | `com.jeremykenedy.signalrain` | [jeremykenedy/signal-rain](https://github.com/jeremykenedy/signal-rain) | Luminous abstract digital rain with adjustable streams, colors and motion |
 | `retro-flight` | Retro Flight | `com.jeremykenedy.retroflight` | [jeremykenedy/retro-flight](https://github.com/jeremykenedy/retro-flight) | Continuous perspective flight through an original procedural star field |
-| `pipeworks-dream` | Pipeworks Dream | `com.jeremykenedy.pipeworksdream` | [jeremykenedy/pipeworks-dream](https://github.com/jeremykenedy/pipeworks-dream) | Continuously growing geometric pipes with adjustable density, speed, palette and glow |
+| `pipeworks-dream` | Pipeworks Dream | `com.jeremykenedy.pipeworksdream` | [jeremykenedy/pipeworks-dream](https://github.com/jeremykenedy/pipeworks-dream) | Rounded metallic 3D pipes with smooth growth, moving perspective and adjustable finishes |
+| `slot-vision` | Slot Vision | `com.jeremykenedy.reelatrium` | [jeremykenedy/slot-vision](https://github.com/jeremykenedy/slot-vision) | Classic and multi-row reels with cabinet or fullscreen views, seasonal themes and payout coin showers |
+| `hearth-presence` | Hearth Presence | `com.jeremykenedy.hearthpresence` | [jeremykenedy/hearth-presence](https://github.com/jeremykenedy/hearth-presence) | Moving wood and gas fireplaces with adjustable surrounds, frame width and burn speed |
 | `aqua-surface` | Aqua Surface Drift | `com.jeremykenedy.aquasurfacedrift` | [jeremykenedy/aqua-surface-drift](https://github.com/jeremykenedy/aqua-surface-drift) | Animated water with adjustable environment, lighting, ripples, motion and view |
 | `earthbound-orbit` | Earthbound Orbit | `com.jeremykenedy.earthboundorbit` | [jeremykenedy/earthbound-orbit](https://github.com/jeremykenedy/earthbound-orbit) | A continuously rotating Earth with adjustable atmosphere, star density and camera movement |
 | `perseid-passage` | Perseid Passage | `com.jeremykenedy.perseidpassage` | [jeremykenedy/perseid-passage](https://github.com/jeremykenedy/perseid-passage) | Animated meteor showers with adjustable frequency, size, speed, star density, palette and brightness |
@@ -33,7 +35,7 @@
 
 Aerial Views installs from its author's own release, pinned by tag and SHA-256
 because its releases publish no checksum. AndroSaver and Snoozy are forks of
-third-party projects (see Credits in the README). Aquarium Live, Aquarium 4K, Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit and Helios Lightfield are original projects.
+third-party projects (see Credits in the README). Aquarium Live, Aquarium 4K, Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit, Helios Lightfield, Slot Vision and Hearth Presence are original projects.
 
 Aerial Views is the default: on a TV with none of these installed it starts
 checked in `firetv-screensavers`, and `screensaver --yes` picks it whenever it
@@ -54,6 +56,14 @@ active with `screensaver --set=<id>` or the Screensavers tile on the TV.
 Before a screensaver is added, its latest release APK is checked: the
 permissions it asks for, its network traffic and any hard-coded endpoints, and
 that it has no ads, analytics or trackers.
+
+## Visual quality before release
+
+Review the running animation at full-screen TV size before accepting a new saver or a rendering rewrite. Inspect multiple settled frames and motion over a full animation cycle, along with every distinct scene or material mode. A compiling app and a single attractive screenshot do not establish visual quality.
+
+Materials need visible depth, credible lighting and clean edges. Realistic subjects need genuine moving footage or rendering that holds up at TV scale. Reject flat placeholder geometry, repeated obvious patterns, clipped subjects, low-resolution textures, abrupt resets, distracting camera motion and visible loop seams. Static-image pans do not replace continuous subject animation.
+
+Measure frame pacing and memory on the target device. Check remote navigation, pause/resume, dream entry/exit and settings persistence, and record the device, resolution, captures and limitations. A release must use reviewed captures from its final renderer, include useful controls that actually affect the scene, and retain no watermarks or unwanted text. Camera drift reduces fixed imagery; it is not a guarantee against panel burn-in.
 
 ## How downloads are checked
 

@@ -1,5 +1,21 @@
 # Changelog
 
+## [4.3.0] - 2026-10-16
+
+### Added in 4.3.0
+
+- Slot Vision is an optional screensaver with a dimensional slot-machine cabinet, classic and multi-row games, seasonal symbols, rotating reels and slow camera movement.
+- Hearth Presence is an optional fireplace screensaver with adjustable surrounds, frame width, frameless presentation and burn speed, including a wide rectangular modern gas layout.
+
+### Changed in 4.3.0
+
+- Screensaver documentation records a visual quality gate: review moving native output, source detail, frame pacing and lifecycle before publishing.
+- Advanced diagnostics reports device and screensaver state locally without changing TV settings.
+
+### Upgrade
+
+Run `git pull` on the Toolkit checkout. Existing commands and saved settings remain supported. Use `firetv-screensavers --install=<id> --yes` to install or update an individual saver. Installation keeps the active screensaver; use `screensaver --set=<id>` when you want to select it.
+
 ## [4.2.0] - 2026-10-16
 
 ### Major changes

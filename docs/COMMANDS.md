@@ -11,6 +11,8 @@ and `remove` refuses to run and points you at `start`.
 
 ## Setup and help
 
+`firetv-diagnostics` reads a device snapshot without changing TV settings or starting or stopping apps. The guided menu also has an Advanced diagnostics entry. It reports the selected and running screensaver separately, Android display modes, window sizes, system memory, app storage, installed catalog versions, and available exit and UI frame summaries for the selected screensaver. Unsupported or permission-protected reads show as unavailable. Android UI frame counters do not measure OpenGL, Filament or video playback FPS, and a reported display mode does not prove an app's rendering resolution. Redirect the text to a local file if needed: `firetv-diagnostics > diagnostics.txt`.
+
 | Command | What it does | Flags |
 |---------|--------------|-------|
 | `start` | Opens the guided menu. Runs setup the first time, then hands off to `update`. | none |
@@ -31,10 +33,10 @@ and `remove` refuses to run and points you at `start`.
 | Command | What it does | Flags |
 |---------|--------------|-------|
 | `firetv-screensavers` | Installs or removes screensavers with a checklist. | `--install=<ids>`, `--uninstall=<ids>` (needs `--force`), `--yes`, `--force` |
-| `screensaver`, `firetv-set-screensaver` | Chooses which installed screensaver is active. | `--set=<aerial\|androsaver\|snoozy\|aquarium-live\|aquarium-4k\|cloud-drift-clock\|jellyfish-drift\|firefly-grove\|neon-corridor\|starfield-drift\|rain-on-glass\|rainforest-cascade\|blue-meridian\|twilight-hearth\|nebula-drift\|vortex-spiral\|signal-rain\|retro-flight\|pipeworks-dream\|aqua-surface\|earthbound-orbit\|perseid-passage\|split-flap-drift\|canopy-drift\|contour-flow\|skyburst-nocturne\|pulse-circuit\|helios-lightfield\|colors\|amazon>`, `--yes` picks Aerial Views, or the only installed one |
+| `screensaver`, `firetv-set-screensaver` | Chooses which installed screensaver is active. | `--set=<aerial\|androsaver\|snoozy\|aquarium-live\|aquarium-4k\|cloud-drift-clock\|jellyfish-drift\|firefly-grove\|neon-corridor\|starfield-drift\|rain-on-glass\|rainforest-cascade\|blue-meridian\|twilight-hearth\|nebula-drift\|vortex-spiral\|signal-rain\|retro-flight\|pipeworks-dream\|slot-vision\|hearth-presence\|aqua-surface\|earthbound-orbit\|perseid-passage\|split-flap-drift\|canopy-drift\|contour-flow\|skyburst-nocturne\|pulse-circuit\|helios-lightfield\|colors\|amazon>`, `--yes` picks Aerial Views, or the only installed one |
 
 Screensaver ids: `aerial` (the default), `androsaver`, `snoozy`,
-`aquarium-live`, `aquarium-4k`, `cloud-drift-clock`, `jellyfish-drift`, `firefly-grove`, `neon-corridor`, `starfield-drift`, `rain-on-glass`, `rainforest-cascade`, `blue-meridian`, `twilight-hearth`, `nebula-drift`, `vortex-spiral`, `signal-rain`, `retro-flight`, `pipeworks-dream`, `aqua-surface`, `earthbound-orbit`, `perseid-passage`, `split-flap-drift`, `canopy-drift`, `contour-flow`, `skyburst-nocturne`, `pulse-circuit`, `helios-lightfield`. `colors` (Android's built-in Colors) and
+`aquarium-live`, `aquarium-4k`, `cloud-drift-clock`, `jellyfish-drift`, `firefly-grove`, `neon-corridor`, `starfield-drift`, `rain-on-glass`, `rainforest-cascade`, `blue-meridian`, `twilight-hearth`, `nebula-drift`, `vortex-spiral`, `signal-rain`, `retro-flight`, `pipeworks-dream`, `slot-vision`, `hearth-presence`, `aqua-surface`, `earthbound-orbit`, `perseid-passage`, `split-flap-drift`, `canopy-drift`, `contour-flow`, `skyburst-nocturne`, `pulse-circuit`, `helios-lightfield`. `colors` (Android's built-in Colors) and
 `amazon` (Amazon with Ads) come with the TV, for `--set` only.
 
 ## Optimizing for screensavers

@@ -1,0 +1,40 @@
+{
+  "slot-vision": {
+    "capture": "Native Google TV API34 emulator1920x1080display1280x720internal; classic casino jackpot",
+    "source_sha256": "7ed36dfe88e85d04e809505a62b2008cb3ae2f7a1325b614652a54550126c95d",
+    "thumbnail_sha256": "5f32b6b551a87236f888b816b29bdb96899e7c6cc85cff2928b7438b4584b7b8",
+    "source_repository": "https://github.com/jeremykenedy/slot-vision/tree/v1.0.0",
+    "release": "https://github.com/jeremykenedy/slot-vision/releases/tag/v1.0.0",
+    "apk_sha256": "0ee21b586f3b306e6da57cacc149bebece35a01e6ef2c7af1512c0ddc51354e4",
+    "apk_bytes": 62076478,
+    "state": "Published signed release independently downloaded and verified; physical cabinet and fullscreen pacing near30buffers/s; hostintegrationinprogress"
+  },
+  "hearth-presence": {
+    "capture": "Physical Fire TV AFTDEC012E API30; modern linear slate wide large lively flames; actual1920x1080 capture resized640x360",
+    "source_sha256": "7db765d6b3f2735c36dbbb0fe7e819bbd98946d2f1e67b7def0ea7bcc009a80b",
+    "thumbnail_sha256": "f672851f6a98fec030b74a01d2412ab46a97e9138f1c3f26ecf92caa5c3b0381",
+    "source_repository": "https://github.com/jeremykenedy/hearth-presence/tree/v1.0.0",
+    "release": "https://github.com/jeremykenedy/hearth-presence/releases/tag/v1.0.0",
+    "apk_sha256": "96067a79be86a0f29f034ee4bcc647e9da7195978b690a7d982f28a17b78278f",
+    "apk_bytes": 69011424,
+    "state": "Published release downloaded and verified; physical native playback/Back/preservation passed; host catalog integration in progress"
+  },
+  "pipeworks-dream": {
+    "capture": "Native Android TV or Google TV emulator output",
+    "source_sha256": "5c46d8ea6cebe3265ac526f964a0cf1bb0935776b66e21a53cf7d92bb71e0d3e",
+    "source_repository": "https://github.com/jeremykenedy/pipeworks-dream/tree/9277932bb989f709cba7e9f281621c2264497ed3",
+    "state": "Candidate native rendering; final release and physical acceptance pending"
+  },
+  "rain-on-glass": {
+    "capture": "Native Android TV or Google TV emulator output",
+    "source_sha256": "56ad96444cb193dcc57cf0d182ee67f50f379e327cb72f06e685797f19f92fbe",
+    "source_repository": "https://github.com/jeremykenedy/rain-on-glass/pull/2",
+    "state": "Candidate native rendering; final release and physical acceptance pending"
+  },
+  "blue-meridian": {
+    "capture": "Native Android TV or Google TV emulator output",
+    "source_sha256": "eee8cc749c033c902883dbc35faf74d4b5846a1bf86266872ef0f3da23efba69",
+    "source_repository": "https://github.com/jeremykenedy/blue-meridian/pull/1",
+    "state": "Candidate native rendering; final release and physical acceptance pending"
+  }
+}
