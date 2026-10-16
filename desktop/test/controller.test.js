@@ -206,7 +206,11 @@ test('a rejected device setting is never reported as complete', async (t) => {
   h.api.setAlexaFix = async () => false;
   await assert.rejects(
     h.controller.action({ type: 'alexa', value: true }, async () => true),
-    /did not save/,
+    (error) => {
+      assert.match(error.message, /did not save/);
+      assert.equal(error.state.alexaEnabled, false);
+      return true;
+    },
   );
   assert.equal(
     h.progress.some((text) => text.includes('complete.')),

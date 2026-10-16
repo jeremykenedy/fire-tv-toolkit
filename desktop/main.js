@@ -150,7 +150,7 @@ function handle(channel, work) {
         ok: false,
         error: message(error),
         connected: controller.isConnected(),
-        state: error.state,
+        state: error?.state,
       };
     }
   });

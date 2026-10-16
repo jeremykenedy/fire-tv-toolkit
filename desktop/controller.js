@@ -521,7 +521,16 @@ export function createController({
         if (!(await confirm({ ...proposal, ip }))) return { cancelled: true };
         await requireConnection();
         onProgress(`${proposal.title}...`);
-        await apply(action, ip);
+        try {
+          await apply(action, ip);
+        } catch (error) {
+          try {
+            error.state = await readState();
+          } catch {
+            // Preserve the action failure if the TV also stops answering.
+          }
+          throw error;
+        }
         const state = await readState();
         verifyState(action, state);
         onProgress(`${proposal.title}: complete.`);
