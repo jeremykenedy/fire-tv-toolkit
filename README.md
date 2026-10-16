@@ -102,7 +102,7 @@ Every screensaver here is an optional install from its own repository. Each one 
 | [Neon Corridor](https://github.com/jeremykenedy/neon-corridor) | `neon-corridor` | A procedural neon tunnel with adjustable density, speed, color, brightness and geometry |
 | [Starfield Drift](https://github.com/jeremykenedy/starfield-drift) | `starfield-drift` | A procedural animated starfield with adjustable density, speed, color, luminance and meteors |
 | [Rain on Glass](https://github.com/jeremykenedy/rain-on-glass) | `rain-on-glass` | Animated rainfall on soft or crisp glass with adjustable lighting, density, speed and distant lights |
-| [Rainforest Cascade](https://github.com/jeremykenedy/rainforest-cascade) | `rainforest-cascade` | An animated waterfall with adjustable surroundings, day or night, width, flow, mist and sunlight shimmer |
+| [Rainforest Cascade](https://github.com/jeremykenedy/rainforest-cascade) | `rainforest-cascade` | Three real waterfall loops and an original animated sunrise garden, with framing, speed, lighting and mist controls |
 | [Blue Meridian](https://github.com/jeremykenedy/blue-meridian) | `blue-meridian` | A rotating Earth with moving camera, atmosphere, night lights, clouds and adjustable stars |
 | [Twilight Hearth](https://github.com/jeremykenedy/twilight-hearth) | `twilight-hearth` | An animated fireplace with adjustable surrounds, flame intensity, embers, motion and room lighting |
 | [Nebula Drift](https://github.com/jeremykenedy/nebula-drift) | `nebula-drift` | Animated nebula clouds with adjustable structure, color, density, stars and meteors |

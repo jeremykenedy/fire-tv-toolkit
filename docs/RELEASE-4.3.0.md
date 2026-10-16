@@ -30,7 +30,7 @@ Both screensaver APKs are downloaded from GitHub releases and verified against t
 
 ## Minor changes and fixes
 
-The two new gallery thumbnails come from actual native output. Hearth uses a physical AFTDEC012E modern linear fireplace capture; Slot Vision uses its current API 34 native casino view. Release and capture provenance accompany the images. New diagnostics tests cover partial command failures and unavailable values without inventing results.
+The updated gallery thumbnails come from actual native output. Rainforest Cascade 1.1.0 now resolves through its existing latest-release registry entry and shows the original animated sunrise garden alongside three real waterfall videos. Hearth uses a physical AFTDEC012E modern linear fireplace capture; Slot Vision uses its current API 34 native casino view. Release and capture provenance accompany the images. New diagnostics tests cover partial command failures and unavailable values without inventing results.
 
 ## Verification and limits
 
