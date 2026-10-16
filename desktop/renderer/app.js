@@ -113,6 +113,9 @@ async function run(work, success) {
       if (!result.connected) {
         state = null;
         render();
+      } else if (result.state) {
+        state = result.state;
+        render();
       }
       throw new Error(result.error);
     }

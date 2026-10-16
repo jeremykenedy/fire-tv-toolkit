@@ -227,6 +227,34 @@ test('the active screensaver cannot be removed', async (t) => {
   assert.deepEqual(h.writes, []);
 });
 
+test('a setting reverted before the final readback never reports completion', async (t) => {
+  for (const type of ['timeout', 'alexa']) {
+    await t.test(type, async (t) => {
+      const h = harness(t);
+      await h.controller.connect('192.168.1.10');
+      h.api.setTimeoutMs = async () => ({ applied: true });
+      h.api.setAlexaFix = async () => true;
+      const request =
+        type === 'timeout'
+          ? { type, id: 'screensaver', value: 360000 }
+          : { type, value: true };
+      await assert.rejects(
+        h.controller.action(request, async () => true),
+        (error) => {
+          assert.match(error.message, /before verification/);
+          assert.equal(error.state.screensaverMs, 300000);
+          assert.equal(error.state.alexaEnabled, false);
+          return true;
+        },
+      );
+      assert.equal(
+        h.progress.some((text) => text.includes('complete.')),
+        false,
+      );
+    });
+  }
+});
+
 test('resetting timers restores captured values', async (t) => {
   const h = harness(t);
   await h.controller.connect('192.168.1.10');

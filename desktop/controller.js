@@ -421,6 +421,44 @@ export function createController({
     }
   }
 
+  function verifyState(action, state) {
+    let confirmed = true;
+    switch (action.type) {
+      case 'timeout':
+        confirmed =
+          state[action.id === 'sleep' ? 'sleepMs' : 'screensaverMs'] ===
+          action.value;
+        break;
+      case 'reset-timeouts':
+        confirmed = api.TIMEOUTS.every(({ id }) => {
+          const baseline = api.getFactoryBaseline(id);
+          return (
+            baseline === null ||
+            state[id === 'sleep' ? 'sleepMs' : 'screensaverMs'] === baseline
+          );
+        });
+        break;
+      case 'alexa':
+        confirmed = state.alexaEnabled === action.value;
+        break;
+      case 'home':
+        confirmed = state.home === action.id;
+        break;
+      case 'activate-screensaver':
+        confirmed = state.screensavers.some(
+          (entry) => entry.id === action.entry.id && entry.active,
+        );
+        break;
+    }
+    if (!confirmed) {
+      const error = new Error(
+        'The TV changed the setting before verification. Another app may be restoring its own settings. Check its protection settings, then try again.',
+      );
+      error.state = state;
+      throw error;
+    }
+  }
+
   return {
     initial() {
       let savedIp = '';
@@ -485,6 +523,7 @@ export function createController({
         onProgress(`${proposal.title}...`);
         await apply(action, ip);
         const state = await readState();
+        verifyState(action, state);
         onProgress(`${proposal.title}: complete.`);
         return { message: `${proposal.title}: complete.`, state };
       });
