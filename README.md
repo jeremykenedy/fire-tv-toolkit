@@ -228,12 +228,17 @@ Captured on an Insignia Fire TV Edition TV, Android TV emulators, and in macOS T
 |----------|--------|
 | Fire TV Edition TVs (Fire OS 8, Android 11) | Tested on an Insignia Fire TV Edition, model AFTDEC012E, Fire OS 8.1.8.5 |
 | Fire TV Stick and Cube | Not tested yet |
-| macOS | Tested |
-| Linux | Tests pass in CI; not tested against a TV |
-| Windows | Not supported |
-| Node.js | 18, 20, 22 and 26 tested |
+| macOS desktop | Native app checked; Intel and Apple silicon packages |
+| Windows x64 desktop | Installer, playback and removal checked in native CI; not tested against a TV |
+| Linux x64 desktop | Debian installation, playback and removal checked in native CI; not tested against a TV |
+| Terminal CLI | macOS tested; Linux tests pass in CI; Windows CLI is not supported |
+| Node.js for the CLI | 18 or later; desktop source builds require 22.13 or later |
 
 ## Requirements
+
+Desktop installers include the application runtime and ADB. Watching IPTV in the desktop app does not require a TV connection. Fire TV tools require a TV on the same network with ADB debugging enabled. See the [desktop guide](docs/DESKTOP.md).
+
+To run the terminal CLI:
 
 - Node.js 18 or later
 - A Fire TV on the same network as your computer, with ADB debugging turned on
@@ -258,7 +263,7 @@ Captured on an Insignia Fire TV Edition TV, Android TV emulators, and in macOS T
 - **AT4K launcher**: installed from its author's own release and checked against a hash pinned in this tool. See [Home screen](docs/LAUNCHER.md).
 - **LTvLauncher**: installed from its authors' own release, pinned by tag and hash in this tool because its releases publish no checksum. It has no internet permission. See [Home screen](docs/LAUNCHER.md).
 - **OwnTV**: installed unmodified from its author's own release, pinned by tag and hash because its releases publish no checksum. See [Free live TV](docs/IPTV.md).
-- **iptv-org**: the United States playlist OwnTV is pointed at. This tool only shows its URL; OwnTV fetches it.
+- **iptv-org**: the worldwide channel catalog and playlist. The desktop app browses the catalog and plays streams directly; OwnTV imports the playlist on the TV.
 - **Fire OS settings**: the Alexa fix, the active screensaver, the timeouts and the accessibility services the home screen uses.
 
 ## Putting your Fire TV in developer mode
@@ -289,6 +294,10 @@ The installer asks you to confirm this and prompts for the IP address before
 doing anything else.
 
 ## Installation
+
+For the desktop app, download your operating system's installer from [Releases](https://github.com/jeremykenedy/fire-tv-toolkit/releases/latest) and follow the [desktop guide](docs/DESKTOP.md). The installers are currently unsigned.
+
+For the terminal CLI:
 
 1. Clone the repo and run the setup script:
 
@@ -362,6 +371,7 @@ fire-tv-toolkit/
 ├── android/home-redirect/   # The Home Redirect app: sends Home to AT4K or LTvLauncher, adds the Screensavers tile
 ├── art/                     # README banners
 ├── bin/                     # One entry point per command
+├── desktop/                 # Cross-platform IPTV player, Fire TV tools and installers
 ├── docs/                    # Guides, references and screenshots
 ├── src/
 │   ├── apply/               # The adb changes themselves
