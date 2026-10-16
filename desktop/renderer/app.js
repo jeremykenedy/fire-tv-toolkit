@@ -524,7 +524,7 @@ function chooseChannel(channel) {
     const option = element(
       'option',
       '',
-      [source.title || `Source ${index + 1}`, source.quality, ...source.labels]
+      [`Source ${index + 1}`, source.title, source.quality, ...source.labels]
         .filter(Boolean)
         .join(' / '),
     );

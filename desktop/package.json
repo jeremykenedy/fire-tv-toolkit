@@ -75,10 +75,17 @@
         "AppImage",
         "deb"
       ],
-      "maintainer": "Jeremy Kenedy <jeremykenedy@gmail.com>"
+      "maintainer": "Jeremy Kenedy <jeremykenedy@gmail.com>",
+      "syncDesktopName": true
     }
   },
   "overrides": {
     "@electron/get": "5.1.0"
-  }
+  },
+  "homepage": "https://jeremykenedy.github.io/fire-tv-toolkit/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jeremykenedy/fire-tv-toolkit.git"
+  },
+  "desktopName": "com.jeremykenedy.firetvtoolkit"
 }
