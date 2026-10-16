@@ -1,10 +1,10 @@
 {
   "name": "fire-tv-toolkit-desktop",
   "productName": "Fire TV Toolkit",
-  "version": "4.3.0",
+  "version": "4.3.1",
   "description": "Manage Fire TV screensavers, home screens, Alexa and device settings from your desktop.",
   "author": "Jeremy Kenedy",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "type": "module",
   "main": "main.js",
   "engines": {
@@ -51,9 +51,17 @@
       {
         "from": "resources/platform-tools",
         "to": "platform-tools"
+      },
+      {
+        "from": "../LICENSE",
+        "to": "LICENSE.fire-tv-toolkit"
+      },
+      {
+        "from": "../NOTICE",
+        "to": "NOTICE.fire-tv-toolkit"
       }
     ],
-    "artifactName": "Fire-TV-Toolkit-${version}-${os}-${arch}.${ext}",
+    "artifactName": "Fire-TV-Toolkit-${os}-${arch}.${ext}",
     "mac": {
       "icon": "build/icon.png",
       "category": "public.app-category.utilities",

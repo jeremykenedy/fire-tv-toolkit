@@ -88,6 +88,15 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
       execFileSync(adb, ['version'], { encoding: 'utf8', timeout: 10000 }),
       /37\.0\.1/,
     );
+    for (const name of ['LICENSE', 'NOTICE']) {
+      assert.equal(
+        fs.readFileSync(
+          path.join(runtime.resources, `${name}.fire-tv-toolkit`),
+          'utf8',
+        ),
+        fs.readFileSync(path.join(desktop, '..', name), 'utf8'),
+      );
+    }
     const page = await application.firstWindow();
     await page
       .locator('#catalog-count')
@@ -170,6 +179,10 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
     .getByRole('heading', { name: 'Where it works', exact: true })
     .waitFor();
   assert.match(await page.locator('#view-about').innerText(), /Jeremy Kenedy/);
+  assert.equal(
+    await page.locator('[data-link="license"]').innerText(),
+    'Apache License 2.0',
+  );
   assert.match(
     await page.locator('#view-about').innerText(),
     /without warranty/,

@@ -357,7 +357,7 @@ if (!app.requestSingleInstanceLock()) {
                 label: 'Fire TV setup guide',
                 click: () =>
                   shell.openExternal(
-                    'https://github.com/jeremykenedy/fire-tv-toolkit#putting-your-fire-tv-in-developer-mode',
+                    'https://github.com/jeremykenedy/fire-tv-toolkit/blob/main/docs/SETUP.md',
                   ),
               },
             ],

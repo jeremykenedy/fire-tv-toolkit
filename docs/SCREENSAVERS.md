@@ -13,7 +13,7 @@
 | `neon-corridor` | Neon Corridor | `com.jeremykenedy.neoncorridor` | [jeremykenedy/neon-corridor](https://github.com/jeremykenedy/neon-corridor) | A procedural neon tunnel with adjustable density, speed, color, brightness and geometry |
 | `starfield-drift` | Starfield Drift | `com.jeremykenedy.starfielddrift` | [jeremykenedy/starfield-drift](https://github.com/jeremykenedy/starfield-drift) | A procedural starfield with adjustable density, speed, color, luminance and meteors |
 | `rain-on-glass` | Rain on Glass | `com.jeremykenedy.rainonglass` | [jeremykenedy/rain-on-glass](https://github.com/jeremykenedy/rain-on-glass) | Animated rainfall with adjustable lighting, density, speed and glass focus |
-| `rainforest-cascade` | Rainforest Cascade | `com.jeremykenedy.rainforestcascade` | [jeremykenedy/rainforest-cascade](https://github.com/jeremykenedy/rainforest-cascade) | An animated waterfall with adjustable surroundings, day or night, width, flow, mist and sunlight shimmer |
+| `rainforest-cascade` | Rainforest Cascade | `com.jeremykenedy.rainforestcascade` | [jeremykenedy/rainforest-cascade](https://github.com/jeremykenedy/rainforest-cascade) | Three real waterfall loops and an original animated sunrise garden, with framing, speed, lighting and mist controls |
 | `blue-meridian` | Blue Meridian | `com.jeremykenedy.bluemeridian` | [jeremykenedy/blue-meridian](https://github.com/jeremykenedy/blue-meridian) | A rotating Earth with moving camera, atmosphere, night lights, clouds and adjustable stars |
 | `twilight-hearth` | Twilight Hearth | `com.jeremykenedy.twilighthearth` | [jeremykenedy/twilight-hearth](https://github.com/jeremykenedy/twilight-hearth) | An animated fireplace with adjustable surrounds, flame intensity, embers, motion and room lighting |
 | `nebula-drift` | Nebula Drift | `com.jeremykenedy.nebuladrift` | [jeremykenedy/nebula-drift](https://github.com/jeremykenedy/nebula-drift) | Animated nebula clouds with adjustable structure, color, density, stars and meteors |
@@ -35,7 +35,7 @@
 
 Aerial Views installs from its author's own release, pinned by tag and SHA-256
 because its releases publish no checksum. AndroSaver and Snoozy are forks of
-third-party projects (see Credits in the README). Aquarium Live, Aquarium 4K, Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit, Helios Lightfield, Slot Vision and Hearth Presence are original projects.
+third-party projects (see [upstream sources](INTEGRATIONS.md#upstream-sources)). Aquarium Live, Aquarium 4K, Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit, Helios Lightfield, Slot Vision and Hearth Presence are original projects.
 
 Aerial Views is the default: on a TV with none of these installed it starts
 checked in `firetv-screensavers`, and `screensaver --yes` picks it whenever it
@@ -85,7 +85,7 @@ For each released saver, keep the installer ID, Android package, DreamService
 component, GitHub release asset, asset byte count and SHA-256 aligned between
 the Toolkit registry and the table below. Keep each app's settings schema and
 provider documented in its own configuration guide. Register the saver in
-`src/screensaver-registry.js` and both README galleries, and run `npm test` in
+`src/screensaver-registry.js` and the [screenshot gallery](SCREENSHOTS.md), and run `npm test` in
 this repository before publishing. Toolkit gallery files use
 `docs/screenshots/screensaver-<id>.jpg` and the two responsive files under
 `docs/screenshots/grid/`.

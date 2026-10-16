@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.3.1] - 2026-10-16
+
+### Changed in 4.3.1
+
+- The README introduces Desktop App and CLI App first, with direct desktop downloads and a short feature table. Detailed features, setup, integrations and screenshots now live in indexed guides.
+- The toolkit is licensed under Apache 2.0. Package metadata, the desktop About screen and bundled license files agree; third party licenses remain separate.
+- Desktop installer filenames stay stable across releases so README download links continue to work.
+
+### Upgrade
+
+Install the latest desktop package, or pull the CLI checkout and run `node setup.js`. Existing TV settings and app data are preserved. See the [4.3.1 upgrade guide](docs/RELEASE-4.3.1.md), including the license change for redistributors.
+
 ## [4.3.0] - 2026-10-16
 
 ### Added in 4.3.0

@@ -48,3 +48,28 @@ Add an entry to `src/screensaver-registry.js` after vetting it (see
 [Screensavers](SCREENSAVERS.md)). Its releases need an APK and a published
 SHA-256. Everything else, the menus, flags and revert options, follows from
 the registry.
+
+## Source layout
+
+```text
+fire-tv-toolkit/
+├── android/home-redirect/   # The Home Redirect app: sends Home to AT4K or LTvLauncher, adds the Screensavers tile
+├── art/                     # README banners
+├── bin/                     # One entry point per command
+├── desktop/                 # Cross-platform IPTV player, Fire TV tools and installers
+├── docs/                    # Guides, references and screenshots
+├── src/
+│   ├── apply/               # The adb changes themselves
+│   ├── steps/               # Each command's prompts and flags
+│   ├── adb.js               # Talking to the TV
+│   ├── iptv-registry.js     # fire-iptv, OwnTV and guide-matched starter sources
+│   ├── launcher-registry.js # AT4K, LTvLauncher and Home Redirect, with their sources and checksums
+│   └── screensaver-registry.js # The vetted screensavers
+├── test/                    # Tests, with a fake TV so no real device is needed
+├── setup.js                 # First-run setup on a fresh clone
+└── .env.example             # Template for the saved settings
+```
+
+## Desktop download links
+
+Desktop installer filenames omit the version so `/releases/latest/download/<filename>` always targets the newest published release. Keep the filenames from `desktop/package.json` when uploading installers. Attach `SHA256SUMS` for those exact files. The README graphic downloads the Apple silicon DMG; the platform table provides the other installers.
