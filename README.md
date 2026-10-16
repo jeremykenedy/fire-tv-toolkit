@@ -1,14 +1,9 @@
 <p align="center">
-    <picture>
-        <source media="(prefers-color-scheme: dark) and (prefers-reduced-motion: reduce)" srcset="art/banner-still-dark.svg">
-        <source media="(prefers-color-scheme: dark)" srcset="art/banner-dark.svg">
-        <source media="(prefers-reduced-motion: reduce)" srcset="art/banner-still-light.svg">
-        <source media="(prefers-color-scheme: light)" srcset="art/banner-light.svg">
-        <img src="art/banner-light.svg" alt="Fire TV Toolkit" width="800">
-    </picture>
+  <a href="https://github.com/jeremykenedy/fire-tv-toolkit#gh-light-mode-only"><picture><source media="(max-width: 600px) and (prefers-reduced-motion: reduce)" srcset="art/banner-mobile-still-light.be835efd4e0b.svg"><source media="(prefers-reduced-motion: reduce)" srcset="art/banner-still-light.ac99d0318bde.svg"><source media="(max-width: 600px)" srcset="art/banner-mobile-light.6e48e8453961.svg"><img src="art/banner-light.b1ee5b0d1bd2.svg#gh-light-mode-only" alt="Fire TV Toolkit" width="800"></picture></a>
+  <a href="https://github.com/jeremykenedy/fire-tv-toolkit#gh-dark-mode-only"><picture><source media="(max-width: 600px) and (prefers-reduced-motion: reduce)" srcset="art/banner-mobile-still-dark.7d4d6d35a31d.svg"><source media="(prefers-reduced-motion: reduce)" srcset="art/banner-still-dark.02953d749d03.svg"><source media="(max-width: 600px)" srcset="art/banner-mobile-dark.6b997743de7a.svg"><img src="art/banner-dark.adc74a3d5b20.svg#gh-dark-mode-only" alt="Fire TV Toolkit" width="800"></picture></a>
 </p>
 
-<p align="center">Ad-free screensavers, a better home screen, and the Alexa deep-sleep fix for your Fire TV, set up from your terminal.</p>
+<p align="center">Worldwide online IPTV and Fire TV tools, from your desktop or terminal.</p>
 
 <p align="center">
     <a href="https://github.com/jeremykenedy/fire-tv-toolkit/releases/latest"><img src="https://img.shields.io/github/v/release/jeremykenedy/fire-tv-toolkit" alt="Latest release"></a>
@@ -54,6 +49,8 @@
 
 ## What it does
 
+The desktop app browses and plays the worldwide iptv-org catalog. Search channels, filter by country, language or category, save favorites, and choose alternate stream sources. Download the installer for your computer from [Releases](https://github.com/jeremykenedy/fire-tv-toolkit/releases/latest), or follow the [desktop guide](docs/DESKTOP.md).
+
 Fire TV Toolkit is a command-line tool that takes your Fire TV back from the
 ads and the bugs. It talks to the TV over adb from your computer, and every
 change is explained before it happens, confirmed by you, and reversible.
@@ -69,7 +66,7 @@ so you can run just the part you need later.
 - **Ad-free screensavers**: replaces Amazon's ad-serving screensaver with Aerial Views (the default), AndroSaver, Snoozy, Aquarium Live, Aquarium 4K, Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit, or Helios Lightfield, each an optional install. Android's built-in Colors, and Amazon with Ads, stay available to switch back to.
 - **Verified downloads**: every APK comes from a GitHub release and is checked against a published SHA-256 before it is installed.
 - **Optional AT4K or LTvLauncher home screen**: an ad-free home screen in place of the Amazon menu, switched on or off, or between the two, with one command. LTvLauncher gets the notification access Android TV only grants over adb, and its backups can be copied to your computer.
-- **Free live TV**: install OwnTV, a free, open source IPTV player, and add the [iptv-org](https://github.com/iptv-org/iptv) playlist of publicly available United States channels to it from your phone.
+- **Free live TV**: install OwnTV, a free, open source IPTV player, and add the [iptv-org](https://github.com/iptv-org/iptv) playlist of publicly available channels from around the world to it from your phone.
 - **On-TV screensaver picker**: a Screensavers tile on the TV for switching the screensaver from the couch, since Fire OS Settings only offers Amazon's.
 - **Optimize for screensavers**: checks the TV for settings that stop or spoil a screensaver (screensaver switched off, sleep coming before the screensaver, Amazon's Ambient Experience, Aerial Views' frame rate permission) and fixes only the ones it has. Offered during `start` and `update`, or run `optimize` any time.
 - **Guard against Amazon**: Home Redirect saves the screensaver, Alexa fix, Home and timeout settings and puts them back the moment Amazon changes them, after a reboot, after an app update, and every 15 minutes. Amazon's updaters are held back as far as Fire OS allows. `guard --check` reports and fixes anything that slipped through.
@@ -126,6 +123,23 @@ screensaver --set=contour-flow
 ```
 
 ## Screenshots
+
+### Desktop app
+
+Captured from the packaged macOS 4.1.0 app.
+
+<table>
+<tr>
+<td><a href="art/screenshots/desktop-live-tv.jpg"><img src="art/screenshots/desktop-live-tv.jpg" alt="Worldwide IPTV playback"></a></td>
+<td><a href="art/screenshots/desktop-overview.jpg"><img src="art/screenshots/desktop-overview.jpg" alt="Connected Fire TV overview"></a></td>
+<td><a href="art/screenshots/desktop-screensavers.jpg"><img src="art/screenshots/desktop-screensavers.jpg" alt="Screensaver controls"></a></td>
+</tr>
+<tr>
+<td><a href="art/screenshots/desktop-home.jpg"><img src="art/screenshots/desktop-home.jpg" alt="Home screen and OwnTV controls"></a></td>
+<td><a href="art/screenshots/desktop-settings.jpg"><img src="art/screenshots/desktop-settings.jpg" alt="Fire TV device settings"></a></td>
+<td><a href="art/screenshots/desktop-activity.jpg"><img src="art/screenshots/desktop-activity.jpg" alt="Device activity and verification results"></a></td>
+</tr>
+</table>
 
 Captured on an Insignia Fire TV Edition TV, Android TV emulators, and in macOS Terminal. Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit and Helios Lightfield use screenshots from their own repositories. Select any screenshot to see it full size.
 
@@ -291,7 +305,7 @@ each one are listed in [Commands](docs/COMMANDS.md).
 | `launcher`, `firetv-launcher` | Installs the AT4K or LTvLauncher home screen and switches the Home button between them and the Amazon menu. |
 | `firetv-ltv-notifications` | Lets LTvLauncher read notifications, which Android TV only allows over adb. Installing LTvLauncher turns it on; `--off` turns it off. |
 | `firetv-ltv-backup` | Copies a backup you exported in LTvLauncher from the TV to this computer. `--pull=<file>` takes the newest. |
-| `firetv-iptv` | Installs or updates OwnTV, opens it, and shows the iptv-org playlist of US channels to add. `--uninstall` removes it. |
+| `firetv-iptv` | Installs or updates OwnTV, opens it, and shows the iptv-org worldwide channel playlist to add. `--uninstall` removes it. |
 | `firetv-timeouts` | Reviews, edits or resets the sleep and screensaver timeouts in one flow. |
 | `firetv-timeout-sleep` | Changes the sleep timeout. |
 | `firetv-timeout-screensaver` | Changes the screensaver timeout. |
@@ -347,13 +361,15 @@ Every guide is also on the project site: [jeremykenedy.github.io/fire-tv-toolkit
 
 | Guide | What it covers |
 |-------|----------------|
+| [4.1.0 release and upgrade guide](docs/RELEASE-4.1.0.md) | Desktop release changes, upgrade steps, validation and known limits |
+| [Desktop app](docs/DESKTOP.md) | Installing, watching worldwide IPTV, managing Fire TV and removing the app |
 | [Commands](docs/COMMANDS.md) | Every command and every flag |
 | [Configuration](docs/CONFIGURATION.md) | The `.env` file and each saved value |
 | [How it works](docs/HOW-IT-WORKS.md) | The exact adb settings each command changes |
 | [Screensavers](docs/SCREENSAVERS.md) | Each screensaver, where it comes from, and how downloads are verified |
 | [Home screen](docs/LAUNCHER.md) | The AT4K and LTvLauncher home screens, Home Redirect and the on-TV picker |
 | [Guard](docs/GUARD.md) | What the guard keeps, how it fights Amazon's updates, and its limits |
-| [Free live TV](docs/IPTV.md) | Installing OwnTV and adding the iptv-org playlist of US channels |
+| [Free live TV](docs/IPTV.md) | Installing OwnTV and adding the iptv-org worldwide channel playlist |
 | [Optimizing](docs/OPTIMIZE.md) | What `optimize` checks, what it changes, and how it is undone |
 | [Timeouts](docs/TIMEOUTS.md) | The sleep and screensaver timeouts and their baselines |
 | [Uninstalling](docs/UNINSTALLING.md) | Reverting the TV and removing the tool |

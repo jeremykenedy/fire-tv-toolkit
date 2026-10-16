@@ -16,7 +16,7 @@ export const FLAG_SPEC = {
 };
 
 function printPlaylistSteps() {
-  print(chalk.bold.white('\nTo add the free United States channels in OwnTV:\n'));
+  print(chalk.bold.white('\nTo add the free worldwide channels in OwnTV:\n'));
   print('  1. Go through its first screens, which ask for a profile name, to Add a playlist and choose Remote.');
   print(chalk.gray('     Later on it is under Settings > Sources & guide > Playlists > Add Source > Remote.'));
   print('  2. Open the address the TV shows in a browser on any device on the same Wi-Fi, or scan its QR code');
@@ -94,7 +94,7 @@ export async function manageIptv(ip, flags = {}) {
     body: [
       'OwnTV is a free, open source IPTV player for Android TV. This installs',
       'it from its author\'s own release, checked against a pinned hash, and',
-      'opens it. You then add the iptv-org playlist of United States channels',
+      'opens it. You then add the iptv-org worldwide channel playlist',
       'from your phone; the steps and the URL are shown after the install.',
     ],
     reversible: true,

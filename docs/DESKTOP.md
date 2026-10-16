@@ -14,7 +14,7 @@ The desktop build workflow produces these formats:
 | Windows x64                     | EXE                        | Run the installer and choose the installation folder.                                                       |
 | Linux x64                       | Debian package or AppImage | Install the Debian package through the system package manager, or make the AppImage executable and open it. |
 
-Desktop packages include Electron and Google's Platform Tools 37.0.1. End users do not need Node.js, Python or a separate ADB installation. Build downloads are pinned by version and SHA-256. The current workflow creates unsigned testing artifacts and does not publish releases.
+Desktop packages include Electron and Google's Platform Tools 37.0.1. End users do not need Node.js, Python or a separate ADB installation. Build downloads are pinned by version and SHA-256. Installers are available from [GitHub Releases](https://github.com/jeremykenedy/fire-tv-toolkit/releases/latest). The packages are currently unsigned. Windows and macOS may ask you to verify the publisher before opening them.
 
 ## Watch IPTV
 
@@ -62,3 +62,5 @@ npm --prefix desktop run lint
 ```
 
 The terminal commands retain their existing dependencies and supported Node.js versions. Desktop dependencies live in their own package. Run `npm --prefix desktop ci` again after changing shared toolkit code so the desktop dependency contains the current source.
+
+Packaged application tests run on native macOS, Windows and Linux CI runners. They check catalog browsing, filters, favorite persistence, actual HLS video decoding, the bundled ADB executable, and installer removal on Windows and Linux. They use a generated test broadcast and isolated application data, so they do not contact a TV.

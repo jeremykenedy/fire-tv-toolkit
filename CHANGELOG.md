@@ -1,5 +1,23 @@
 # Changelog
 
+## [4.1.0] - 2026-10-15
+
+### Added in 4.1.0
+
+- A desktop app for worldwide online IPTV, with search, country, language and category filters, favorites, alternate sources and HLS playback.
+- Native confirmation for Fire TV controls, bundled verified ADB, per-device timer baselines, and installers for macOS, Windows and Linux.
+- Packaged application checks on all three operating systems, including HLS decoding, saved favorites and Windows/Linux installer removal.
+
+### Changed in 4.1.0
+
+- OwnTV setup now offers the worldwide iptv-org playlist.
+- README banners animate at a moderate pace and include mobile layouts and reduced-motion stills.
+- Final device state is checked before reporting completion, including changes reverted by another app.
+
+### Upgrade
+
+See the [4.1.0 upgrade guide](docs/RELEASE-4.1.0.md). Desktop packages are currently unsigned.
+
 ## [4.0.0] - 2026-10-15
 
 ### Removed in 4.0.0
