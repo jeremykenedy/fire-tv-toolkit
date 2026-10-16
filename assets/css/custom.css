@@ -1,0 +1,13 @@
+a[href$='#gh-dark-mode-only'] {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  a[href$='#gh-light-mode-only'] {
+    display: none;
+  }
+
+  a[href$='#gh-dark-mode-only'] {
+    display: inline;
+  }
+}

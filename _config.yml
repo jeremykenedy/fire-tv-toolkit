@@ -1,5 +1,5 @@
 title: Fire TV Toolkit
-description: Ad-free screensavers, a better home screen, and the Alexa deep-sleep fix for your Fire TV, set up from your terminal.
+description: Worldwide online IPTV and guided Fire TV tools, from your desktop or terminal.
 theme: jekyll-theme-cayman
 plugins:
   - jekyll-relative-links
@@ -11,6 +11,7 @@ relative_links:
   collections: false
 exclude:
   - node_modules
+  - desktop
   - android
   - bin
   - src
