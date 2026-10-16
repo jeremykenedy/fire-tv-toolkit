@@ -497,6 +497,24 @@ export function createController({
     }
   }
 
+  function playerActions(request, state, updating) {
+    const actions = [];
+    for (const [key, entry, installed] of [
+      ['ownTv', OWNTV, state.ownTvInstalled],
+      ['fireIptv', FIRE_IPTV, state.fireIptvInstalled],
+    ]) {
+      if (key === 'fireIptv' && request[key] === undefined) continue;
+      if (typeof request[key] !== 'boolean')
+        throw new Error(`Choose whether to ${updating ? 'update' : 'install'} ${entry.name}.`);
+      if (!request[key]) continue;
+      if (updating && !installed)
+        throw new Error(`Install ${entry.name} before updating it.`);
+      if (updating || !installed)
+        actions.push(validate({ type: `install-${entry.id}` }));
+    }
+    return actions;
+  }
+
   function updateActions(request, state) {
     const actions = [];
     const add = (type, values = {}) =>
@@ -517,20 +535,7 @@ export function createController({
         add(type, { id });
       }
     }
-    if (typeof request.ownTv !== 'boolean')
-      throw new Error('Choose whether to update OwnTV.');
-    if (request.ownTv) {
-      if (!state.ownTvInstalled)
-        throw new Error('Install OwnTV before updating it.');
-      add('install-owntv');
-    }
-    if (request.fireIptv !== undefined && typeof request.fireIptv !== 'boolean')
-      throw new Error('Choose whether to update fire-iptv.');
-    if (request.fireIptv) {
-      if (!state.fireIptvInstalled)
-        throw new Error('Install fire-iptv before updating it.');
-      add('install-fire-iptv');
-    }
+    actions.push(...playerActions(request, state, true));
     return actions;
   }
 
@@ -556,12 +561,7 @@ export function createController({
       }
       add('home', { id: request.home });
     }
-    if (typeof request.ownTv !== 'boolean')
-      throw new Error('Choose whether to install OwnTV.');
-    if (request.ownTv && !state.ownTvInstalled) add('install-owntv');
-    if (request.fireIptv !== undefined && typeof request.fireIptv !== 'boolean')
-      throw new Error('Choose whether to install fire-iptv.');
-    if (request.fireIptv && !state.fireIptvInstalled) add('install-fire-iptv');
+    actions.push(...playerActions(request, state, false));
     return actions;
   }
 
