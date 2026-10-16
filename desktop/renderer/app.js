@@ -480,8 +480,9 @@ for (const [id, checked] of [
   });
 
 function wizardRequest() {
+  let request;
   if (selectedView === 'update') {
-    const request = {
+    request = {
       mode: 'update',
       screensavers: [],
       launchers: [],
@@ -493,15 +494,14 @@ function wizardRequest() {
         if (input.dataset.updateKind === 'ownTv') request.ownTv = true;
         else request[input.dataset.updateKind].push(input.value);
       });
-    return request;
-  }
-  const request = {
-    mode: 'setup',
-    screensaver: $('#setup-screensaver').value,
-    home: $('#setup-home').value,
-    ownTv: $('#setup-owntv').checked,
-    optimize: $('#setup-optimize').checked,
-  };
+  } else
+    request = {
+      mode: 'setup',
+      screensaver: $('#setup-screensaver').value,
+      home: $('#setup-home').value,
+      ownTv: $('#setup-owntv').checked,
+    };
+  request.optimize = $('#setup-optimize').checked;
   if ($('#setup-timers').checked) {
     request.sleepMs = Math.round(Number($('#setup-sleep').value) * 60000);
     request.screensaverMs = Math.round(Number($('#setup-delay').value) * 60000);
@@ -517,7 +517,7 @@ function renderWizardStep() {
   const updating = selectedView === 'update';
   $('#setup-app-choices').hidden = updating;
   $('#update-app-choices').hidden = !updating;
-  $('#setup-setting-choices').hidden = updating;
+  $('#setup-setting-choices').hidden = false;
   $('#update-setting-note').hidden = !updating;
   for (const [index, name] of ['apps', 'settings', 'review'].entries())
     $(`#assistant-${name}`).hidden = wizardStep !== index;
@@ -543,7 +543,7 @@ function renderWizardStep() {
         .querySelectorAll('input:checked')
         .forEach((input) => add(`Refresh ${input.parentElement.textContent}`));
       if (!summary.children.length) add('No app updates selected.');
-      add('Keep current home screen, screensaver selection and timers.');
+      add('Keep the current home screen and screensaver selection.');
     } else {
       add(
         `Screensaver: ${$('#setup-screensaver').selectedOptions[0].textContent}`,
@@ -553,25 +553,25 @@ function renderWizardStep() {
         add(
           'Install OwnTV if needed. Add the IPTV playlist in OwnTV after setup.',
         );
-      if (request.sleepMs !== undefined)
-        add(
-          `Sleep: ${request.sleepMs / 60000} minutes. Screensaver: ${request.screensaverMs / 60000} minutes.`,
-        );
-      for (const key of ['alexa', 'guard'])
-        if (request[key] !== undefined)
-          add(
-            `${key === 'alexa' ? 'Alexa wake' : 'Protection'}: ${request[key] ? 'on' : 'off'}`,
-          );
-      if (request.optimize) add('Apply recommended screensaver optimizations.');
-      if (
-        request.sleepMs !== undefined &&
-        request.sleepMs > 0 &&
-        request.screensaverMs >= request.sleepMs
-      )
-        add(
-          'Your screensaver timer is at least as long as the sleep timer. The TV may sleep before showing the screensaver.',
-        );
     }
+    if (request.sleepMs !== undefined)
+      add(
+        `Sleep: ${request.sleepMs / 60000} minutes. Screensaver: ${request.screensaverMs / 60000} minutes.`,
+      );
+    for (const key of ['alexa', 'guard'])
+      if (request[key] !== undefined)
+        add(
+          `${key === 'alexa' ? 'Alexa wake' : 'Protection'}: ${request[key] ? 'on' : 'off'}`,
+        );
+    if (request.optimize) add('Apply recommended screensaver optimizations.');
+    if (
+      request.sleepMs !== undefined &&
+      request.sleepMs > 0 &&
+      request.screensaverMs >= request.sleepMs
+    )
+      add(
+        'Your screensaver timer is at least as long as the sleep timer. The TV may sleep before showing the screensaver.',
+      );
   }
   updateControls();
 }
@@ -579,7 +579,6 @@ function renderWizardStep() {
 $('#assistant-next').addEventListener('click', () => {
   if (
     wizardStep === 1 &&
-    selectedView === 'setup' &&
     $('#setup-timers').checked &&
     (!$('#setup-sleep').reportValidity() || !$('#setup-delay').reportValidity())
   )

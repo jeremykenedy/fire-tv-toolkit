@@ -531,11 +531,13 @@ export function createController({
   function assistantActions(request, state) {
     if (!request || !['setup', 'update'].includes(request.mode))
       throw new Error('Choose setup or update.');
-    if (request.mode === 'update') return updateActions(request, state);
-    const actions = setupAppActions(request, state);
+    const actions =
+      request.mode === 'update'
+        ? updateActions(request, state)
+        : setupAppActions(request, state);
     const add = (type, values = {}) =>
       actions.push(validate({ type, ...values }));
-    if (typeof request.optimize !== 'boolean')
+    if (request.optimize !== undefined && typeof request.optimize !== 'boolean')
       throw new Error('Choose whether to optimize this TV.');
     if (request.optimize) add('optimize');
     for (const id of ['sleep', 'screensaver']) {

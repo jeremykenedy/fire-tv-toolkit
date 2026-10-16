@@ -10,7 +10,7 @@ The Electron desktop app browses the full iptv-org catalog with channel search, 
 
 The app also connects to Fire TV over ADB to manage screensavers, home screens, OwnTV, Alexa wake, timers and protection. Guided device changes require native confirmation. A setting restored by another app before the final readback is reported as a conflict, with the actual TV state shown.
 
-Setup assistant guides users through apps, settings and review, then applies the approved selections in order. Guided updater refreshes selected installed TV apps from verified toolkit releases. A failed step stops the remaining work and reports partial completion.
+Setup assistant guides users through apps, settings and review, then applies the approved selections in order. Guided updater refreshes selected installed TV apps and revisits optional device settings. A failed step stops the remaining work and reports partial completion.
 
 Advanced settings are off by default. An explicit warning must be accepted to reveal Activity and the TV terminal. The terminal runs bounded commands on the connected TV, with streamed output, exit status and a Stop control. About includes intended use, supported and unverified devices, liability information, repository and MIT license links, and the author credit. Navigation now includes icons.
 
@@ -49,7 +49,7 @@ To roll back the desktop app, remove it using the steps in the desktop guide. Re
 
 ## Verification
 
-409 toolkit tests and 34 desktop tests pass. ESLint and dependency audits pass. Packaged application tests run on native macOS, Windows and Linux CI runners, exercising channel browsing, filters, favorite persistence, actual HLS video decoding, About, advanced preferences and the bundled ADB executable. Windows and Linux installer removal is checked on their native runners.
+409 toolkit tests and 35 desktop tests pass. ESLint and dependency audits pass. Packaged application tests run on native macOS, Windows and Linux CI runners, exercising channel browsing, filters, favorite persistence, actual HLS video decoding, About, advanced preferences and the bundled ADB executable. Windows and Linux installer removal is checked on their native runners.
 
 The packaged macOS app was also checked against the live worldwide catalog and a physical Insignia Fire TV Edition running Android 11. Device confirmation cancellation preserves the TV setting. Guided setup and an OwnTV update completed with verified results. Read-only shell commands returned the TV model, shell identity and exit status. Disabling Advanced settings hid both advanced tools. The final-state check detects another app restoring a different timer value instead of reporting success. macOS removal moved the app to Trash and preserved saved settings byte for byte.
 

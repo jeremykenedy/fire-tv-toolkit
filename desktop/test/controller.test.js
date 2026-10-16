@@ -533,3 +533,31 @@ test('the updater only accepts installed supported apps and preserves app select
   );
   assert.equal(result.state.sleepMs, 1200000);
 });
+
+test('the guided updater reviews and applies optional settings with the selected app updates', async (t) => {
+  const h = harness(t);
+  await h.controller.connect('192.168.1.10');
+  let proposal;
+  const result = await h.controller.assistant(
+    {
+      mode: 'update',
+      screensavers: [],
+      launchers: [],
+      ownTv: false,
+      sleepMs: 1800000,
+      alexa: true,
+    },
+    async (value) => {
+      proposal = value;
+      return true;
+    },
+  );
+  assert.match(proposal.detail, /30 minutes/);
+  assert.match(proposal.detail, /Enable Alexa/);
+  assert.deepEqual(
+    h.writes.map((write) => write.type),
+    ['timeout', 'alexa'],
+  );
+  assert.equal(result.state.sleepMs, 1800000);
+  assert.equal(result.state.alexaEnabled, true);
+});
