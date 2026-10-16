@@ -56,6 +56,44 @@ jobs:
         working-directory: desktop
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - name: Install Windows package
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $installer = (Get-ChildItem desktop/dist/*.exe).FullName
+          $destination = Join-Path $env:RUNNER_TEMP 'Fire TV Toolkit'
+          $process = Start-Process -FilePath $installer -ArgumentList "/S /D=$destination" -Wait -PassThru
+          if ($process.ExitCode -ne 0) { throw "Installer failed: $($process.ExitCode)" }
+      - name: Install Linux package
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y ./desktop/dist/*.deb xvfb
+      - name: Test installed app on Linux
+        if: runner.os == 'Linux'
+        run: xvfb-run -a npm run test:packaged
+        working-directory: desktop
+      - name: Test packaged app on Windows and macOS
+        if: runner.os != 'Linux'
+        run: npm run test:packaged
+        working-directory: desktop
+      - name: Test Windows removal
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $destination = Join-Path $env:RUNNER_TEMP 'Fire TV Toolkit'
+          $uninstaller = Join-Path $destination 'Uninstall Fire TV Toolkit.exe'
+          Start-Process -FilePath $uninstaller -ArgumentList "/S _?=$destination" -Wait
+          if (Test-Path (Join-Path $destination 'Fire TV Toolkit.exe')) { throw 'Uninstaller left the application executable installed.' }
+      - name: Test Linux removal
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get remove -y fire-tv-toolkit-desktop
+          test ! -e /usr/bin/fire-tv-toolkit-desktop
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: desktop-verification-${{ runner.os }}
+          path: desktop/dist/verification/
+          if-no-files-found: ignore
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: desktop-${{ runner.os }}

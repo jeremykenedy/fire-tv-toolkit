@@ -35,4 +35,8 @@ export default [
       globals: { require: 'readonly' },
     },
   },
+  {
+    files: ['test/e2e/*.js'],
+    languageOptions: { globals: { window: 'readonly', document: 'readonly' } },
+  },
 ];
