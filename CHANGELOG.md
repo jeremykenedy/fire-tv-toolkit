@@ -23,7 +23,6 @@ Run `fire-iptv --install` to install or update the TV app. It is separate from O
 
 None. Legacy `firetv-iptv --install` and `--uninstall` without `--app` still target OwnTV. Existing toolkit device settings, timers and installed player data are preserved. The recommended interactive player is now fire-iptv.
 
-
 ## [4.1.0] - 2026-10-16
 
 ### Added in 4.1.0

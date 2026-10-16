@@ -23,8 +23,7 @@ import {
   HOME_REDIRECT,
   launcherApps,
 } from 'fire-tv-toolkit/src/launcher-registry.js';
-import { OWNTV, FIRE_IPTV } from 'fire-tv-toolkit/src/iptv-registry.js';
-import { ALL_CHANNELS_PLAYLIST } from './iptv.js';
+import { OWNTV, FIRE_IPTV, IPTV_PLAYLIST } from 'fire-tv-toolkit/src/iptv-registry.js';
 
 const toolkit = {
   ...adb,
@@ -133,7 +132,7 @@ export function createController({
         name: entry.name,
         installed: installed.includes(entry.pkg),
       })),
-      playlist: ALL_CHANNELS_PLAYLIST,
+      playlist: IPTV_PLAYLIST,
     };
   }
 
@@ -284,7 +283,7 @@ export function createController({
         return {
           title: 'Install OwnTV',
           detail:
-            'Download, verify and install OwnTV. Add the playlist using OwnTV setup on your TV or phone.',
+            'Download, verify and install OwnTV. Add the playlist and guide feeds using OwnTV setup on your TV or phone.',
         };
       case 'open-owntv':
         return {

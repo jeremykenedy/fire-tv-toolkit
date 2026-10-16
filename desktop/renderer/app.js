@@ -565,7 +565,7 @@ function renderWizardSummary(updating) {
       add('Install fire-iptv if needed. Live TV and guides are prepared automatically.');
     if (request.ownTv)
       add(
-        'Install OwnTV if needed. Add the IPTV playlist in OwnTV after setup.',
+        'Install OwnTV if needed. Add the playlist and guide feeds in OwnTV after setup.',
       );
   }
   if (request.sleepMs !== undefined)
