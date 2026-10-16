@@ -2,7 +2,7 @@
 
 [Back to the overview](../README.md)
 
-### Desktop app
+## Desktop app
 
 Captured from the current packaged macOS source build connected to a physical Fire TV.
 
@@ -36,7 +36,7 @@ Captured from the current packaged macOS source build connected to a physical Fi
 
 Captured on an Insignia Fire TV Edition TV, Android TV emulators, and in macOS Terminal. Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit and Helios Lightfield use screenshots from their own repositories. Select any screenshot to see it full size.
 
-### The home screen and the on-TV picker
+## The home screen and the on-TV picker
 
 <p align="center">
     <a href="screenshots/tv-at4k-home.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/tv-at4k-home-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/tv-at4k-home-tablet.jpg 2x"><img src="screenshots/tv-at4k-home.jpg" alt="The optional AT4K home screen" title="The optional AT4K home screen"></picture></a>
@@ -45,7 +45,7 @@ Captured on an Insignia Fire TV Edition TV, Android TV emulators, and in macOS T
     <a href="screenshots/tv-screensaver-picker.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/tv-screensaver-picker-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/tv-screensaver-picker-tablet.jpg 2x"><img src="screenshots/tv-screensaver-picker.jpg" alt="The on-TV screensaver picker" title="The on-TV screensaver picker"></picture></a>
 </p>
 
-### Screensavers
+## Screensavers
 
 <p align="center">
     <a href="screenshots/screensaver-aerial-views.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-aerial-views-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-aerial-views-tablet.jpg 2x"><img src="screenshots/screensaver-aerial-views.jpg" alt="Aerial Views, the default" title="Aerial Views, the default"></picture></a>
@@ -82,7 +82,7 @@ Captured on an Insignia Fire TV Edition TV, Android TV emulators, and in macOS T
     <a href="screenshots/screensaver-amazon-with-ads.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-amazon-with-ads-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-amazon-with-ads-tablet.jpg 2x"><img src="screenshots/screensaver-amazon-with-ads.jpg" alt="Amazon with Ads, the factory screensaver" title="Amazon with Ads, the factory screensaver"></picture></a>
 </p>
 
-### The command line
+## The command line
 
 <p align="center">
     <a href="screenshots/cli-main-menu.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/cli-main-menu-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/cli-main-menu-tablet.jpg 2x"><img src="screenshots/cli-main-menu.jpg" alt="The guided main menu" title="The guided main menu"></picture></a>
