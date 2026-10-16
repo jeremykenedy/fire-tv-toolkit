@@ -1,5 +1,22 @@
 # Changelog
 
+## [3.12.0] - 2026-10-15
+
+### Added in 3.12.0
+
+- Slot Vision is an optional screensaver with a dimensional slot-machine cabinet, classic and multi-row games, seasonal symbols, rotating reels and slow camera movement.
+- Hearth Presence is an optional fireplace screensaver with adjustable surrounds, frame width, frameless presentation and burn speed, including a wide rectangular modern gas layout.
+
+### Changed in 3.12.0
+
+- Pipeworks Dream uses rounded 3D tube meshes with lighting and continuous growth. Its own settings add individual colors, tube shapes, thickness and an optional following tail with a delay.
+- Screensaver documentation records a visual quality gate: review moving native output, source detail, frame pacing and lifecycle before publishing.
+- Animated banners include mobile layouts and still versions for reduced motion.
+
+### Upgrade
+
+Run `git pull` on the Toolkit checkout. Existing commands and saved settings remain supported. Use `firetv-screensavers --install=<id> --yes` to install or update an individual saver. Installation keeps the active screensaver; use `screensaver --set=<id>` when you want to select it.
+
 ## [3.11.1] - 2026-10-15
 
 ### Fixed in 3.11.1

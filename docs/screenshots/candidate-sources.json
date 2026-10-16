@@ -1,0 +1,32 @@
+{
+  "slot-vision": {
+    "capture": "Native Android TV or Google TV emulator output",
+    "source_sha256": "4aabfdbef911549e08f1dcef72e655745ea2f22dd349125b7e5c850e4a31a0af",
+    "source_repository": "https://github.com/jeremykenedy/slot-vision/tree/261ded87f25fdc40295903380ce88b45b43a51b8",
+    "state": "Candidate native rendering; final release and physical acceptance pending"
+  },
+  "hearth-presence": {
+    "capture": "Native Android TV or Google TV emulator output",
+    "source_sha256": "8272cae610c5629f304171c6c2b7968ae8c42c2436bc97f55796e49105847c74",
+    "source_repository": "https://github.com/jeremykenedy/hearth-presence",
+    "state": "Candidate native rendering; final release and physical acceptance pending"
+  },
+  "pipeworks-dream": {
+    "capture": "Native Android TV or Google TV emulator output",
+    "source_sha256": "70b09a7b6c2fefd608408b69dd00f3af99335a3e2a2cd2d6a94edcf5650b6908",
+    "source_repository": "https://github.com/jeremykenedy/pipeworks-dream",
+    "state": "Candidate native rendering; final release and physical acceptance pending"
+  },
+  "rain-on-glass": {
+    "capture": "Native Android TV or Google TV emulator output",
+    "source_sha256": "56ad96444cb193dcc57cf0d182ee67f50f379e327cb72f06e685797f19f92fbe",
+    "source_repository": "https://github.com/jeremykenedy/rain-on-glass/pull/2",
+    "state": "Candidate native rendering; final release and physical acceptance pending"
+  },
+  "blue-meridian": {
+    "capture": "Native Android TV or Google TV emulator output",
+    "source_sha256": "eee8cc749c033c902883dbc35faf74d4b5846a1bf86266872ef0f3da23efba69",
+    "source_repository": "https://github.com/jeremykenedy/blue-meridian/pull/1",
+    "state": "Candidate native rendering; final release and physical acceptance pending"
+  }
+}
