@@ -61,7 +61,8 @@ Screensaver ids: `aerial` (the default), `androsaver`, `snoozy`,
 
 | Command | What it does | Flags |
 |---------|--------------|-------|
-| `firetv-iptv` | Installs or updates OwnTV, opens it, and shows the iptv-org worldwide channel playlist to add from your phone. See [Free live TV](IPTV.md). | `--install`, `--uninstall` (also deletes the playlists saved in OwnTV), `--yes` (still needs `--install` or `--uninstall`) |
+| `fire-iptv` | Install or update fire-iptv and open its automatic live TV setup. See [IPTV](IPTV.md). | `--install`, `--uninstall` (deletes its private library), `--yes` |
+| `firetv-iptv` | Choose fire-iptv or OwnTV. | `--app=fire-iptv`, `--app=owntv`, `--install`, `--uninstall`, `--yes`. Without `--app`, legacy flag-only commands target OwnTV. |
 
 ## Timeouts
 
@@ -78,7 +79,7 @@ Screensaver ids: `aerial` (the default), `androsaver`, `snoozy`,
 
 | Command | What it does | Flags |
 |---------|--------------|-------|
-| `firetv-revert` | Puts the TV back how it was with a checklist: the Alexa fix, the active screensaver, installed screensavers, changed timeouts, the Home button, the launcher apps, LTvLauncher's notification access, OwnTV, the screensaver optimizations and the guard. AT4K and LTvLauncher start unticked, because removing them deletes your home screen layout, and so does OwnTV, because removing it deletes its playlists. | `--all` reverts everything except removing AT4K, LTvLauncher and OwnTV, `--force` skips the typed confirmation, `--yes` (reverts nothing without `--all`) |
+| `firetv-revert` | Puts the TV back how it was with a checklist: the Alexa fix, the active screensaver, installed screensavers, changed timeouts, the Home button, the launcher apps, LTvLauncher's notification access, OwnTV, the screensaver optimizations and the guard. AT4K and LTvLauncher start unticked, because removing them deletes your home screen layout, and so does OwnTV, because removing it deletes its playlists. | `--all` reverts everything except removing AT4K, LTvLauncher, fire-iptv and OwnTV, `--force` skips the typed confirmation, `--yes` (reverts nothing without `--all`) |
 | `uninstall` | Runs `firetv-revert` first, then removes the commands and resets `.env`, then offers to delete the repo. | none |
 | `delete`, `remove` | Deletes this repo from your computer after you type `confirm`. Does not touch the TV. | none |
 

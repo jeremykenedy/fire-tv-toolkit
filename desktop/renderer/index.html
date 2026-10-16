@@ -330,7 +330,24 @@
           <div id="launcher-list" class="app-list"></div>
           <section class="live-tv">
             <div>
-              <span class="eyebrow">Free live TV</span>
+              <span class="eyebrow">TV guide, sports, movies and shows</span>
+              <h2>fire-iptv</h2>
+              <p>
+                Install and open Discover. Public live TV and guide feeds are
+                prepared automatically. Add your provider in the app for movie
+                and series posters.
+              </p>
+            </div>
+            <div class="actions">
+              <button data-task="install-fire-iptv">Install fire-iptv</button>
+              <button id="open-fire-iptv" data-task="open-fire-iptv" class="secondary">
+                Open on TV
+              </button>
+            </div>
+          </section>
+          <section class="live-tv">
+            <div>
+              <span class="eyebrow">Alternative player</span>
               <h2>OwnTV</h2>
               <p>
                 Install the player, then add the worldwide iptv-org playlist in
@@ -440,8 +457,15 @@
               ><select id="setup-home">
                 <option value="keep">Keep current home screen</option>
               </select>
+              <label class="check-choice">
+                <input id="setup-fire-iptv" type="checkbox" checked />
+                <span><strong>Install fire-iptv</strong><small>
+                  Automatic live TV, sports and guide setup. Add your provider
+                  for movies and series.
+                </small></span>
+              </label>
               <label class="check-choice"
-                ><input id="setup-owntv" type="checkbox" checked /><span
+                ><input id="setup-owntv" type="checkbox" /><span
                   ><strong>Install OwnTV for online IPTV</strong
                   ><small
                     >Add the worldwide playlist in OwnTV after

@@ -23,7 +23,7 @@ import {
   HOME_REDIRECT,
   launcherApps,
 } from 'fire-tv-toolkit/src/launcher-registry.js';
-import { OWNTV } from 'fire-tv-toolkit/src/iptv-registry.js';
+import { OWNTV, FIRE_IPTV } from 'fire-tv-toolkit/src/iptv-registry.js';
 import { ALL_CHANNELS_PLAYLIST } from './iptv.js';
 
 const toolkit = {
@@ -118,6 +118,7 @@ export function createController({
       home: launcher.home,
       guardConfigured: api.guardState().on,
       ownTvInstalled: installed.includes(OWNTV.pkg),
+      fireIptvInstalled: installed.includes(FIRE_IPTV.pkg),
       homeRedirectInstalled: installed.includes(HOME_REDIRECT.pkg),
       screensavers: savers.map((entry) => ({
         id: entry.id,
@@ -181,6 +182,8 @@ export function createController({
       case 'check-guard':
       case 'install-owntv':
       case 'open-owntv':
+      case 'install-fire-iptv':
+      case 'open-fire-iptv':
         return { type };
       default:
         throw new Error('Choose a supported task.');
@@ -265,6 +268,17 @@ export function createController({
           title: 'Check and repair protection',
           detail:
             'Restore guarded settings and apply the updater restrictions recorded by this desktop app.',
+        };
+      case 'install-fire-iptv':
+        return {
+          title: 'Install fire-iptv',
+          detail:
+            'Download, verify and install fire-iptv. Live TV and guide feeds are prepared automatically. Add your provider in the app for movies and series.',
+        };
+      case 'open-fire-iptv':
+        return {
+          title: 'Open fire-iptv',
+          detail: 'Open Discover on your television.',
         };
       case 'install-owntv':
         return {
@@ -420,6 +434,19 @@ export function createController({
       case 'undo-optimize':
         requireResults(await api.revertOptimizations(ip));
         break;
+      case 'install-fire-iptv':
+        await install(ip, FIRE_IPTV);
+        requireVerified(
+          await api.openApp(ip, FIRE_IPTV.pkg),
+          'fire-iptv installed but did not open. Open it from your TV apps.',
+        );
+        break;
+      case 'open-fire-iptv':
+        requireVerified(
+          await api.openApp(ip, FIRE_IPTV.pkg),
+          'fire-iptv did not open. Install it first.',
+        );
+        break;
       case 'install-owntv':
         await install(ip, OWNTV);
         break;
@@ -497,6 +524,13 @@ export function createController({
         throw new Error('Install OwnTV before updating it.');
       add('install-owntv');
     }
+    if (request.fireIptv !== undefined && typeof request.fireIptv !== 'boolean')
+      throw new Error('Choose whether to update fire-iptv.');
+    if (request.fireIptv) {
+      if (!state.fireIptvInstalled)
+        throw new Error('Install fire-iptv before updating it.');
+      add('install-fire-iptv');
+    }
     return actions;
   }
 
@@ -525,6 +559,9 @@ export function createController({
     if (typeof request.ownTv !== 'boolean')
       throw new Error('Choose whether to install OwnTV.');
     if (request.ownTv && !state.ownTvInstalled) add('install-owntv');
+    if (request.fireIptv !== undefined && typeof request.fireIptv !== 'boolean')
+      throw new Error('Choose whether to install fire-iptv.');
+    if (request.fireIptv && !state.fireIptvInstalled) add('install-fire-iptv');
     return actions;
   }
 

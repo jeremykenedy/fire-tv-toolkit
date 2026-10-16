@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { installFakeAdb, captured, AERIAL } from './helpers/fake-adb.js';
 import { drive, DOWN, ENTER } from './helpers/drive.js';
 import { launcherFetch } from './helpers/launcher-fakes.js';
-import { OWNTV, IPTV_PLAYLIST } from '../src/iptv-registry.js';
+import { OWNTV, FIRE_IPTV, IPTV_PLAYLIST } from '../src/iptv-registry.js';
 import { manageIptv } from '../src/steps/iptv.js';
 import { uninstallEverything } from '../src/steps/uninstall.js';
 
@@ -77,6 +77,59 @@ test('--install refuses a download that does not match OwnTV\'s pinned checksum'
   assert.equal(process.exitCode, 1);
 });
 
+test('fire-iptv installs and opens without a manual starter playlist import', async () => {
+  ownTvInstalled();
+  const pinned = FIRE_IPTV.sha256;
+  FIRE_IPTV.sha256 = crypto.createHash('sha256').update(`pkg:${FIRE_IPTV.pkg}`).digest('hex');
+  try {
+    const { out } = await captured(() => manageIptv(ip, { install: true, app: 'fire-iptv' }));
+    assert.ok(fake.readState().installed.includes(FIRE_IPTV.pkg));
+    assert.ok(fake.readState().installed.includes(OWNTV.pkg));
+    assert.equal(fake.readState().opened, FIRE_IPTV.pkg);
+    assert.match(out, /prepared on first launch/);
+    assert.match(out, /Add provider/);
+    assert.doesNotMatch(out, /Start Import on the TV/);
+    assert.notEqual(process.exitCode, 1);
+  } finally {
+    FIRE_IPTV.sha256 = pinned;
+  }
+});
+
+test('fire-iptv checksum failures prevent installation and launch', async () => {
+  const { out } = await captured(() => manageIptv(ip, { install: true, app: 'fire-iptv' }));
+  assert.match(out, /fire-iptv: .*Checksum mismatch/);
+  assert.ok(!fake.readState().installed.includes(FIRE_IPTV.pkg));
+  assert.equal(fake.readState().opened, undefined);
+  assert.equal(process.exitCode, 1);
+});
+
+test('removing fire-iptv leaves OwnTV installed', async () => {
+  fake.setState({ installed: [OWNTV.pkg, FIRE_IPTV.pkg] });
+  const { out } = await captured(() => manageIptv(ip, { uninstall: true, app: 'fire-iptv' }));
+  assert.match(out, /fire-iptv and its playlists were removed/);
+  assert.deepEqual(fake.readState().installed, [OWNTV.pkg]);
+});
+
+test('the fire-iptv command selects fire-iptv without an app flag', async () => {
+  installedEnv();
+  const r = await drive('bin/fire-iptv.js', ['--install'], [], withFetchStub);
+  assert.match(r.out, /fire-iptv: .*Checksum mismatch/);
+  assert.doesNotMatch(r.out, /OwnTV: .*Checksum mismatch/);
+  assert.equal(r.code, 1);
+});
+
+test('the shared menu recommends fire-iptv and still offers OwnTV', async () => {
+  installedEnv();
+  const r = await drive('bin/firetv-iptv.js', [], [
+    { expect: 'What would you like to do?', send: ENTER },
+    CONTINUE,
+  ], withFetchStub);
+  assert.match(r.out, /Install fire-iptv with automatic live TV setup/);
+  assert.match(r.out, /Install OwnTV and show the playlist to add/);
+  assert.match(r.out, /fire-iptv: .*Checksum mismatch/);
+  assert.equal(r.code, 1);
+});
+
 test('--install still shows the playlist when the TV does not open OwnTV', async () => {
   fake.setState({ unopenable: [OWNTV.pkg] });
   const { out } = await withFakeDownloadPinned(() => captured(() => manageIptv(ip, { install: true })));
@@ -121,7 +174,7 @@ test('--install with --uninstall, or --yes alone, changes nothing and fails', as
 
 test('firetv-iptv menu offers only the install until OwnTV is on the TV', async () => {
   installedEnv();
-  const r = await drive('bin/firetv-iptv.js', [], [
+  const r = await drive('bin/firetv-iptv.js', ['--app=owntv'], [
     { expect: 'What would you like to do?', send: ENTER },
     CONTINUE,
   ], withFetchStub);
@@ -134,7 +187,7 @@ test('firetv-iptv menu offers only the install until OwnTV is on the TV', async 
 test('firetv-iptv menu removes an installed OwnTV', async () => {
   installedEnv();
   ownTvInstalled();
-  const r = await drive('bin/firetv-iptv.js', [], [
+  const r = await drive('bin/firetv-iptv.js', ['--app=owntv'], [
     { expect: 'What would you like to do?', send: `${DOWN}${ENTER}` },
     CONTINUE,
   ], withFetchStub);
@@ -145,10 +198,11 @@ test('firetv-iptv menu removes an installed OwnTV', async () => {
 });
 
 test('firetv-revert --all leaves OwnTV and its playlists installed', async () => {
-  ownTvInstalled();
+  fake.setState({ installed: [AERIAL, OWNTV.pkg, FIRE_IPTV.pkg] });
   const { result, out } = await captured(() => uninstallEverything(ip, { all: true, force: true }));
   assert.equal(result, 'reverted', out);
   assert.ok(fake.readState().installed.includes(OWNTV.pkg));
+  assert.ok(fake.readState().installed.includes(FIRE_IPTV.pkg));
 });
 
 test('firetv-revert removes OwnTV when it is ticked by hand, and reports one the TV keeps', async () => {
