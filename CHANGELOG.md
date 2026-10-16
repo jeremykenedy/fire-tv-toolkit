@@ -6,6 +6,9 @@
 
 - A desktop app for worldwide online IPTV, with search, country, language and category filters, favorites, alternate sources and HLS playback.
 - Native confirmation for Fire TV controls, bundled verified ADB, per-device timer baselines, and installers for macOS, Windows and Linux.
+- Guided setup and app updates with reviewed selections, ordered installation and verification, and clear partial completion when a step fails.
+- Advanced settings with an enable warning, hidden Activity and TV terminal controls, streamed TV command output, exit status and cancellation.
+- Navigation icons and an About page with compatibility, intended use, liability information, repository and license links, and author credit.
 - Packaged application checks on all three operating systems, including HLS decoding, saved favorites and Windows/Linux installer removal.
 
 ### Changed in 4.1.0

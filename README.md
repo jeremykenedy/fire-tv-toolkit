@@ -53,7 +53,9 @@ The desktop app browses and plays the worldwide iptv-org catalog. Search channel
 
 Fire TV Toolkit is a command-line tool that takes your Fire TV back from the
 ads and the bugs. It talks to the TV over adb from your computer, and every
-change is explained before it happens, confirmed by you, and reversible.
+guided change is explained before it happens and confirmed by you. Captured
+settings can be restored; removing TV apps or using the advanced shell can
+have lasting effects.
 
 Run `start` and it walks you through it: connect to the TV, turn on the Alexa
 deep-sleep fix, install ad-free screensavers, pick the one you want, and
@@ -62,6 +64,9 @@ so you can run just the part you need later.
 
 ## Features
 
+- **Desktop guides**: Setup assistant walks through apps and settings before applying approved selections. Guided updater refreshes selected installed TV apps from verified releases.
+- **Advanced tools**: a warning must be accepted before Activity and the TV terminal appear. Commands run on the connected TV, with output, exit status and a Stop button.
+- **About and credits**: device compatibility, intended use, liability information, repository and MIT license links, and author credit are available in the app.
 - **Alexa deep-sleep fix**: keeps Alexa able to reach the TV while it sleeps. Fire OS has a setting for this that its own toggle never writes.
 - **Ad-free screensavers**: replaces Amazon's ad-serving screensaver with Aerial Views (the default), AndroSaver, Snoozy, Aquarium Live, Aquarium 4K, Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit, or Helios Lightfield, each an optional install. Android's built-in Colors, and Amazon with Ads, stay available to switch back to.
 - **Verified downloads**: every APK comes from a GitHub release and is checked against a published SHA-256 before it is installed.
@@ -73,7 +78,7 @@ so you can run just the part you need later.
 - **Timeout control**: view, change and reset the sleep and screensaver timeouts, with the first value seen on your TV saved as its baseline.
 - **Full revert**: put the TV back how it was, item by item, then remove the tool from your computer.
 - **Script friendly**: every command takes flags, answers `--help`, and exits non-zero on failure.
-- **Safe by default**: nothing changes until you confirm, Esc cancels any prompt, and risky steps need a typed confirmation.
+- **Reviewed changes**: guided TV changes require confirmation. Advanced shell access is off by default and requires acknowledgement of its warning before commands can run.
 
 ## Available screensavers
 
@@ -138,6 +143,21 @@ Captured from the packaged macOS 4.1.0 app.
 <td><a href="art/screenshots/desktop-home.jpg"><img src="art/screenshots/desktop-home.jpg" alt="Home screen and OwnTV controls"></a></td>
 <td><a href="art/screenshots/desktop-settings.jpg"><img src="art/screenshots/desktop-settings.jpg" alt="Fire TV device settings"></a></td>
 <td><a href="art/screenshots/desktop-activity.jpg"><img src="art/screenshots/desktop-activity.jpg" alt="Device activity and verification results"></a></td>
+</tr>
+<tr>
+<td><a href="art/screenshots/desktop-setup.jpg"><img src="art/screenshots/desktop-setup.jpg" alt="Guided setup app choices"></a></td>
+<td><a href="art/screenshots/desktop-setup-settings.jpg"><img src="art/screenshots/desktop-setup-settings.jpg" alt="Guided setup settings"></a></td>
+<td><a href="art/screenshots/desktop-setup-review.jpg"><img src="art/screenshots/desktop-setup-review.jpg" alt="Guided setup selection review"></a></td>
+</tr>
+<tr>
+<td><a href="art/screenshots/desktop-updater.jpg"><img src="art/screenshots/desktop-updater.jpg" alt="Guided installed app updater"></a></td>
+<td><a href="art/screenshots/desktop-advanced.jpg"><img src="art/screenshots/desktop-advanced.jpg" alt="Advanced settings and warning"></a></td>
+<td><a href="art/screenshots/desktop-terminal.jpg"><img src="art/screenshots/desktop-terminal.jpg" alt="Read-only Fire TV shell command output"></a></td>
+</tr>
+<tr>
+<td><a href="art/screenshots/desktop-about.jpg"><img src="art/screenshots/desktop-about.jpg" alt="About, compatibility, license and author"></a></td>
+<td><a href="art/screenshots/desktop-advanced-warning.jpg"><img src="art/screenshots/desktop-advanced-warning.jpg" alt="Warning before enabling advanced controls"></a></td>
+<td><a href="art/screenshots/desktop-updater-review.jpg"><img src="art/screenshots/desktop-updater-review.jpg" alt="Guided updater review before applying changes"></a></td>
 </tr>
 </table>
 
