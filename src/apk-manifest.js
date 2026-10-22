@@ -2,10 +2,10 @@ import fs from 'node:fs';
 import { inflateRawSync } from 'node:zlib';
 
 const MAX_MANIFEST = 4 * 1048576;
-const ZIP_END = 101010256;
-const ZIP_CENTRAL = 33639248;
-const ZIP_LOCAL = 67324752;
-const NO_STRING = 4294967295;
+const ZIP_END = Buffer.from('504b0506', 'hex').readUInt32LE(0);
+const ZIP_CENTRAL = Buffer.from('504b0102', 'hex').readUInt32LE(0);
+const ZIP_LOCAL = Buffer.from('504b0304', 'hex').readUInt32LE(0);
+const NO_STRING = 2 ** 32 - 1;
 
 function manifestBytes(apk) {
   const lower = Math.max(0, apk.length - 65557);

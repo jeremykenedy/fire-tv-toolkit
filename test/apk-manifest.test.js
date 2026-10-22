@@ -16,7 +16,7 @@ test('rejects malformed, truncated, missing or invalid package manifests',()=>{
   const valid=manifest();
   for(const data of [Buffer.alloc(0),valid.subarray(0,valid.length-1),manifest({pkg:'invalid'}),Buffer.alloc(80)])
     assert.throws(()=>parseBinaryManifest(data));
-  const broken=Buffer.from(valid);broken.writeUInt32LE(4294967295,12);
+  const broken=Buffer.from(valid);broken.writeUInt32LE(2 ** 32 - 1,12);
   assert.throws(()=>parseBinaryManifest(broken));
 });
 

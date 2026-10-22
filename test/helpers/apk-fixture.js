@@ -14,7 +14,7 @@ export function manifest({utf8=true,pkg='example.app',version=42,major=0}={}) {
   node.writeUInt16LE(0x0102,0);node.writeUInt16LE(16,2);node.writeUInt32LE(node.length,4);
   node.writeUInt32LE(0,20);node.writeUInt16LE(20,24);node.writeUInt16LE(20,26);node.writeUInt16LE(3,28);
   for(const [index,name,type,value] of [[0,1,3,4],[1,2,16,version],[2,3,16,major]]) {
-    const at=36+index*20;node.writeUInt32LE(name,at+4);node.writeUInt32LE(4294967295,at+8);
+    const at=36+index*20;node.writeUInt32LE(name,at+4);node.writeUInt32LE(2 ** 32 - 1,at+8);
     node.writeUInt16LE(8,at+12);node.writeUInt8(type,at+15);node.writeUInt32LE(value,at+16);
   }
   const header=Buffer.alloc(8);header.writeUInt16LE(3);header.writeUInt16LE(8,2);header.writeUInt32LE(8+pool.length+node.length,4);
