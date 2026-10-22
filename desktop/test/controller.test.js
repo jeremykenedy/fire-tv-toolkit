@@ -97,6 +97,14 @@ test('connecting reads state and preserves the first captured timer values', asy
     result.screensavers.find((entry) => entry.id === 'aerial').active,
     true,
   );
+  assert.match(
+    result.screensavers.find((entry) => entry.id === 'twilight-hearth').description,
+    /Recorded wood fire/,
+  );
+  assert.equal(
+    result.screensavers.find((entry) => entry.id === 'amazon').description,
+    '',
+  );
   assert.deepEqual(h.writes, []);
   const originalDirectory = h.state.directory;
   h.state.sleep = 60000;

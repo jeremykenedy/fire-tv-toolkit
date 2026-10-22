@@ -46,5 +46,17 @@
     "apk_sha256": "88602f840deae1e9a7fa8de5b1dda03601c70d0d70399ab11262e1817e7de31f",
     "apk_bytes": 72053957,
     "state": "Published downloaded/checksummed signed artifact physically tested; existing registry fetches latest release"
+  },
+  "twilight-hearth": {
+    "capture": "2026-10-16 physical Fire TV AFTDEC012E API30 modern/bright Preview after 40-second settle; 1920x1080 capture resized to1280x720,544x306,400x225 without scene changes",
+    "source_sha256": "30c076080ae64f3152def1c6531408a3cea2662e28a22c5b9c6014f312981768",
+    "thumbnail_sha256": "3e717357521f273daa616c727c76d5d4cad3b150128c46cbf67e04fae554308b",
+    "source_repository": "https://github.com/jeremykenedy/twilight-hearth/tree/v1.1.0",
+    "source_image": "https://github.com/jeremykenedy/twilight-hearth/blob/v1.1.0/art/screenshots/fire-tv-modern-bright.png",
+    "release": "https://github.com/jeremykenedy/twilight-hearth/releases/tag/v1.1.0",
+    "apk_sha256": "dd39810f8bf2a67af7f133554897741323d9a14d606b3fc1a441285646b440f5",
+    "apk_bytes": 27207363,
+    "attribution_notice": "https://github.com/jeremykenedy/twilight-hearth/blob/v1.1.0/NOTICE",
+    "state": "Published signed release; physical settled motion, Preview/Back and Dream/Back passed with exact six preferences/five settings/asleep restoration. Latest-release installer behavior preserved."
   }
 }
