@@ -121,7 +121,7 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.twilighthearth',
     dreamComponent: 'com.jeremykenedy.twilighthearth/.HearthDreamService',
     repo: 'jeremykenedy/twilight-hearth',
-    blurb: 'An animated fireplace with adjustable surrounds, flame intensity, embers, motion and room lighting. No ads, analytics or tracking.',
+    blurb: 'Recorded wood fire with brick, stone and slate surrounds, flame exposure, embers, playback speed and room lighting. No ads, analytics or tracking.',
   },
   {
     id: 'nebula-drift',

@@ -15,7 +15,7 @@
 | `rain-on-glass` | Rain on Glass | `com.jeremykenedy.rainonglass` | [jeremykenedy/rain-on-glass](https://github.com/jeremykenedy/rain-on-glass) | Animated rainfall with adjustable lighting, density, speed and glass focus |
 | `rainforest-cascade` | Rainforest Cascade | `com.jeremykenedy.rainforestcascade` | [jeremykenedy/rainforest-cascade](https://github.com/jeremykenedy/rainforest-cascade) | Three real waterfall loops and an original animated sunrise garden, with framing, speed, lighting and mist controls |
 | `blue-meridian` | Blue Meridian | `com.jeremykenedy.bluemeridian` | [jeremykenedy/blue-meridian](https://github.com/jeremykenedy/blue-meridian) | A rotating Earth with moving camera, atmosphere, night lights, clouds and adjustable stars |
-| `twilight-hearth` | Twilight Hearth | `com.jeremykenedy.twilighthearth` | [jeremykenedy/twilight-hearth](https://github.com/jeremykenedy/twilight-hearth) | An animated fireplace with adjustable surrounds, flame intensity, embers, motion and room lighting |
+| `twilight-hearth` | Twilight Hearth | `com.jeremykenedy.twilighthearth` | [jeremykenedy/twilight-hearth](https://github.com/jeremykenedy/twilight-hearth) | Recorded wood fire with brick, stone and slate surrounds, flame exposure, embers, playback speed and room lighting |
 | `nebula-drift` | Nebula Drift | `com.jeremykenedy.nebuladrift` | [jeremykenedy/nebula-drift](https://github.com/jeremykenedy/nebula-drift) | Animated nebula clouds with adjustable structure, color, density, stars and meteors |
 | `vortex-spiral` | Vortex Spiral | `com.jeremykenedy.vortexspiral` | [jeremykenedy/vortex-spiral](https://github.com/jeremykenedy/vortex-spiral) | Animated spiral ribbons with adjustable arms, winding, color, brightness and motion |
 | `signal-rain` | Signal Rain | `com.jeremykenedy.signalrain` | [jeremykenedy/signal-rain](https://github.com/jeremykenedy/signal-rain) | Luminous abstract digital rain with adjustable streams, colors and motion |
@@ -102,3 +102,15 @@ this repository before publishing. Toolkit gallery files use
   screensaver's own settings.
 - Fire OS Settings only lists Amazon's screensaver. Use `screensaver` on your
   computer, or the Screensavers tile on the TV (see [Home screen](LAUNCHER.md)).
+
+## Twilight Hearth 1.1
+
+The existing `twilight-hearth` entry resolves the latest signed upstream release. Version 1.1.0 replaces the painted fireplace with recorded wood fire and photographed materials. Its package, production signer and six setting keys remain unchanged. Update in place:
+
+```sh
+firetv-screensavers --install=twilight-hearth --yes
+```
+
+Select it separately with `screensaver --set=twilight-hearth`. Installation does not change that selection or timers. The APK SHA-256 is `dd39810f8bf2a67af7f133554897741323d9a14d606b3fc1a441285646b440f5`, 27,207,363 bytes. [Upstream verification](https://github.com/jeremykenedy/twilight-hearth/blob/v1.1.0/docs/VERIFICATION.md) records actual Fire TV Preview and DreamService playback with Back and exact preference/system restoration. Automatic idle activation, native 4K and sustained thermal behavior remain unverified.
+
+The gallery uses actual physical Fire TV modern/bright output. [Capture provenance](screenshots/candidate-sources.json) records its source and release hashes. The on-TV Fire TV UI catalog is maintained separately.

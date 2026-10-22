@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.3.2] - 2026-10-22
+
+### Fixed in 4.3.2
+
+- Refresh Twilight Hearth descriptions and physical Fire TV preview for its recorded-fire release.
+- Show registry explanations in desktop screensaver rows instead of blank descriptions.
+- Align the desktop local Toolkit dependency metadata with the current version, Apache license and commands.
+
+### Upgrade
+
+Install the latest desktop package, or update the CLI checkout and run `node setup.js`. Existing TV settings and app preferences remain unchanged. See the [4.3.2 upgrade guide](docs/RELEASE-4.3.2.md).
+
 ## [4.3.1] - 2026-10-16
 
 ### Changed in 4.3.1

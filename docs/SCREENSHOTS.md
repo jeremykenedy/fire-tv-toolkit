@@ -4,7 +4,7 @@
 
 ## Desktop app
 
-Captured from the current packaged macOS source build connected to a physical Fire TV.
+Captured from the packaged macOS 4.3.1 source build connected to a physical Fire TV.
 
 <table>
 <tr>
@@ -46,6 +46,8 @@ Captured on an Insignia Fire TV Edition TV, Android TV emulators, and in macOS T
 </p>
 
 ## Screensavers
+
+Twilight Hearth shows actual physical Fire TV modern/bright output from its verified 1.1.0 release. See [capture provenance](screenshots/candidate-sources.json) and the [screensaver guide](SCREENSAVERS.md#twilight-hearth-11). The unchanged desktop screenshots above remain from the 4.3.1 packaged source build.
 
 <p align="center">
     <a href="screenshots/screensaver-aerial-views.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-aerial-views-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-aerial-views-tablet.jpg 2x"><img src="screenshots/screensaver-aerial-views.jpg" alt="Aerial Views, the default" title="Aerial Views, the default"></picture></a>

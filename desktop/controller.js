@@ -122,7 +122,7 @@ export function createController({
       screensavers: savers.map((entry) => ({
         id: entry.id,
         name: entry.name,
-        description: entry.description || '',
+        description: entry.blurb || '',
         installed: installed.includes(entry.pkg),
         active: sameComponent(entry.dreamComponent, active),
         downloadable: SCREENSAVERS.includes(entry),
