@@ -44,7 +44,8 @@ async function publishedChecksum(entry, release, token, api) {
 /** Registry pins are installation baselines, not claims about the latest release. */
 export async function publishedApk(entry, api = {}) {
   const token = api.token ?? (entry.private ? await (api.githubToken ?? githubToken)() : undefined);
-  const release = await (api.latestRelease ?? latestRelease)(entry.repo, entry.asset, undefined, token, true);
+  const release = await (api.latestRelease ?? latestRelease)(
+    entry.repo, entry.asset, undefined, token, true, entry.updateAssetTemplate);
   const sha256 = await publishedChecksum(entry, release, token, api);
   if (!Number.isSafeInteger(release.bytes) || release.bytes <= 0 || release.bytes > 250 * 1048576)
     throw new Error('Invalid published APK size.');

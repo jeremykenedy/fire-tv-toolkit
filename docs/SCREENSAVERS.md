@@ -8,6 +8,7 @@
 | `aquarium-live` | Aquarium Live | `com.jeremykenedy.aquariumlive` | [jeremykenedy/aquarium-live](https://github.com/jeremykenedy/aquarium-live) | A living aquarium drawn in real time: four scenes, six looks, day and night |
 | `aquarium-4k` | Aquarium 4K | `com.jeremykenedy.firetv.aquarium` | [jeremykenedy/fire-tv-aquarium](https://github.com/jeremykenedy/fire-tv-aquarium) | Offline 4K aquarium footage with custom fish, sea life and backgrounds |
 | `cloud-drift-clock` | Cloud Drift Clock | `com.jeremykenedy.clouddriftclock` | [jeremykenedy/cloud-drift-clock](https://github.com/jeremykenedy/cloud-drift-clock) | An animated cloudscape with a digital clock and adjustable palette, density, speed and motion |
+| `prism-clock` | Prism Clock | `com.jeremykenedy.prismclock` | [jeremykenedy/prism-clock](https://github.com/jeremykenedy/prism-clock) | A moving faceted surface with a drifting clock, adjustable materials, lighting, time format and motion |
 | `jellyfish-drift` | Jellyfish Drift | `com.jeremykenedy.jellyfishdrift` | [jeremykenedy/jellyfish-drift](https://github.com/jeremykenedy/jellyfish-drift) | Animated jellyfish with adjustable water, density, motion, species and light rays |
 | `firefly-grove` | Firefly Grove | `com.jeremykenedy.fireflygrove` | [jeremykenedy/firefly-grove](https://github.com/jeremykenedy/firefly-grove) | Animated fireflies in a grove with adjustable density, motion and color |
 | `neon-corridor` | Neon Corridor | `com.jeremykenedy.neoncorridor` | [jeremykenedy/neon-corridor](https://github.com/jeremykenedy/neon-corridor) | A procedural neon tunnel with adjustable density, speed, color, brightness and geometry |
@@ -35,7 +36,7 @@
 
 Aerial Views installs from its author's own release, pinned by tag and SHA-256
 because its releases publish no checksum. AndroSaver and Snoozy are forks of
-third-party projects (see [upstream sources](INTEGRATIONS.md#upstream-sources)). Aquarium Live, Aquarium 4K, Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit, Helios Lightfield, Slot Vision and Hearth Presence are original projects.
+third-party projects (see [upstream sources](INTEGRATIONS.md#upstream-sources)). Aquarium Live, Aquarium 4K, Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit, Helios Lightfield, Slot Vision, Hearth Presence and Prism Clock are original projects.
 
 Aerial Views is the default: on a TV with none of these installed it starts
 checked in `firetv-screensavers`, and `screensaver --yes` picks it whenever it
@@ -121,3 +122,9 @@ The gallery uses actual physical Fire TV modern/bright output. [Capture provenan
 The existing `pipeworks-dream` entry downloads the latest signed release. Version 1.1.0 provides growing 3D tubes with round, square and hexagonal sections, three thicknesses, color and speed choices, and following tails delayed by 5, 15, 30 or 60 seconds. It preserves the package and production signer. Update with `firetv-screensavers --install=pipeworks-dream --yes`; selection remains separate through `screensaver --set=pipeworks-dream`.
 
 The exact released APK passed physical signed-update preservation, remote Preview/Credits/Back and actual bound DreamService/Back, independent moving review and exact restoration. The [upstream verification](https://github.com/jeremykenedy/pipeworks-dream/blob/v1.1.0/docs/VERIFICATION.md) records short dense-scene presentation samples and their limits. Automatic idle activation, native 4K and sustained thermal behavior remain unverified. The gallery and desktop catalog now use the final physical capture identified in [capture provenance](screenshots/candidate-sources.json).
+
+## Prism Clock
+
+Install with `firetv-screensavers --install=prism-clock`. The published 1.0.0 APK retains the app package and settings on replacement. Materials, facet size, surface motion, lighting, contrast, clock size, time format, seconds, date and clock movement are configurable in the native settings screen.
+
+The silver preview in the gallery is actual physical Fire TV output. Its maximum tested preset presented approximately 24.67 frames per second, with limited performance headroom. The user's existing screensaver selection remains unchanged during installation.

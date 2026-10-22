@@ -60,6 +60,15 @@ export const SCREENSAVERS = [
     blurb: 'A moving cloudscape with an adjustable digital clock, sky palette, density, speed and motion. No ads, analytics or tracking.',
   },
   {
+    id: 'prism-clock',
+    name: 'Prism Clock',
+    pkg: 'com.jeremykenedy.prismclock',
+    dreamComponent: 'com.jeremykenedy.prismclock/.PrismDreamService',
+    repo: 'jeremykenedy/prism-clock',
+    asset: 'prism-clock.apk',
+    blurb: 'A moving faceted surface with a drifting clock, adjustable materials, lighting, time format and motion.',
+  },
+  {
     id: 'jellyfish-drift',
     name: 'Jellyfish Drift',
     pkg: 'com.jeremykenedy.jellyfishdrift',

@@ -19,6 +19,7 @@ export const OWNTV = {
   repo: 'ahXN00/OwnTV',
   tag: 'v5.2.1',
   asset: 'OwnTV-v5.2.1.apk',
+  updateAssetTemplate: 'OwnTV-{tag}.apk',
   sha256: 'dbc991358d09b6e0e7a40683d63346528f9702efe4358c7f9ae66af266e4ee3c',
 };
 

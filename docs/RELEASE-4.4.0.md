@@ -12,6 +12,8 @@ Toolkit can also update itself. CLI updates require a clean reviewed primary che
 
 The release also refreshes the verified OwnTV installation default to 5.2.1 and Fire IPTV to 1.1.1, includes the current Pipeworks Dream 1.1 preview, and sends guarded settings through Fire TV UI's protected receiver so its protection service retains the desired state. Fire IPTV starts with automatic picture-in-picture disabled when that preference has not been set; explicit user choices survive an update.
 
+Prism Clock joins the install catalog with its published signed 1.0.0 release and a real physical TV preview. OwnTV update checks select the APK matching the current release tag when upstream publishes several files.
+
 ## Upgrade
 
 Install the latest desktop package, or update the verified CLI primary checkout and run `npm ci` followed by `npm link`. Saved device configuration stays in place. Read [published update checks](UPDATES.md) for explicit TV targeting, credentials, confirmation and error behavior.
@@ -38,7 +40,7 @@ For recovery, reinstall the previous Toolkit desktop installer or use a separate
 
 ## Verification and limits
 
-Host regressions cover integrity failures, private handoff acknowledgement, target selection, user cancellation and version readback. The macOS native desktop screen was checked against actual public release metadata. The public app update flow replaced Pipeworks Dream 1.0.0 with the published 1.1.0 on a physical Fire TV, verified its installed APK hash and preserved its seven existing preferences. All eleven settings then matched the original TV. Protected timer writes also passed actual native acknowledgement and OS readback.
+Host regressions cover integrity failures, private handoff acknowledgement, target selection, user cancellation and version readback. The macOS native desktop screen was checked against actual public release metadata. The public app update flow replaced Pipeworks Dream 1.0.0 with the published 1.1.0 on a physical Fire TV, verified its installed APK hash and preserved its seven existing preferences. All eleven settings then matched the original TV. Fire TV UI on the new TV also downloaded and installed the public Fire IPTV 1.1.1 update through Android's normal installer, verified the installed version and retained its channel catalog. Both TVs retained the disabled PiP preference after relaunch. Protected timer writes also passed actual native acknowledgement and OS readback.
 
 Private UI staging reached the normal Android package update confirmation on the native emulator; cancellation retained the installed version. A later TV installer confirmation and installed version readback are required to claim a private UI replacement. Opening a desktop installer also requires the normal OS installation and a subsequent app-version check.
 

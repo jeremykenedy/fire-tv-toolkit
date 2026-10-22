@@ -164,14 +164,24 @@ export async function githubToken() {
   return token;
 }
 
+function versionedAssetName(template, tag) {
+  const name = template.replace('{tag}', tag);
+  if (template.split('{tag}').length !== 2 || typeof tag !== 'string'
+      || !/^[A-Za-z0-9._-]+$/.test(tag) || !/^[A-Za-z0-9._-]+\.apk$/.test(name))
+    throw new Error('Invalid versioned APK asset.');
+  return name;
+}
+
 /**
  * @param {string} repo GitHub "owner/name", always from the fixed registry, never user input
  * @param {string} [assetName] exact asset file name, for a release that carries more than one APK
  * @param {string} [tag] a specific release tag instead of the latest release
  * @param {string} [token] GitHub credentials for a private repository
+ * @param {boolean} [allowRenamedAsset] accept the sole APK if the expected name changes
+ * @param {string} [assetTemplate] exact asset name using the current release {tag}
  * @returns {Promise<{apkUrl: string, apkApiUrl?: string, sha256: string | null, sha256Url: string | null, sha256ApiUrl?: string | null, tag: string}>} the APK URLs and published checksum
  */
-export async function latestRelease(repo, assetName, tag, token, allowRenamedAsset = false) {
+export async function latestRelease(repo, assetName, tag, token, allowRenamedAsset = false, assetTemplate) {
   const which = tag ? `tags/${encodeURIComponent(tag)}` : 'latest';
   const headers = token ? { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } : {};
   const res = await fetch(`https://api.github.com/repos/${repo}/releases/${which}`, { headers, redirect: token ? 'error' : 'follow', signal: AbortSignal.timeout(20000) });
@@ -189,17 +199,19 @@ export async function latestRelease(repo, assetName, tag, token, allowRenamedAss
     throw new Error(`No stable published release is available for ${repo}`);
   }
   const assets = release.assets || [];
-  let apk = assets.find((a) => (assetName ? a.name === assetName : a.name.endsWith('.apk')));
+  const expectedName = assetTemplate ? versionedAssetName(assetTemplate, release.tag_name) : assetName;
+  let apk = assets.find((a) => (expectedName ? a.name === expectedName : a.name.endsWith('.apk')));
   const apks = assets.filter((a) => a.name.endsWith('.apk'));
-  if (!apk && allowRenamedAsset && apks.length === 1) apk = apks[0];
+  if (!apk && !assetTemplate && allowRenamedAsset && apks.length === 1) apk = apks[0];
   if (!apk) {
-    throw new Error(`No ${assetName || '.apk'} asset found on the latest release of ${repo}`);
+    throw new Error(`No ${expectedName || '.apk'} asset found on the latest release of ${repo}`);
   }
   const checksumFile = assets.find((a) => a.name === `${apk.name}.sha256`);
   return {
     apkUrl: apk.browser_download_url,
     apkApiUrl: apk.url,
-    sha256: parseSha256FromNotes(release.body, assetName),
+    sha256: parseSha256FromNotes(release.body, apk.name)
+      ?? (apks.length === 1 ? parseSha256FromNotes(release.body) : null),
     sha256Url: checksumFile ? checksumFile.browser_download_url : null,
     sha256ApiUrl: checksumFile ? checksumFile.url : null,
     tag: release.tag_name,

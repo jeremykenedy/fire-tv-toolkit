@@ -67,5 +67,20 @@
     "apk_bytes": 27207363,
     "attribution_notice": "https://github.com/jeremykenedy/twilight-hearth/blob/v1.1.0/NOTICE",
     "state": "Published signed release; physical settled motion, Preview/Back and Dream/Back passed with exact six preferences/five settings/asleep restoration. Latest-release installer behavior preserved."
+  },
+  "prism-clock": {
+    "capture": "2026-10-22 physical Fire TV API30 actual silver Preview,1920x1080 resized without scene changes",
+    "source_sha256": "7217ea6e4efd79d177cbbaef77ec95c1faaebf7be80811ad8554b7172b5c41cb",
+    "thumbnail_sha256": "9b70da709b92221a847b7611d30da7ffef6c12dcb02aabc60e719293eb605fa1",
+    "responsive_sha256": {
+      "desktop": "3ec41c0f8a710bf117ccaca158b2a0bf1781d6bfeadda4a111d74642c08545b1",
+      "tablet": "fe389af220b3e1eacfae041154ce7210fb7ae9287a2c2937f717f663a14c3e1d"
+    },
+    "source_repository": "https://github.com/jeremykenedy/prism-clock/tree/v1.0.0",
+    "source_image": "https://github.com/jeremykenedy/prism-clock/blob/v1.0.0/art/screenshots/physical-silver-preview.png",
+    "release": "https://github.com/jeremykenedy/prism-clock/releases/tag/v1.0.0",
+    "apk_sha256": "edbf475c4a2b253ccc069adaee8cac2cbba4d16b5579d5299e2e2d1bdaa21fd5",
+    "apk_bytes": 127947,
+    "state": "Published signed artifact independently downloaded and verified; actual native Preview/Dream/remote routes and owner visual acceptance. Physical max preset measured24.67FPS, with limited headroom."
   }
 }

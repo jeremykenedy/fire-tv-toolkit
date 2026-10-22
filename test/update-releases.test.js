@@ -1,10 +1,34 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { compareVersions, publishedApk, checkAppUpdates, installAppUpdate, UI_UPDATE } from '../src/update-releases.js';
+import { OWNTV } from '../src/iptv-registry.js';
 
 const sha = 'a'.repeat(64);
 const release = {tag:'v2.0.0',sha256:sha,bytes:123,apkUrl:'https://github.com/jeremykenedy/example/releases/download/v2.0.0/example.apk',asset:'example.apk'};
 const entry={id:'example',pkg:'example.app',name:'Example',repo:'jeremykenedy/example',tag:'v1.0.0',sha256:'b'.repeat(64)};
+
+test('OwnTV updates select the exact current version APK among multiple assets', async () => {
+  const originalFetch = globalThis.fetch;
+  const asset = 'OwnTV-v5.3.0.apk';
+  const expectedHash = 'c'.repeat(64);
+  let tag = 'v5.3.0';
+  let names = [OWNTV.asset, 'OwnTV-v5.3.0-arm64.apk', asset];
+  globalThis.fetch = async () => Response.json({tag_name: tag,
+    body: `SHA-256 (${OWNTV.asset}): ${'b'.repeat(64)}\nSHA-256 (${asset}): ${expectedHash}`,
+    assets: names.map(name => ({name, size: 123,
+      browser_download_url: `https://github.com/ahXN00/OwnTV/releases/download/v5.3.0/${name}`}))});
+  try {
+    const result = await publishedApk(OWNTV, {githubToken: async () => undefined});
+    assert.equal(result.asset, asset);
+    assert.equal(result.sha256, expectedHash);
+    names = ['OwnTV-v5.3.0-arm64.apk'];
+    await assert.rejects(publishedApk(OWNTV, {githubToken: async () => undefined}), /No OwnTV-v5.3.0.apk/);
+    tag = '../v5.3.0';
+    await assert.rejects(publishedApk(OWNTV, {githubToken: async () => undefined}), /Invalid versioned APK asset/);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
 
 test('published update lookup ignores catalog tag/hash and authenticates private lookups',async()=>{
   let args;
