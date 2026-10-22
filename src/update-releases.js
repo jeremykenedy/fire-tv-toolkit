@@ -25,10 +25,7 @@ export function compareVersions(published, installed) {
   return 0;
 }
 
-/** Registry pins are installation baselines, not claims about the latest release. */
-export async function publishedApk(entry, api = {}) {
-  const token = api.token ?? (entry.private ? await (api.githubToken ?? githubToken)() : undefined);
-  const release = await (api.latestRelease ?? latestRelease)(entry.repo, entry.asset, undefined, token, true);
+async function publishedChecksum(entry, release, token, api) {
   let sha256 = release.sha256;
   if (release.sha256Url) {
     sha256 = await (api.fetchSha256File ?? fetchSha256File)(
@@ -39,6 +36,14 @@ export async function publishedApk(entry, api = {}) {
   sha256 ||= digest;
   if (!sha256 && entry.tag === release.tag && entry.asset === release.asset) sha256 = entry.sha256;
   if (!/^[a-f0-9]{64}$/.test(sha256 ?? '')) throw new Error(`Published ${release.tag}: no published or matching reviewed SHA-256; installation unavailable.`);
+  return sha256;
+}
+
+/** Registry pins are installation baselines, not claims about the latest release. */
+export async function publishedApk(entry, api = {}) {
+  const token = api.token ?? (entry.private ? await (api.githubToken ?? githubToken)() : undefined);
+  const release = await (api.latestRelease ?? latestRelease)(entry.repo, entry.asset, undefined, token, true);
+  const sha256 = await publishedChecksum(entry, release, token, api);
   if (!Number.isSafeInteger(release.bytes) || release.bytes <= 0 || release.bytes > 250 * 1048576)
     throw new Error('Invalid published APK size.');
   return { ...entry, tag: release.tag, sha256, bytes: release.bytes, url: release.apkUrl,
@@ -66,35 +71,43 @@ export async function checkAppUpdates(ip, api = {}) {
   return rows;
 }
 
-/** ADB replace installs retain app data; Android enforces the installed signer. */
-export async function installAppUpdate(ip, row, api = {}) {
+function requireFreshUpdate(row) {
   if (row?.status !== 'checked' || !row.published || !(row.comparison === null || row.comparison > 0))
     throw new Error('Check this installed app and select a newer published release first.');
   if (!Number.isFinite(row.published.checkedAt)
       || Date.now() - row.published.checkedAt > 6 * 3600000 || row.published.checkedAt > Date.now())
     throw new Error('The update check expired. Check again.');
+}
+
+async function replaceVerifiedApp(ip, row, apk, api) {
+  const archive = (api.inspectApk ?? inspectApk)(apk);
+  if (archive.package !== row.published.pkg) throw new Error('APK package differs from the installed app.');
+  const before = await (api.packageDetails ?? packageDetails)(ip, row.published.pkg);
+  if (before.versionCode === null || archive.versionCode <= before.versionCode)
+    throw new Error('APK version code is not newer than the installed app.');
+  if (row.id === UI_UPDATE.id) {
+    await (api.stageUiUpdate ?? stageUiUpdate)(ip, apk, {
+      name: UI_UPDATE.name, package: UI_UPDATE.pkg, repo: UI_UPDATE.repo, dream: '', preview: '',
+      tag: row.published.tag, sha256: row.published.sha256, bytes: row.published.bytes,
+      url: row.published.url, checked_at: row.published.checkedAt,
+    });
+    return { staged: true, message: 'Verified private UI update sent. Open Advanced > Updates on the TV and confirm installation.' };
+  }
+  const output = await (api.installApk ?? installApk)(ip, apk);
+  if (!/^Success\b/m.test(output ?? '')) throw new Error('Android did not confirm the replacement install.');
+  const after = await (api.packageDetails ?? packageDetails)(ip, row.published.pkg);
+  if (after.versionCode !== archive.versionCode)
+    throw new Error('The installed version code does not match the verified APK.');
+  const installed = after.versionName;
+  return { installed, message: 'Installed version verified. Existing app data was retained.' };
+}
+
+/** ADB replace installs retain app data; Android enforces the installed signer. */
+export async function installAppUpdate(ip, row, api = {}) {
+  requireFreshUpdate(row);
   const apk = await (api.downloadApk ?? downloadApk)(row.published);
   try {
-    const archive = (api.inspectApk ?? inspectApk)(apk);
-    if (archive.package !== row.published.pkg) throw new Error('APK package differs from the installed app.');
-    const before = await (api.packageDetails ?? packageDetails)(ip, row.published.pkg);
-    if (before.versionCode === null || archive.versionCode <= before.versionCode)
-      throw new Error('APK version code is not newer than the installed app.');
-    if (row.id === UI_UPDATE.id) {
-      await (api.stageUiUpdate ?? stageUiUpdate)(ip, apk, {
-        name: UI_UPDATE.name, package: UI_UPDATE.pkg, repo: UI_UPDATE.repo, dream: '', preview: '',
-        tag: row.published.tag, sha256: row.published.sha256, bytes: row.published.bytes,
-        url: row.published.url, checked_at: row.published.checkedAt,
-      });
-      return { staged: true, message: 'Verified private UI update sent. Open Advanced > Updates on the TV and confirm installation.' };
-    }
-    const output = await (api.installApk ?? installApk)(ip, apk);
-    if (!/^Success\b/m.test(output ?? '')) throw new Error('Android did not confirm the replacement install.');
-    const after = await (api.packageDetails ?? packageDetails)(ip, row.published.pkg);
-    if (after.versionCode !== archive.versionCode)
-      throw new Error('The installed version code does not match the verified APK.');
-    const installed = after.versionName;
-    return { installed, message: 'Installed version verified. Existing app data was retained.' };
+    return await replaceVerifiedApp(ip, row, apk, api);
   } finally {
     (api.removeDownload ?? removeDownload)(apk);
   }

@@ -44,7 +44,7 @@ test('desktop update downloads only matching platform release with published has
   const update={...release(),assets:[{name,size:bytes.length,browser_download_url:url(name)},
     {name:'SHA256SUMS',browser_download_url:url('SHA256SUMS')}]};
   let hash=createHash('sha256').update(bytes).digest('hex');
-  const fetchAsset=async source=>({ok:true,text:async()=>`${hash}  ${name}\n`,arrayBuffer:async()=>bytes});
+  const fetchAsset=async()=>({ok:true,text:async()=>`${hash}  ${name}\n`,arrayBuffer:async()=>bytes});
   const result=await downloadDesktopUpdate(update,{platform:'darwin',arch:'arm64',fetchAsset});
   try{assert.deepEqual(fs.readFileSync(result.file),bytes);}finally{fs.rmSync(path.dirname(result.file),{recursive:true,force:true});}
   hash='0'.repeat(64);
@@ -83,13 +83,13 @@ test('self-update refuses stale checks, foreign branches and unverified replacem
 test('desktop updater requires one exact published checksum and byte count',async()=>{
   assert.equal(desktopAsset('linux','x64'),'Fire-TV-Toolkit-linux-x86_64.AppImage');
   assert.equal(desktopAsset('win32','arm64'),'Fire-TV-Toolkit-win-arm64.exe');
-  const name=desktopAsset('darwin','arm64');
+  const name=desktopAsset(process.platform,process.arch);
   const url=file=>`https://github.com/jeremykenedy/fire-tv-toolkit/releases/download/v4.4.0/${file}`;
   const bytes=Buffer.from('reviewed installer');
   const hash=createHash('sha256').update(bytes).digest('hex');
   const update={...release(),assets:[{name,size:bytes.length,browser_download_url:url(name)},
     {name:'SHA256SUMS',browser_download_url:url('SHA256SUMS')}]};
-  const fetchAsset=async source=>({ok:true,text:async()=>`${hash}  ${name}\n`,arrayBuffer:async()=>bytes});
+  const fetchAsset=async()=>({ok:true,text:async()=>`${hash}  ${name}\n`,arrayBuffer:async()=>bytes});
   await assert.rejects(downloadDesktopUpdate({...update,assets:[]},{fetchAsset}),/no installer/);
   await assert.rejects(downloadDesktopUpdate({...update,assets:[{...update.assets[0],size:0},update.assets[1]]},{fetchAsset}),/size/);
   await assert.rejects(downloadDesktopUpdate(update,{fetchAsset:async()=>({ok:false})}),/checksum could/);
