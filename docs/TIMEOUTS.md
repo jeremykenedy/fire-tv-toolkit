@@ -26,3 +26,8 @@ firetv-timeouts-possible
 
 Every new value is read back. A value the TV refuses or ignores is reported as
 a failure.
+
+When Fire TV UI is installed, timer writes also update its saved choices through
+its protected receiver. The terminal and desktop paths both verify the system
+value afterward. A missing or rejected receiver is a failure, with no raw-write
+fallback. See [Fire TV UI settings](GUARD.md#fire-tv-ui-settings).

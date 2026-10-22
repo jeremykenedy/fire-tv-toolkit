@@ -41,6 +41,25 @@ Change settings with this toolkit (any command) or the Screensavers tile on the
 TV, and the guard keeps your new value. A change made in Fire OS Settings is
 put back, because to the guard it looks like Amazon.
 
+## Fire TV UI settings
+
+When Fire TV UI is installed, it owns its saved sleep timer, screensaver delay,
+Alexa auto-wake choice, selected screensaver and enabled state. Toolkit changes
+these five settings through Fire TV UI's existing protected receiver, then reads
+back the Android value. This works even when Toolkit's separate Home Redirect
+guard is off. No new permission is granted.
+
+If the receiver is unavailable or rejects the request, Toolkit stops and reports
+failure. It does not fall back to a raw write that Fire TV UI could revert.
+Update or configure Fire TV UI, then retry. Choose explicit timer and switch
+values; clearing a protected numeric setting is rejected. Clearing the selected
+component remains supported.
+
+Other settings and TVs without Fire TV UI retain the existing Home Redirect
+and Android settings path. Fire TV UI's protection controls are separate from
+`guard --off` and `guard --unlock=screensaver`; use its own controls to release
+its saved choices.
+
 ## Unlocking the screensaver
 
 `guard --unlock=screensaver` stops guarding which screensaver is active and

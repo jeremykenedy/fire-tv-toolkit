@@ -186,6 +186,7 @@ export async function getSetting(ip, namespace, key) {
  * @returns {Promise<string | null>}
  */
 export async function putSetting(ip, namespace, key, value) {
+  if (await writeNativeUiSetting(ip, namespace, key, String(value))) return '';
   await rememberIfGuarded(ip, namespace, key, String(value));
   return run(['-s', target(ip), 'shell', 'settings', 'put', namespace, key, String(value)]);
 }
@@ -197,6 +198,7 @@ export async function putSetting(ip, namespace, key, value) {
  * @returns {Promise<string | null>}
  */
 export async function deleteSetting(ip, namespace, key) {
+  if (await writeNativeUiSetting(ip, namespace, key, 'null')) return '';
   await rememberIfGuarded(ip, namespace, key, 'null');
   return run(['-s', target(ip), 'shell', 'settings', 'delete', namespace, key]);
 }
@@ -285,6 +287,33 @@ export async function setAppOp(ip, pkg, op, mode) {
 }
 
 const GUARD_PKG = 'com.jeremykenedy.firetv.homeredirect';
+const NATIVE_UI_PKG = 'com.jeremykenedy.firetv.ui';
+const NATIVE_UI_SETTINGS = new Set([
+  'secure/sleep_timeout',
+  'system/screen_off_timeout',
+  'secure/str.auto_wake_up_enabled',
+  'secure/screensaver_components',
+  'secure/screensaver_enabled',
+]);
+
+// The native launcher guards its own saved choices even when the terminal's
+// legacy guard is off. A raw write would be reverted on its next repair pass.
+async function writeNativeUiSetting(ip, namespace, key, value) {
+  if (!NATIVE_UI_SETTINGS.has(`${namespace}/${key}`) || !await packageVersion(ip, NATIVE_UI_PKG)) return false;
+  if (value === 'null' && key !== 'screensaver_components') {
+    throw new Error(`Fire TV UI's protected ${namespace}/${key} cannot be cleared. Choose an explicit supported value.`);
+  }
+  const out = await run(['-s', target(ip), 'shell', 'am', 'broadcast', '--include-stopped-packages',
+    '-n', `${NATIVE_UI_PKG}/.BackupReceiver`, '--es', 'operation', 'setting',
+    '--es', 'namespace', namespace, '--es', 'key', key, '--es', 'value', value]);
+  if (!/Broadcast completed: result=0, data="ok"(?:\s|$)/.test(out)) {
+    throw new Error('Fire TV UI did not accept the protected setting. Update or configure Fire TV UI before trying again.');
+  }
+  if (await getSetting(ip, namespace, key) !== value) {
+    throw new Error(`The TV did not retain Fire TV UI's requested ${namespace}/${key} value.`);
+  }
+  return true;
+}
 
 /**
  * Sends a command to the guard in Home Redirect on the TV.
