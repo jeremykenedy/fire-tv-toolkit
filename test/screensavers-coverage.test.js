@@ -241,7 +241,7 @@ test('Pipeworks Dream registry entry points to its released app and installer re
     pkg: 'com.jeremykenedy.pipeworksdream',
     dreamComponent: 'com.jeremykenedy.pipeworksdream/.PipeworksDreamService',
     repo: 'jeremykenedy/pipeworks-dream',
-    blurb: 'Rounded metallic 3D pipes with smooth growth, moving perspective and adjustable finishes.',
+    blurb: 'Growing 3D pipes with rounded bends, configurable colors, tube shapes, thickness and delayed following tails.',
   });
 });
 

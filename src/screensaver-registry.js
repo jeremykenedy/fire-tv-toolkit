@@ -161,7 +161,7 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.pipeworksdream',
     dreamComponent: 'com.jeremykenedy.pipeworksdream/.PipeworksDreamService',
     repo: 'jeremykenedy/pipeworks-dream',
-    blurb: 'Rounded metallic 3D pipes with smooth growth, moving perspective and adjustable finishes.',
+    blurb: 'Growing 3D pipes with rounded bends, configurable colors, tube shapes, thickness and delayed following tails.',
   },
   {
     id: 'slot-vision',
