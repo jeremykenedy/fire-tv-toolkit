@@ -20,10 +20,19 @@
     "state": "Published release downloaded and verified; physical native playback/Back/preservation passed; host catalog integration in progress"
   },
   "pipeworks-dream": {
-    "capture": "Native Android TV or Google TV emulator output",
-    "source_sha256": "5c46d8ea6cebe3265ac526f964a0cf1bb0935776b66e21a53cf7d92bb71e0d3e",
-    "source_repository": "https://github.com/jeremykenedy/pipeworks-dream/tree/9277932bb989f709cba7e9f281621c2264497ed3",
-    "state": "Candidate native rendering; final release and physical acceptance pending"
+    "capture": "2026-10-22 physical Fire TV AFTDEC012E API30 exact final 1.1.0 Preview; 1920x1080 capture resized to 1280x720, 544x306 and 400x225 without scene changes",
+    "source_sha256": "c90d3c96bcee56aeebcb97e65101fdb862499204ba457d00af4995599b799d43",
+    "thumbnail_sha256": "5ede49452f72e98f5e70f03ffb78c2b137e74b6f23e328ce7e5bfa3e91e641e3",
+    "responsive_sha256": {
+      "desktop": "59b73bdb078c0d147ff2e933a72ba04a101c369e627c0119d10c0d0a4eed4cfc",
+      "tablet": "a0c07515ea2ac97e97ad3ec8caeb533b5f37b949a6c9dbe5b6efc7ac5f5a8556"
+    },
+    "source_repository": "https://github.com/jeremykenedy/pipeworks-dream/tree/v1.1.0",
+    "source_image": "https://github.com/jeremykenedy/pipeworks-dream/blob/v1.1.0/art/screenshots/pipeworks-final-preview-fire-tv.png",
+    "release": "https://github.com/jeremykenedy/pipeworks-dream/releases/tag/v1.1.0",
+    "apk_sha256": "a9642a20efe37fd3b39974d04f59b17eb4940935dbaca60c4b6cbf655eef03d0",
+    "apk_bytes": 62276,
+    "state": "Published signed APK independently downloaded and verified; exact physical update, Preview/Credits/Dream/Back, moving review and preference/system restoration passed. Existing latest-release installer preserved."
   },
   "rain-on-glass": {
     "capture": "Native Android TV or Google TV emulator output",
