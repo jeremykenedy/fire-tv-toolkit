@@ -60,6 +60,15 @@ export const SCREENSAVERS = [
     blurb: 'A moving cloudscape with an adjustable digital clock, sky palette, density, speed and motion. No ads, analytics or tracking.',
   },
   {
+    id: 'prism-clock',
+    name: 'Prism Clock',
+    pkg: 'com.jeremykenedy.prismclock',
+    dreamComponent: 'com.jeremykenedy.prismclock/.PrismDreamService',
+    repo: 'jeremykenedy/prism-clock',
+    asset: 'prism-clock.apk',
+    blurb: 'A moving faceted surface with a drifting clock, adjustable materials, lighting, time format and motion.',
+  },
+  {
     id: 'jellyfish-drift',
     name: 'Jellyfish Drift',
     pkg: 'com.jeremykenedy.jellyfishdrift',
@@ -161,7 +170,7 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.pipeworksdream',
     dreamComponent: 'com.jeremykenedy.pipeworksdream/.PipeworksDreamService',
     repo: 'jeremykenedy/pipeworks-dream',
-    blurb: 'Rounded metallic 3D pipes with smooth growth, moving perspective and adjustable finishes.',
+    blurb: 'Growing 3D pipes with rounded bends, configurable colors, tube shapes, thickness and delayed following tails.',
   },
   {
     id: 'slot-vision',

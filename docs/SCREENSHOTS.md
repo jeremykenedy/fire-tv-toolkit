@@ -4,6 +4,10 @@
 
 ## Desktop app
 
+The published update screen below was captured from the native macOS 4.4.0 source build. Its installed candidate is newer than the currently published 4.3.2 release. No update installer was opened.
+
+<table><tr><td><a href="../art/screenshots/desktop-published-updates.png"><img src="../art/screenshots/desktop-published-updates.png" alt="Native published update screen with actual release check"></a></td></tr></table>
+
 Captured from the packaged macOS 4.3.1 source build connected to a physical Fire TV.
 
 <table>
@@ -54,6 +58,7 @@ Twilight Hearth shows actual physical Fire TV modern/bright output from its veri
     <a href="screenshots/screensaver-aquarium-4k.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-aquarium-4k-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-aquarium-4k-tablet.jpg 2x"><img src="screenshots/screensaver-aquarium-4k.jpg" alt="Aquarium 4K" title="Aquarium 4K"></picture></a>
     <a href="screenshots/screensaver-aquarium-live.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-aquarium-live-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-aquarium-live-tablet.jpg 2x"><img src="screenshots/screensaver-aquarium-live.jpg" alt="Aquarium Live" title="Aquarium Live"></picture></a>
     <a href="screenshots/screensaver-cloud-drift-clock.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-cloud-drift-clock-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-cloud-drift-clock-tablet.jpg 2x"><img src="screenshots/screensaver-cloud-drift-clock.jpg" alt="Cloud Drift Clock, a digital clock drifting over daylight clouds" title="Cloud Drift Clock"></picture></a>
+    <a href="screenshots/screensaver-prism-clock.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-prism-clock-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-prism-clock-tablet.jpg 2x"><img src="screenshots/screensaver-prism-clock.jpg" alt="Prism Clock with a drifting clock over moving silver facets on a physical Fire TV" title="Prism Clock"></picture></a>
     <a href="screenshots/screensaver-perseid-passage.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-perseid-passage-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-perseid-passage-tablet.jpg 2x"><img src="screenshots/screensaver-perseid-passage.jpg" alt="Perseid Passage with bright meteors crossing a deep blue starfield" title="Perseid Passage"></picture></a>
     <a href="screenshots/screensaver-split-flap-drift.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-split-flap-drift-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-split-flap-drift-tablet.jpg 2x"><img src="screenshots/screensaver-split-flap-drift.jpg" alt="Split-Flap Drift with an illuminated split-flap clock floating on a dark background" title="Split-Flap Drift"></picture></a>
     <a href="screenshots/screensaver-canopy-drift.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-canopy-drift-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-canopy-drift-tablet.jpg 2x"><img src="screenshots/screensaver-canopy-drift.jpg" alt="Animated autumn leaves drifting through a tree canopy" title="Canopy Drift"></picture></a>

@@ -186,6 +186,7 @@ export async function getSetting(ip, namespace, key) {
  * @returns {Promise<string | null>}
  */
 export async function putSetting(ip, namespace, key, value) {
+  if (await writeNativeUiSetting(ip, namespace, key, String(value))) return '';
   await rememberIfGuarded(ip, namespace, key, String(value));
   return run(['-s', target(ip), 'shell', 'settings', 'put', namespace, key, String(value)]);
 }
@@ -197,6 +198,7 @@ export async function putSetting(ip, namespace, key, value) {
  * @returns {Promise<string | null>}
  */
 export async function deleteSetting(ip, namespace, key) {
+  if (await writeNativeUiSetting(ip, namespace, key, 'null')) return '';
   await rememberIfGuarded(ip, namespace, key, 'null');
   return run(['-s', target(ip), 'shell', 'settings', 'delete', namespace, key]);
 }
@@ -285,6 +287,33 @@ export async function setAppOp(ip, pkg, op, mode) {
 }
 
 const GUARD_PKG = 'com.jeremykenedy.firetv.homeredirect';
+const NATIVE_UI_PKG = 'com.jeremykenedy.firetv.ui';
+const NATIVE_UI_SETTINGS = new Set([
+  'secure/sleep_timeout',
+  'system/screen_off_timeout',
+  'secure/str.auto_wake_up_enabled',
+  'secure/screensaver_components',
+  'secure/screensaver_enabled',
+]);
+
+// The native launcher guards its own saved choices even when the terminal's
+// legacy guard is off. A raw write would be reverted on its next repair pass.
+async function writeNativeUiSetting(ip, namespace, key, value) {
+  if (!NATIVE_UI_SETTINGS.has(`${namespace}/${key}`) || !await packageVersion(ip, NATIVE_UI_PKG)) return false;
+  if (value === 'null' && key !== 'screensaver_components') {
+    throw new Error(`Fire TV UI's protected ${namespace}/${key} cannot be cleared. Choose an explicit supported value.`);
+  }
+  const out = await run(['-s', target(ip), 'shell', 'am', 'broadcast', '--include-stopped-packages',
+    '-n', `${NATIVE_UI_PKG}/.BackupReceiver`, '--es', 'operation', 'setting',
+    '--es', 'namespace', namespace, '--es', 'key', key, '--es', 'value', value]);
+  if (!/Broadcast completed: result=0, data="ok"(?:\s|$)/.test(out)) {
+    throw new Error('Fire TV UI did not accept the protected setting. Update or configure Fire TV UI before trying again.');
+  }
+  if (await getSetting(ip, namespace, key) !== value) {
+    throw new Error(`The TV did not retain Fire TV UI's requested ${namespace}/${key} value.`);
+  }
+  return true;
+}
 
 /**
  * Sends a command to the guard in Home Redirect on the TV.
@@ -317,6 +346,13 @@ async function rememberIfGuarded(ip, namespace, key, value) {
  * @param {string} pkg
  * @returns {Promise<string | null>} the installed versionName, or null if not installed
  */
+export async function packageDetails(ip, pkg) {
+  const out = await run(['-s', target(ip), 'shell', 'dumpsys', 'package', pkg]);
+  const version = /versionCode=(\d+)/.exec(out)?.[1];
+  return { versionName: /versionName=(\S+)/.exec(out)?.[1] ?? null,
+    versionCode: version ? BigInt(version) : null };
+}
+
 export async function packageVersion(ip, pkg) {
   const out = await run(['-s', target(ip), 'shell', 'dumpsys', 'package', pkg]);
   return /versionName=(\S+)/.exec(out)?.[1] ?? null;
@@ -377,6 +413,28 @@ export function isPmSuccess(output) {
  */
 export async function uninstallPackage(ip, pkg) {
   return isPmSuccess(await run(['-s', target(ip), 'shell', 'pm', 'uninstall', pkg], { allowFail: true }));
+}
+
+/** Sends a private, verified UI release without copying computer credentials. */
+export async function stageUiUpdate(ip, apk, metadata) {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const folder = fs.mkdtempSync(path.join(os.tmpdir(), 'firetv-update-'));
+  try {
+    const file = path.join(folder, 'fire-tv-ui-update.json');
+    const fields = ['name', 'package', 'repo', 'dream', 'preview', 'tag', 'sha256', 'bytes', 'url', 'checked_at'];
+    const safe = Object.fromEntries(fields.map((key) => [key, metadata[key]]));
+    fs.writeFileSync(file, JSON.stringify(safe), { mode: 0o600 });
+    await run(['-s', target(ip), 'push', apk, '/sdcard/Download/fire-tv-ui-update.apk'], { timeout: INSTALL_TIMEOUT_MS });
+    await run(['-s', target(ip), 'push', file, '/sdcard/Download/fire-tv-ui-update.json']);
+    const result = await run(['-s', target(ip), 'shell', 'am', 'broadcast', '--include-stopped-packages',
+      '-n', `${NATIVE_UI_PKG}/.BackupReceiver`, '--es', 'operation', 'stage-update']);
+    if (!/result=0(?:,|\s|$)/.test(result) || !/data="ok"/.test(result)) {
+      throw new Error('The TV did not verify the staged update. Install the update-capable UI first or review its error.');
+    }
+  } finally {
+    fs.rmSync(folder, { recursive: true, force: true });
+  }
 }
 
 export async function pullFile(ip, remote, local) {

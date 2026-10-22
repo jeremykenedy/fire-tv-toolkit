@@ -87,11 +87,14 @@ See [TV setup](docs/SETUP.md) for ADB debugging and upgrades, or the [command re
 | [Alexa wake](docs/HOW-IT-WORKS.md#the-alexa-deep-sleep-fix) | Keep Alexa able to reach the TV during sleep. |
 | [Idle timers](docs/TIMEOUTS.md) | Change sleep and screensaver delays. |
 | [Setup protection](docs/GUARD.md) | Restore selected settings when Fire OS changes them. |
-| [Guided setup and updates](docs/DESKTOP.md#guided-setup-and-updates) | Review app and setting changes before applying them. |
+| [Published app updates](docs/UPDATES.md) | Check and install Toolkit and installed TV app updates. |
+| [Guided setup](docs/DESKTOP.md#guided-setup-and-updates) | Review app and setting changes before applying them. |
 | [Diagnostics](docs/FEATURES.md#diagnostics-and-advanced-tools) | Inspect device and screensaver state or use the optional TV terminal. |
 | [Restore settings](docs/UNINSTALLING.md) | Restore captured settings and remove selected apps. |
 
 See the [feature guide](docs/FEATURES.md) for behavior and limits, or browse the [screenshot gallery](docs/SCREENSHOTS.md).
+
+<p align="center"><a href="docs/UPDATES.md"><img src="art/screenshots/desktop-published-updates.png" alt="Fire TV Toolkit 4.4.0 native macOS update screen showing installed and checked published versions" width="900"></a></p>
 
 ## Platform support
 
@@ -119,6 +122,7 @@ See the [feature guide](docs/FEATURES.md) for behavior and limits, or browse the
 | [Features](docs/FEATURES.md) | Feature details, defaults and limitations. |
 | [Screensavers](docs/SCREENSAVERS.md) | Available apps, install IDs and verified downloads. |
 | [Commands](docs/COMMANDS.md) | CLI commands and flags. |
+| [Published updates](docs/UPDATES.md) | Check versions, replace TV apps and update Toolkit. |
 | [Integrations](docs/INTEGRATIONS.md) | Connected apps, services and upstream sources. |
 | [Screenshots](docs/SCREENSHOTS.md) | Desktop, TV, screensaver and terminal galleries. |
 | [Troubleshooting](docs/TROUBLESHOOTING.md) | Connection and settings problems. |

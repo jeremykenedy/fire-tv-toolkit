@@ -4,6 +4,7 @@ contextBridge.exposeInMainWorld('toolkit', {
   initial: () => ipcRenderer.invoke('toolkit:initial'),
   connect: (ip) => ipcRenderer.invoke('toolkit:connect', ip),
   refresh: () => ipcRenderer.invoke('toolkit:refresh'),
+  updates: (request) => ipcRenderer.invoke('toolkit:updates', request),
   action: (request) => ipcRenderer.invoke('toolkit:action', request),
   assistant: (request) => ipcRenderer.invoke('toolkit:assistant', request),
   openLink: (name) => ipcRenderer.invoke('toolkit:open-link', name),

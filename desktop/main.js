@@ -14,6 +14,7 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { spawn } from 'node:child_process';
 import { setAdbExecutable } from 'fire-tv-toolkit/src/adb.js';
+import { checkToolkitUpdate, downloadDesktopUpdate } from 'fire-tv-toolkit/src/self-update.js';
 import { createController } from './controller.js';
 import { createIptvCatalog, streamUrl } from './iptv.js';
 import { configurePlayerNetwork } from './player-network.js';
@@ -32,6 +33,8 @@ let window;
 let controller;
 let playingSource = null;
 let sourceRequest = 0;
+let checkedToolkitUpdate = null;
+let updatingToolkit = false;
 
 function message(error) {
   return error instanceof Error
@@ -260,6 +263,35 @@ if (!app.requestSingleInstanceLock()) {
       }));
       handle('toolkit:connect', (ip) => controller.connect(ip));
       handle('toolkit:refresh', () => controller.refresh());
+      handle('toolkit:updates', async (request) => {
+        if (!request || typeof request !== 'object' || Array.isArray(request))
+          throw new Error('Choose a supported update action.');
+        if (request.operation === 'check-apps') return controller.checkUpdates();
+        if (request.operation === 'install-app')
+          return controller.installCheckedUpdate(request.id, confirmChanges);
+        if (updatingToolkit || controller.isBusy()) throw new Error('Wait for the current task to finish.');
+        updatingToolkit = true;
+        try {
+          if (request.operation === 'check-self') {
+            checkedToolkitUpdate = await checkToolkitUpdate();
+            return { installed: checkedToolkitUpdate.installed, tag: checkedToolkitUpdate.tag,
+              comparison: checkedToolkitUpdate.comparison, checkedAt: checkedToolkitUpdate.checkedAt };
+          }
+          if (request.operation !== 'install-self') throw new Error('Choose a supported update action.');
+          const approved = await dialog.showMessageBox(window, {
+            type: 'question', message: 'Download and open the verified Toolkit installer?',
+            detail: 'Complete the operating-system installer and reopen Toolkit. Your saved settings are retained. Installation is not complete until the new version runs.',
+            buttons: ['Cancel', 'Download installer'], defaultId: 0, cancelId: 0,
+          });
+          if (approved.response !== 1) return { cancelled: true };
+          const downloaded = await downloadDesktopUpdate(checkedToolkitUpdate);
+          const error = await shell.openPath(downloaded.file);
+          if (error) throw new Error(error);
+          return { message: downloaded.message };
+        } finally {
+          updatingToolkit = false;
+        }
+      });
       handle('toolkit:advanced', (value) =>
         controller.setAdvanced(value, async () => {
           const result = await dialog.showMessageBox(window, {

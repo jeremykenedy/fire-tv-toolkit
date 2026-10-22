@@ -1,6 +1,6 @@
 {
   "name": "fire-tv-toolkit",
-  "version": "4.3.2",
+  "version": "4.4.0",
   "description": "Ad-free screensavers, a better home screen, and the Alexa deep-sleep fix for your Fire TV, set up from your terminal.",
   "license": "Apache-2.0",
   "author": "Jeremy Kenedy",
@@ -46,7 +46,8 @@
     "firetv-optimize": "./bin/firetv-optimize.js",
     "optimize": "./bin/optimize.js",
     "firetv-guard": "./bin/firetv-guard.js",
-    "guard": "./bin/guard.js"
+    "guard": "./bin/guard.js",
+    "firetv-updates": "./bin/firetv-updates.js"
   },
   "files": [
     "bin",

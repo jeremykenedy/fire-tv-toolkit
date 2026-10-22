@@ -12,6 +12,7 @@ export const GROUPS = ['Setup and help', 'Alexa deep-sleep fix', 'Screensavers',
  * two, so this can never silently drift out of date.
  */
 export const COMMANDS = [
+  { group: 'Setup and help', name: 'firetv-updates', desc: 'Check published Toolkit, Fire TV UI and installed screensaver versions; explicitly install a verified update.' },
   { group: 'Setup and help', name: 'firetv-diagnostics', desc: 'Reads device, display, memory, installed screensaver versions and selected app exit/frame summaries. Changes nothing on the TV.' },
   { group: 'Setup and help', name: 'fire-tv-toolkit', desc: 'Runs the full guided installer: adb, device setup, Alexa fix, screensavers, timeouts and optimizing.' },
   { group: 'Revert and remove', name: 'firetv-revert', desc: 'Puts the TV back how it was, item by item. Keeps these commands installed; see uninstall.' },
@@ -41,7 +42,7 @@ export const COMMANDS = [
   { group: 'Setup and help', name: 'information', desc: 'Alias for info: lists every command installed and what it does, with the banner.' },
   { group: 'Setup and help', name: 'guide', desc: 'Alias for info: lists every command installed and what it does, with the banner.' },
   { group: 'Setup and help', name: 'start', desc: 'Opens the guided menu. Runs setup if nothing is installed yet, or hands off to update if it already is.' },
-  { group: 'Setup and help', name: 'update', desc: 'Re-runs setup, overriding what is already installed. Runs plain setup instead if nothing is installed yet.' },
+  { group: 'Setup and help', name: 'update', desc: 'Checks published updates for Toolkit, Fire TV UI and installed TV apps; installs only your confirmed selection.' },
   { group: 'Setup and help', name: 'firetv', desc: 'Alias for info: lists every command installed and what it does, with the banner.' },
   { group: 'Revert and remove', name: 'uninstall', desc: 'First offers to put the TV back how it was, then removes these commands, resets .env, and offers to delete the repo.' },
   { group: 'Revert and remove', name: 'delete', desc: 'Permanently deletes this repo from your machine, after a typed "confirm". Does not touch the TV.' },

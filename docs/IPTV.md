@@ -74,7 +74,7 @@ data. Neither this toolkit nor fire-iptv hosts video.
 ## Sources and removal
 
 fire-iptv is a GPL-3.0 fork of OpenIPTV. OwnTV remains unmodified from
-[ahXN00/OwnTV](https://github.com/ahXN00/OwnTV) v5.1.0, requiring Android 8 or
+[ahXN00/OwnTV](https://github.com/ahXN00/OwnTV) v5.2.1, requiring Android 8 or
 newer. fire-iptv requires Android 7 / API 24 or newer. Both APKs include 32-bit
 and 64-bit ARM code. Versions, assets and checksums are in `src/iptv-registry.js`.
 

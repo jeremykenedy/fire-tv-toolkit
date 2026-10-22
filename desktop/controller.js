@@ -11,6 +11,7 @@ import * as downloads from 'fire-tv-toolkit/src/apply/screensavers.js';
 import * as home from 'fire-tv-toolkit/src/apply/launcher.js';
 import * as protection from 'fire-tv-toolkit/src/apply/guard.js';
 import * as guardConfig from 'fire-tv-toolkit/src/guard-config.js';
+import * as publishedUpdates from 'fire-tv-toolkit/src/update-releases.js';
 import * as optimizer from 'fire-tv-toolkit/src/apply/optimize.js';
 import {
   SCREENSAVERS,
@@ -37,6 +38,7 @@ const toolkit = {
   ...protection,
   ...guardConfig,
   ...optimizer,
+  ...publishedUpdates,
 };
 const savers = [
   ...SCREENSAVERS.filter((entry) => !entry.private),
@@ -62,6 +64,7 @@ export function createController({
   let device = null;
   let busy = false;
   let shellAbort = null;
+  let checkedUpdates = null;
   const preferencesFile = path.join(dataDir, 'desktop-settings.json');
   let advanced = false;
   try {
@@ -741,6 +744,28 @@ export function createController({
     },
     refresh() {
       return exclusive(readState);
+    },
+    checkUpdates() {
+      return exclusive(async () => {
+        const ip = await requireConnection();
+        const rows = await api.checkAppUpdates(ip);
+        checkedUpdates = { ip, rows };
+        return checkedUpdates;
+      });
+    },
+    installCheckedUpdate(id, confirm) {
+      return exclusive(async () => {
+        const ip = await requireConnection();
+        if (typeof id !== 'string' || checkedUpdates?.ip !== ip)
+          throw new Error('Check published updates for this TV first.');
+        const row = checkedUpdates.rows.find((item) => item.id === id);
+        if (!row) throw new Error('Choose an app from the checked update list.');
+        if (!await confirm({ ip, title: `Update ${row.name}`,
+          detail: 'Verify its published checksum, package and newer version code. Retain app data. Private UI updates require confirmation on the TV.' }))
+          return { cancelled: true };
+        await requireConnection();
+        return api.installAppUpdate(ip, row);
+      });
     },
     action(request, confirm) {
       return exclusive(async () => {
