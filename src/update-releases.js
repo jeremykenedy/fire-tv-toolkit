@@ -14,8 +14,10 @@ export const UI_UPDATE = Object.freeze({
 /** Version names that cannot be ordered remain unknown, never current. */
 export function compareVersions(published, installed) {
   const parse = (value) => {
-    if (typeof value !== 'string' || value.length > 64 || !/^v?\d+(\.\d+){0,3}$/.test(value)) return null;
-    return value.replace(/^v/, '').split('.').map(BigInt);
+    if (typeof value !== 'string' || value.length > 64) return null;
+    const parts = value.replace(/^v/, '').split('.');
+    if (parts.length > 4 || !parts.every(part => /^\d+$/.test(part))) return null;
+    return parts.map(BigInt);
   };
   const left = parse(published), right = parse(installed);
   if (!left || !right) return null;

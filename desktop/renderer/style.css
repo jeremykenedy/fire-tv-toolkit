@@ -1299,10 +1299,12 @@ select:focus-visible {
 #view-published > .utility-panel {
   margin-top: 20px;
 }
+
 #view-published p {
   margin: 10px 0 16px;
   overflow-wrap: anywhere;
 }
+
 #published-app-updates {
   display: grid;
   gap: 16px;

@@ -16,7 +16,7 @@ test('update menu preserves cancellation and confirms the explicit target before
   for(const confirmed of [false,true]){
     const choices=['apps','pipe'];
     await manageUpdates(ip,{...api,choose:async()=>choices.shift(),confirm:async prompt=>{
-      assert.match(prompt,/Pipe on 192\.0\.2\.74/);return confirmed;
+      assert.ok(prompt.includes('Pipe on 192.0.2.74'));return confirmed;
     }});
   }
   assert.equal(writes,1);

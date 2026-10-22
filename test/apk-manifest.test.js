@@ -16,7 +16,7 @@ test('rejects malformed, truncated, missing or invalid package manifests',()=>{
   const valid=manifest();
   for(const data of [Buffer.alloc(0),valid.subarray(0,valid.length-1),manifest({pkg:'invalid'}),Buffer.alloc(80)])
     assert.throws(()=>parseBinaryManifest(data));
-  const broken=Buffer.from(valid);broken.writeUInt32LE(0xffffffff,12);
+  const broken=Buffer.from(valid);broken.writeUInt32LE(4294967295,12);
   assert.throws(()=>parseBinaryManifest(broken));
 });
 
@@ -25,12 +25,12 @@ function apkZip(bytes, method = 8, name = 'AndroidManifest.xml') {
   const filename=Buffer.from(name);
   const body=method===8?deflateRawSync(bytes):bytes;
   const local=Buffer.alloc(30+filename.length);
-  local.writeUInt32LE(0x04034b50);local.writeUInt16LE(method,8);
+  local.writeUInt32LE(67324752);local.writeUInt16LE(method,8);
   local.writeUInt32LE(body.length,18);local.writeUInt32LE(bytes.length,22);local.writeUInt16LE(filename.length,26);filename.copy(local,30);
   const central=Buffer.alloc(46+filename.length);
-  central.writeUInt32LE(0x02014b50);central.writeUInt16LE(method,10);
+  central.writeUInt32LE(33639248);central.writeUInt16LE(method,10);
   central.writeUInt32LE(body.length,20);central.writeUInt32LE(bytes.length,24);central.writeUInt16LE(filename.length,28);filename.copy(central,46);
-  const end=Buffer.alloc(22);end.writeUInt32LE(0x06054b50);end.writeUInt16LE(1,8);end.writeUInt16LE(1,10);
+  const end=Buffer.alloc(22);end.writeUInt32LE(101010256);end.writeUInt16LE(1,8);end.writeUInt16LE(1,10);
   end.writeUInt32LE(central.length,12);end.writeUInt32LE(local.length+body.length,16);
   return Buffer.concat([local,body,central,end]);
 }

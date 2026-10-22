@@ -2,17 +2,21 @@ import fs from 'node:fs';
 import { inflateRawSync } from 'node:zlib';
 
 const MAX_MANIFEST = 4 * 1048576;
+const ZIP_END = 101010256;
+const ZIP_CENTRAL = 33639248;
+const ZIP_LOCAL = 67324752;
+const NO_STRING = 4294967295;
 
 function manifestBytes(apk) {
   const lower = Math.max(0, apk.length - 65557);
   let end = apk.length - 22;
-  while (end >= lower && apk.readUInt32LE(end) !== 0x06054b50) end -= 1;
+  while (end >= lower && apk.readUInt32LE(end) !== ZIP_END) end -= 1;
   if (end < lower || apk.readUInt16LE(end + 4) || apk.readUInt16LE(end + 6))
     throw new Error('Unsupported APK ZIP directory.');
   let at = apk.readUInt32LE(end + 16);
   const entries = apk.readUInt16LE(end + 10);
   for (let i = 0; i < entries; i += 1) {
-    if (at + 46 > apk.length || apk.readUInt32LE(at) !== 0x02014b50) break;
+    if (at + 46 > apk.length || apk.readUInt32LE(at) !== ZIP_CENTRAL) break;
     const nameLength = apk.readUInt16LE(at + 28);
     const name = apk.subarray(at + 46, at + 46 + nameLength).toString('utf8');
     if (name === 'AndroidManifest.xml') {
@@ -20,7 +24,7 @@ function manifestBytes(apk) {
       const compressed = apk.readUInt32LE(at + 20), size = apk.readUInt32LE(at + 24);
       const local = apk.readUInt32LE(at + 42);
       if ((apk.readUInt16LE(at + 8) & 1) || size > MAX_MANIFEST || compressed > MAX_MANIFEST
-          || local + 30 > apk.length || apk.readUInt32LE(local) !== 0x04034b50)
+          || local + 30 > apk.length || apk.readUInt32LE(local) !== ZIP_LOCAL)
         throw new Error('Unsupported APK manifest entry.');
       const start = local + 30 + apk.readUInt16LE(local + 26) + apk.readUInt16LE(local + 28);
       if (start + compressed > apk.length) throw new Error('Truncated APK manifest.');
@@ -68,11 +72,12 @@ function readManifestAttributes(data, strings, at, size) {
     const attr = start + i * attributeSize;
     const name = strings[data.readUInt32LE(attr + 4)], type = data.readUInt8(attr + 15);
     const value = data.readUInt32LE(attr + 16), raw = data.readUInt32LE(attr + 8);
-    if (name === 'package') pkg = strings[raw === 0xffffffff ? value : raw];
+    if (name === 'package') pkg = strings[raw === NO_STRING ? value : raw];
     if (name === 'versionCode' && (type === 0x10 || type === 0x11)) low = value;
     if (name === 'versionCodeMajor' && (type === 0x10 || type === 0x11)) high = value;
   }
-  if (!/^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)+$/.test(pkg ?? '') || low === undefined)
+  const parts = typeof pkg === 'string' ? pkg.split('.') : [];
+  if (parts.length < 2 || !parts.every(part => /^[A-Za-z0-9_]+$/.test(part)) || low === undefined)
     throw new Error('APK package or version code is unavailable.');
   return {package: pkg, versionCode: (BigInt(high) << 32n) + BigInt(low)};
 }
