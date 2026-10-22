@@ -6,9 +6,9 @@ export const FIRE_IPTV = {
   name: 'fire-iptv',
   pkg: 'com.jeremykenedy.fireiptv',
   repo: 'jeremykenedy/fire-iptv',
-  tag: 'v1.0.0',
+  tag: 'v1.1.1',
   asset: 'fire-iptv.apk',
-  sha256: 'dc608e555b57dd20473f8f785bc831773912c030be16d73a95d98da9cd5e1cdc',
+  sha256: '66605a6dd20a1e5039a1115542626a6027701dd800a0e2d991bcbcf86f7e0294',
 };
 
 /** OwnTV publishes no checksum with its releases, so this one is pinned by tag and hash. */

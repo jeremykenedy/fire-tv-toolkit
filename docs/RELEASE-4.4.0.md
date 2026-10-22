@@ -10,13 +10,13 @@ Private Fire TV UI updates use computer authentication and a protected verified 
 
 Toolkit can also update itself. CLI updates require a clean reviewed primary checkout and preserve ignored TV configuration. Desktop updates download the matching verified installer and open it for normal installation. Reopen the installed app to verify its version.
 
-The release also refreshes the verified OwnTV installation default to 5.2.1, includes the current Pipeworks Dream 1.1 preview, and sends guarded settings through Fire TV UI's protected receiver so its protection service retains the desired state.
+The release also refreshes the verified OwnTV installation default to 5.2.1 and Fire IPTV to 1.1.1, includes the current Pipeworks Dream 1.1 preview, and sends guarded settings through Fire TV UI's protected receiver so its protection service retains the desired state. Fire IPTV starts with automatic picture-in-picture disabled when that preference has not been set; explicit user choices survive an update.
 
 ## Upgrade
 
 Install the latest desktop package, or update the verified CLI primary checkout and run `npm ci` followed by `npm link`. Saved device configuration stays in place. Read [published update checks](UPDATES.md) for explicit TV targeting, credentials, confirmation and error behavior.
 
-Release artifacts and target device verification are required before this candidate is published.
+Signed TV replacements retain existing application data. The selected television is shown before installation.
 
 ## Breaking changes
 
@@ -26,7 +26,7 @@ There is no application data migration. CLI and desktop runtime requirements rem
 
 ## Minor changes and fixes
 
-OwnTV's initial install uses its independently verified 5.2.1 APK. Pipeworks Dream's catalog preview comes from its final physical Fire TV 1.1.0 output. Protected setting writes require the native receiver's success acknowledgement and a matching readback.
+OwnTV's initial install uses its independently verified 5.2.1 APK. Fire IPTV installs the original-signer 1.1.1 release. Pipeworks Dream's catalog preview comes from its final physical Fire TV 1.1.0 output. Protected setting writes require the native receiver's success acknowledgement and a matching readback.
 
 ## Upgrade and recovery details
 
@@ -38,7 +38,9 @@ For recovery, reinstall the previous Toolkit desktop installer or use a separate
 
 ## Verification and limits
 
-The candidate has host regression coverage for integrity failures, private handoff acknowledgement, target selection, user cancellation and version readback. The macOS native desktop screen has been checked against actual public release metadata. Final platform packages, device replacement and private UI installation confirmation remain release gates.
+Host regressions cover integrity failures, private handoff acknowledgement, target selection, user cancellation and version readback. The macOS native desktop screen was checked against actual public release metadata. The public app update flow replaced Pipeworks Dream 1.0.0 with the published 1.1.0 on a physical Fire TV, verified its installed APK hash and preserved its seven existing preferences. All eleven settings then matched the original TV. Protected timer writes also passed actual native acknowledgement and OS readback.
+
+Private UI staging reached the normal Android package update confirmation on the native emulator; cancellation retained the installed version. A later TV installer confirmation and installed version readback are required to claim a private UI replacement. Opening a desktop installer also requires the normal OS installation and a subsequent app-version check.
 
 Public checks can encounter GitHub rate limits. Authenticated computer checks use existing GitHub credentials without sending them to a television. Apps outside the reviewed catalog are not represented as verified publishers. Unpublished screensaver candidates are excluded.
 
