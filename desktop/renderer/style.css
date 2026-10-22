@@ -1295,3 +1295,16 @@ select:focus-visible {
     font-size: 9px;
   }
 }
+
+#view-published > .utility-panel {
+  margin-top: 20px;
+}
+#view-published p {
+  margin: 10px 0 16px;
+  overflow-wrap: anywhere;
+}
+#published-app-updates {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+}

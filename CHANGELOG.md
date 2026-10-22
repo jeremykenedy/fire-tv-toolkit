@@ -1,5 +1,19 @@
 # Changelog
 
+## [Unreleased: 4.4.0]
+
+### Added
+
+- Visible published update checks and confirmed replacement flows for Toolkit, private Fire TV UI and installed catalog apps.
+- A protected private UI handoff with computer authentication and on-TV installation confirmation.
+
+### Changed
+
+- Refresh OwnTV to the verified 5.2.1 release and Pipeworks Dream to its current physical preview.
+- Route protected Fire TV UI settings through its acknowledged native receiver.
+
+See the [4.4.0 upgrade guide](docs/RELEASE-4.4.0.md). Publication and final device gates remain pending.
+
 ## [4.3.2] - 2026-10-22
 
 ### Fixed in 4.3.2

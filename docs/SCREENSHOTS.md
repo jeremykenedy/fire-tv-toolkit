@@ -4,6 +4,10 @@
 
 ## Desktop app
 
+The published update screen below was captured from the native macOS 4.4.0 source build. Its installed candidate is newer than the currently published 4.3.2 release. No update installer was opened.
+
+<table><tr><td><a href="../art/screenshots/desktop-published-updates.png"><img src="../art/screenshots/desktop-published-updates.png" alt="Native published update screen with actual release check"></a></td></tr></table>
+
 Captured from the packaged macOS 4.3.1 source build connected to a physical Fire TV.
 
 <table>

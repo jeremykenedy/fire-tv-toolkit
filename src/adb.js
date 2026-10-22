@@ -346,6 +346,13 @@ async function rememberIfGuarded(ip, namespace, key, value) {
  * @param {string} pkg
  * @returns {Promise<string | null>} the installed versionName, or null if not installed
  */
+export async function packageDetails(ip, pkg) {
+  const out = await run(['-s', target(ip), 'shell', 'dumpsys', 'package', pkg]);
+  const version = /versionCode=(\d+)/.exec(out)?.[1];
+  return { versionName: /versionName=(\S+)/.exec(out)?.[1] ?? null,
+    versionCode: version ? BigInt(version) : null };
+}
+
 export async function packageVersion(ip, pkg) {
   const out = await run(['-s', target(ip), 'shell', 'dumpsys', 'package', pkg]);
   return /versionName=(\S+)/.exec(out)?.[1] ?? null;
@@ -406,6 +413,28 @@ export function isPmSuccess(output) {
  */
 export async function uninstallPackage(ip, pkg) {
   return isPmSuccess(await run(['-s', target(ip), 'shell', 'pm', 'uninstall', pkg], { allowFail: true }));
+}
+
+/** Sends a private, verified UI release without copying computer credentials. */
+export async function stageUiUpdate(ip, apk, metadata) {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const folder = fs.mkdtempSync(path.join(os.tmpdir(), 'firetv-update-'));
+  try {
+    const file = path.join(folder, 'fire-tv-ui-update.json');
+    const fields = ['name', 'package', 'repo', 'dream', 'preview', 'tag', 'sha256', 'bytes', 'url', 'checked_at'];
+    const safe = Object.fromEntries(fields.map((key) => [key, metadata[key]]));
+    fs.writeFileSync(file, JSON.stringify(safe), { mode: 0o600 });
+    await run(['-s', target(ip), 'push', apk, '/sdcard/Download/fire-tv-ui-update.apk'], { timeout: INSTALL_TIMEOUT_MS });
+    await run(['-s', target(ip), 'push', file, '/sdcard/Download/fire-tv-ui-update.json']);
+    const result = await run(['-s', target(ip), 'shell', 'am', 'broadcast', '--include-stopped-packages',
+      '-n', `${NATIVE_UI_PKG}/.BackupReceiver`, '--es', 'operation', 'stage-update']);
+    if (!/result=0(?:,|\s|$)/.test(result) || !/data="ok"/.test(result)) {
+      throw new Error('The TV did not verify the staged update. Install the update-capable UI first or review its error.');
+    }
+  } finally {
+    fs.rmSync(folder, { recursive: true, force: true });
+  }
 }
 
 export async function pullFile(ip, remote, local) {

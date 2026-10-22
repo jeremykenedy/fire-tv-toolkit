@@ -17,9 +17,9 @@ export const OWNTV = {
   name: 'OwnTV',
   pkg: 'tv.own.owntv',
   repo: 'ahXN00/OwnTV',
-  tag: 'v5.1.0',
-  asset: 'OwnTV-v5.1.0.apk',
-  sha256: '39a81165fafc1eec24bbd9d5d2769e54de24441a5de20993550170abad22c295',
+  tag: 'v5.2.1',
+  asset: 'OwnTV-v5.2.1.apk',
+  sha256: 'dbc991358d09b6e0e7a40683d63346528f9702efe4358c7f9ae66af266e4ee3c',
 };
 
 export const IPTV_APPS = [FIRE_IPTV, OWNTV];

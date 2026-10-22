@@ -97,6 +97,7 @@
         <button class="nav-button" data-view="settings">Device settings</button>
         <span class="nav-group">Guided tools</span>
         <button class="nav-button" data-view="setup">Setup assistant</button>
+        <button class="nav-button" data-view="published">Check for updates</button>
         <button class="nav-button" data-view="update">Guided updater</button>
         <button class="nav-button" data-view="advanced">
           Advanced settings
@@ -580,6 +581,19 @@
             ><span id="assistant-progress" role="status"></span>
           </div>
         </form>
+      </section>
+      <section id="view-published" class="view" hidden>
+        <h2>Published updates</h2>
+        <p class="muted">Check stable releases before replacing apps. Failed checks are unavailable, never up-to-date claims.</p>
+        <section class="utility-panel"><h3>Fire TV Toolkit on this computer</h3>
+        <button id="check-toolkit-update">Check for Toolkit updates</button>
+        <p id="toolkit-update-result" role="status">Not checked.</p>
+        <button id="install-toolkit-update" hidden>Download and install Toolkit update</button>
+        </section><section class="utility-panel"><h3>Installed TV app updates</h3>
+        <p class="muted">Connect the intended TV first. Replacement updates retain app data. Private UI updates are sent from this computer and confirmed on the TV.</p>
+        <button id="check-app-updates">Check installed app updates</button>
+        <p id="app-updates-result" role="status">Not checked.</p>
+        <div id="published-app-updates"></div></section>
       </section>
       <section id="view-about" class="view" hidden>
         <div class="about-hero">

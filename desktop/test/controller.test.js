@@ -611,3 +611,20 @@ test('fire-iptv download rejection prevents desktop installation and launch', as
   );
   assert.deepEqual(h.writes, []);
 });
+
+test('published updates stay scoped to the checked TV and require confirmation', async (t) => {
+  const h = harness(t);
+  h.api.checkAppUpdates = async (ip) => [{id:'aquarium-live',name:'Aquarium Live',status:'checked',ip}];
+  h.api.installAppUpdate = async (ip,row) => {h.writes.push({ip,id:row.id});return {message:'verified'};};
+  await h.controller.connect('192.168.1.10');
+  await assert.rejects(h.controller.installCheckedUpdate('aquarium-live',async()=>true),/Check published/);
+  const checked = await h.controller.checkUpdates();
+  assert.equal(checked.ip,'192.168.1.10');
+  assert.equal((await h.controller.installCheckedUpdate('aquarium-live',async()=>false)).cancelled,true);
+  assert.equal(h.writes.length,0);
+  await assert.rejects(h.controller.installCheckedUpdate('unknown',async()=>true),/checked update/);
+  await h.controller.installCheckedUpdate('aquarium-live',async()=>true);
+  assert.deepEqual(h.writes,[{ip:'192.168.1.10',id:'aquarium-live'}]);
+  await h.controller.connect('192.168.1.11');
+  await assert.rejects(h.controller.installCheckedUpdate('aquarium-live',async()=>true),/Check published/);
+});

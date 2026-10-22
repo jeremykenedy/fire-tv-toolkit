@@ -20,6 +20,7 @@ const titles = {
   setup: 'Setup assistant',
   update: 'Guided updater',
   about: 'About',
+  published: 'Check for updates',
 };
 let channelPage = null;
 let channelOffset = 0;
@@ -78,6 +79,7 @@ function navigate(view) {
     'advanced',
     'terminal',
     'about',
+    'published',
   ].includes(view);
   const wizard = prepareWizard(view, changed);
   renderPageHeading(view, wizard);
@@ -113,7 +115,9 @@ function prepareWizard(view, changed) {
 function renderPageHeading(view, wizard) {
   $('#page-title').textContent = titles[view];
   $('#page-subtitle').textContent =
-    view === 'live'
+    view === 'published'
+      ? 'Published stable releases for Toolkit and your installed TV apps.'
+      : view === 'live'
       ? 'Public IPTV channels from around the world.'
       : view === 'about'
         ? 'Independent tools for online TV and your Fire TV.'
@@ -121,7 +125,9 @@ function renderPageHeading(view, wizard) {
           ? 'Choose, review and apply changes to your connected TV.'
           : 'Screensavers, home screens and device settings.';
   $('#footer-note').textContent =
-    view === 'live'
+    view === 'published'
+      ? 'Published stable releases for Toolkit and your installed TV apps.'
+      : view === 'live'
       ? 'Channel sources provided by iptv-org.'
       : view === 'terminal'
         ? 'Shell commands run directly on the connected TV.'
@@ -1014,4 +1020,64 @@ $('#iptv-video').addEventListener('error', () => {
   if (playingChannel)
     $('#player-status').textContent =
       'This source could not play. Try another source or channel.';
+});
+
+
+let updateBusy = false;
+async function publishedRequest(request) {
+  if (updateBusy) throw new Error('Wait for the update task to finish.');
+  updateBusy = true;
+  try {
+    const result = await bridge.updates(request);
+    if (!result.ok) throw new Error(result.error);
+    return result.data;
+  } finally { updateBusy = false; }
+}
+
+$('#check-toolkit-update').addEventListener('click', async () => {
+  $('#install-toolkit-update').hidden = true;
+  $('#toolkit-update-result').textContent = 'Checking published release...';
+  try {
+    const result = await publishedRequest({operation: 'check-self'});
+    const status = result.comparison === 0 ? 'Matches checked release.' : result.comparison === -1 ? 'Installed version is newer.'
+      : result.comparison === 1 ? 'Update available.' : 'Version names cannot be ordered.';
+    $('#toolkit-update-result').textContent = `Installed ${result.installed}; published ${result.tag}. ${status} Checked ${new Date(result.checkedAt).toLocaleString()}.`;
+    $('#install-toolkit-update').hidden = result.comparison !== 1;
+  } catch (error) { $('#toolkit-update-result').textContent = `Check unavailable: ${error.message}`; }
+});
+$('#install-toolkit-update').addEventListener('click', async () => {
+  try {
+    const result = await publishedRequest({operation: 'install-self'});
+    if (!result.cancelled) $('#toolkit-update-result').textContent = result.message;
+  } catch (error) { $('#toolkit-update-result').textContent = `Update not completed: ${error.message}`; }
+});
+$('#check-app-updates').addEventListener('click', async () => {
+  $('#published-app-updates').replaceChildren();
+  $('#app-updates-result').textContent = 'Checking installed apps...';
+  try {
+    const result = await publishedRequest({operation: 'check-apps'});
+    $('#app-updates-result').textContent = `Checked TV ${result.ip}. Unavailable checks are listed individually.`;
+    for (const row of result.rows) {
+      const section = element('section', 'utility-panel');
+      section.append(element('h3', '', row.name));
+      if (row.status !== 'checked') section.append(element('p', '', `Installed ${row.installed}. Check unavailable: ${row.error}`));
+      else {
+        const status = row.comparison === 0 ? 'Matches checked release.' : row.comparison === -1 ? 'Installed version is newer.'
+          : row.comparison === 1 ? 'Update available.' : 'Version names cannot be ordered.';
+        section.append(element('p', '', `Installed ${row.installed}; published ${row.published.tag}. ${status}`));
+        section.append(element('p', 'muted', `Checked ${new Date(row.published.checkedAt).toLocaleString()}. SHA-256 ${row.published.sha256}`));
+        if (row.comparison === null || row.comparison > 0) {
+          const install = element('button', '', row.id === 'fire-tv-ui' ? 'Send UI update to TV' : 'Install update');
+          install.addEventListener('click', async () => {
+            try {
+              const installed = await publishedRequest({operation: 'install-app', id: row.id});
+              if (!installed.cancelled) { section.append(element('p', '', installed.message)); install.disabled = true; }
+            } catch (error) { section.append(element('p', '', `Update not completed: ${error.message}`)); }
+          });
+          section.append(install);
+        }
+      }
+      $('#published-app-updates').append(section);
+    }
+  } catch (error) { $('#app-updates-result').textContent = `Check unavailable: ${error.message}`; }
 });

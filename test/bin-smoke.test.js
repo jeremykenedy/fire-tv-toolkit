@@ -52,7 +52,7 @@ test('every command rejects an unknown flag with a non-zero exit', () => {
 });
 
 test('device commands refuse to run before setup, and say how to start', () => {
-  const gated = bins.filter((b) => !/(fire-tv-toolkit|start|update|info|information|guide|firetv|uninstall|delete|remove|firetv-install-adb)\.js$/.test(b));
+  const gated = bins.filter((b) => !/(fire-tv-toolkit|start|update|firetv-updates|info|information|guide|firetv|uninstall|delete|remove|firetv-install-adb)\.js$/.test(b));
   assert.ok(gated.length >= 10);
   for (const bin of gated) {
     const r = run(bin, []);

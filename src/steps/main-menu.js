@@ -17,6 +17,7 @@ import { guardIfWanted, manageGuard } from './guard.js';
 import { uninstallEverything } from './uninstall.js';
 import { printCommandList } from '../command-list.js';
 import { print } from '../output.js';
+import { manageUpdates } from './updates.js';
 import { diagnosticsReport } from './diagnostics.js';
 
 const MENU_CHOICES = [
@@ -34,9 +35,11 @@ const MENU_CHOICES = [
   { name: 'Revert the TV, item by item', value: 'revert' },
   { name: 'List all commands', value: 'commands' },
   { name: 'Advanced: read device and screensaver diagnostics', value: 'diagnostics' },
+  { name: 'Check for updates: Toolkit, Fire TV UI and installed screensavers', value: 'updates' },
 ];
 
 const MENU_ACTIONS = {
+  updates: (ip) => manageUpdates(ip),
   adb: () => installAdbStep(),
   alexa: (ip) => alexaFixMenu(ip),
   screensavers: (ip) => manageScreensavers(ip),

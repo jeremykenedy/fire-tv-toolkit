@@ -16,7 +16,8 @@ and `remove` refuses to run and points you at `start`.
 | Command | What it does | Flags |
 |---------|--------------|-------|
 | `start` | Opens the guided menu. Runs setup the first time, then hands off to `update`. | none |
-| `update` | Re-runs setup, replacing the saved values. | none |
+| `update` | Opens published update checking and installation. Alias for `firetv-updates`. | See `firetv-updates` |
+| `firetv-updates` | Checks Toolkit itself or the explicitly targeted TV's installed apps, then offers verified replacement updates. | `--ip`, `--check`, `--install`, `--self`, `--yes` |
 | `fire-tv-toolkit` | Runs the full guided installer. | none |
 | `info`, `information`, `guide`, `firetv` | Lists every command in a table grouped by area, the same table as "List all commands" in the guided menu. Shows only `start` until setup has finished. | none |
 | `firetv-install-adb` | Installs adb with Homebrew on macOS or apt on Linux. | `--yes` installs without asking |
@@ -121,3 +122,5 @@ firetv-iptv --install
 firetv-timeout-sleep --minutes=30 --yes
 firetv-revert --all --force
 ```
+
+For version checks and verified replacement installs, see [Published updates](UPDATES.md).

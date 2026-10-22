@@ -12,7 +12,7 @@ before(() => {
 beforeEach(() => fake.reset());
 after(() => fake.restore());
 
-const EXIT_MENU = [{ expect: 'What would you like to do?', send: `${DOWN.repeat(14)}${ENTER}` }];
+const EXIT_MENU = [{ expect: 'What would you like to do?', send: `${DOWN.repeat(15)}${ENTER}` }];
 
 test('start on a fresh setup walks through connecting and reaches the menu, then exits', async () => {
   const r = await drive('bin/start.js', [], [
@@ -40,7 +40,7 @@ const CONNECT = [
 ];
 const CONTINUE = { expect: 'Nothing has been changed yet. Continue?', send: ENTER };
 const MENU = (n) => ({ expect: 'What would you like to do?', send: `${DOWN.repeat(n)}${ENTER}` });
-const BYE = { expect: /What would you like to do\?[\s\S]*What would you like to do\?/, send: `${DOWN.repeat(14)}${ENTER}` };
+const BYE = { expect: /What would you like to do\?[\s\S]*What would you like to do\?/, send: `${DOWN.repeat(15)}${ENTER}` };
 
 function installedEnv() {
   fs.writeFileSync(fake.envFile, 'FIRE_TV_IP=192.168.1.49\nINSTALLED=true\n');
@@ -53,10 +53,13 @@ test('start when already installed hands off to update and reaches the menu', as
   assert.match(r.out, /already installed/);
 });
 
-test('update on a not-installed setup runs the plain guided flow', async () => {
-  const r = await drive('bin/update.js', [], [...CONNECT, ...EXIT_MENU]);
+test('update opens published update choices without reinstalling setup', async () => {
+  const r = await drive('bin/update.js', ['--ip', '192.168.1.49'], [
+    { expect: 'Check and install published updates', send: `${DOWN.repeat(3)}${ENTER}` },
+  ]);
   assert.equal(r.code, 0, r.out);
   assert.match(r.out, /Bye!/);
+  assert.doesNotMatch(r.out, /override the values already installed/);
 });
 
 test('declining the developer-mode question makes no changes and exits 0', async () => {
@@ -67,13 +70,13 @@ test('declining the developer-mode question makes no changes and exits 0', async
 });
 
 test('menu: turn the Alexa fix off, then it is off on the device', async () => {
-  const r = await drive('bin/start.js', [], [...CONNECT, MENU(1), { expect: 'Revert now? [y/N]', send: 'y' }, { expect: 'Type "yes" to continue', send: `yes${ENTER}` }, { expect: 'What would you like to do?', send: `${DOWN.repeat(14)}${ENTER}` }]);
+  const r = await drive('bin/start.js', [], [...CONNECT, MENU(1), { expect: 'Revert now? [y/N]', send: 'y' }, { expect: 'Type "yes" to continue', send: `yes${ENTER}` }, { expect: 'What would you like to do?', send: `${DOWN.repeat(15)}${ENTER}` }]);
   assert.equal(r.code, 0, r.out);
   assert.equal(fake.readState().secure['str.auto_wake_up_enabled'], '0');
 });
 
 test('menu: declining the Alexa revert leaves the fix on', async () => {
-  const r = await drive('bin/start.js', [], [...CONNECT, MENU(1), { expect: 'Revert now? [y/N]', send: 'n' }, { expect: 'What would you like to do?', send: `${DOWN.repeat(14)}${ENTER}` }]);
+  const r = await drive('bin/start.js', [], [...CONNECT, MENU(1), { expect: 'Revert now? [y/N]', send: 'n' }, { expect: 'What would you like to do?', send: `${DOWN.repeat(15)}${ENTER}` }]);
   assert.equal(r.code, 0, r.out);
   assert.equal(fake.readState().secure['str.auto_wake_up_enabled'], '1');
 });
@@ -84,7 +87,7 @@ test('menu: choose Amazon with Ads as the active screensaver', async () => {
     MENU(3),
     { expect: 'Set the active screensaver to:', send: `${DOWN}${ENTER}` },
     CONTINUE,
-    { expect: 'What would you like to do?', send: `${DOWN.repeat(14)}${ENTER}` },
+    { expect: 'What would you like to do?', send: `${DOWN.repeat(15)}${ENTER}` },
   ]);
   assert.equal(r.code, 0, r.out);
   assert.match(fake.readState().secure.screensaver_components, /amazon/);
@@ -97,7 +100,7 @@ test('menu: edit the sleep timeout to 20 minutes', async () => {
     { expect: 'What would you like to do?', send: `${DOWN} ${ENTER}` },
     { expect: 'minutes', send: `20${ENTER}` },
     CONTINUE,
-    { expect: 'What would you like to do?', send: `${DOWN.repeat(14)}${ENTER}` },
+    { expect: 'What would you like to do?', send: `${DOWN.repeat(15)}${ENTER}` },
   ]);
   assert.equal(r.code, 0, r.out);
   assert.equal(fake.readState().secure.sleep_timeout, '1200000');
@@ -109,18 +112,18 @@ test('menu: skipping the timeout checklist changes nothing', async () => {
     MENU(4),
     { expect: 'What would you like to do?', send: ENTER },
     { expect: /No timeout changes/, send: '' },
-    { expect: 'What would you like to do?', send: `${DOWN.repeat(14)}${ENTER}` },
+    { expect: 'What would you like to do?', send: `${DOWN.repeat(15)}${ENTER}` },
   ]);
   assert.equal(r.code, 0, r.out);
   assert.equal(fake.readState().secure.sleep_timeout, '840000');
 });
 
 test('menu: adb step reports adb is already installed', async () => {
-  const r = await drive('bin/start.js', [], [...CONNECT, MENU(0), { expect: 'already installed', send: '' }, { expect: 'What would you like to do?', send: `${DOWN.repeat(14)}${ENTER}` }]);
+  const r = await drive('bin/start.js', [], [...CONNECT, MENU(0), { expect: 'already installed', send: '' }, { expect: 'What would you like to do?', send: `${DOWN.repeat(15)}${ENTER}` }]);
   assert.equal(r.code, 0, r.out);
 });
 
-const EXIT_AFTER = { expect: 'What would you like to do?', send: `${DOWN.repeat(14)}${ENTER}` };
+const EXIT_AFTER = { expect: 'What would you like to do?', send: `${DOWN.repeat(15)}${ENTER}` };
 
 test('menu: advanced diagnostics prints a report and preserves TV settings', async () => {
   const before = fake.readState();
