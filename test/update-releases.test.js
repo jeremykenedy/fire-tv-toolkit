@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { compareVersions, publishedApk, checkAppUpdates, installAppUpdate, UI_UPDATE } from '../src/update-releases.js';
 import { OWNTV } from '../src/iptv-registry.js';
+import { HOME_REDIRECT } from '../src/launcher-registry.js';
 
 const sha = 'a'.repeat(64);
 const release = {tag:'v2.0.0',sha256:sha,bytes:123,apkUrl:'https://github.com/jeremykenedy/example/releases/download/v2.0.0/example.apk',asset:'example.apk'};
@@ -143,4 +144,65 @@ test('successful checks retain unavailable publishers and unknown version names 
   assert.equal(rows[0].status,'checked');
   assert.equal(rows[0].comparison,null);
   assert.equal(rows[0].published.tag,'v2.0.0');
+});
+
+
+test('Home Redirect checks its latest exact stable Android asset across desktop-only releases', async () => {
+  const originalFetch = globalThis.fetch;
+  const seen = [];
+  const asset = {name: HOME_REDIRECT.asset, size: 123, digest: 'sha256:' + sha,
+    browser_download_url: 'https://github.com/jeremykenedy/fire-tv-toolkit/releases/download/v3.9.1/firetv-home-redirect.apk'};
+  globalThis.fetch = async url => {
+    seen.push(url);
+    if (url.endsWith('/latest')) return Response.json({tag_name: 'v4.4.0', assets: [
+      {name: 'another-app.apk', size: 100, digest: 'sha256:' + 'b'.repeat(64)}]});
+    assert.equal(url, 'https://api.github.com/repos/jeremykenedy/fire-tv-toolkit/releases?per_page=100');
+    return Response.json([
+      {tag_name: 'v4.5.0-beta', published_at: '2026-10-23T00:00:00Z', prerelease: true, assets: [asset]},
+      {tag_name: 'v4.3.2', assets: []},
+      {tag_name: 'v3.8.0', published_at: '2026-10-19T00:00:00Z', assets: [asset]},
+      {tag_name: 'v3.9.1', published_at: '2026-10-20T00:00:00Z', assets: [asset]},
+    ]);
+  };
+  try {
+    const result = await publishedApk(HOME_REDIRECT, {
+      githubToken: async () => undefined,
+      downloadApk: async () => '/private/helper.apk',
+      inspectApk: () => ({package: HOME_REDIRECT.pkg, versionCode: 10n, versionName: '1.2.6'}),
+      removeDownload: () => {},
+    });
+    assert.equal(result.tag, 'v3.9.1');
+    assert.equal(result.asset, HOME_REDIRECT.asset);
+    assert.equal(result.packageVersionCode, '10');
+    assert.equal(result.packageVersionName, '1.2.6');
+    assert.equal(seen.length, 2);
+  } finally { globalThis.fetch = originalFetch; }
+});
+
+
+test('Home Redirect compares Android codes rather than the Toolkit release version', async () => {
+  let installedCode = 125n;
+  let removed = 0;
+  let inspectedPackage = HOME_REDIRECT.pkg;
+  const api = {
+    packageVersion: async (_ip, pkg) => pkg === HOME_REDIRECT.pkg ? '1.2.5' : null,
+    packageDetails: async () => ({versionCode: installedCode}),
+    githubToken: async () => undefined,
+    latestRelease: async () => ({...release, tag: 'v3.9.1', asset: HOME_REDIRECT.asset}),
+    downloadApk: async () => '/private/helper.apk',
+    inspectApk: () => ({package: inspectedPackage, versionCode: 125n, versionName: '1.2.5'}),
+    removeDownload: () => { removed++; },
+  };
+  for (const [code, comparison] of [[125n, 0], [124n, 1], [126n, -1]]) {
+    installedCode = code;
+    const rows = await checkAppUpdates('192.0.2.2', api);
+    assert.equal(rows.length, 1);
+    assert.equal(rows[0].comparison, comparison);
+    assert.equal(rows[0].published.packageVersionName, '1.2.5');
+  }
+  inspectedPackage = 'unrelated.app';
+  const rejected = await checkAppUpdates('192.0.2.2', api);
+  assert.equal(rejected[0].status, 'unavailable');
+  assert.equal(rejected[0].published, undefined);
+  assert.equal(removed, 4);
 });

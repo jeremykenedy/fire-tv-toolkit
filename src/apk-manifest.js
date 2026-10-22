@@ -67,7 +67,7 @@ function readManifestAttributes(data, strings, at, size) {
   const attributeSize = data.readUInt16LE(at + 26), count = data.readUInt16LE(at + 28);
   const start = at + 16 + data.readUInt16LE(at + 24);
   if (attributeSize < 20 || start + attributeSize * count > at + size) throw new Error('Invalid manifest attributes.');
-  let pkg, low, high = 0;
+  let pkg, low, versionName, high = 0;
   for (let i = 0; i < count; i += 1) {
     const attr = start + i * attributeSize;
     const name = strings[data.readUInt32LE(attr + 4)], type = data.readUInt8(attr + 15);
@@ -75,11 +75,17 @@ function readManifestAttributes(data, strings, at, size) {
     if (name === 'package') pkg = strings[raw === NO_STRING ? value : raw];
     if (name === 'versionCode' && (type === 0x10 || type === 0x11)) low = value;
     if (name === 'versionCodeMajor' && (type === 0x10 || type === 0x11)) high = value;
+    if (name === 'versionName' && type === 3) {
+      versionName = strings[raw === NO_STRING ? value : raw];
+      if (typeof versionName !== 'string' || !versionName.length || versionName.length > 128
+          || /[\x00-\x1f\x7f]/.test(versionName)) throw new Error('Invalid APK version name.');
+    }
   }
   const parts = typeof pkg === 'string' ? pkg.split('.') : [];
   if (parts.length < 2 || !parts.every(part => /^[A-Za-z0-9_]+$/.test(part)) || low === undefined)
     throw new Error('APK package or version code is unavailable.');
-  return {package: pkg, versionCode: (BigInt(high) << 32n) + BigInt(low)};
+  return {package: pkg, versionCode: (BigInt(high) << 32n) + BigInt(low),
+    ...(versionName === undefined ? {} : {versionName})};
 }
 
 /** Reads Android's compiled manifest without executing the APK or requiring an SDK. */

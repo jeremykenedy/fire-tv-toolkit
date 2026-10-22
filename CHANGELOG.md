@@ -1,6 +1,16 @@
 # Changelog
 
-## [Unreleased: 4.4.0]
+## [4.4.1] - 2026-10-22
+
+### Fixed
+
+- Find Home Redirect's exact Android asset across stable releases when the newest Toolkit release contains only desktop installers.
+- Compare the helper's verified Android version code, rather than the desktop repository tag, and show both versions in update results.
+- Align desktop and CLI package metadata for the patch release.
+
+See the [4.4.1 upgrade guide](docs/RELEASE-4.4.1.md).
+
+## [4.4.0] - 2026-10-22
 
 ### Added
 
@@ -12,7 +22,7 @@
 - Refresh OwnTV to the verified 5.2.1 release and Pipeworks Dream to its current physical preview.
 - Route protected Fire TV UI settings through its acknowledged native receiver.
 
-See the [4.4.0 upgrade guide](docs/RELEASE-4.4.0.md). Publication and final device gates remain pending.
+See the [4.4.0 upgrade guide](docs/RELEASE-4.4.0.md).
 
 ## [4.3.2] - 2026-10-22
 
