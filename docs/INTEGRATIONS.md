@@ -26,7 +26,3 @@ The toolkit installs optional TV apps from their own releases. Those apps and bu
 | [iptv-org](https://github.com/iptv-org/iptv) | iptv-org contributors | Public channel metadata and stream links. |
 
 The toolkit's [Apache License 2.0](../LICENSE) applies to this repository's own code. See each upstream repository and the desktop application's bundled notices for third party license terms.
-
-## Jellyfish Drift filmed media
-
-The Toolkit gallery uses the NOAA public-domain Deep ocean capture from Jellyfish Drift 2.0. NOAA Ocean Exploration, 2016 Deepwater Exploration of the Marianas, is the credited source. The optional installed application also includes Eric Polk's Blue aquarium recording under CC BY-SA 4.0. Its adapted recording and derived images retain that license. See the [media notice](../art/screenshots/jellyfish-media-notice.txt) for sources, changes and terms. No agency, expedition, aquarium or author endorsement is implied.

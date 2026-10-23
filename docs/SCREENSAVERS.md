@@ -9,7 +9,8 @@
 | `aquarium-4k` | Aquarium 4K | `com.jeremykenedy.firetv.aquarium` | [jeremykenedy/fire-tv-aquarium](https://github.com/jeremykenedy/fire-tv-aquarium) | Offline 4K aquarium footage with custom fish, sea life and backgrounds |
 | `cloud-drift-clock` | Cloud Drift Clock | `com.jeremykenedy.clouddriftclock` | [jeremykenedy/cloud-drift-clock](https://github.com/jeremykenedy/cloud-drift-clock) | An animated cloudscape with a digital clock and adjustable palette, density, speed and motion |
 | `prism-clock` | Prism Clock | `com.jeremykenedy.prismclock` | [jeremykenedy/prism-clock](https://github.com/jeremykenedy/prism-clock) | A moving faceted surface with a drifting clock, adjustable materials, lighting, time format and motion |
-| `jellyfish-drift` | Jellyfish Drift | `com.jeremykenedy.jellyfishdrift` | [jeremykenedy/jellyfish-drift](https://github.com/jeremykenedy/jellyfish-drift) | Real filmed jellyfish with blue aquarium and deep ocean scenes, playback speed and random selection |
+| `jellyfish-drift` | Jellyfish Drift | `com.jeremykenedy.jellyfishdrift` | [jeremykenedy/jellyfish-drift](https://github.com/jeremykenedy/jellyfish-drift) | Animated jellyfish with adjustable water, density, motion, species and light rays |
+| `jellyfish-drift-v2` | Jellyfish Drift V2 | `com.jeremykenedy.jellyfishdriftv2` | [jeremykenedy/jellyfish-drift-v2](https://github.com/jeremykenedy/jellyfish-drift-v2) | Real filmed jellyfish in blue aquarium and deep ocean scenes, with playback speed and random selection |
 | `firefly-grove` | Firefly Grove | `com.jeremykenedy.fireflygrove` | [jeremykenedy/firefly-grove](https://github.com/jeremykenedy/firefly-grove) | Animated fireflies in a grove with adjustable density, motion and color |
 | `neon-corridor` | Neon Corridor | `com.jeremykenedy.neoncorridor` | [jeremykenedy/neon-corridor](https://github.com/jeremykenedy/neon-corridor) | A procedural neon tunnel with adjustable density, speed, color, brightness and geometry |
 | `starfield-drift` | Starfield Drift | `com.jeremykenedy.starfielddrift` | [jeremykenedy/starfield-drift](https://github.com/jeremykenedy/starfield-drift) | A procedural starfield with adjustable density, speed, color, luminance and meteors |
@@ -129,6 +130,12 @@ Install with `firetv-screensavers --install=prism-clock`. The published 1.0.0 AP
 
 The silver preview in the gallery is actual physical Fire TV output. Its maximum tested preset presented approximately 24.67 frames per second, with limited performance headroom. The user's existing screensaver selection remains unchanged during installation.
 
-## Jellyfish Drift 2.0 controls
+## Separate jellyfish editions
 
-Jellyfish Drift 2.0 plays recorded scenes. Open its native settings on the TV to choose the scene, playback speed or random scene and speed selection. The Toolkit installs and selects the saver; it does not edit these preferences. All six raw saved values remain intact during an update. Legacy density, species and light-ray values are retained for compatibility and do not change filmed playback. See the [published host contract](https://github.com/jeremykenedy/jellyfish-drift/blob/v2.0.0/docs/INTEGRATION.md).
+Jellyfish Drift retains the original animated aquarium and its existing package, settings and controls. Jellyfish Drift V2 is a separate installation with filmed scenes. Installing either edition does not select its Dream or replace the other app.
+
+Open V2 native settings to choose the scene, playback speed or random scene and speed selection. The Toolkit installs and selects the saver; it does not edit these preferences. V2 exposes four settings: scene, playback speed, random scene/speed selection and Show clock. Classic retains its six original controls plus Show clock. Both clocks default off and remain independent of random scene choices. Classic is version 3.0.0 in its original package; V2 is version 2.0.0 in a separate package.
+
+## Optional Drift clocks
+
+Cloud Drift Clock, Starfield Drift, Nebula Drift, Aqua Surface Drift, Split-Flap Drift and Canopy Drift 1.1.0 add an independent Show clock switch. Cloud and Split-Flap preserve their existing clock-on default; the four new overlays default off. The setting stays as selected when other options randomize. These updates do not redesign the scenes or add forward cloud flight.

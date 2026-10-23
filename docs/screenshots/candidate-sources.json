@@ -82,5 +82,23 @@
     "apk_sha256": "edbf475c4a2b253ccc069adaee8cac2cbba4d16b5579d5299e2e2d1bdaa21fd5",
     "apk_bytes": 127947,
     "state": "Published signed artifact independently downloaded and verified; actual native Preview/Dream/remote routes and owner visual acceptance. Physical max preset measured24.67FPS, with limited headroom."
+  },
+  "jellyfish-drift": {
+    "capture": "Actual physical Fire TV output with clock disabled; resized without scene changes",
+    "source_sha256": "18c2334c2bf93250947a68f6201733da8c6768543e4f4e2f63dd65d9fc3ef39d",
+    "thumbnail_sha256": "776ec2837f6a235a0f5164332a5a6719c4e7262c1e8f459cef4b5377f28ef459",
+    "source_repository": "https://github.com/jeremykenedy/jellyfish-drift/blob/v3.0.0/art/screenshots/physical-classic-clock-off.png",
+    "release": "https://github.com/jeremykenedy/jellyfish-drift/releases/tag/v3.0.0",
+    "apk_sha256": "2e3a8e5ad912b40bb614568e83c0f752b26e5be3bf9e8f06bb02e917063e3cb2",
+    "apk_bytes": 1242197
+  },
+  "jellyfish-drift-v2": {
+    "capture": "Actual physical Fire TV output with clock disabled; resized without scene changes",
+    "source_sha256": "15a646bf7cc72d861c77ae38d5c4d58eb8f6dffbd6ceb88a794cb2bcce3e1d2e",
+    "thumbnail_sha256": "d352cdcbee64ad9b16cba79effcecdd18edf5b2622f7f0ceddb90823eccfb4a3",
+    "source_repository": "https://github.com/jeremykenedy/jellyfish-drift-v2/blob/v2.0.0/art/screenshots/physical-blue-clock-off.png",
+    "release": "https://github.com/jeremykenedy/jellyfish-drift-v2/releases/tag/v2.0.0",
+    "apk_sha256": "90697388e2719412136ecf9ee0859f9245a17fb22188e9cfeb14d685a9e5b2ed",
+    "apk_bytes": 35292388
   }
 }

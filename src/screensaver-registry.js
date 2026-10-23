@@ -57,7 +57,7 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.clouddriftclock',
     dreamComponent: 'com.jeremykenedy.clouddriftclock/.CloudDreamService',
     repo: 'jeremykenedy/cloud-drift-clock',
-    blurb: 'A moving cloudscape with an adjustable digital clock, sky palette, density, speed and motion. No ads, analytics or tracking.',
+    blurb: 'A moving cloudscape with an optional digital clock, sky palette, density, speed and motion. No ads, analytics or tracking.',
   },
   {
     id: 'prism-clock',
@@ -74,10 +74,16 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.jellyfishdrift',
     dreamComponent: 'com.jeremykenedy.jellyfishdrift/.JellyfishDreamService',
     repo: 'jeremykenedy/jellyfish-drift',
-    tag: 'v2.0.0',
-    asset: 'jellyfish-drift.apk',
-    sha256: '109099f558be22a71970b56a962907053dd3b19cd6bc95b32a03101da62f0c8e',
-    blurb: 'Real filmed jellyfish in blue aquarium and deep ocean scenes, with playback speed and random scene controls. No ads, analytics or tracking.',
+    blurb: 'Animated jellyfish with adjustable water, density, motion, species, light rays and an optional clock. No ads, analytics or tracking.',
+  },
+  {
+    id: 'jellyfish-drift-v2',
+    name: 'Jellyfish Drift V2',
+    pkg: 'com.jeremykenedy.jellyfishdriftv2',
+    dreamComponent: 'com.jeremykenedy.jellyfishdriftv2/.JellyfishDreamService',
+    repo: 'jeremykenedy/jellyfish-drift-v2',
+    asset: 'jellyfish-drift-v2.apk',
+    blurb: 'Real filmed jellyfish in blue aquarium and deep ocean scenes, with playback speed, random scene controls and an optional clock. No ads, analytics or tracking.',
   },
   {
     id: 'firefly-grove',
@@ -101,7 +107,7 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.starfielddrift',
     dreamComponent: 'com.jeremykenedy.starfielddrift/.StarfieldDreamService',
     repo: 'jeremykenedy/starfield-drift',
-    blurb: 'A procedural animated starfield with adjustable density, speed, color, luminance and meteors. No ads, analytics or tracking.',
+    blurb: 'A procedural animated starfield with adjustable density, speed, color, luminance, meteors and an optional clock. No ads, analytics or tracking.',
   },
   {
     id: 'rain-on-glass',
@@ -141,7 +147,7 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.nebuladrift',
     dreamComponent: 'com.jeremykenedy.nebuladrift/.NebulaDreamService',
     repo: 'jeremykenedy/nebula-drift',
-    blurb: 'Animated nebula clouds with adjustable structure, color, density, stars and meteors.',
+    blurb: 'Animated nebula clouds with adjustable structure, color, density, stars, meteors and an optional clock.',
   },
   {
     id: 'vortex-spiral',
@@ -199,7 +205,7 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.aquasurfacedrift',
     dreamComponent: 'com.jeremykenedy.aquasurfacedrift/.AquaSurfaceDreamService',
     repo: 'jeremykenedy/aqua-surface-drift',
-    blurb: 'Animated water with adjustable environment, lighting, ripples, motion and view.',
+    blurb: 'Animated water with adjustable environment, lighting, ripples, motion, view and an optional clock.',
   },
   {
     id: 'earthbound-orbit',
@@ -223,7 +229,7 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.splitflapdrift',
     dreamComponent: 'com.jeremykenedy.splitflapdrift/.SplitFlapDreamService',
     repo: 'jeremykenedy/split-flap-drift',
-    blurb: 'An animated drifting flip clock with adjustable time format, seconds, date, finish, lighting and motion.',
+    blurb: 'An animated drifting flip clock with adjustable time format, seconds, date, finish, lighting, motion and a complete clock visibility switch.',
   },
   {
     id: 'canopy-drift',
@@ -231,7 +237,7 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.canopydrift',
     dreamComponent: 'com.jeremykenedy.canopydrift/.CanopyDreamService',
     repo: 'jeremykenedy/canopy-drift',
-    blurb: 'An animated autumn canopy with falling leaves, adjustable tree style, leaf density, wind and lighting.',
+    blurb: 'An animated autumn canopy with falling leaves, adjustable tree style, leaf density, wind, lighting and an optional clock.',
   },
   {
     id: 'contour-flow',
