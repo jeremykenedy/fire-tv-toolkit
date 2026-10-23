@@ -109,7 +109,7 @@ test('Jellyfish Drift registry entry points to its released app and installer re
     pkg: 'com.jeremykenedy.jellyfishdrift',
     dreamComponent: 'com.jeremykenedy.jellyfishdrift/.JellyfishDreamService',
     repo: 'jeremykenedy/jellyfish-drift',
-    blurb: 'Animated jellyfish with adjustable water, density, motion, species and light rays. No ads, analytics or tracking.',
+    blurb: 'Animated jellyfish with adjustable water, density, motion, species, light rays and an optional clock. No ads, analytics or tracking.',
   });
 });
 
@@ -142,7 +142,7 @@ test('Starfield Drift registry entry points to its released app and installer re
     pkg: 'com.jeremykenedy.starfielddrift',
     dreamComponent: 'com.jeremykenedy.starfielddrift/.StarfieldDreamService',
     repo: 'jeremykenedy/starfield-drift',
-    blurb: 'A procedural animated starfield with adjustable density, speed, color, luminance and meteors. No ads, analytics or tracking.',
+    blurb: 'A procedural animated starfield with adjustable density, speed, color, luminance, meteors and an optional clock. No ads, analytics or tracking.',
   });
 });
 
@@ -197,7 +197,7 @@ test('Nebula Drift registry entry points to its released app and installer repos
     pkg: 'com.jeremykenedy.nebuladrift',
     dreamComponent: 'com.jeremykenedy.nebuladrift/.NebulaDreamService',
     repo: 'jeremykenedy/nebula-drift',
-    blurb: 'Animated nebula clouds with adjustable structure, color, density, stars and meteors.',
+    blurb: 'Animated nebula clouds with adjustable structure, color, density, stars, meteors and an optional clock.',
   });
 });
 
@@ -252,7 +252,7 @@ test('Aqua Surface Drift registry entry points to its released app and installer
     pkg: 'com.jeremykenedy.aquasurfacedrift',
     dreamComponent: 'com.jeremykenedy.aquasurfacedrift/.AquaSurfaceDreamService',
     repo: 'jeremykenedy/aqua-surface-drift',
-    blurb: 'Animated water with adjustable environment, lighting, ripples, motion and view.',
+    blurb: 'Animated water with adjustable environment, lighting, ripples, motion, view and an optional clock.',
   });
 });
 
@@ -263,7 +263,7 @@ test('Cloud Drift Clock registry entry points to its released app and installer 
     pkg: 'com.jeremykenedy.clouddriftclock',
     dreamComponent: 'com.jeremykenedy.clouddriftclock/.CloudDreamService',
     repo: 'jeremykenedy/cloud-drift-clock',
-    blurb: 'A moving cloudscape with an adjustable digital clock, sky palette, density, speed and motion. No ads, analytics or tracking.',
+    blurb: 'A moving cloudscape with an optional digital clock, sky palette, density, speed and motion. No ads, analytics or tracking.',
   });
 });
 

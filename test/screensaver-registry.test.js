@@ -99,3 +99,13 @@ test('sameComponent matches the short and long forms of a component, and nothing
   assert.ok(!sameComponent(null, 'a.b/.C'));
   assert.ok(sameComponent(null, null));
 });
+
+test('classic and filmed jellyfish remain separate install and selection targets', () => {
+  const classic = SCREENSAVERS.find((entry) => entry.id === 'jellyfish-drift');
+  const filmed = SCREENSAVERS.find((entry) => entry.id === 'jellyfish-drift-v2');
+  assert.equal(classic.pkg, 'com.jeremykenedy.jellyfishdrift');
+  assert.equal(filmed.pkg, 'com.jeremykenedy.jellyfishdriftv2');
+  assert.equal(filmed.repo, 'jeremykenedy/jellyfish-drift-v2');
+  assert.equal(filmed.asset, 'jellyfish-drift-v2.apk');
+  assert.notEqual(classic.dreamComponent, filmed.dreamComponent);
+});
