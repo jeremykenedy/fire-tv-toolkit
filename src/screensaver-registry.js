@@ -74,7 +74,10 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.jellyfishdrift',
     dreamComponent: 'com.jeremykenedy.jellyfishdrift/.JellyfishDreamService',
     repo: 'jeremykenedy/jellyfish-drift',
-    blurb: 'Animated jellyfish with adjustable water, density, motion, species and light rays. No ads, analytics or tracking.',
+    tag: 'v2.0.0',
+    asset: 'jellyfish-drift.apk',
+    sha256: '109099f558be22a71970b56a962907053dd3b19cd6bc95b32a03101da62f0c8e',
+    blurb: 'Real filmed jellyfish in blue aquarium and deep ocean scenes, with playback speed and random scene controls. No ads, analytics or tracking.',
   },
   {
     id: 'firefly-grove',

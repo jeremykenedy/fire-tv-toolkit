@@ -9,7 +9,7 @@
 | `aquarium-4k` | Aquarium 4K | `com.jeremykenedy.firetv.aquarium` | [jeremykenedy/fire-tv-aquarium](https://github.com/jeremykenedy/fire-tv-aquarium) | Offline 4K aquarium footage with custom fish, sea life and backgrounds |
 | `cloud-drift-clock` | Cloud Drift Clock | `com.jeremykenedy.clouddriftclock` | [jeremykenedy/cloud-drift-clock](https://github.com/jeremykenedy/cloud-drift-clock) | An animated cloudscape with a digital clock and adjustable palette, density, speed and motion |
 | `prism-clock` | Prism Clock | `com.jeremykenedy.prismclock` | [jeremykenedy/prism-clock](https://github.com/jeremykenedy/prism-clock) | A moving faceted surface with a drifting clock, adjustable materials, lighting, time format and motion |
-| `jellyfish-drift` | Jellyfish Drift | `com.jeremykenedy.jellyfishdrift` | [jeremykenedy/jellyfish-drift](https://github.com/jeremykenedy/jellyfish-drift) | Animated jellyfish with adjustable water, density, motion, species and light rays |
+| `jellyfish-drift` | Jellyfish Drift | `com.jeremykenedy.jellyfishdrift` | [jeremykenedy/jellyfish-drift](https://github.com/jeremykenedy/jellyfish-drift) | Real filmed jellyfish with blue aquarium and deep ocean scenes, playback speed and random selection |
 | `firefly-grove` | Firefly Grove | `com.jeremykenedy.fireflygrove` | [jeremykenedy/firefly-grove](https://github.com/jeremykenedy/firefly-grove) | Animated fireflies in a grove with adjustable density, motion and color |
 | `neon-corridor` | Neon Corridor | `com.jeremykenedy.neoncorridor` | [jeremykenedy/neon-corridor](https://github.com/jeremykenedy/neon-corridor) | A procedural neon tunnel with adjustable density, speed, color, brightness and geometry |
 | `starfield-drift` | Starfield Drift | `com.jeremykenedy.starfielddrift` | [jeremykenedy/starfield-drift](https://github.com/jeremykenedy/starfield-drift) | A procedural starfield with adjustable density, speed, color, luminance and meteors |
@@ -128,3 +128,7 @@ The exact released APK passed physical signed-update preservation, remote Previe
 Install with `firetv-screensavers --install=prism-clock`. The published 1.0.0 APK retains the app package and settings on replacement. Materials, facet size, surface motion, lighting, contrast, clock size, time format, seconds, date and clock movement are configurable in the native settings screen.
 
 The silver preview in the gallery is actual physical Fire TV output. Its maximum tested preset presented approximately 24.67 frames per second, with limited performance headroom. The user's existing screensaver selection remains unchanged during installation.
+
+## Jellyfish Drift 2.0 controls
+
+Jellyfish Drift 2.0 plays recorded scenes. Open its native settings on the TV to choose the scene, playback speed or random scene and speed selection. The Toolkit installs and selects the saver; it does not edit these preferences. All six raw saved values remain intact during an update. Legacy density, species and light-ray values are retained for compatibility and do not change filmed playback. See the [published host contract](https://github.com/jeremykenedy/jellyfish-drift/blob/v2.0.0/docs/INTEGRATION.md).
