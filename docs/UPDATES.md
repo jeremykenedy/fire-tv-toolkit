@@ -18,6 +18,12 @@ Replace the example address with the intended TV. Explicit targeting does not ov
 
 Before an install, Toolkit verifies the published SHA-256, expected compiled Android package and a higher Android version code than the installed app. Android's replacement installer enforces the installed signing certificate and rejects incompatible downgrades. Existing app data is retained. Toolkit reads back the installed version code before reporting completion. A failed replacement is reported as failed.
 
+## Android helpers in a desktop repository
+
+Home Redirect shares Toolkit's repository, but its Android app version is separate from the desktop release tag. If the newest stable release has no `firetv-home-redirect.apk`, the check searches the latest 100 release entries for the most recently published stable release containing that exact asset. It never substitutes a different APK.
+
+The check downloads the checksum-verified helper temporarily, reads its compiled package and Android version code, and removes the inspection file. It compares that code with the installed app. For example, Home Redirect 1.2.6 is attached to repository release v3.9.1; v3.9.1 is not the helper's app version. The desktop and CLI show both values. Missing assets, integrity failures and unavailable history remain failed checks.
+
 ## Private Fire TV UI
 
 Keep the repository private. Authenticate on the computer using `gh auth login`, `GH_TOKEN` or `GITHUB_TOKEN` with repository access. No token is copied to the TV or written into update metadata.

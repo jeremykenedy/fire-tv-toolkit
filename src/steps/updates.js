@@ -7,7 +7,9 @@ export function updateLabel(row) {
   if (row.status !== 'checked') return `${row.name}: check unavailable (${row.error})`;
   const state = row.comparison === 0 ? 'matches checked release' : row.comparison < 0 ? 'installed version is newer'
     : row.comparison === null ? 'version names cannot be ordered' : 'update available';
-  return `${row.name}: installed ${row.installed}; published ${row.published.tag}; ${state}`;
+  const published = row.published.packageVersionName
+    ? `${row.published.packageVersionName} (repository ${row.published.tag})` : row.published.tag;
+  return `${row.name}: installed ${row.installed}; published ${published}; ${state}`;
 }
 
 export async function manageUpdates(ip, {choose = menu, confirm = promptYN, write = print,

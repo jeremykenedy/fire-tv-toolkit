@@ -51,3 +51,13 @@ test('inspects stored and compressed APK ZIP manifests and rejects malformed arc
     fs.writeFileSync(file,Buffer.alloc(0));assert.throws(()=>inspectApk(file));
   } finally {fs.rmSync(folder,{recursive:true,force:true});}
 });
+
+
+test('reads a literal Android app version separately from its repository release tag', () => {
+  for (const utf8 of [true, false]) {
+    const app = parseBinaryManifest(manifest({utf8, pkg: 'com.jeremykenedy.firetv.homeredirect', version: 125, versionName: '1.2.5'}));
+    assert.equal(app.versionName, '1.2.5');
+    assert.equal(app.versionCode, 125n);
+  }
+  assert.throws(() => parseBinaryManifest(manifest({versionName: '1.2\u001b[31m'})), /version name/);
+});

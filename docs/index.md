@@ -23,7 +23,8 @@
 | [Troubleshooting](TROUBLESHOOTING.md) | Connection and settings problems. |
 | [Development](DEVELOPMENT.md) | Source builds, tests and releasing. |
 | [Signing installers](SIGNING.md) | Signing and notarization. |
-| [4.4.0 candidate](RELEASE-4.4.0.md) | Published update controls and guarded settings. |
+| [4.4.1 release](RELEASE-4.4.1.md) | Correct Android helper lookup and version comparison. |
+| [4.4.0 release](RELEASE-4.4.0.md) | Published update controls and guarded settings. |
 | [4.3.2 release](RELEASE-4.3.2.md) | Twilight Hearth release preview and visible desktop catalog explanations. |
 | [4.3.1 release](RELEASE-4.3.1.md) | README, direct downloads and Apache 2.0. |
 | [4.3.0 release](RELEASE-4.3.0.md) | Screensavers and diagnostics. |

@@ -48,6 +48,8 @@ export const HOME_REDIRECT = {
   repo: 'jeremykenedy/fire-tv-toolkit',
   tag: HOME_REDIRECT_RELEASE,
   asset: 'firetv-home-redirect.apk',
+  updateAssetHistory: true,
+  inspectUpdateVersion: true,
   grants: ['android.permission.WRITE_SECURE_SETTINGS'],
 };
 

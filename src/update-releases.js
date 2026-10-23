@@ -45,12 +45,25 @@ async function publishedChecksum(entry, release, token, api) {
 export async function publishedApk(entry, api = {}) {
   const token = api.token ?? (entry.private ? await (api.githubToken ?? githubToken)() : undefined);
   const release = await (api.latestRelease ?? latestRelease)(
-    entry.repo, entry.asset, undefined, token, true, entry.updateAssetTemplate);
+    entry.repo, entry.asset, undefined, token, true, entry.updateAssetTemplate, entry.updateAssetHistory === true);
   const sha256 = await publishedChecksum(entry, release, token, api);
   if (!Number.isSafeInteger(release.bytes) || release.bytes <= 0 || release.bytes > 250 * 1048576)
     throw new Error('Invalid published APK size.');
-  return { ...entry, tag: release.tag, sha256, bytes: release.bytes, url: release.apkUrl,
+  const published = { ...entry, tag: release.tag, sha256, bytes: release.bytes, url: release.apkUrl,
     asset: release.asset ?? entry.asset, checkedAt: Date.now() };
+  if (entry.inspectUpdateVersion) {
+    const apk = await (api.downloadApk ?? downloadApk)(published);
+    try {
+      const archive = (api.inspectApk ?? inspectApk)(apk);
+      if (archive.package !== entry.pkg || !archive.versionName)
+        throw new Error('Published Android package identity or version is unavailable.');
+      published.packageVersionName = archive.versionName;
+      published.packageVersionCode = archive.versionCode.toString();
+    } finally {
+      (api.removeDownload ?? removeDownload)(apk);
+    }
+  }
+  return published;
 }
 
 export async function checkAppUpdates(ip, api = {}) {
@@ -64,8 +77,15 @@ export async function checkAppUpdates(ip, api = {}) {
     try {
       if (rateLimited) throw new Error('Not checked: GitHub rate limit paused remaining requests.');
       const published = await publishedApk(entry, { ...api, token });
+      let comparison = compareVersions(published.tag, installed);
+      if (published.packageVersionCode) {
+        const details = await (api.packageDetails ?? packageDetails)(ip, entry.pkg);
+        if (details.versionCode === null) throw new Error('Installed Android version code is unavailable.');
+        const nextCode = BigInt(published.packageVersionCode);
+        comparison = nextCode === details.versionCode ? 0 : nextCode > details.versionCode ? 1 : -1;
+      }
       rows.push({ id: entry.id, name: entry.name, installed, published,
-        comparison: compareVersions(published.tag, installed), status: 'checked' });
+        comparison, status: 'checked' });
     } catch (error) {
       rateLimited ||= /GitHub API returned (403|429)/.test(error.message);
       rows.push({ id: entry.id, name: entry.name, installed, status: 'unavailable', error: error.message });

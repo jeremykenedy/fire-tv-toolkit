@@ -179,9 +179,10 @@ function versionedAssetName(template, tag) {
  * @param {string} [token] GitHub credentials for a private repository
  * @param {boolean} [allowRenamedAsset] accept the sole APK if the expected name changes
  * @param {string} [assetTemplate] exact asset name using the current release {tag}
+ * @param {boolean} [assetHistory] find the latest stable release containing this exact Android asset
  * @returns {Promise<{apkUrl: string, apkApiUrl?: string, sha256: string | null, sha256Url: string | null, sha256ApiUrl?: string | null, tag: string}>} the APK URLs and published checksum
  */
-export async function latestRelease(repo, assetName, tag, token, allowRenamedAsset = false, assetTemplate) {
+export async function latestRelease(repo, assetName, tag, token, allowRenamedAsset = false, assetTemplate, assetHistory = false) {
   const which = tag ? `tags/${encodeURIComponent(tag)}` : 'latest';
   const headers = token ? { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } : {};
   const res = await fetch(`https://api.github.com/repos/${repo}/releases/${which}`, { headers, redirect: token ? 'error' : 'follow', signal: AbortSignal.timeout(20000) });
@@ -194,15 +195,27 @@ export async function latestRelease(repo, assetName, tag, token, allowRenamedAss
   if (!res.ok) {
     throw new Error(`GitHub API returned ${res.status} for ${repo}`);
   }
-  const release = await res.json();
+  let release = await res.json();
   if (release.draft === true || release.prerelease === true) {
     throw new Error(`No stable published release is available for ${repo}`);
+  }
+  if (assetHistory && !tag && !(release.assets || []).some(asset => asset.name === assetName)) {
+    const history = await fetch(`https://api.github.com/repos/${repo}/releases?per_page=100`,
+      { headers, redirect: token ? 'error' : 'follow', signal: AbortSignal.timeout(20000) });
+    if (!history.ok) throw new Error(`GitHub API returned ${history.status} for ${repo}`);
+    const releases = await history.json();
+    if (!Array.isArray(releases)) throw new Error('Invalid published release history.');
+    release = releases.slice(0, 100)
+      .filter(item => !item.draft && !item.prerelease
+        && (item.assets || []).some(asset => asset.name === assetName))
+      .sort((left, right) => (Date.parse(right.published_at) || 0) - (Date.parse(left.published_at) || 0))[0];
+    if (!release) throw new Error(`No stable release containing ${assetName} was found in the latest 100 releases of ${repo}`);
   }
   const assets = release.assets || [];
   const expectedName = assetTemplate ? versionedAssetName(assetTemplate, release.tag_name) : assetName;
   let apk = assets.find((a) => (expectedName ? a.name === expectedName : a.name.endsWith('.apk')));
   const apks = assets.filter((a) => a.name.endsWith('.apk'));
-  if (!apk && !assetTemplate && allowRenamedAsset && apks.length === 1) apk = apks[0];
+  if (!apk && !assetTemplate && !assetHistory && allowRenamedAsset && apks.length === 1) apk = apks[0];
   if (!apk) {
     throw new Error(`No ${expectedName || '.apk'} asset found on the latest release of ${repo}`);
   }

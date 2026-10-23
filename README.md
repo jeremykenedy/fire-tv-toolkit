@@ -94,7 +94,7 @@ See [TV setup](docs/SETUP.md) for ADB debugging and upgrades, or the [command re
 
 See the [feature guide](docs/FEATURES.md) for behavior and limits, or browse the [screenshot gallery](docs/SCREENSHOTS.md).
 
-<p align="center"><a href="docs/UPDATES.md"><img src="art/screenshots/desktop-published-updates.png" alt="Fire TV Toolkit 4.4.0 native macOS update screen showing installed and checked published versions" width="900"></a></p>
+<p align="center"><a href="docs/UPDATES.md"><img src="art/screenshots/desktop-published-updates.png" alt="Fire TV Toolkit 4.4.1 native macOS update screen showing installed and checked published versions" width="900"></a></p>
 
 ## Platform support
 

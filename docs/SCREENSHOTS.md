@@ -4,11 +4,15 @@
 
 ## Desktop app
 
-The published update screen below was captured from the native macOS 4.4.0 source build. Its installed candidate is newer than the currently published 4.3.2 release. No update installer was opened.
+The published update screen below was captured from the packaged native macOS 4.4.1 build. It shows an actual release check against the published 4.4.0 release before this patch was published. No update installer was opened.
 
 <table><tr><td><a href="../art/screenshots/desktop-published-updates.png"><img src="../art/screenshots/desktop-published-updates.png" alt="Native published update screen with actual release check"></a></td></tr></table>
 
-Captured from the packaged macOS 4.3.1 source build connected to a physical Fire TV.
+The same packaged 4.4.1 app checked all 37 installed catalog applications on the new Fire TV. Home Redirect correctly shows app 1.2.6, repository release v3.9.1 and a matching installed version, with no replacement action.
+
+<table><tr><td><a href="../art/screenshots/desktop-helper-updates.png"><img src="../art/screenshots/desktop-helper-updates.png" alt="Native Toolkit 4.4.1 correctly compares Home Redirect's Android version independently of its repository release"></a></td></tr></table>
+
+The About screenshot is from the same packaged 4.4.1 build. The remaining unchanged desktop routes below retain their historical packaged macOS 4.3.1 captures connected to a physical Fire TV.
 
 <table>
 <tr>

@@ -1064,7 +1064,9 @@ $('#check-app-updates').addEventListener('click', async () => {
       else {
         const status = row.comparison === 0 ? 'Matches checked release.' : row.comparison === -1 ? 'Installed version is newer.'
           : row.comparison === 1 ? 'Update available.' : 'Version names cannot be ordered.';
-        section.append(element('p', '', `Installed ${row.installed}; published ${row.published.tag}. ${status}`));
+        const published = row.published.packageVersionName
+          ? `${row.published.packageVersionName} (repository ${row.published.tag})` : row.published.tag;
+        section.append(element('p', '', `Installed ${row.installed}; published ${published}. ${status}`));
         section.append(element('p', 'muted', `Checked ${new Date(row.published.checkedAt).toLocaleString()}. SHA-256 ${row.published.sha256}`));
         if (row.comparison === null || row.comparison > 0) {
           const install = element('button', '', row.id === 'fire-tv-ui' ? 'Send UI update to TV' : 'Install update');
