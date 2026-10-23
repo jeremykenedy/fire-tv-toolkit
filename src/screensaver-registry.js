@@ -20,6 +20,14 @@ export const SCREENSAVERS = [
     blurb: 'Aerial drone footage, the Apple TV screensaver look. No ads.',
   },
   {
+    id: 'black-screen-dream',
+    name: 'Black Screen Dream',
+    pkg: 'com.jeremykenedy.blackscreendream',
+    dreamComponent: 'com.jeremykenedy.blackscreendream/.BlackScreenDreamService',
+    repo: 'jeremykenedy/black-screen-dream',
+    blurb: 'A plain black screen without a clock, imagery or animation.',
+  },
+  {
     id: 'androsaver',
     name: 'AndroSaver',
     pkg: 'com.androsaver',
