@@ -109,3 +109,10 @@ test('classic and filmed jellyfish remain separate install and selection targets
   assert.equal(filmed.asset, 'jellyfish-drift-v2.apk');
   assert.notEqual(classic.dreamComponent, filmed.dreamComponent);
 });
+
+test('Black Screen Dream has a separate installation and selection identity', () => {
+  const entry = SCREENSAVERS.find((saver) => saver.id === 'black-screen-dream');
+  assert.equal(entry.pkg, 'com.jeremykenedy.blackscreendream');
+  assert.equal(entry.dreamComponent, 'com.jeremykenedy.blackscreendream/.BlackScreenDreamService');
+  assert.equal(entry.repo, 'jeremykenedy/black-screen-dream');
+});

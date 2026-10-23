@@ -2,6 +2,7 @@
 
 | Id | Name | Package | Source | What it is |
 |----|------|---------|--------|------------|
+| `black-screen-dream` | Black Screen Dream | `com.jeremykenedy.blackscreendream` | [jeremykenedy/black-screen-dream](https://github.com/jeremykenedy/black-screen-dream) | Plain black screen without a clock, imagery or animation |
 | `aerial` | Aerial Views (the default) | `com.neilturner.aerialviews` | [theothernt/AerialViews](https://github.com/theothernt/AerialViews), its author's release 1.8.5, pinned by SHA-256 | Aerial drone footage, the Apple TV screensaver look |
 | `androsaver` | AndroSaver | `com.androsaver` | [jeremykenedy/androsaver](https://github.com/jeremykenedy/androsaver) | Photo slideshow or music visualizer |
 | `snoozy` | Snoozy | `com.overdevs.snoozy` | [jeremykenedy/Snoozy](https://github.com/jeremykenedy/Snoozy) | Animated Snoopy screensaver |
