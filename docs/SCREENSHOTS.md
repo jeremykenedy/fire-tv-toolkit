@@ -55,6 +55,10 @@ Captured on an Insignia Fire TV Edition TV, Android TV emulators, and in macOS T
 
 ## Screensavers
 
+Black Screen Dream 1.0.0 intentionally renders a completely black frame. This native capture is from its published build, also installed on Calvin's TV with the released APK hash verified.
+
+<table><tr><td><a href="../art/screenshots/black-screen-native.png"><img src="screenshots/screensaver-black-screen-dream.jpg" alt="Black Screen Dream 1.0.0 showing a completely black frame"></a></td></tr></table>
+
 Twilight Hearth shows actual physical Fire TV modern/bright output from its verified 1.1.0 release. See [capture provenance](screenshots/candidate-sources.json) and the [screensaver guide](SCREENSAVERS.md#twilight-hearth-11). The unchanged desktop screenshots above remain from the 4.3.1 packaged source build.
 
 <p align="center">

@@ -100,5 +100,15 @@
     "release": "https://github.com/jeremykenedy/jellyfish-drift-v2/releases/tag/v2.0.0",
     "apk_sha256": "90697388e2719412136ecf9ee0859f9245a17fb22188e9cfeb14d685a9e5b2ed",
     "apk_bytes": 35292388
+  },
+  "black-screen-dream": {
+    "capture": "Native 1920x1080 Preview from the published 1.0.0 build; exact released APK also installed on Calvin AFTALMO API28. Black is intentional.",
+    "source_repository": "https://github.com/jeremykenedy/black-screen-dream/tree/v1.0.0",
+    "source_image": "https://github.com/jeremykenedy/black-screen-dream/blob/v1.0.0/art/screenshots/black-preview.png",
+    "source_sha256": "05377a96972306b771d4474d00222af062992f86ab1a12b2688f0cf8da5ba55b",
+    "thumbnail_sha256": "17b493208dbf0f937a6cec6878c1fb4dc4aa97f03ee456b885eede98dd6e6621",
+    "apk_sha256": "9e91b180c9f60748752612da496227e908b979c95f3c9e13930d4ce3ef108660",
+    "release": "https://github.com/jeremykenedy/black-screen-dream/releases/tag/v1.0.0",
+    "state": "Published APK installed and actual package, version code and APK bytes verified on Calvin. Normal idle timing is checked separately."
   }
 }
