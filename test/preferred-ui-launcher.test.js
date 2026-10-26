@@ -97,6 +97,16 @@ test('UI update restores the selected UI and all unrelated accessibility service
   assert.equal(fake.readState().uiHomeWanted, true);
 });
 
+test('updating a disabled UI preserves its disabled state and current Home choice', async () => {
+  installed(uiServices);
+  fake.setState({disabled:[UI.pkg]});
+  const before = await launcherState(ip);
+  assert.equal(before.home, 'amazon');
+  assert.equal((await installLauncherApp(ip, {...UI,sha256:undefined,icons:undefined})).ok, true);
+  assert.equal((await launcherState(ip)).home, before.home);
+  assert.ok(fake.readState().disabled.includes(UI.pkg));
+});
+
 test('UI update keeps LTvLauncher selected, and a failed install preserves it too', async () => {
   installed(`reader/Service:${HOME_REDIRECT.service}`);
   fake.setState({ guard: { home: 'ltv' }, dropServicesOnInstall: true });

@@ -21,7 +21,8 @@ UI installation grants only `WRITE_SECURE_SETTINGS`, required by that supported
 HomeControl interface. For an existing installation it never calls HomeControl or rewrites private
 Home/startup preferences; it restores the exact accessibility services/enabled
 settings after the in-place APK update. Fresh installation uses preference-off
-without selecting Home. Explicit Home switching validates readback before pressing Home; failed
+without selecting Home. An already-disabled UI remains disabled during an
+update; choose Use when you want to enable it and change Home. Explicit Home switching validates readback before pressing Home; failed
 readback restores the previous routing preference, including absence, and the
 exact settings. The full code 69 HomeControl transaction must restore all four
 private Home flags on native failure before Toolkit restores the earlier preference. A restore failure
@@ -36,6 +37,15 @@ retained. The checked UI update flow sends the matching icons before staging
 the APK for confirmation on the TV; it still does not install a UI update
 silently or change Home preferences and grants. An incomplete icon transfer or
 indexing result is reported as a failure.
+
+The production copy/index helper passed a focused API 34 emulator gate with all
+32 canonical images initially absent. It copied the exact reviewed PNG bytes;
+Android reported every row visible with `is_pending=0`, `image/png` and native
+1920x1080 dimensions. Existing pictures, all 34 APK hashes, the stopped UI's
+identity, grants, appops, external files and recorded OS choices stayed intact.
+The UI was not opened and no fresh private preference export was taken; its
+fourteen-key state references the prior verified UI 70 checkpoint. This is native
+file/index evidence, not an image-picker, physical Home or hardware-remote test.
 
 For AT4K and LTvLauncher, Fire OS has no setting for choosing a Home app, so the
 toolkit uses its legacy helper:
@@ -152,13 +162,16 @@ firetv-ltv-backup --pull=ltv-backup.json   # copy the newest LTvLauncher backup 
 
 ### Verified UI update and Home preference contract
 
-The reviewed installation pin is public [Fire TV UI 1.11.0/code 69](https://github.com/jeremykenedy/fire-tv-ui/releases/tag/v1.11.0):
-`fire-tv-ui-1.11.0.apk`, 9,037,158 bytes, SHA-256
-`d5abce3b88a9311ef9c9094858f7f3c3982cff6c61fd088360043acfd6163af4`.
+The reviewed installation pin is public [Fire TV UI 1.11.1/code 70](https://github.com/jeremykenedy/fire-tv-ui/releases/tag/v1.11.1):
+`fire-tv-ui-1.11.1.apk`, 9,053,902 bytes, SHA-256
+`14676d28103f059178de13f4f4a3f8fbce63a4c98317a3635d31f064c63e5d43`.
 Its production certificate is
 `9a6416b9dc3c996d591b185d600b8ab76e1c7b01846db8d6063b399caf7b5a11`;
 Android minimum 27 and target 36 are unchanged. All four published APK/icon and
-checksum assets were downloaded anonymously and verified before this pin changed.
+checksum assets were downloaded anonymously and verified before this pin changed. The paired
+`fire-tv-ui-icons-1.11.1.zip` is 8,505,979 bytes with SHA-256
+`9c2655584b5c85c8574c1ccb6ace20e6470bd48d6c91c7c4ac0322dcb550ccea`.
+Code 70 adds Lumen catalog data while retaining both code 69 runtime DEX files.
 
 All Home mutations involving Fire TV UI require code 69 or newer. Unknown or
 older installed codes are refused before a preference or OS write, and the

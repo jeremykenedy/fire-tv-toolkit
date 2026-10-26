@@ -26,7 +26,7 @@ and refresh `npm link`. Desktop-source Node 22.13+ and CLI Node 18+ minimums are
 unchanged. Desktop named profiles are separate from the CLI's saved `.env` target.
 Explicit CLI `--ip` arguments do not replace that saved default.
 
-Update an older installed Fire TV UI to 1.11.0/code 69 before changing Home through
+Update an older installed Fire TV UI to 1.11.1/code 70 before changing Home through
 Toolkit. The regular checked-update flow remains available. A fresh Toolkit UI
 install leaves Home selection unchanged until you choose Use or confirm the
 reviewed guided setup. AT4K and LTvLauncher retain their existing commands and
@@ -61,7 +61,9 @@ unaffected. CLI `--install` still installs AT4K; the new UI flag is `--install-u
   OS accessibility values. Full native Home failures restore the other three
   saved choices through the verified UI contract.
 - Existing UI replacement does not issue Home operations or regrant setup
-  permissions. Fresh installation grants its declared setup permission.
+  permissions. A disabled UI stays disabled until explicit Use, so old saved
+  service names cannot silently reactivate Home. Fresh installation grants its
+  declared setup permission.
 - Deliver the matching release's shared HD icons with UI installation and
   staged updates. Verify its archive and safe full HD catalog before TV writes,
   then copy, scan and publish the images for Android's picker without changing
@@ -78,13 +80,15 @@ contact a TV. No tracking, telemetry, account, new service or TV permission is
 introduced. The compatible Electron 44.9.3 and fast-uri 3.1.9 security fixes from
 4.5.2 remain in place.
 
-Fire TV UI is pinned to public 1.11.0/code 69, 9,037,158 bytes and SHA-256
-`d5abce3b88a9311ef9c9094858f7f3c3982cff6c61fd088360043acfd6163af4`.
+Fire TV UI is pinned to public 1.11.1/code 70, 9,053,902 bytes and SHA-256
+`14676d28103f059178de13f4f4a3f8fbce63a4c98317a3635d31f064c63e5d43`.
 Nibbles HD is pinned to public 1.0.0/code 3, 41,727 bytes and SHA-256
 `c49bc22e5cbf5067da4bbcb1cd63140d31b0a49a83f6826e111986ee4b7d7971`.
 Lumen Breaker is pinned to public 1.0.0/code 3, 74,551 bytes and SHA-256
 `fc0513f85fc8563cd8463546108bbf5ea9c459ab72465c669b126fcc6c14269c`.
-All three public artifacts were anonymously downloaded and their package, certificate,
+The paired UI icon archive is 8,505,979 bytes with SHA-256
+`9c2655584b5c85c8574c1ccb6ace20e6470bd48d6c91c7c4ac0322dcb550ccea`.
+All three public APKs and the icon archive were anonymously downloaded and their applicable package, certificate,
 SDK metadata, byte count and published checksum verified before registration.
 
 ## Verification and limits
@@ -95,7 +99,11 @@ catalog preservation. The exact signed UI 69 passed native update, mixed/missing
 Home preferences, permission-denied rollback, Preview and offline credits on the
 TV emulator, with its complete baseline restored. Nibbles retains its separately
 verified native and physical Dream evidence; host registration does not imply a
-new renderer or performance result.
+new renderer or performance result. Code 70 retains that runtime and passed its
+separate native catalog, thumbnail, Preview, settings and offline-credit gate.
+The production icon helper copied and published all 32 initially missing HD PNGs
+on the API 34 emulator, preserving existing files and the stopped UI state. No
+private preference export or image picker was opened during this file-only check.
 
 Final three-platform installed-package checks, current native desktop captures,
 exact-primary CI and anonymous installer checksum verification are release gates.

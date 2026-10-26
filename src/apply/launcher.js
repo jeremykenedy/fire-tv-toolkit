@@ -116,8 +116,8 @@ export function explainInstallFailure(err) {
 }
 
 /**
- * Downloads, verifies and installs one launcher app, then switches it back on
- * if it had been disabled and grants the permissions it needs.
+ * Downloads, verifies and installs one launcher app with its declared setup.
+ * An existing disabled UI stays disabled until an explicit Home choice.
  * @param {string} ip
  * @param {typeof AT4K | typeof HOME_REDIRECT} app
  * @returns {Promise<{ok: boolean, error?: string}>}
@@ -141,7 +141,8 @@ export async function installLauncherApp(ip, app) {
       servicesBefore = await getSetting(ip, 'secure', SERVICES_KEY);
     }
     await installApk(ip, apkPath);
-    await enablePackage(ip, app.pkg);
+    // An update must not reactivate a disabled UI's saved Home services.
+    if (!before || !before.disabled.includes(FIRE_TV_UI.id)) await enablePackage(ip, app.pkg);
     if (before) {
       const installed = await packageDetails(ip, FIRE_TV_UI.pkg);
       if (installed.versionCode === null || installed.versionCode < UI_HOME_MIN_CODE)
