@@ -41,6 +41,7 @@
       "main.js",
       "preload.cjs",
       "controller.js",
+      "tv-profiles.js",
       "iptv.js",
       "player-network.js",
       "tv-shell.js",

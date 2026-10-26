@@ -25,6 +25,7 @@ import {
   launcherApps,
 } from 'fire-tv-toolkit/src/launcher-registry.js';
 import { OWNTV, FIRE_IPTV, IPTV_PLAYLIST } from 'fire-tv-toolkit/src/iptv-registry.js';
+import { createTvProfiles } from './tv-profiles.js';
 
 const toolkit = {
   ...adb,
@@ -65,6 +66,7 @@ export function createController({
   let busy = false;
   let shellAbort = null;
   let checkedUpdates = null;
+  const profiles = createTvProfiles(dataDir, api.isValidIp);
   const preferencesFile = path.join(dataDir, 'desktop-settings.json');
   let advanced = false;
   try {
@@ -590,19 +592,29 @@ export function createController({
 
   return {
     initial() {
-      let savedIp = '';
-      try {
-        savedIp = JSON.parse(
-          fs.readFileSync(path.join(dataDir, 'last-device.json'), 'utf8'),
-        ).ip;
-      } catch {
-        /* First launch has no saved device. */
-      }
-      return {
-        advanced,
-        savedIp:
-          typeof savedIp === 'string' && api.isValidIp(savedIp) ? savedIp : '',
-      };
+      return { advanced, ...profiles.snapshot() };
+    },
+    profiles(request) {
+      return exclusive(async () => {
+        if (!request || typeof request !== 'object' || Array.isArray(request))
+          throw new Error('Choose a supported TV profile action.');
+        let result;
+        if (request.operation === 'disconnect') {
+          device = null;
+          checkedUpdates = null;
+          return { ...profiles.snapshot(), disconnected: true };
+        }
+        if (request.operation === 'select') result = profiles.select(request.id);
+        else if (request.operation === 'save') result = profiles.save(request.profile);
+        else if (request.operation === 'remove') result = profiles.remove(request.id);
+        else throw new Error('Choose a supported TV profile action.');
+        const disconnected = !!device && result.savedIp !== device.ip;
+        if (disconnected) {
+          device = null;
+          checkedUpdates = null;
+        }
+        return { ...result, disconnected };
+      });
     },
     setAdvanced(value, confirm) {
       return exclusive(async () => {
@@ -711,6 +723,7 @@ export function createController({
         if (typeof value !== 'string' || !api.isValidIp(value))
           throw new Error('Enter a valid IPv4 address, such as 192.168.1.50.');
         device = null;
+        checkedUpdates = null;
         const ip = value.trim();
         if (!(await api.isAdbInstalled()))
           throw new Error(
@@ -734,11 +747,12 @@ export function createController({
         let state;
         try {
           state = await readState();
+          writeJson(path.join(dataDir, 'last-device.json'), { ip });
+          profiles.remember(ip);
         } catch (error) {
           device = null;
           throw error;
         }
-        writeJson(path.join(dataDir, 'last-device.json'), { ip });
         return state;
       });
     },

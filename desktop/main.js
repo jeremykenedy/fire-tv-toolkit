@@ -262,6 +262,10 @@ if (!app.requestSingleInstanceLock()) {
         platform: process.platform,
       }));
       handle('toolkit:connect', (ip) => controller.connect(ip));
+      handle('toolkit:profiles', (request) => {
+        if (updatingToolkit) throw new Error('Wait for the current task to finish.');
+        return controller.profiles(request);
+      });
       handle('toolkit:refresh', () => controller.refresh());
       handle('toolkit:updates', async (request) => {
         if (!request || typeof request !== 'object' || Array.isArray(request))

@@ -3,6 +3,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('toolkit', {
   initial: () => ipcRenderer.invoke('toolkit:initial'),
   connect: (ip) => ipcRenderer.invoke('toolkit:connect', ip),
+  profiles: (request) => ipcRenderer.invoke('toolkit:profiles', request),
   refresh: () => ipcRenderer.invoke('toolkit:refresh'),
   updates: (request) => ipcRenderer.invoke('toolkit:updates', request),
   action: (request) => ipcRenderer.invoke('toolkit:action', request),

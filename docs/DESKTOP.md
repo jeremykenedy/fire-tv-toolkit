@@ -4,6 +4,14 @@ The desktop app browses the worldwide [iptv-org](https://github.com/iptv-org/ipt
 
 The Fire TV tools manage screensavers, home screens, OwnTV, Alexa wake, idle timers and protection. Connect the TV over ADB to use these controls. Guided TV changes require native confirmation, and the app reads settings back before reporting completion. Advanced shell access has a separate enable warning.
 
+## Saved TVs
+
+Open a TV tools page and choose **Manage TVs** to save a name and IPv4 address for each TV. Use **TV to edit** to add another TV, rename one or update its address. Choose a saved TV beside **Connect**, then connect to read that TV's settings. Selecting or saving an address does not contact or wake the TV.
+
+The connection status shows the connected TV's name and address. Switching to another address clears the previous connection from the controls, so actions cannot continue against the previous TV. Wait for a running task to finish before switching. Each TV keeps its existing settings history under its hardware identity; names and address changes do not copy settings between TVs.
+
+The previous saved address becomes the first profile on upgrade. Successful connections remember new addresses automatically. **Remove saved TV** removes only its address entry; its installed apps, TV settings and saved restoration data stay intact. Desktop profiles are local to this app. The CLI retains its separate saved address.
+
 ## Guided setup and updates
 
 Connect your TV, then open Setup assistant. Choose a screensaver, a home screen and OwnTV, then choose any timer, Alexa, optimization or protection changes. Leave a choice unchanged to keep the existing setting. Review your selections, then approve the native confirmation. The app downloads verified releases, installs missing apps before activating them, and checks each change. If a step fails, it reports the completed changes and stops the remaining steps.
@@ -81,7 +89,7 @@ npm --prefix desktop run lint
 
 The terminal commands retain their existing dependencies and supported Node.js versions. Desktop dependencies live in their own package. Run `npm --prefix desktop ci` again after changing shared toolkit code so the desktop dependency contains the current source.
 
-Packaged application tests run on native macOS, Windows and Linux CI runners. They check catalog browsing, filters, favorite persistence, actual HLS video decoding, the bundled ADB executable, About, advanced warning cancellation and saved preferences, and installer removal on Windows and Linux. They use a generated test broadcast and isolated application data, so they do not contact a TV.
+Packaged application tests run on native macOS, Windows and Linux CI runners. They check catalog browsing, filters, favorite persistence, actual HLS video decoding, the bundled ADB executable, saved TV profile editing and switching, duplicate-address handling, About, advanced warning cancellation and saved preferences, and installer removal on Windows and Linux. They use a generated test broadcast and isolated application data, so they do not contact a TV.
 
 ## fire-iptv on your TV
 

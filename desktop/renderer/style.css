@@ -267,6 +267,7 @@ header {
 
 .connection-bar {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
   gap: 10px;
   padding: 18px;
@@ -287,12 +288,49 @@ header {
   width: 174px;
 }
 
+.connection-bar select {
+  width: 100%;
+  min-width: 0;
+}
+
+#profile-dialog {
+  width: min(520px, calc(100% - 40px));
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+
+#profile-dialog::backdrop {
+  background: rgb(0 0 0 / 60%);
+}
+
+.profile-editor {
+  display: grid;
+  gap: 12px;
+}
+
+.profile-editor .actions {
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.profile-error {
+  color: var(--warning);
+}
+
 .connection-bar p {
   font-size: 12px;
   color: var(--muted);
   align-self: center;
   margin-left: 8px;
   max-width: 290px;
+}
+
+.connection-bar > div:first-child {
+  flex: 1 1 190px;
+  min-width: 0;
 }
 
 .notice {

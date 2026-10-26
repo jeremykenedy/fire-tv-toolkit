@@ -110,10 +110,11 @@ test('connecting reads state and preserves the first captured timer values', asy
   h.state.sleep = 60000;
   await h.controller.refresh();
   assert.equal(h.baselines.get(`${originalDirectory}:sleep`), 1200000);
-  assert.deepEqual(h.controller.initial(), {
-    savedIp: '192.168.1.10',
-    advanced: false,
-  });
+  const initial = h.controller.initial();
+  assert.equal(initial.savedIp, '192.168.1.10');
+  assert.equal(initial.advanced, false);
+  assert.equal(initial.profiles.length, 1);
+  assert.equal(initial.profiles[0].ip, '192.168.1.10');
   await h.controller.connect('192.168.1.11');
   assert.notEqual(h.state.directory, originalDirectory);
   assert.equal(h.baselines.get(`${h.state.directory}:sleep`), 60000);
@@ -133,6 +134,66 @@ test('a declined native confirmation performs no writes', async (t) => {
   assert.deepEqual(result, { cancelled: true });
   assert.equal(proposal.ip, '192.168.1.10');
   assert.deepEqual(h.writes, []);
+});
+
+test('switching a saved TV clears the previous action target without contacting either TV', async t => {
+  const h = harness(t);
+  await h.controller.connect('192.168.1.10');
+  const oldDirectory = h.state.directory;
+  const currentId = h.controller.initial().activeProfileId;
+  const connect = t.mock.method(h.api, 'connect');
+  const reach = t.mock.method(h.api, 'isReachable');
+  const saved = await h.controller.profiles({ operation: 'save', profile: {
+    name: 'Bedroom', ip: '192.168.1.11',
+  } });
+  assert.equal(saved.disconnected, true);
+  assert.equal(h.controller.isConnected(), false);
+  assert.equal(connect.mock.callCount(), 0);
+  assert.equal(reach.mock.callCount(), 0);
+  await assert.rejects(h.controller.action({ type: 'alexa', value: true }, async () => true), /Connect/);
+  assert.deepEqual(h.writes, []);
+  await h.controller.profiles({ operation: 'select', id: currentId });
+  assert.equal(h.controller.isConnected(), false);
+  await h.controller.connect('192.168.1.10');
+  assert.equal(h.state.directory, oldDirectory);
+  assert.equal(h.baselines.get(`${oldDirectory}:sleep`), 1200000);
+});
+
+test('renaming the connected TV preserves its connection; removing it clears the target', async t => {
+  const h = harness(t);
+  await h.controller.connect('192.168.1.10');
+  const id = h.controller.initial().activeProfileId;
+  const result = await h.controller.profiles({ operation: 'save', profile: {
+    id, name: 'Main TV', ip: '192.168.1.10',
+  } });
+  assert.equal(result.disconnected, false);
+  assert.equal(h.controller.isConnected(), true);
+  const removed = await h.controller.profiles({ operation: 'remove', id });
+  assert.equal(removed.disconnected, true);
+  assert.equal(h.controller.isConnected(), false);
+  assert.equal(h.controller.initial().savedIp, '');
+  assert.deepEqual(h.writes, []);
+});
+
+test('manual address edits disconnect locally and unsupported profile requests do nothing', async t => {
+  const h = harness(t);
+  await h.controller.connect('192.168.1.10');
+  const before = h.controller.initial();
+  for (const request of [null, [], { operation: 'run' }])
+    await assert.rejects(h.controller.profiles(request), /supported/);
+  assert.deepEqual(h.controller.initial(), before);
+  await h.controller.profiles({ operation: 'disconnect' });
+  assert.equal(h.controller.isConnected(), false);
+  assert.deepEqual(h.controller.initial(), before);
+  assert.deepEqual(h.writes, []);
+});
+
+test('a failed local connection save cannot leave an undisplayed TV as the action target', async t => {
+  const h = harness(t);
+  t.mock.method(fs, 'renameSync', () => { throw new Error('Disk unavailable'); });
+  await assert.rejects(h.controller.connect('192.168.1.10'), /Disk unavailable/);
+  assert.equal(h.controller.isConnected(), false);
+  await assert.rejects(h.controller.refresh(), /Connect/);
 });
 
 test('actions target the connected TV and verify the resulting state', async (t) => {
@@ -190,6 +251,9 @@ test('a pending action prevents a second action or a device switch', async (t) =
   });
   await ready;
   await assert.rejects(h.controller.connect('192.168.1.11'), /current task/);
+  await assert.rejects(h.controller.profiles({ operation: 'save', profile: {
+    name: 'Another TV', ip: '192.168.1.11',
+  } }), /current task/);
   await assert.rejects(
     h.controller.action({ type: 'alexa', value: false }, async () => true),
     /current task/,
