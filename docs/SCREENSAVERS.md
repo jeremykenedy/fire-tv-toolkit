@@ -10,7 +10,7 @@
 | `aquarium-4k` | Aquarium 4K | `com.jeremykenedy.firetv.aquarium` | [jeremykenedy/fire-tv-aquarium](https://github.com/jeremykenedy/fire-tv-aquarium) | Offline 4K aquarium footage with custom fish, sea life and backgrounds |
 | `cloud-drift-clock` | Cloud Drift Clock | `com.jeremykenedy.clouddriftclock` | [jeremykenedy/cloud-drift-clock](https://github.com/jeremykenedy/cloud-drift-clock) | Real filmed flight through sunset clouds, with an optional drifting clock and playback speed |
 | `skycast-weather` | Skycast Weather | `com.jeremykenedy.skycastweather` | [jeremykenedy/skycast-weather](https://github.com/jeremykenedy/skycast-weather) | Real city forecasts over filmed clouds, with units, forecast range, playback speed and a clouds-only option |
-| `prism-clock` | Prism Clock | `com.jeremykenedy.prismclock` | [jeremykenedy/prism-clock](https://github.com/jeremykenedy/prism-clock) | A moving faceted surface with a drifting clock, adjustable materials, lighting, time format and motion |
+| `prism-clock` | Prism Clock | `com.jeremykenedy.prismclock` | [jeremykenedy/prism-clock](https://github.com/jeremykenedy/prism-clock) | Original moving faceted materials with an optional drifting clock, adjustable lighting and motion |
 | `jellyfish-drift` | Jellyfish Drift | `com.jeremykenedy.jellyfishdrift` | [jeremykenedy/jellyfish-drift](https://github.com/jeremykenedy/jellyfish-drift) | Animated jellyfish with adjustable water, density, motion, species and light rays |
 | `jellyfish-drift-v2` | Jellyfish Drift V2 | `com.jeremykenedy.jellyfishdriftv2` | [jeremykenedy/jellyfish-drift-v2](https://github.com/jeremykenedy/jellyfish-drift-v2) | Real filmed jellyfish in blue aquarium and deep ocean scenes, with playback speed and random selection |
 | `firefly-grove` | Firefly Grove | `com.jeremykenedy.fireflygrove` | [jeremykenedy/firefly-grove](https://github.com/jeremykenedy/firefly-grove) | Animated fireflies in a grove with adjustable density, motion and color |
@@ -26,7 +26,7 @@
 | `retro-flight` | Retro Flight | `com.jeremykenedy.retroflight` | [jeremykenedy/retro-flight](https://github.com/jeremykenedy/retro-flight) | Continuous perspective flight through an original procedural star field |
 | `pipeworks-dream` | Pipeworks Dream | `com.jeremykenedy.pipeworksdream` | [jeremykenedy/pipeworks-dream](https://github.com/jeremykenedy/pipeworks-dream) | Growing 3D pipes with rounded bends, configurable colors, tube shapes, thickness and delayed following tails |
 | `slot-vision` | Slot Vision | `com.jeremykenedy.reelatrium` | [jeremykenedy/slot-vision](https://github.com/jeremykenedy/slot-vision) | Classic and multi-row reels with cabinet or fullscreen views, seasonal themes and payout coin showers |
-| `hearth-presence` | Hearth Presence | `com.jeremykenedy.hearthpresence` | [jeremykenedy/hearth-presence](https://github.com/jeremykenedy/hearth-presence) | Moving wood and gas fireplaces with adjustable surrounds, frame width and burn speed |
+| `hearth-presence` | Hearth Presence | `com.jeremykenedy.hearthpresence` | [jeremykenedy/hearth-presence](https://github.com/jeremykenedy/hearth-presence) | Recorded wood and traditional gas, fixed-log wood heights, surrounds and a linear-fire composite |
 | `aqua-surface` | Aqua Surface Drift | `com.jeremykenedy.aquasurfacedrift` | [jeremykenedy/aqua-surface-drift](https://github.com/jeremykenedy/aqua-surface-drift) | Animated water with adjustable environment, lighting, ripples, motion and view |
 | `earthbound-orbit` | Earthbound Orbit | `com.jeremykenedy.earthboundorbit` | [jeremykenedy/earthbound-orbit](https://github.com/jeremykenedy/earthbound-orbit) | A continuously rotating Earth with adjustable atmosphere, star density and camera movement |
 | `perseid-passage` | Perseid Passage | `com.jeremykenedy.perseidpassage` | [jeremykenedy/perseid-passage](https://github.com/jeremykenedy/perseid-passage) | Animated meteor showers with adjustable frequency, size, speed, star density, palette and brightness |
@@ -129,11 +129,22 @@ The existing `pipeworks-dream` entry downloads the latest signed release. Versio
 
 The exact released APK passed physical signed-update preservation, remote Preview/Credits/Back and actual bound DreamService/Back, independent moving review and exact restoration. The [upstream verification](https://github.com/jeremykenedy/pipeworks-dream/blob/v1.1.0/docs/VERIFICATION.md) records short dense-scene presentation samples and their limits. Automatic idle activation, native 4K and sustained thermal behavior remain unverified. The gallery and desktop catalog now use the final physical capture identified in [capture provenance](screenshots/candidate-sources.json).
 
-## Prism Clock
+## Prism Clock 1.1
 
-Install with `firetv-screensavers --install=prism-clock`. The published 1.0.0 APK retains the app package and settings on replacement. Materials, facet size, surface motion, lighting, contrast, clock size, time format, seconds, date and clock movement are configurable in the native settings screen.
+The reviewed 1.1.0/code 4 APK keeps the original renderer, package and signer.
+Its twelve-row settings provider adds Show clock as a boolean that defaults On
+and is never randomized. Turning it Off hides clock/date/seconds together while
+retaining all eleven original choices. Install or update with
+`firetv-screensavers --install=prism-clock`; the existing latest-update checker
+continues to consult current published releases independently of this baseline.
 
-The silver preview in the gallery is actual physical Fire TV output. Its maximum tested preset presented approximately 24.67 frames per second, with limited performance headroom. The user's existing screensaver selection remains unchanged during installation.
+The current preview is actual physical API 28 output with the clock On. Default
+performance on that hardware is approximately 17-18 compositor presents/s, not a
+GPU improvement. Final code 4 Preview/controls and retention passed; natural idle
+evidence belongs to equivalent code 2. Other hardware and thermal endurance remain
+unverified. The current APK is 127,947 bytes, SHA-256
+`6d1a3204ca648033c3c0c1d68adcceb29e90ed1ff61ec24b7f65e1326b7621e8`.
+[Tagged app contract](https://github.com/jeremykenedy/prism-clock/blob/v1.1.0/docs/configuration.md).
 
 ## Separate jellyfish editions
 
@@ -164,3 +175,18 @@ The Toolkit opens each app's own native settings; it does not provide a generic 
 Install with `firetv-screensavers --install=skycast-weather --yes` and select separately with `screensaver --set=skycast-weather`. Installation retains preferences and does not change selection or timers. The app settings screen supports an explicitly chosen city, metric/imperial units, 1/3/5/7 days, Gentle/Flowing playback and Show weather information. Turning weather off hides all scene text and weather requests while the film continues. The five-row local schema describes units, days, motion, show_weather and location; no host editor or coordinate inference is implied. See the [tagged app configuration](https://github.com/jeremykenedy/skycast-weather/blob/v1.0.0/docs/configuration.md).
 
 The signed public APK and checksum were downloaded and verified before registration. Source film is 25fps; separate clean physical API28 compositor samples measured about25 presents/s with weather hidden. Normal idle activation, functional controls and limitations are documented in the [tagged verification guide](https://github.com/jeremykenedy/skycast-weather/blob/v1.0.0/docs/verification.md). This does not claim every-device or native4K support. Weather and city search use Open-Meteo; the background is a separate ambient film, not a view of the forecast city. Free endpoint service conditions include noncommercial use.
+
+## Hearth Presence 1.1
+
+The reviewed install baseline is the public 1.1.0/code 7 APK, 121,223,466 bytes,
+SHA-256 `9541eb4fe2f4d7d69ac1f85b38144f5b5926274291ebec796d8150d27e07b781`.
+Its eleven settings keys and production signer are unchanged. Wood now honors
+the existing Small/Medium/Large flame-size preference above fixed logs; Medium
+keeps the original recording. Traditional gas height remains unsupported.
+Modern linear fire remains the credited wood-emission composite, not new filmed
+gas. Audible crackle quality, owner-wide visual acceptance and thermal durability
+remain unverified. Latest-update checks still consult current published releases
+independently of the reviewed installation baseline.
+
+Install or replace with `firetv-screensavers --install=hearth-presence`; selection
+is separate. [Tagged app contract](https://github.com/jeremykenedy/hearth-presence/blob/v1.1.0/docs/INTEGRATION.md).

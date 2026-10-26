@@ -82,7 +82,10 @@ export const SCREENSAVERS = [
     dreamComponent: 'com.jeremykenedy.prismclock/.PrismDreamService',
     repo: 'jeremykenedy/prism-clock',
     asset: 'prism-clock.apk',
-    blurb: 'A moving faceted surface with a drifting clock, adjustable materials, lighting, time format and motion.',
+    tag: 'v1.1.0',
+    sha256: '6d1a3204ca648033c3c0c1d68adcceb29e90ed1ff61ec24b7f65e1326b7621e8',
+    bytes: 127947,
+    blurb: 'Original moving faceted materials with an optional drifting clock, adjustable lighting and motion.',
   },
   {
     id: 'jellyfish-drift',
@@ -213,7 +216,10 @@ export const SCREENSAVERS = [
     dreamComponent: 'com.jeremykenedy.hearthpresence/.HearthDreamService',
     repo: 'jeremykenedy/hearth-presence',
     asset: 'hearth-presence.apk',
-    blurb: 'Moving wood and gas fireplaces with adjustable surrounds, frame width, flame speed, light and sound controls.',
+    tag: 'v1.1.0',
+    sha256: '9541eb4fe2f4d7d69ac1f85b38144f5b5926274291ebec796d8150d27e07b781',
+    bytes: 121223466,
+    blurb: 'Recorded wood and traditional gas, fixed-log wood heights, surrounds and a linear-fire composite.',
   },
   {
     id: 'aqua-surface',

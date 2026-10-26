@@ -22,3 +22,19 @@ Footage edited into a silent loop; native screenshot resized for documentation.
 Weather presentation: Open-Meteo, https://open-meteo.com/, CC BY4.0.
 Provider service conditions are separate; see https://open-meteo.com/en/terms .
 Full source/adaptation notices: https://github.com/jeremykenedy/skycast-weather/blob/v1.0.0/NOTICE
+
+Hearth Presence 1.1 wood gallery capture
+Wood footage by free video library (2018), Creative Commons Attribution 3.0.
+https://commons.wikimedia.org/wiki/File:Fantastic-fireplace-fire-chimney-hearth-_background_-_texture_-_motion_graphics_-_free_video_library.webm
+https://creativecommons.org/licenses/by/3.0/
+Footage adapted for flame height; native screenshot resized without scene edits.
+Full source/adaptation notice: https://github.com/jeremykenedy/hearth-presence/blob/v1.1.0/NOTICE
+
+Prism Clock 1.1 gallery capture
+Prism Clock
+Copyright 2026 Jeremy Kenedy
+
+Native settings, build and DreamService scaffolding adapted from Cloud Drift Clock
+by Jeremy Kenedy, Apache License 2.0. Modified for the original Prism Clock scene.
+Native screenshot resized without scene changes.
+Tagged notice: https://github.com/jeremykenedy/prism-clock/blob/v1.1.0/NOTICE

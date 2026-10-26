@@ -1,0 +1,29 @@
+{
+  "version": "4.5.1",
+  "sourceCommit": "6b5fd99543f061fe60e590c678bd6c0f7da65a21",
+  "platform": "Native installed Windows x64 packaged Electron app",
+  "workflow": "https://github.com/jeremykenedy/fire-tv-toolkit/actions/runs/40334094449",
+  "artifact": "desktop-verification-Windows",
+  "fixture": "Isolated CI runner with fresh userData, 103 synthetic IPTV channels and local HLS color bars. No connected TV or Connect action. No household content.",
+  "review": "All three original images opened and inspected; desktop 4.5.1 visible.",
+  "captures": [
+    {
+      "file": "desktop-setup-4.5.1.png",
+      "sourceFile": "win32-device-setup.png",
+      "sha256": "6010c5469d104ed386f9245959f3200193ca906684545d037194a577faede415",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-about-4.5.1.png",
+      "sourceFile": "win32-about.png",
+      "sha256": "7d1fee3a719d6c8d926f9ced7d7c8b94153b8e2e642929c3ad97ebb0bb673056",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-live-tv-fixture-4.5.1.png",
+      "sourceFile": "win32-live-tv.png",
+      "sha256": "08ff210dff1ccbf4ec9d86f2042ee668b0419b5a383902614b7e561941d51c93",
+      "modification": "None"
+    }
+  ]
+}
