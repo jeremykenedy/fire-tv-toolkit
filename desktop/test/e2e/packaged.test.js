@@ -9,9 +9,10 @@ import { _electron as electron } from 'playwright';
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const desktop = path.resolve(directory, '../..');
-const version = JSON.parse(
+const manifest = JSON.parse(
   fs.readFileSync(path.join(desktop, 'package.json')),
-).version;
+);
+const version = manifest.version;
 const output = path.join(desktop, 'dist', 'verification');
 
 function executable() {
@@ -73,11 +74,13 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
     const runtime = await application.evaluate(({ app }) => ({
       packaged: app.isPackaged,
       version: app.getVersion(),
+      electron: process.versions.electron,
       data: app.getPath('userData'),
       resources: process.resourcesPath,
     }));
     assert.equal(runtime.packaged, true);
     assert.equal(runtime.version, version);
+    assert.equal(runtime.electron, manifest.devDependencies.electron);
     assert.equal(fs.realpathSync(runtime.data), fs.realpathSync(data));
     const adb = path.join(
       runtime.resources,

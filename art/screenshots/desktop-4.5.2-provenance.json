@@ -1,0 +1,27 @@
+{
+  "source_commit": "6d1c77b5809a8b6a7f53ef36769c55d0c7545ae9",
+  "source_ci_run": 40363750140,
+  "source_windows_job": 121715746023,
+  "app_version": "4.5.2",
+  "electron_version": "44.9.3",
+  "source": "Actual Windows x64 installed app from isolated CI package test; no physical TV connected or probed. Live TV uses synthetic channels and a local HLS color-bar fixture.",
+  "processing": "Original PNG captures, no retouching.",
+  "images": [
+    {
+      "file": "art/screenshots/desktop-setup-4.5.2.png",
+      "sha256": "61c6ad4865d016eec254216d1bd7a5b6223dde16c404bdc93f345f4581bdba03",
+      "source": "win32-device-setup.png"
+    },
+    {
+      "file": "art/screenshots/desktop-about-4.5.2.png",
+      "sha256": "9c89974ed8a3043e4d00438bcb812107771a6487203bad3ebea63eb30b74b552",
+      "source": "win32-about.png"
+    },
+    {
+      "file": "art/screenshots/desktop-live-tv-fixture-4.5.2.png",
+      "sha256": "1f73a6bb172acc5e7a8aa8b8b65fd07ccfa8f894d7ec5e9f2860316dc6869377",
+      "source": "win32-live-tv.png"
+    }
+  ],
+  "runtime_equivalence": "README/gallery/CI path edits after these captures do not change desktop main/controller/preload/renderer source or the Electron pin. Final exact-head package CI repeats before release."
+}

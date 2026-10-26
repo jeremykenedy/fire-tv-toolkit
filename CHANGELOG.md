@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.5.2] - 2026-10-26
+
+### Security
+
+- Update the desktop Electron runtime to 44.9.3, including the compromised intermediate-certificate mitigation.
+- Resolve the existing build-time fast-uri dependency to patched 3.1.9.
+- Verify the actual installed Electron runtime in the three-platform package checks.
+
+See the [4.5.2 upgrade guide](docs/RELEASE-4.5.2.md).
+
 ## [4.5.1] - 2026-10-26
 
 ### Fixed
