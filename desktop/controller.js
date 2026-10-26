@@ -135,7 +135,11 @@ export function createController({
       launchers: HOME_LAUNCHERS.map((entry) => ({
         id: entry.id,
         name: entry.name,
+        recommended: entry.recommended === true,
         installed: installed.includes(entry.pkg),
+        ready: launcherApps(entry.id).every(app => installed.includes(app.pkg)) &&
+          (entry.id !== 'fire-tv-ui' || launcher.uiHomeSupported !== false),
+        requiresUpdate: entry.id === 'fire-tv-ui' && launcher.uiHomeSupported === false,
       })),
       playlist: IPTV_PLAYLIST,
     };
@@ -230,7 +234,7 @@ export function createController({
         return {
           title: `Install ${HOME_LAUNCHERS.find((entry) => entry.id === action.id).name}`,
           detail:
-            'Download and verify the launcher and Home Redirect, then grant their required permissions. Your Home button changes only when you choose Use.',
+            `Download and verify ${launcherApps(action.id).map(app => app.name).join(' and ')}, then apply the required setup. Your Home button changes only when you choose Use.`,
         };
       case 'home':
         return {
@@ -410,7 +414,7 @@ export function createController({
             launcherApps(action.id).every((entry) =>
               installed.includes(entry.pkg),
             ),
-            'Install this launcher and Home Redirect first.',
+            `Install ${launcherApps(action.id).map(app => app.name).join(' and ')} first.`,
           );
         }
         requireVerified(
@@ -560,7 +564,7 @@ export function createController({
       if (request.home !== 'amazon') {
         const entry = state.launchers.find((item) => item.id === request.home);
         if (!entry) throw new Error('Choose a supported home screen.');
-        if (!entry.installed || !state.homeRedirectInstalled)
+        if (!entry.ready)
           add('install-launcher', { id: entry.id });
       }
       add('home', { id: request.home });

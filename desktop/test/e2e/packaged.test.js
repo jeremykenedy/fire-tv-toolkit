@@ -211,6 +211,41 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
   await page.getByRole('button', { name: 'Manage TVs', exact: true }).click();
   await page.screenshot({ path: path.join(output, `${process.platform}-tv-profiles.png`) });
   await page.getByRole('button', { name: 'Cancel', exact: true }).click();
+  // Exercise native launcher views with sample device data, without contacting a TV.
+  await application.evaluate(({ ipcMain }) => {
+    ipcMain.removeHandler('toolkit:connect');
+    let connections = 0;
+    ipcMain.handle('toolkit:connect', () => {
+      const existing = connections++ > 0;
+      return { ok: true, data: {
+        device: { ip: '192.0.2.10', model: 'Sample Fire TV', android: '11' },
+        home: existing ? 'ltv' : 'amazon',
+        alexaEnabled: false, sleepMs: 1200000, screensaverMs: 300000,
+        guardConfigured: false, ownTvInstalled: false, fireIptvInstalled: false,
+        homeRedirectInstalled: existing, screensavers: [], playlist: '',
+        launchers: [
+          { id: 'fire-tv-ui', name: 'Fire TV UI', recommended: true, installed: false, ready: false },
+          { id: 'at4k', name: 'AT4K Launcher', recommended: false, installed: false, ready: false },
+          { id: 'ltv', name: 'LTvLauncher', recommended: false, installed: existing, ready: existing },
+        ],
+      } };
+    });
+  });
+  await page.getByRole('button', { name: 'Connect', exact: true }).click();
+  await page.locator('#connection-label').filter({ hasText: 'Living room / 192.0.2.10' }).waitFor();
+  await page.locator('[data-view="home"]').click();
+  assert.match(await page.locator('#launcher-list .app-row').first().innerText(), /Fire TV UI.*Recommended/s);
+  assert.equal(await page.locator('#launcher-list .app-row').first().getByRole('button', { name: 'Install', exact: true }).isVisible(), true);
+  await page.screenshot({ path: path.join(output, `${process.platform}-preferred-fire-tv-ui.png`) });
+  await page.locator('[data-view="setup"]').click();
+  assert.equal(await page.locator('#setup-home').inputValue(), 'fire-tv-ui');
+  await page.locator('[data-view="overview"]').click();
+  await page.getByRole('button', { name: 'Connect again', exact: true }).click();
+  await page.locator('#notice').filter({ hasText: 'Connected to Sample Fire TV' }).waitFor();
+  await page.locator('[data-view="setup"]').click();
+  assert.equal(await page.locator('#setup-home').inputValue(), 'keep');
+  await page.locator('#refresh').click();
+  await page.locator('#connection-label').filter({ hasText: 'No TV connected' }).waitFor();
   await page.getByRole('button', { name: 'About', exact: true }).click();
   await page
     .getByRole('heading', { name: 'Where it works', exact: true })

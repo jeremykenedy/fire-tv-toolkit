@@ -263,19 +263,21 @@ function renderHome() {
   const list = $('#launcher-list');
   list.replaceChildren();
   const launchers = [
-    { id: 'amazon', name: 'Amazon Home', installed: true },
     ...state.launchers,
+    { id: 'amazon', name: 'Amazon Home', installed: true, ready: true },
   ];
   for (const launcher of launchers) {
     const active = state.home === launcher.id;
     const description =
       launcher.id === 'amazon'
         ? 'The original Fire TV home screen.'
-        : 'Installed with Home Redirect for the remote Home button.';
+        : launcher.recommended
+          ? `Recommended custom interface, with featured feeds, menu backgrounds and screensaver controls.${launcher.requiresUpdate ? ' Update it before changing Home.' : ''}`
+          : 'Installed with Home Redirect for the remote Home button.';
     const { row, actions } = appRow(
       launcher.name,
       description,
-      active ? 'Active' : launcher.installed ? 'Installed' : 'Available',
+      active ? 'Active' : launcher.recommended ? 'Recommended' : launcher.installed ? 'Installed' : 'Available',
       active,
     );
     if (launcher.id !== 'amazon')
@@ -289,8 +291,7 @@ function renderHome() {
       );
     if (
       !active &&
-      launcher.installed &&
-      (launcher.id === 'amazon' || state.homeRedirectInstalled)
+      launcher.ready
     )
       actions.append(taskButton('Use', 'home', launcher.id));
     list.append(row);
@@ -513,10 +514,13 @@ function initializeWizard() {
     $('#setup-screensaver').append(option(entry.id, entry.name));
   $('#setup-home').replaceChildren(
     option('keep', 'Keep current home screen'),
-    option('amazon', 'Amazon Home'),
   );
   for (const entry of state.launchers)
-    $('#setup-home').append(option(entry.id, entry.name));
+    $('#setup-home').append(option(entry.id, `${entry.name}${entry.recommended ? ' (Recommended)' : ''}`));
+  $('#setup-home').append(option('amazon', 'Amazon Home'));
+  const preferred = state.launchers.find(entry => entry.recommended);
+  if (preferred && state.home === 'amazon' && !state.launchers.some(entry => entry.installed))
+    $('#setup-home').value = preferred.id;
   $('#setup-owntv').checked = false;
   $('#setup-fire-iptv').checked = !state.fireIptvInstalled;
   $('#setup-timers').checked = false;

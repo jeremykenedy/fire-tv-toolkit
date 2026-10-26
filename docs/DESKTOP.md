@@ -14,6 +14,10 @@ The previous saved address becomes the first profile on upgrade. Successful conn
 
 ## Guided setup and updates
 
+Fire TV UI is the recommended custom home screen and appears first in the home-screen choices. A TV with only its factory launcher starts guided setup with Fire TV UI selected for review. TVs with an installed custom launcher keep their current choice. Nothing changes until the setup confirmation is accepted.
+
+Fire TV UI uses its own Home controls and does not require the legacy Home Redirect app. Update older Fire TV UI installations before changing Home through Toolkit. AT4K, LTvLauncher and Amazon Home remain available.
+
 Connect your TV, then open Setup assistant. Choose a screensaver, a home screen and OwnTV, then choose any timer, Alexa, optimization or protection changes. Leave a choice unchanged to keep the existing setting. Review your selections, then approve the native confirmation. The app downloads verified releases, installs missing apps before activating them, and checks each change. If a step fails, it reports the completed changes and stops the remaining steps.
 
 Open Guided updater to select supported apps already installed on the TV and revisit timer, Alexa, optimization or protection settings. Choices start unchanged. It downloads supported GitHub releases and verifies each APK against a published or pinned SHA-256. Apps pinned to a specific version require a toolkit update to change that version; other supported apps use their latest published release. App data is retained where Android permits. The desktop releases button opens GitHub so you can download a newer toolkit version.

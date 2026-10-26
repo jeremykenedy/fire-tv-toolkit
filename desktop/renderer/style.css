@@ -333,6 +333,10 @@ header {
   min-width: 0;
 }
 
+#connection-label {
+  overflow-wrap: anywhere;
+}
+
 .notice {
   padding: 13px 16px;
   border: 1px solid #4d7191;
