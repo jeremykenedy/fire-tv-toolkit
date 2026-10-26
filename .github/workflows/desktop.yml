@@ -7,6 +7,10 @@ on:
       [
         'desktop/**',
         'src/**',
+        'art/**',
+        'README.md',
+        'LICENSE',
+        'NOTICE',
         'package.json',
         'package-lock.json',
         '.github/workflows/desktop.yml',
@@ -16,6 +20,10 @@ on:
       [
         'desktop/**',
         'src/**',
+        'art/**',
+        'README.md',
+        'LICENSE',
+        'NOTICE',
         'package.json',
         'package-lock.json',
         '.github/workflows/desktop.yml',

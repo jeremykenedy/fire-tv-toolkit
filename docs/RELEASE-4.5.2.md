@@ -20,7 +20,7 @@ None. Public commands, stored configuration, package identities, catalog content
 
 ## Major changes
 
-No new product feature. Named saved TV profiles and the Nibbles HD catalog addition are outside this security patch.
+No new product feature.
 
 ## Minor changes and fixes
 
@@ -36,10 +36,10 @@ The existing build-time fast-uri 3.x dependency is fixed at 3.1.9 for [scheme sp
 
 ## Verification and limits
 
-The release requires CLI tests/coverage, desktop lint and unit tests, and the normal three-OS installed-package CI with actual patched Electron checks. Seven desktop installers and SHA256SUMS must be verified before publication. Current native package screenshots and final results are recorded before release. No physical TV or network configuration change is part of this patch.
+Local validation passed 455 CLI tests, 38 desktop tests, desktop lint and npm audit with zero reported vulnerabilities. The three-OS package checks build all seven installers and verify the actual 44.9.3 Electron runtime; Windows and Linux installation, playback, retained favorites and removal passed. The macOS job builds both architectures and tests its native packaged app. The current Windows setup/About/HLS fixture captures were opened and inspected, with source hashes recorded in the gallery. Final exact-head CI and anonymous installer checksum verification are required before publication. No physical TV or network configuration change is part of this patch.
 
 ## Rollback
 
-Keep existing application data and retry the matching installer if installation fails. Reverting to 4.5.1 restores the affected Electron runtime; use a newer signed or verified corrective release for regressions instead of clearing device or application data. Source configuration and device baselines need no migration.
+Keep existing application data and retry the matching installer if installation fails. Reverting to 4.5.1 restores the affected Electron runtime; use a newer verified corrective release for regressions instead of clearing device or application data. Source configuration and device baselines need no migration.
 
 [Desktop guide](https://github.com/jeremykenedy/fire-tv-toolkit/blob/v4.5.2/docs/DESKTOP.md), [update guide](https://github.com/jeremykenedy/fire-tv-toolkit/blob/v4.5.2/docs/UPDATES.md), [compare v4.5.1 to v4.5.2](https://github.com/jeremykenedy/fire-tv-toolkit/compare/v4.5.1...v4.5.2).
