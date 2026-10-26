@@ -239,6 +239,8 @@ test('an older Fire TV UI remains detected but cannot be selected before its upd
   assert.equal(result.launchers[0].installed, true);
   assert.equal(result.launchers[0].ready, false);
   assert.equal(result.launchers[0].requiresUpdate, true);
+  assert.equal(result.homeChangesSupported, false);
+  assert.equal(result.launchers.every(launcher => !launcher.ready), true);
 });
 
 test('actions target the connected TV and verify the resulting state', async (t) => {

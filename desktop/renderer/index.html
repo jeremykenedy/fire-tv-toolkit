@@ -372,6 +372,7 @@
             </div>
           </div>
           <div id="launcher-list" class="app-list"></div>
+          <p id="home-update-note" class="muted" hidden>Update Fire TV UI before changing the Home button destination.</p>
           <section class="live-tv">
             <div>
               <span class="eyebrow">Alternative player</span>
@@ -487,9 +488,10 @@
                 <option value="keep">Keep current screensaver</option>
               </select>
               <label for="setup-home">Home screen</label
-              ><select id="setup-home">
+              ><select id="setup-home" aria-describedby="setup-home-help">
                 <option value="keep">Keep current home screen</option>
               </select>
+              <p id="setup-home-help" class="muted" hidden>Update Fire TV UI in Home &amp; live TV to change this choice.</p>
               <label class="check-choice">
                 <input id="setup-fire-iptv" type="checkbox" checked />
                 <span><strong>Install fire-iptv</strong><small>

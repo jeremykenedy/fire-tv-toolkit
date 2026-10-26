@@ -166,6 +166,7 @@ function updateControls() {
     });
   $('#setup-sleep').disabled = busy || !$('#setup-timers').checked;
   $('#setup-delay').disabled = busy || !$('#setup-timers').checked;
+  $('#setup-home').disabled = busy || state?.homeChangesSupported === false;
   $('#terminal-target').textContent = state
     ? `Commands run on ${state.device.model} at ${state.device.ip}:5555.`
     : 'Connect a Fire TV to run commands.';
@@ -261,10 +262,11 @@ function renderSavers() {
 
 function renderHome() {
   const list = $('#launcher-list');
+  $('#home-update-note').hidden = state.homeChangesSupported !== false;
   list.replaceChildren();
   const launchers = [
     ...state.launchers,
-    { id: 'amazon', name: 'Amazon Home', installed: true, ready: true },
+    { id: 'amazon', name: 'Amazon Home', installed: true, ready: state.homeChangesSupported !== false },
   ];
   for (const launcher of launchers) {
     const active = state.home === launcher.id;
@@ -519,6 +521,7 @@ function initializeWizard() {
     $('#setup-home').append(option(entry.id, `${entry.name}${entry.recommended ? ' (Recommended)' : ''}`));
   $('#setup-home').append(option('amazon', 'Amazon Home'));
   const preferred = state.launchers.find(entry => entry.recommended);
+  $('#setup-home-help').hidden = state.homeChangesSupported !== false;
   if (preferred && state.home === 'amazon' && !state.launchers.some(entry => entry.installed))
     $('#setup-home').value = preferred.id;
   $('#setup-owntv').checked = false;

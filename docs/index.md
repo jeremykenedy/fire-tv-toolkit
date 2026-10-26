@@ -4,7 +4,7 @@
 
 | Guide | Contents |
 |-------|----------|
-| [Desktop app](DESKTOP.md) | Install and use the graphical app. |
+| [Desktop app](DESKTOP.md) | Install the graphical app, save TV profiles and switch devices. |
 | [TV setup](SETUP.md) | Developer mode, ADB and CLI setup. |
 | [Features](FEATURES.md) | Behavior, defaults and limits. |
 | [Commands](COMMANDS.md) | Every command and flag. |
@@ -12,7 +12,7 @@
 | [Configuration](CONFIGURATION.md) | Saved settings and environment values. |
 | [How it works](HOW-IT-WORKS.md) | The ADB changes behind each tool. |
 | [Screensavers](SCREENSAVERS.md) | Catalog, sources and download checks. |
-| [Home screen](LAUNCHER.md) | AT4K, LTvLauncher and the TV picker. |
+| [Home screen](LAUNCHER.md) | Recommended Fire TV UI, AT4K, LTvLauncher and the TV picker. |
 | [TV guide and IPTV](IPTV.md) | fire-iptv, OwnTV and source setup. |
 | [Guard](GUARD.md) | Settings protection and limits. |
 | [Optimizing](OPTIMIZE.md) | Checks that help screensavers run. |

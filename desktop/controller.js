@@ -120,6 +120,7 @@ export function createController({
       sleepMs,
       screensaverMs,
       home: launcher.home,
+      homeChangesSupported: launcher.uiHomeSupported !== false,
       guardConfigured: api.guardState().on,
       ownTvInstalled: installed.includes(OWNTV.pkg),
       fireIptvInstalled: installed.includes(FIRE_IPTV.pkg),
@@ -138,7 +139,7 @@ export function createController({
         recommended: entry.recommended === true,
         installed: installed.includes(entry.pkg),
         ready: launcherApps(entry.id).every(app => installed.includes(app.pkg)) &&
-          (entry.id !== 'fire-tv-ui' || launcher.uiHomeSupported !== false),
+          launcher.uiHomeSupported !== false,
         requiresUpdate: entry.id === 'fire-tv-ui' && launcher.uiHomeSupported === false,
       })),
       playlist: IPTV_PLAYLIST,
