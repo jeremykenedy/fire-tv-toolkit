@@ -42,7 +42,7 @@ Cloud Drift Clock 2.0 uses the current unretouched physical Fire TV API 28 captu
 
 Blue Meridian 1.0.1 uses the current physical Fire TV API 30 capture at 1920x1080. Its archival satellite imagery and modifications are documented in the [tagged upstream media guide](https://github.com/jeremykenedy/blue-meridian/blob/v1.0.1/docs/MEDIA.md).
 
-Skycast Weather 1.0 uses an untouched physical Fire TV API28 code4 London five-day Preview, resized for this gallery. The cloud film is independent of the selected city. [Release and capture provenance](screenshots/candidate-sources.json) records the exact APK and image hashes. Film credit: anotherview, [CC BY3.0](https://creativecommons.org/licenses/by/3.0/); weather presentation: Open-Meteo, CC BY4.0 under separate service terms.
+Skycast Weather 1.0 uses an untouched physical Fire TV API28 code4 London five-day Preview, resized for this gallery. The cloud film is independent of the selected city. [Release and capture provenance](screenshots/candidate-sources.json) records the exact APK and image hashes. Film credit: anotherview, [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/); weather presentation: Open-Meteo, CC BY4.0 under separate service terms.
 
 ## The home screen and the on-TV picker
 
@@ -54,6 +54,12 @@ Skycast Weather 1.0 uses an untouched physical Fire TV API28 code4 London five-d
 </p>
 
 ## Screensavers
+
+Hearth Presence uses the exact 1.1.0/code 7 physical Large-wood capture. The
+recorded wood source is CC BY 3.0; the current image and release provenance are
+recorded in [candidate sources](screenshots/candidate-sources.json). It does not
+depict newly filmed modern gas.
+
 
 Black Screen Dream 1.0.0 intentionally renders a completely black frame. This native capture is from its published build, also installed on Calvin's TV with the released APK hash verified.
 
@@ -90,7 +96,7 @@ Twilight Hearth shows actual physical Fire TV modern/bright output from its veri
     <a href="screenshots/screensaver-retro-flight.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-retro-flight-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-retro-flight-tablet.jpg 2x"><img src="screenshots/screensaver-retro-flight.jpg" alt="Retro Flight" title="Retro Flight"></picture></a>
     <a href="screenshots/screensaver-pipeworks-dream.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-pipeworks-dream-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-pipeworks-dream-tablet.jpg 2x"><img src="screenshots/screensaver-pipeworks-dream.jpg" alt="Pipeworks Dream" title="Pipeworks Dream"></picture></a>
     <a href="screenshots/screensaver-slot-vision.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-slot-vision-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-slot-vision-tablet.jpg 2x"><img src="screenshots/screensaver-slot-vision.jpg" alt="Slot Vision" title="Slot Vision"></picture></a>
-    <a href="screenshots/screensaver-hearth-presence.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-hearth-presence-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-hearth-presence-tablet.jpg 2x"><img src="screenshots/screensaver-hearth-presence.jpg" alt="Hearth Presence" title="Hearth Presence"></picture></a>
+    <a href="screenshots/screensaver-hearth-presence.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-hearth-presence-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-hearth-presence-tablet.jpg 2x"><img src="screenshots/screensaver-hearth-presence.jpg" alt="Hearth Presence 1.1 Large wood flames above unchanged logs on a physical Fire TV" title="Hearth Presence"></picture></a>
     <a href="screenshots/screensaver-aqua-surface-drift.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-aqua-surface-drift-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-aqua-surface-drift-tablet.jpg 2x"><img src="screenshots/screensaver-aqua-surface-drift.jpg" alt="Aqua Surface Drift" title="Aqua Surface Drift"></picture></a>
     <a href="screenshots/screensaver-earthbound-orbit.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-earthbound-orbit-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-earthbound-orbit-tablet.jpg 2x"><img src="screenshots/screensaver-earthbound-orbit.jpg" alt="Earthbound Orbit" title="Earthbound Orbit"></picture></a>
     <a href="screenshots/screensaver-snoozy.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-snoozy-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-snoozy-tablet.jpg 2x"><img src="screenshots/screensaver-snoozy.jpg" alt="Snoozy" title="Snoozy"></picture></a>

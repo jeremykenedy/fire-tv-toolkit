@@ -213,7 +213,10 @@ export const SCREENSAVERS = [
     dreamComponent: 'com.jeremykenedy.hearthpresence/.HearthDreamService',
     repo: 'jeremykenedy/hearth-presence',
     asset: 'hearth-presence.apk',
-    blurb: 'Moving wood and gas fireplaces with adjustable surrounds, frame width, flame speed, light and sound controls.',
+    tag: 'v1.1.0',
+    sha256: '9541eb4fe2f4d7d69ac1f85b38144f5b5926274291ebec796d8150d27e07b781',
+    bytes: 121223466,
+    blurb: 'Recorded wood and traditional gas, fixed-log wood heights, surrounds and a linear-fire composite.',
   },
   {
     id: 'aqua-surface',

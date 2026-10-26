@@ -26,7 +26,7 @@
 | `retro-flight` | Retro Flight | `com.jeremykenedy.retroflight` | [jeremykenedy/retro-flight](https://github.com/jeremykenedy/retro-flight) | Continuous perspective flight through an original procedural star field |
 | `pipeworks-dream` | Pipeworks Dream | `com.jeremykenedy.pipeworksdream` | [jeremykenedy/pipeworks-dream](https://github.com/jeremykenedy/pipeworks-dream) | Growing 3D pipes with rounded bends, configurable colors, tube shapes, thickness and delayed following tails |
 | `slot-vision` | Slot Vision | `com.jeremykenedy.reelatrium` | [jeremykenedy/slot-vision](https://github.com/jeremykenedy/slot-vision) | Classic and multi-row reels with cabinet or fullscreen views, seasonal themes and payout coin showers |
-| `hearth-presence` | Hearth Presence | `com.jeremykenedy.hearthpresence` | [jeremykenedy/hearth-presence](https://github.com/jeremykenedy/hearth-presence) | Moving wood and gas fireplaces with adjustable surrounds, frame width and burn speed |
+| `hearth-presence` | Hearth Presence | `com.jeremykenedy.hearthpresence` | [jeremykenedy/hearth-presence](https://github.com/jeremykenedy/hearth-presence) | Recorded wood and traditional gas, fixed-log wood heights, surrounds and a linear-fire composite |
 | `aqua-surface` | Aqua Surface Drift | `com.jeremykenedy.aquasurfacedrift` | [jeremykenedy/aqua-surface-drift](https://github.com/jeremykenedy/aqua-surface-drift) | Animated water with adjustable environment, lighting, ripples, motion and view |
 | `earthbound-orbit` | Earthbound Orbit | `com.jeremykenedy.earthboundorbit` | [jeremykenedy/earthbound-orbit](https://github.com/jeremykenedy/earthbound-orbit) | A continuously rotating Earth with adjustable atmosphere, star density and camera movement |
 | `perseid-passage` | Perseid Passage | `com.jeremykenedy.perseidpassage` | [jeremykenedy/perseid-passage](https://github.com/jeremykenedy/perseid-passage) | Animated meteor showers with adjustable frequency, size, speed, star density, palette and brightness |
@@ -164,3 +164,18 @@ The Toolkit opens each app's own native settings; it does not provide a generic 
 Install with `firetv-screensavers --install=skycast-weather --yes` and select separately with `screensaver --set=skycast-weather`. Installation retains preferences and does not change selection or timers. The app settings screen supports an explicitly chosen city, metric/imperial units, 1/3/5/7 days, Gentle/Flowing playback and Show weather information. Turning weather off hides all scene text and weather requests while the film continues. The five-row local schema describes units, days, motion, show_weather and location; no host editor or coordinate inference is implied. See the [tagged app configuration](https://github.com/jeremykenedy/skycast-weather/blob/v1.0.0/docs/configuration.md).
 
 The signed public APK and checksum were downloaded and verified before registration. Source film is 25fps; separate clean physical API28 compositor samples measured about25 presents/s with weather hidden. Normal idle activation, functional controls and limitations are documented in the [tagged verification guide](https://github.com/jeremykenedy/skycast-weather/blob/v1.0.0/docs/verification.md). This does not claim every-device or native4K support. Weather and city search use Open-Meteo; the background is a separate ambient film, not a view of the forecast city. Free endpoint service conditions include noncommercial use.
+
+## Hearth Presence 1.1
+
+The reviewed install baseline is the public 1.1.0/code 7 APK, 121,223,466 bytes,
+SHA-256 `9541eb4fe2f4d7d69ac1f85b38144f5b5926274291ebec796d8150d27e07b781`.
+Its eleven settings keys and production signer are unchanged. Wood now honors
+the existing Small/Medium/Large flame-size preference above fixed logs; Medium
+keeps the original recording. Traditional gas height remains unsupported.
+Modern linear fire remains the credited wood-emission composite, not new filmed
+gas. Audible crackle quality, owner-wide visual acceptance and thermal durability
+remain unverified. Latest-update checks still consult current published releases
+independently of the reviewed installation baseline.
+
+Install or replace with `firetv-screensavers --install=hearth-presence`; selection
+is separate. [Tagged app contract](https://github.com/jeremykenedy/hearth-presence/blob/v1.1.0/docs/INTEGRATION.md).

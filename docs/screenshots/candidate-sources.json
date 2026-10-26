@@ -10,14 +10,23 @@
     "state": "Published signed release independently downloaded and verified; physical cabinet and fullscreen pacing near30buffers/s; hostintegrationinprogress"
   },
   "hearth-presence": {
-    "capture": "Physical Fire TV AFTDEC012E API30; modern linear slate wide large lively flames; actual1920x1080 capture resized640x360",
-    "source_sha256": "7db765d6b3f2735c36dbbb0fe7e819bbd98946d2f1e67b7def0ea7bcc009a80b",
-    "thumbnail_sha256": "f672851f6a98fec030b74a01d2412ab46a97e9138f1c3f26ecf92caa5c3b0381",
-    "source_repository": "https://github.com/jeremykenedy/hearth-presence/tree/v1.0.0",
-    "release": "https://github.com/jeremykenedy/hearth-presence/releases/tag/v1.0.0",
-    "apk_sha256": "96067a79be86a0f29f034ee4bcc647e9da7195978b690a7d982f28a17b78278f",
-    "apk_bytes": 69011424,
-    "state": "Published release downloaded and verified; physical native playback/Back/preservation passed; host catalog integration in progress"
+    "capture": "Unretouched physical Fire TV AFTDEC012E API30, exact1.1.0/code7 Large wood Preview,1920x1080; gallery files are plain resized derivatives.",
+    "source_sha256": "db8e739a682b636db28d15b7fbdacdd2189e1ae31365999e7a6528813311df35",
+    "raw_source": "art/screenshots/hearth-presence-wood-large-fire-tv-api30.png",
+    "thumbnail_sha256": "21757c92e919d126fa3cbbc95e49ec1a437fe2c616c4d311a4a203ef82c392aa",
+    "responsive_sha256": {
+      "desktop": "669da9a79739655a1f884d503197be3fb716e307b49d52a9ce55050dfbccd046",
+      "tablet": "4e21c147ebdede57351ee8712fdf2f3bd5f48d2c1b85a8c00bc0f54f9cd5c318"
+    },
+    "source_repository": "https://github.com/jeremykenedy/hearth-presence/tree/v1.1.0",
+    "source_image": "https://github.com/jeremykenedy/hearth-presence/blob/v1.1.0/art/screenshots/physical7-wood-large.png",
+    "release": "https://github.com/jeremykenedy/hearth-presence/releases/tag/v1.1.0",
+    "apk_sha256": "9541eb4fe2f4d7d69ac1f85b38144f5b5926274291ebec796d8150d27e07b781",
+    "apk_bytes": 121223466,
+    "credit": "Wood footage by free video library (2018), CC BY3.0; height adaptation and native screenshot resized. See tagged upstreamNOTICE.",
+    "attribution_notice": "https://github.com/jeremykenedy/hearth-presence/blob/v1.1.0/NOTICE",
+    "settings_schema_count": 11,
+    "state": "Published signed artifact independently downloaded and verified; physical remote/normalDream and preservation passed. New filmed linear gas, audible crackle quality, owner-wide visual acceptance and thermal durability remain open."
   },
   "pipeworks-dream": {
     "capture": "2026-10-22 physical Fire TV AFTDEC012E API30 exact final 1.1.0 Preview; 1920x1080 capture resized to 1280x720, 544x306 and 400x225 without scene changes",
