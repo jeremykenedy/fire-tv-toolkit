@@ -227,7 +227,13 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
   await page.getByLabel('Saved TV', { exact: true }).selectOption(mainTv.id);
   await page.locator('#notice').filter({ hasText: 'TV selected' }).waitFor();
   // Exercise native launcher views with sample device data, without contacting a TV.
-  await application.evaluate(({ ipcMain }) => {
+  await application.evaluate(({ ipcMain, app }) => {
+    const require = process.getBuiltinModule('module').createRequire(`${app.getAppPath()}/package.json`);
+    const { SCREENSAVERS } = require('fire-tv-toolkit/src/screensaver-registry.js');
+    const screensavers = SCREENSAVERS.map(entry => ({
+      id: entry.id, name: entry.name, description: entry.blurb || '',
+      installed: entry.id === 'aerial', active: entry.id === 'aerial', downloadable: true,
+    }));
     ipcMain.removeHandler('toolkit:connect');
     let connections = 0;
     ipcMain.handle('toolkit:connect', () => {
@@ -239,7 +245,7 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
         homeChangesSupported: !olderUi,
         alexaEnabled: false, sleepMs: 1200000, screensaverMs: 300000,
         guardConfigured: false, ownTvInstalled: false, fireIptvInstalled: false,
-        homeRedirectInstalled: existing, screensavers: [], playlist: '',
+        homeRedirectInstalled: existing, screensavers, playlist: '',
         launchers: [
           { id: 'fire-tv-ui', name: 'Fire TV UI', recommended: true, installed: olderUi, ready: false, requiresUpdate: olderUi },
           { id: 'at4k', name: 'AT4K Launcher', recommended: false, installed: false, ready: false },
@@ -250,6 +256,20 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
   });
   await page.getByRole('button', { name: 'Connect', exact: true }).click();
   await page.locator('#connection-label').filter({ hasText: 'Living room / 192.0.2.10' }).waitFor();
+  await page.locator('[data-view="screensavers"]').click();
+  assert.equal(await page.locator('#saver-list .app-row').count(), 36);
+  for (const [name, id] of [['Nibbles HD', 'nibbles-hd'], ['Lumen Breaker', 'lumen-breaker']]) {
+    await page.locator('#saver-search').fill(name);
+    const row = page.locator('#saver-list .app-row');
+    assert.equal(await row.count(), 1);
+    assert.match(await row.innerText(), new RegExp(name));
+    const install = row.getByRole('button', { name: 'Install', exact: true });
+    assert.equal(await install.getAttribute('data-id'), id);
+    assert.equal(await install.getAttribute('data-task'), 'install-screensaver');
+    assert.equal(await install.isEnabled(), true);
+    await page.screenshot({ path: path.join(output, `${process.platform}-${id}-catalog.png`) });
+  }
+  await page.locator('#saver-search').fill('');
   await page.locator('[data-view="home"]').click();
   assert.match(await page.locator('#launcher-list .app-row').first().innerText(), /Fire TV UI.*Recommended/s);
   assert.equal(await page.locator('#launcher-list .app-row').first().getByRole('button', { name: 'Install', exact: true }).isVisible(), true);
@@ -259,6 +279,8 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
   await page.locator('[data-view="overview"]').click();
   await page.getByRole('button', { name: 'Connect again', exact: true }).click();
   await page.locator('#notice').filter({ hasText: 'Connected to Sample Fire TV' }).waitFor();
+  await page.locator('[data-view="home"]').click();
+  assert.equal(await page.locator('#launcher-list button[data-task="home"]').count(), 1);
   await page.locator('[data-view="setup"]').click();
   assert.equal(await page.locator('#setup-home').inputValue(), 'keep');
   await page.locator('[data-view="overview"]').click();
@@ -266,8 +288,9 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
   await page.locator('#notice').filter({ hasText: 'Connected to Sample Fire TV' }).waitFor();
   await page.locator('[data-view="home"]').click();
   assert.equal(await page.locator('#home-update-note').isVisible(), true);
-  assert.equal(await page.locator('#launcher-list button[data-action="home"]').count(), 0);
+  assert.equal(await page.locator('#launcher-list button[data-task="home"]').count(), 0);
   assert.equal(await page.locator('#launcher-list .app-row').first().getByRole('button', { name: 'Update', exact: true }).isVisible(), true);
+  await page.screenshot({ path: path.join(output, `${process.platform}-older-ui-home-controls.png`) });
   await page.locator('[data-view="setup"]').click();
   assert.equal(await page.locator('#setup-home').isEnabled(), false);
   assert.equal(await page.locator('#setup-home-help').isVisible(), true);
