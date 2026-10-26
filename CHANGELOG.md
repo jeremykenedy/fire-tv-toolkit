@@ -6,7 +6,7 @@
 
 - Save named TVs, manage their addresses and switch the active desktop target before connecting.
 - Recommend Fire TV UI with its own Home services, keeping legacy launcher choices available.
-- Register Nibbles HD's verified public release and real physical preview.
+- Register verified Nibbles HD and Lumen Breaker releases with real native previews.
 
 ### Fixed
 

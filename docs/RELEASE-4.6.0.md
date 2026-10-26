@@ -2,7 +2,7 @@
 
 Save named TVs in the desktop app, switch targets explicitly and use Fire TV UI
 as the recommended custom Home screen. The reviewed screensaver catalog adds
-Nibbles HD with its real native preview and exact published APK contract.
+Nibbles HD and Lumen Breaker with real native previews and exact published APK contracts.
 
 ## Upgrade guide
 
@@ -50,7 +50,7 @@ unaffected. CLI `--install` still installs AT4K; the new UI flag is `--install-u
 - Recommend Fire TV UI in desktop and guided CLI Home choices. Its installation
   does not install the legacy redirect. Guided setup recommends it for a fresh
   Amazon Home setup and reviews all selected actions before applying them.
-- Add Nibbles HD 1.0.0 as a reviewed screensaver, retaining all prior entries,
+- Add Nibbles HD 1.0.0 and Lumen Breaker 1.0.0 as reviewed screensavers, retaining all prior entries,
   Aerial Views as the default and the existing latest-published update flow.
 
 ## Minor changes and fixes
@@ -78,7 +78,9 @@ Fire TV UI is pinned to public 1.11.0/code 69, 9,037,158 bytes and SHA-256
 `d5abce3b88a9311ef9c9094858f7f3c3982cff6c61fd088360043acfd6163af4`.
 Nibbles HD is pinned to public 1.0.0/code 3, 41,727 bytes and SHA-256
 `c49bc22e5cbf5067da4bbcb1cd63140d31b0a49a83f6826e111986ee4b7d7971`.
-Both public artifacts were anonymously downloaded and their package, certificate,
+Lumen Breaker is pinned to public 1.0.0/code 3, 74,551 bytes and SHA-256
+`fc0513f85fc8563cd8463546108bbf5ea9c459ab72465c669b126fcc6c14269c`.
+All three public artifacts were anonymously downloaded and their package, certificate,
 SDK metadata, byte count and published checksum verified before registration.
 
 ## Verification and limits

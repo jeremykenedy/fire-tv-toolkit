@@ -520,3 +520,24 @@ test('unchecking a screensaver and not typing yes cancels the removal', async ()
   assert.match(r.out, /Cancelled\. Nothing was changed/);
   assert.deepEqual(fake.readState().installed, [AERIAL]);
 });
+
+
+test('Lumen Breaker public artifact and native preview retain the verified contract', () => {
+  const entry = SCREENSAVERS.find((item) => item.id === 'lumen-breaker');
+  assert.equal(entry.pkg, 'com.jeremykenedy.lumenbreaker');
+  assert.equal(entry.dreamComponent, `${entry.pkg}/.LumenDreamService`);
+  assert.equal(entry.tag, 'v1.0.0');
+  assert.equal(entry.asset, 'lumen-breaker.apk');
+  assert.equal(entry.bytes, 74551);
+  assert.equal(entry.sha256, 'fc0513f85fc8563cd8463546108bbf5ea9c459ab72465c669b126fcc6c14269c');
+  const sources = JSON.parse(fs.readFileSync(new URL('../docs/screenshots/candidate-sources.json', import.meta.url)));
+  const source = sources['lumen-breaker'];
+  assert.equal(source.apk_sha256, entry.sha256);
+  assert.equal(source.apk_bytes, entry.bytes);
+  assert.equal(source.settingsCount, 9);
+  assert.equal(source.signer_sha256, 'd3404786108a0b54fab7bedb1119d3851bd688cdea9c4712155a9582852182e4');
+  assert.equal(source.minSdk, 23);
+  assert.equal(source.targetSdk, 36);
+  const image = fs.readFileSync(new URL('../docs/screenshots/screensaver-lumen-breaker.jpg', import.meta.url));
+  assert.equal(sha(image), source.thumbnail_sha256);
+});

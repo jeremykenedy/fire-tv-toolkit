@@ -185,5 +185,29 @@
     "minSdk": 23,
     "targetSdk": 36,
     "credit": "Original game/procedural artwork by Jeremy Kenedy, Apache-2.0. See tagged LICENSE/NOTICE."
+  },
+  "lumen-breaker": {
+    "capture": "Actual public code 3 API 34 TV emulator native 1920x1080 Preview. Plain resized gallery derivatives; no scene edits.",
+    "source_sha256": "970ffa170c0b34f9cd6345f2bf24c2884e05406a9e6a1f602615104c7ccf5200",
+    "raw_source": "art/screenshots/lumen-breaker-code3-api34.png",
+    "thumbnail_sha256": "ee4775b172226b6adfd99c5acd0d0a495abc5dab0dd0d6477e65733be31b4b96",
+    "responsive_sha256": {
+      "desktop": "8ffd48d60bb9dff617b1a166e3b947bf80d3f877110c4c036a9aa377e3c17490",
+      "tablet": "5f1e1631dc2475be580218d1156d3d06bef16fb5985074230f560680439a0ce6"
+    },
+    "source_repository": "https://github.com/jeremykenedy/lumen-breaker/tree/v1.0.0",
+    "source_image": "https://github.com/jeremykenedy/lumen-breaker/blob/v1.0.0/art/screenshots/lumen-preview-code3-api34.png",
+    "release": "https://github.com/jeremykenedy/lumen-breaker/releases/tag/v1.0.0",
+    "apk_sha256": "fc0513f85fc8563cd8463546108bbf5ea9c459ab72465c669b126fcc6c14269c",
+    "apk_bytes": 74551,
+    "signer_sha256": "d3404786108a0b54fab7bedb1119d3851bd688cdea9c4712155a9582852182e4",
+    "package": "com.jeremykenedy.lumenbreaker",
+    "dreamComponent": "com.jeremykenedy.lumenbreaker/.LumenDreamService",
+    "settingsSchema": "content://com.jeremykenedy.lumenbreaker.settings/schema",
+    "settingsCount": 9,
+    "minSdk": 23,
+    "targetSdk": 36,
+    "credit": "Original procedural gameplay and artwork, Apache License 2.0.",
+    "state": "Public signed artifact anonymously downloaded and verified. Final code 3 native packaging passed; runtime-equivalent code 2 passed physical API 30 Preview and normal five-minute Dream. No API 28 or 4K hardware claim."
   }
 }
