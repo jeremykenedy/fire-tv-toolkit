@@ -8,7 +8,7 @@
 | `snoozy` | Snoozy | `com.overdevs.snoozy` | [jeremykenedy/Snoozy](https://github.com/jeremykenedy/Snoozy) | Animated Snoopy screensaver |
 | `aquarium-live` | Aquarium Live | `com.jeremykenedy.aquariumlive` | [jeremykenedy/aquarium-live](https://github.com/jeremykenedy/aquarium-live) | A living aquarium drawn in real time: four scenes, six looks, day and night |
 | `aquarium-4k` | Aquarium 4K | `com.jeremykenedy.firetv.aquarium` | [jeremykenedy/fire-tv-aquarium](https://github.com/jeremykenedy/fire-tv-aquarium) | Offline 4K aquarium footage with custom fish, sea life and backgrounds |
-| `cloud-drift-clock` | Cloud Drift Clock | `com.jeremykenedy.clouddriftclock` | [jeremykenedy/cloud-drift-clock](https://github.com/jeremykenedy/cloud-drift-clock) | An animated cloudscape with a digital clock and adjustable palette, density, speed and motion |
+| `cloud-drift-clock` | Cloud Drift Clock | `com.jeremykenedy.clouddriftclock` | [jeremykenedy/cloud-drift-clock](https://github.com/jeremykenedy/cloud-drift-clock) | Real filmed flight through sunset clouds, with an optional drifting clock and playback speed |
 | `prism-clock` | Prism Clock | `com.jeremykenedy.prismclock` | [jeremykenedy/prism-clock](https://github.com/jeremykenedy/prism-clock) | A moving faceted surface with a drifting clock, adjustable materials, lighting, time format and motion |
 | `jellyfish-drift` | Jellyfish Drift | `com.jeremykenedy.jellyfishdrift` | [jeremykenedy/jellyfish-drift](https://github.com/jeremykenedy/jellyfish-drift) | Animated jellyfish with adjustable water, density, motion, species and light rays |
 | `jellyfish-drift-v2` | Jellyfish Drift V2 | `com.jeremykenedy.jellyfishdriftv2` | [jeremykenedy/jellyfish-drift-v2](https://github.com/jeremykenedy/jellyfish-drift-v2) | Real filmed jellyfish in blue aquarium and deep ocean scenes, with playback speed and random selection |
@@ -17,7 +17,7 @@
 | `starfield-drift` | Starfield Drift | `com.jeremykenedy.starfielddrift` | [jeremykenedy/starfield-drift](https://github.com/jeremykenedy/starfield-drift) | A procedural starfield with adjustable density, speed, color, luminance and meteors |
 | `rain-on-glass` | Rain on Glass | `com.jeremykenedy.rainonglass` | [jeremykenedy/rain-on-glass](https://github.com/jeremykenedy/rain-on-glass) | Animated rainfall with adjustable lighting, density, speed and glass focus |
 | `rainforest-cascade` | Rainforest Cascade | `com.jeremykenedy.rainforestcascade` | [jeremykenedy/rainforest-cascade](https://github.com/jeremykenedy/rainforest-cascade) | Three real waterfall loops and an original animated sunrise garden, with framing, speed, lighting and mist controls |
-| `blue-meridian` | Blue Meridian | `com.jeremykenedy.bluemeridian` | [jeremykenedy/blue-meridian](https://github.com/jeremykenedy/blue-meridian) | A rotating Earth with moving camera, atmosphere, night lights, clouds and adjustable stars |
+| `blue-meridian` | Blue Meridian | `com.jeremykenedy.bluemeridian` | [jeremykenedy/blue-meridian](https://github.com/jeremykenedy/blue-meridian) | Detailed satellite Earth with gentle camera drift, atmosphere, city lights, clouds and adjustable stars |
 | `twilight-hearth` | Twilight Hearth | `com.jeremykenedy.twilighthearth` | [jeremykenedy/twilight-hearth](https://github.com/jeremykenedy/twilight-hearth) | Recorded wood fire with brick, stone and slate surrounds, flame exposure, embers, playback speed and room lighting |
 | `nebula-drift` | Nebula Drift | `com.jeremykenedy.nebuladrift` | [jeremykenedy/nebula-drift](https://github.com/jeremykenedy/nebula-drift) | Animated nebula clouds with adjustable structure, color, density, stars and meteors |
 | `vortex-spiral` | Vortex Spiral | `com.jeremykenedy.vortexspiral` | [jeremykenedy/vortex-spiral](https://github.com/jeremykenedy/vortex-spiral) | Animated spiral ribbons with adjustable arms, winding, color, brightness and motion |
@@ -95,6 +95,8 @@ this repository before publishing. Toolkit gallery files use
 
 | Id | Package and DreamService | Release asset | Bytes | SHA-256 | Settings provider |
 |----|--------------------------|---------------|-------|---------|-------------------|
+| `cloud-drift-clock` | `com.jeremykenedy.clouddriftclock/.CloudDreamService` | [v2.0.0 APK](https://github.com/jeremykenedy/cloud-drift-clock/releases/download/v2.0.0/cloud-drift-clock.apk) | 40297575 | `abb8fdf3abdd1c94b95106b6bd0cbdf85822ccffd4caec9cdbd6dcb99919fae8` | `content://com.jeremykenedy.clouddriftclock.settings/schema` |
+| `blue-meridian` | `com.jeremykenedy.bluemeridian/.BlueMeridianDreamService` | [v1.0.1 APK](https://github.com/jeremykenedy/blue-meridian/releases/download/v1.0.1/blue-meridian.apk) | 2569417 | `7f3b575f45d7afa5ca68ff8510d84f5b42c6ac6c3c21903628898f6a5dff5ec2` | `content://com.jeremykenedy.bluemeridian.settings/schema` |
 | `pipeworks-dream` | `com.jeremykenedy.pipeworksdream/.PipeworksDreamService` | [v1.1.0 APK](https://github.com/jeremykenedy/pipeworks-dream/releases/download/v1.1.0/pipeworks-dream.apk) | 62276 | `a9642a20efe37fd3b39974d04f59b17eb4940935dbaca60c4b6cbf655eef03d0` | `content://com.jeremykenedy.pipeworksdream.settings/schema` |
 | `skyburst-nocturne` | `com.jeremykenedy.skyburstnocturne/.FireworksDreamService` | [v1.0.0 APK](https://github.com/jeremykenedy/skyburst-nocturne/releases/download/v1.0.0/skyburst-nocturne.apk) | 37748 | `2ce571933d6f4a8017ada3c5598d21edc363b51598f4d4c302bafebb0863a57a` | `content://com.jeremykenedy.skyburstnocturne.settings/schema` |
 | `pulse-circuit` | `com.jeremykenedy.pulsecircuit/.PulseDreamService` | [v1.0.0 APK](https://github.com/jeremykenedy/pulse-circuit/releases/download/v1.0.0/pulse-circuit.apk) | 33485 | `5e71095d0b2966d1cf803ad9299ad7a233309848d1aea8e27423cfcf8ff96c95` | `content://com.jeremykenedy.pulsecircuit.settings/schema` |
@@ -140,3 +142,17 @@ Open V2 native settings to choose the scene, playback speed or random scene and 
 ## Optional Drift clocks
 
 Cloud Drift Clock, Starfield Drift, Nebula Drift, Aqua Surface Drift, Split-Flap Drift and Canopy Drift 1.1.0 add an independent Show clock switch. Cloud and Split-Flap preserve their existing clock-on default; the four new overlays default off. The setting stays as selected when other options randomize. These updates do not redesign the scenes or add forward cloud flight.
+
+## Current Cloud and Earth scenes
+
+Cloud Drift Clock 2.0 replaces the painted scene with real forward flight through sunset clouds. Its native settings provide playback speed and six clock/randomization controls. Show clock stays independent of randomization. The old palette and density values remain stored for compatibility but do not alter filmed footage and have no native editor widgets. The 1080p loop includes a 720p fallback; source audio is omitted.
+
+Blue Meridian 1.0.1 uses archival satellite maps, corrected rotating daylight and seamless longitude filtering. Seven native controls remain available. Camera movement is screen-space drift, not an orbital fly-through. Physical API 30 verification used a 1920x1080 surface; native 4K and extended thermal behavior remain untested.
+
+Both preserve their original package and signer. Update without changing the selected screensaver or timers:
+
+```sh
+firetv-screensavers --install=cloud-drift-clock,blue-meridian --yes
+```
+
+The Toolkit opens each app's own native settings; it does not provide a generic scene-property editor. [Gallery provenance](screenshots/candidate-sources.json) records native captures, asset hashes and attribution.

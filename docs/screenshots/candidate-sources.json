@@ -41,10 +41,19 @@
     "state": "Candidate native rendering; final release and physical acceptance pending"
   },
   "blue-meridian": {
-    "capture": "Native Android TV or Google TV emulator output",
-    "source_sha256": "eee8cc749c033c902883dbc35faf74d4b5846a1bf86266872ef0f3da23efba69",
-    "source_repository": "https://github.com/jeremykenedy/blue-meridian/pull/1",
-    "state": "Candidate native rendering; final release and physical acceptance pending"
+    "capture": "Unretouched physical Fire TV AFTDEC012E API 30, actual 1920x1080, 1.0.1/code2 settled Preview. Gallery files are plain resizes.",
+    "source_sha256": "32e8fbe4c354edbf3873a4dd0fa18c1e4b12603219c799a756003262554b614c",
+    "raw_source": "art/screenshots/blue-meridian-fire-tv-api30.png",
+    "source_repository": "https://github.com/jeremykenedy/blue-meridian/tree/v1.0.1",
+    "release": "https://github.com/jeremykenedy/blue-meridian/releases/tag/v1.0.1",
+    "apk_sha256": "7f3b575f45d7afa5ca68ff8510d84f5b42c6ac6c3c21903628898f6a5dff5ec2",
+    "apk_bytes": 2569417,
+    "thumbnail_sha256": "e0f03d64d7586649f1f818f2887fe5a8d9420611cbaf1eb80369f1af9881df87",
+    "package": "com.jeremykenedy.bluemeridian",
+    "dreamComponent": "com.jeremykenedy.bluemeridian/.BlueMeridianDreamService",
+    "settingsSchema": "content://com.jeremykenedy.bluemeridian.settings/schema",
+    "minSdk": 23,
+    "credit": "NASA Blue Marble and Black Marble imagery; source and modifications: https://github.com/jeremykenedy/blue-meridian/blob/v1.0.1/docs/MEDIA.md"
   },
   "rainforest-cascade": {
     "capture": "Physical Fire TV AFTDEC012E API30 garden daylight wide framing natural speed; original animated matte garden, not real footage",
@@ -110,5 +119,20 @@
     "apk_sha256": "9e91b180c9f60748752612da496227e908b979c95f3c9e13930d4ce3ef108660",
     "release": "https://github.com/jeremykenedy/black-screen-dream/releases/tag/v1.0.0",
     "state": "Published APK installed and actual package, version code and APK bytes verified on Calvin. Normal idle timing is checked separately."
+  },
+  "cloud-drift-clock": {
+    "capture": "Unretouched physical Fire TV AFTALMO API 28, actual 1920x1080, final 2.0.0/code5 Preview with clock off. Gallery images are plain resizes.",
+    "source_sha256": "8169a2175b2b4b9552e24691bbb404b2405ee7dd78dce51f2dd3a9fc08227993",
+    "raw_source": "art/screenshots/cloud-flight-fire-tv-api28.png",
+    "source_repository": "https://github.com/jeremykenedy/cloud-drift-clock/tree/v2.0.0",
+    "release": "https://github.com/jeremykenedy/cloud-drift-clock/releases/tag/v2.0.0",
+    "apk_sha256": "abb8fdf3abdd1c94b95106b6bd0cbdf85822ccffd4caec9cdbd6dcb99919fae8",
+    "apk_bytes": 40297575,
+    "thumbnail_sha256": "b138cee08a8ed2cd5cd4c0d87fa278daa92131d6a05d3ca2874d365abbf9917b",
+    "credit": "anotherview, CC BY 3.0, https://www.youtube.com/watch?v=kKPvF0rwqHA; footage edited into silent loop, screenshot resized.",
+    "package": "com.jeremykenedy.clouddriftclock",
+    "dreamComponent": "com.jeremykenedy.clouddriftclock/.CloudDreamService",
+    "settingsSchema": "content://com.jeremykenedy.clouddriftclock.settings/schema",
+    "minSdk": 23
   }
 }

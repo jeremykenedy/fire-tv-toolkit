@@ -1,5 +1,31 @@
 # Changelog
 
+## [4.4.4] - 2026-10-25
+
+### Fixed
+
+- Check public Fire TV UI releases without requiring a GitHub sign-in, while retaining verified staged installation.
+- Include Black Screen Dream in both command reference lists.
+- Align the desktop package and its bundled local Toolkit dependency.
+
+### Changed
+
+- Refresh Cloud Drift Clock 2.0 and Blue Meridian 1.0.1 descriptions, real native screenshots and exact integration contracts.
+
+See the [4.4.4 upgrade guide](docs/RELEASE-4.4.4.md).
+
+## [4.4.3] - 2026-10-22
+
+- Add Black Screen Dream as its own installable and selectable screensaver.
+
+See the [4.4.3 upgrade guide](docs/RELEASE-4.4.3.md).
+
+## [4.4.2] - 2026-10-22
+
+- Keep Jellyfish Drift Classic and filmed V2 separate, refresh the released optional-clock apps and pin Fire IPTV 1.2.0.
+
+See the [4.4.2 upgrade guide](docs/RELEASE-4.4.2.md).
+
 ## [4.4.1] - 2026-10-22
 
 ### Fixed

@@ -4,45 +4,32 @@
 
 ## Desktop app
 
-The published update screen below was captured from the packaged native macOS 4.4.1 build. It shows an actual release check against the published 4.4.0 release before this patch was published. No update installer was opened.
+The current Live TV, update and About captures come from the actual packaged macOS 4.4.4 app. Its release check contacted GitHub and correctly reported the installed 4.4.4 candidate as newer than the published 4.4.3 release at capture time. No TV was connected and no installer was opened. [Capture provenance](../art/screenshots/desktop-4.4.4-provenance.json) records the native build and image hashes.
 
-<table><tr><td><a href="../art/screenshots/desktop-published-updates.png"><img src="../art/screenshots/desktop-published-updates.png" alt="Native published update screen with actual release check"></a></td></tr></table>
+<table><tr>
+<td><a href="../art/screenshots/desktop-live-tv-4.4.4.png"><img src="../art/screenshots/desktop-live-tv-4.4.4.png" alt="Native Toolkit 4.4.4 public Live TV catalog" width="320"></a></td>
+<td><a href="../art/screenshots/desktop-updates-4.4.4.png"><img src="../art/screenshots/desktop-updates-4.4.4.png" alt="Native Toolkit 4.4.4 actual published-release check" width="320"></a></td>
+<td><a href="../art/screenshots/desktop-about-4.4.4.png"><img src="../art/screenshots/desktop-about-4.4.4.png" alt="Native Toolkit 4.4.4 About and platform information" width="320"></a></td>
+</tr></table>
 
-The same packaged 4.4.1 app checked all 37 installed catalog applications on the new Fire TV. Home Redirect correctly shows app 1.2.6, repository release v3.9.1 and a matching installed version, with no replacement action.
+### Historical desktop captures
 
-<table><tr><td><a href="../art/screenshots/desktop-helper-updates.png"><img src="../art/screenshots/desktop-helper-updates.png" alt="Native Toolkit 4.4.1 correctly compares Home Redirect's Android version independently of its repository release"></a></td></tr></table>
+The following 4.4.1 capture records its check of 37 installed catalog apps and the correct distinction between Home Redirect's Android version and the Toolkit repository tag. It is historical evidence, not a new catalog-wide update audit.
 
-The About screenshot is from the same packaged 4.4.1 build. The remaining unchanged desktop routes below retain their historical packaged macOS 4.3.1 captures connected to a physical Fire TV.
+<table><tr><td><a href="../art/screenshots/desktop-helper-updates.png"><img src="../art/screenshots/desktop-helper-updates.png" alt="Historical Toolkit 4.4.1 helper-version comparison"></a></td></tr></table>
+
+These unchanged routes retain their historical packaged macOS 4.3.1 captures connected to a physical Fire TV.
 
 <table>
-<tr>
-<td><a href="../art/screenshots/desktop-live-tv.png"><img src="../art/screenshots/desktop-live-tv.png" alt="Worldwide IPTV channel browser"></a></td>
-<td><a href="../art/screenshots/desktop-overview.png"><img src="../art/screenshots/desktop-overview.png" alt="Connected Fire TV overview"></a></td>
-<td><a href="../art/screenshots/desktop-screensavers.png"><img src="../art/screenshots/desktop-screensavers.png" alt="Screensaver controls"></a></td>
-</tr>
-<tr>
-<td><a href="../art/screenshots/desktop-home.png"><img src="../art/screenshots/desktop-home.png" alt="fire-iptv installer, home screen and OwnTV controls"></a></td>
-<td><a href="../art/screenshots/desktop-settings.png"><img src="../art/screenshots/desktop-settings.png" alt="Fire TV device settings"></a></td>
-<td><a href="../art/screenshots/desktop-activity.png"><img src="../art/screenshots/desktop-activity.png" alt="Device activity and verification results"></a></td>
-</tr>
-<tr>
-<td><a href="../art/screenshots/desktop-setup.png"><img src="../art/screenshots/desktop-setup.png" alt="Guided setup app choices"></a></td>
-<td><a href="../art/screenshots/desktop-setup-settings.png"><img src="../art/screenshots/desktop-setup-settings.png" alt="Guided setup settings"></a></td>
-<td><a href="../art/screenshots/desktop-setup-review.png"><img src="../art/screenshots/desktop-setup-review.png" alt="Guided setup selection review"></a></td>
-</tr>
-<tr>
-<td><a href="../art/screenshots/desktop-updater.png"><img src="../art/screenshots/desktop-updater.png" alt="Guided installed app updater"></a></td>
-<td><a href="../art/screenshots/desktop-advanced.png"><img src="../art/screenshots/desktop-advanced.png" alt="Advanced settings and warning"></a></td>
-<td><a href="../art/screenshots/desktop-terminal.png"><img src="../art/screenshots/desktop-terminal.png" alt="Read-only Fire TV shell command output"></a></td>
-</tr>
-<tr>
-<td><a href="../art/screenshots/desktop-about.png"><img src="../art/screenshots/desktop-about.png" alt="About, compatibility, license and author"></a></td>
-<td><a href="../art/screenshots/desktop-advanced-warning.png"><img src="../art/screenshots/desktop-advanced-warning.png" alt="Warning before enabling advanced controls"></a></td>
-<td><a href="../art/screenshots/desktop-updater-review.png"><img src="../art/screenshots/desktop-updater-review.png" alt="Guided updater review before applying changes"></a></td>
-</tr>
+<tr><td><a href="../art/screenshots/desktop-overview.png"><img src="../art/screenshots/desktop-overview.png" alt="Historical connected Fire TV overview"></a></td><td><a href="../art/screenshots/desktop-screensavers.png"><img src="../art/screenshots/desktop-screensavers.png" alt="Historical screensaver controls"></a></td><td><a href="../art/screenshots/desktop-home.png"><img src="../art/screenshots/desktop-home.png" alt="Historical home and IPTV controls"></a></td></tr>
+<tr><td><a href="../art/screenshots/desktop-settings.png"><img src="../art/screenshots/desktop-settings.png" alt="Historical device settings"></a></td><td><a href="../art/screenshots/desktop-setup.png"><img src="../art/screenshots/desktop-setup.png" alt="Historical guided setup"></a></td><td><a href="../art/screenshots/desktop-advanced.png"><img src="../art/screenshots/desktop-advanced.png" alt="Historical advanced controls"></a></td></tr>
 </table>
 
 Captured on an Insignia Fire TV Edition TV, Android TV emulators, and in macOS Terminal. Cloud Drift Clock, Jellyfish Drift, Firefly Grove, Neon Corridor, Starfield Drift, Rain on Glass, Rainforest Cascade, Blue Meridian, Twilight Hearth, Nebula Drift, Vortex Spiral, Signal Rain, Retro Flight, Pipeworks Dream, Aqua Surface Drift, Earthbound Orbit, Perseid Passage, Split-Flap Drift, Canopy Drift, Contour Flow, Skyburst Nocturne, Pulse Circuit and Helios Lightfield use screenshots from their own repositories. Select any screenshot to see it full size.
+
+Cloud Drift Clock 2.0 uses the current unretouched physical Fire TV API 28 capture, resized for the gallery. Its filmed scene is by [anotherview](https://www.youtube.com/watch?v=kKPvF0rwqHA), licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). The source audio was omitted, the footage edited into a 34-second loop and the clock disabled for this capture. [Capture and release provenance](screenshots/candidate-sources.json) records the exact source and APK hashes.
+
+Blue Meridian 1.0.1 uses the current physical Fire TV API 30 capture at 1920x1080. Its archival satellite imagery and modifications are documented in the [tagged upstream media guide](https://github.com/jeremykenedy/blue-meridian/blob/v1.0.1/docs/MEDIA.md).
 
 ## The home screen and the on-TV picker
 
@@ -65,7 +52,7 @@ Twilight Hearth shows actual physical Fire TV modern/bright output from its veri
     <a href="screenshots/screensaver-aerial-views.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-aerial-views-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-aerial-views-tablet.jpg 2x"><img src="screenshots/screensaver-aerial-views.jpg" alt="Aerial Views, the default" title="Aerial Views, the default"></picture></a>
     <a href="screenshots/screensaver-aquarium-4k.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-aquarium-4k-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-aquarium-4k-tablet.jpg 2x"><img src="screenshots/screensaver-aquarium-4k.jpg" alt="Aquarium 4K" title="Aquarium 4K"></picture></a>
     <a href="screenshots/screensaver-aquarium-live.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-aquarium-live-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-aquarium-live-tablet.jpg 2x"><img src="screenshots/screensaver-aquarium-live.jpg" alt="Aquarium Live" title="Aquarium Live"></picture></a>
-    <a href="screenshots/screensaver-cloud-drift-clock.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-cloud-drift-clock-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-cloud-drift-clock-tablet.jpg 2x"><img src="screenshots/screensaver-cloud-drift-clock.jpg" alt="Cloud Drift Clock, a digital clock drifting over daylight clouds" title="Cloud Drift Clock"></picture></a>
+    <a href="screenshots/screensaver-cloud-drift-clock.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-cloud-drift-clock-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-cloud-drift-clock-tablet.jpg 2x"><img src="screenshots/screensaver-cloud-drift-clock.jpg" alt="Cloud Drift Clock 2.0, real forward flight through sunset clouds with the clock disabled" title="Cloud Drift Clock"></picture></a>
     <a href="screenshots/screensaver-prism-clock.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-prism-clock-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-prism-clock-tablet.jpg 2x"><img src="screenshots/screensaver-prism-clock.jpg" alt="Prism Clock with a drifting clock over moving silver facets on a physical Fire TV" title="Prism Clock"></picture></a>
     <a href="screenshots/screensaver-perseid-passage.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-perseid-passage-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-perseid-passage-tablet.jpg 2x"><img src="screenshots/screensaver-perseid-passage.jpg" alt="Perseid Passage with bright meteors crossing a deep blue starfield" title="Perseid Passage"></picture></a>
     <a href="screenshots/screensaver-split-flap-drift.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-split-flap-drift-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-split-flap-drift-tablet.jpg 2x"><img src="screenshots/screensaver-split-flap-drift.jpg" alt="Split-Flap Drift with an illuminated split-flap clock floating on a dark background" title="Split-Flap Drift"></picture></a>
@@ -81,7 +68,7 @@ Twilight Hearth shows actual physical Fire TV modern/bright output from its veri
     <a href="screenshots/screensaver-starfield-drift.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-starfield-drift-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-starfield-drift-tablet.jpg 2x"><img src="screenshots/screensaver-starfield-drift.jpg" alt="Starfield Drift" title="Starfield Drift"></picture></a>
     <a href="screenshots/screensaver-rain-on-glass.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-rain-on-glass-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-rain-on-glass-tablet.jpg 2x"><img src="screenshots/screensaver-rain-on-glass.jpg" alt="Rain on Glass" title="Rain on Glass"></picture></a>
     <a href="screenshots/screensaver-rainforest-cascade.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-rainforest-cascade-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-rainforest-cascade-tablet.jpg 2x"><img src="screenshots/screensaver-rainforest-cascade.jpg" alt="Rainforest Cascade" title="Rainforest Cascade"></picture></a>
-    <a href="screenshots/screensaver-blue-meridian.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-blue-meridian-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-blue-meridian-tablet.jpg 2x"><img src="screenshots/screensaver-blue-meridian.jpg" alt="Blue Meridian" title="Blue Meridian"></picture></a>
+    <a href="screenshots/screensaver-blue-meridian.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-blue-meridian-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-blue-meridian-tablet.jpg 2x"><img src="screenshots/screensaver-blue-meridian.jpg" alt="Blue Meridian 1.0.1, satellite Earth with clouds on a physical Fire TV" title="Blue Meridian"></picture></a>
     <a href="screenshots/screensaver-twilight-hearth.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-twilight-hearth-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-twilight-hearth-tablet.jpg 2x"><img src="screenshots/screensaver-twilight-hearth.jpg" alt="Twilight Hearth" title="Twilight Hearth"></picture></a>
     <a href="screenshots/screensaver-nebula-drift.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-nebula-drift-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-nebula-drift-tablet.jpg 2x"><img src="screenshots/screensaver-nebula-drift.jpg" alt="Nebula Drift" title="Nebula Drift"></picture></a>
     <a href="screenshots/screensaver-vortex-spiral.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-vortex-spiral-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-vortex-spiral-tablet.jpg 2x"><img src="screenshots/screensaver-vortex-spiral.jpg" alt="Vortex Spiral" title="Vortex Spiral"></picture></a>

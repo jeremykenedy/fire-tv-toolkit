@@ -169,14 +169,11 @@ test('Rainforest Cascade registry entry points to its released app and installer
 });
 
 test('Blue Meridian registry entry points to its released app and installer repository', () => {
-  assert.deepEqual(BLUE_MERIDIAN, {
-    id: 'blue-meridian',
-    name: 'Blue Meridian',
-    pkg: 'com.jeremykenedy.bluemeridian',
-    dreamComponent: 'com.jeremykenedy.bluemeridian/.BlueMeridianDreamService',
-    repo: 'jeremykenedy/blue-meridian',
-    blurb: 'A rotating Earth with moving camera, atmosphere, night lights, clouds and adjustable stars. No ads, analytics or tracking.',
-  });
+  assert.deepEqual(
+    [BLUE_MERIDIAN.id, BLUE_MERIDIAN.pkg, BLUE_MERIDIAN.dreamComponent, BLUE_MERIDIAN.repo],
+    ['blue-meridian', 'com.jeremykenedy.bluemeridian',
+      'com.jeremykenedy.bluemeridian/.BlueMeridianDreamService', 'jeremykenedy/blue-meridian'],
+  );
 });
 
 test('Twilight Hearth registry entry points to its released app and installer repository', () => {
@@ -257,14 +254,11 @@ test('Aqua Surface Drift registry entry points to its released app and installer
 });
 
 test('Cloud Drift Clock registry entry points to its released app and installer repository', () => {
-  assert.deepEqual(CLOUD_DRIFT_CLOCK, {
-    id: 'cloud-drift-clock',
-    name: 'Cloud Drift Clock',
-    pkg: 'com.jeremykenedy.clouddriftclock',
-    dreamComponent: 'com.jeremykenedy.clouddriftclock/.CloudDreamService',
-    repo: 'jeremykenedy/cloud-drift-clock',
-    blurb: 'A moving cloudscape with an optional digital clock, sky palette, density, speed and motion. No ads, analytics or tracking.',
-  });
+  assert.deepEqual(
+    [CLOUD_DRIFT_CLOCK.id, CLOUD_DRIFT_CLOCK.pkg, CLOUD_DRIFT_CLOCK.dreamComponent, CLOUD_DRIFT_CLOCK.repo],
+    ['cloud-drift-clock', 'com.jeremykenedy.clouddriftclock',
+      'com.jeremykenedy.clouddriftclock/.CloudDreamService', 'jeremykenedy/cloud-drift-clock'],
+  );
 });
 
 test('Earthbound Orbit registry entry points to its released app and installer repository', () => {

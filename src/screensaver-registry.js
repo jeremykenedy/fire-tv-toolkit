@@ -65,7 +65,7 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.clouddriftclock',
     dreamComponent: 'com.jeremykenedy.clouddriftclock/.CloudDreamService',
     repo: 'jeremykenedy/cloud-drift-clock',
-    blurb: 'A moving cloudscape with an optional digital clock, sky palette, density, speed and motion. No ads, analytics or tracking.',
+    blurb: 'Real filmed flight through sunset clouds, with an optional drifting clock and playback speed. No ads, analytics or tracking.',
   },
   {
     id: 'prism-clock',
@@ -139,7 +139,7 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.bluemeridian',
     dreamComponent: 'com.jeremykenedy.bluemeridian/.BlueMeridianDreamService',
     repo: 'jeremykenedy/blue-meridian',
-    blurb: 'A rotating Earth with moving camera, atmosphere, night lights, clouds and adjustable stars. No ads, analytics or tracking.',
+    blurb: 'Detailed satellite Earth with gentle camera drift, atmosphere, city lights, clouds and adjustable stars. No ads, analytics or tracking.',
   },
   {
     id: 'twilight-hearth',
