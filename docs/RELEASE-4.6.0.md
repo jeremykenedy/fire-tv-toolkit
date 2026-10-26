@@ -87,13 +87,17 @@ Nibbles HD is pinned to public 1.0.0/code 3, 41,727 bytes and SHA-256
 Lumen Breaker is pinned to public 1.0.0/code 3, 74,551 bytes and SHA-256
 `fc0513f85fc8563cd8463546108bbf5ea9c459ab72465c669b126fcc6c14269c`.
 The paired UI icon archive is 8,505,979 bytes with SHA-256
-`9c2655584b5c85c8574c1ccb6ace20e6470bd48d6c91c7c4ac0322dcb550ccea`.
+`9c2655584b5c85c8574c1ccb6ace20e6470bd48d6c91c7c4ac0322dcb 550ccea`.
 All three public APKs and the icon archive were anonymously downloaded and their applicable package, certificate,
 SDK metadata, byte count and published checksum verified before registration.
 
 ## Verification and limits
 
-Local checks cover profiles, stale-target prevention, duplicate/invalid input,
+The CLI suite passes 501 checks. Desktop 55 checks and lint pass. Actual installed
+Electron 44.9.3 packages pass on macOS, Windows and Linux, including profile CRUD,
+switching, duplicates, restart, shipped 36-entry catalog Install actions, older-UI
+Home restrictions, playback/favorites and removal. Current raw captures and
+provenance are in the gallery. Local checks cover profiles, stale-target prevention, duplicate/invalid input,
 Home compatibility, explicit routing and rollback, real download integrity and
 catalog preservation. The exact signed UI 69 passed native update, mixed/missing
 Home preferences, permission-denied rollback, Preview and offline credits on the

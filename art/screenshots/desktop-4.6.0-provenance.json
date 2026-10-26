@@ -1,0 +1,218 @@
+{
+  "version": "4.6.0",
+  "sourceCommit": "f2bc41592c508855aca02229410c3d53e2824125",
+  "workflowRun": "https://github.com/jeremykenedy/fire-tv-toolkit/actions/runs/40404541151",
+  "scope": "Actual installed native Electron 44.9.3 apps in three isolated OS runners. Profiles CRUD/switch/duplicate/restart, shipped 36-entry catalog with Nibbles/Lumen Install actions, older-UI Home restrictions, synthetic local HLS/favorites/playback and removal. Sample TV data only; no physical TV connection. macOS builds both architectures and exercises its runner architecture.",
+  "captures": [
+    {
+      "file": "desktop-4.6.0-macos-tv-profiles.png",
+      "platform": "macOS",
+      "sourceArtifactFile": "darwin-tv-profiles.png",
+      "sha256": "36c8afada0989a5be0a53e3b132c45849c5044c8a5ef9da658a6d74d9731a293",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-macos-preferred-fire-tv-ui.png",
+      "platform": "macOS",
+      "sourceArtifactFile": "darwin-preferred-fire-tv-ui.png",
+      "sha256": "957b4dafd6b06443b059983092280500c1b7d916deb483ee953343fcbf058077",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-macos-older-ui-home-controls.png",
+      "platform": "macOS",
+      "sourceArtifactFile": "darwin-older-ui-home-controls.png",
+      "sha256": "045714e4f815abbf7055870ab8ad8aa0ec835b1ff92b2fc490e3e05bcc0a4c3c",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-macos-nibbles-hd-catalog.png",
+      "platform": "macOS",
+      "sourceArtifactFile": "darwin-nibbles-hd-catalog.png",
+      "sha256": "64b93d64c23d91b789604f58c42a11d777b82d58e678e59c981693f7acff23bb",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-macos-lumen-breaker-catalog.png",
+      "platform": "macOS",
+      "sourceArtifactFile": "darwin-lumen-breaker-catalog.png",
+      "sha256": "0ea67ce08ccc973a22a56acb4eea23f0115ff5e63fd3cc74520db64e73dca358",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-macos-device-setup.png",
+      "platform": "macOS",
+      "sourceArtifactFile": "darwin-device-setup.png",
+      "sha256": "63c7e227922594e6b3f6b997263fecc09e465a70381256594b1b7c164d3d4b96",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-macos-live-tv.png",
+      "platform": "macOS",
+      "sourceArtifactFile": "darwin-live-tv.png",
+      "sha256": "8f5b41b62f1ec48f897007d2c0b28df325afebfb7f5f0019fd02f294a9af4db7",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-macos-about.png",
+      "platform": "macOS",
+      "sourceArtifactFile": "darwin-about.png",
+      "sha256": "c96511a3dd6158c15ce289817e5155b88e4b675ff9598a88c3b4037d216bc8f8",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-macos-advanced.png",
+      "platform": "macOS",
+      "sourceArtifactFile": "darwin-advanced.png",
+      "sha256": "532790883d0871c2ea49390787219b70af8a601c82f408fa1e1df786f40d4ec2",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-macos-final-state.png",
+      "platform": "macOS",
+      "sourceArtifactFile": "darwin-final-state.png",
+      "sha256": "6df0e4a0286aaf9396c6d0b17f7400fb74b207a92e5a86fc507f574da92bdf59",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-windows-tv-profiles.png",
+      "platform": "Windows",
+      "sourceArtifactFile": "win32-tv-profiles.png",
+      "sha256": "62dfff073e2b336cc6c92f5a838157d3ae9b0f5d4ba3f4c6d0f1ace0cea645bd",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-windows-preferred-fire-tv-ui.png",
+      "platform": "Windows",
+      "sourceArtifactFile": "win32-preferred-fire-tv-ui.png",
+      "sha256": "6040813102372e23cdf1102c5338e1e99928dc08c52a39bb35a266ce522c8425",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-windows-older-ui-home-controls.png",
+      "platform": "Windows",
+      "sourceArtifactFile": "win32-older-ui-home-controls.png",
+      "sha256": "3d34f766af41cfdf711322731ee78ba2815eab87fff54c94ddc53883a2b00ff1",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-windows-nibbles-hd-catalog.png",
+      "platform": "Windows",
+      "sourceArtifactFile": "win32-nibbles-hd-catalog.png",
+      "sha256": "3c0e74a6c74931f3baffaec4ab6ab33ec0df4ca3ad7f8fd476e802205c853fab",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-windows-lumen-breaker-catalog.png",
+      "platform": "Windows",
+      "sourceArtifactFile": "win32-lumen-breaker-catalog.png",
+      "sha256": "9d8556a29b25b9ae74ec5354ea23b0df3b3615cbead17ed7878fb92ff4573b8c",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-windows-device-setup.png",
+      "platform": "Windows",
+      "sourceArtifactFile": "win32-device-setup.png",
+      "sha256": "8a2e4328f790e88d6f4c6a4a22cf9a6b5a3330342f3086459bb6191e66ee9146",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-windows-live-tv.png",
+      "platform": "Windows",
+      "sourceArtifactFile": "win32-live-tv.png",
+      "sha256": "9d89fa18f484268f41d2e9f5f68b19bbb90ef0ceb1e4aef5d254cedceb46ae15",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-windows-about.png",
+      "platform": "Windows",
+      "sourceArtifactFile": "win32-about.png",
+      "sha256": "dda411e69eb708d140276b04c9df3cdb8808007cf005f2d06cbd659bd8c711c9",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-windows-advanced.png",
+      "platform": "Windows",
+      "sourceArtifactFile": "win32-advanced.png",
+      "sha256": "46126e6ce3aa04dcd615cc6263649825787ec43adfe79df8627112e82fe80c69",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-windows-final-state.png",
+      "platform": "Windows",
+      "sourceArtifactFile": "win32-final-state.png",
+      "sha256": "d55f57867ef2173c2d4b3ce07c9341cf13648b9c7ed3c9cb8ba72ef266b3c8e1",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-linux-tv-profiles.png",
+      "platform": "Linux",
+      "sourceArtifactFile": "linux-tv-profiles.png",
+      "sha256": "427fe482ac8d268fbd350e07bd13c49dd8f961d7777786b67ec74dd46782e62e",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-linux-preferred-fire-tv-ui.png",
+      "platform": "Linux",
+      "sourceArtifactFile": "linux-preferred-fire-tv-ui.png",
+      "sha256": "772ccc9a4b056973e56c1198e760725a86900adfb7fe813cebb1c0f4d6fd1f7b",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-linux-older-ui-home-controls.png",
+      "platform": "Linux",
+      "sourceArtifactFile": "linux-older-ui-home-controls.png",
+      "sha256": "70a27bbff6d3c408723d9bd7dbd134892a428bba7acab5a7cb82487af7c876e1",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-linux-nibbles-hd-catalog.png",
+      "platform": "Linux",
+      "sourceArtifactFile": "linux-nibbles-hd-catalog.png",
+      "sha256": "e3669fdad2e124ca1f8c333dd9dde1272a1776368a3d52bbf301b1e7a1a1d77c",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-linux-lumen-breaker-catalog.png",
+      "platform": "Linux",
+      "sourceArtifactFile": "linux-lumen-breaker-catalog.png",
+      "sha256": "c2689fc4939467998abd1fc1e3e8c7371489f8785e4f0b325270aba15d9691f9",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-linux-device-setup.png",
+      "platform": "Linux",
+      "sourceArtifactFile": "linux-device-setup.png",
+      "sha256": "ce19fb1c66987e524dd08b4f9dadf3f376c49f72903654c098d900f5c8129b93",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-linux-live-tv.png",
+      "platform": "Linux",
+      "sourceArtifactFile": "linux-live-tv.png",
+      "sha256": "8a9265f889b1373a831861acd2cfa49fa59430cddaeb4be080852c4032c672a4",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-linux-about.png",
+      "platform": "Linux",
+      "sourceArtifactFile": "linux-about.png",
+      "sha256": "ca6b92aee1f1afae46cd5bb7b9bb30cf4df1debbac9c0f2df1d4471476b0dafc",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-linux-advanced.png",
+      "platform": "Linux",
+      "sourceArtifactFile": "linux-advanced.png",
+      "sha256": "2c232916942bb0546d3a15341f80a9fb785ed4a31f63d537d7c88bc960626568",
+      "modification": "None"
+    },
+    {
+      "file": "desktop-4.6.0-linux-final-state.png",
+      "platform": "Linux",
+      "sourceArtifactFile": "linux-final-state.png",
+      "sha256": "1e1cd7cbbe21fbaaccf72b2e5451e862e2b3ad0df0ef408e324a54fa97cb1c1f",
+      "modification": "None"
+    }
+  ]
+}
