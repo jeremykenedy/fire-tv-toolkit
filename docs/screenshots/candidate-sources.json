@@ -167,5 +167,23 @@
     "settingsSchema": "content://com.jeremykenedy.skycastweather.settings/schema",
     "minSdk": 23,
     "credit": "Film by anotherview,CC BY3.0,https://www.youtube.com/watch?v=kKPvF0rwqHA; edited silent loop, screenshot resized. Weather: Open-Meteo,CC BY4.0; free API service terms separate."
+  },
+  "nibbles-hd": {
+    "capture": "Actual physical Fire TV AFTDEC012E/API30,1920x1080 matte code2; public3 game/renderer/options/provider/Preview/Dream source and class bytes are identical. Plain resized derivatives, no retouching.",
+    "raw_source": "art/screenshots/nibbles-hd-physical-runtime-equivalent-1080p.png",
+    "source_sha256": "4db4f6d7ea407a997c15c00c851b749aa5ef365b79bb99c358b4b4ce727be432",
+    "thumbnail_sha256": "53cfdea2254a66db534b3afbc85af35ae1bbc1ef285b653bf73710bd2bfc0cdd",
+    "source_repository": "https://github.com/jeremykenedy/nibbles-hd/blob/v1.0.0/art/screenshots/default-physical-1080p.png",
+    "release": "https://github.com/jeremykenedy/nibbles-hd/releases/tag/v1.0.0",
+    "apk_sha256": "c49bc22e5cbf5067da4bbcb1cd63140d31b0a49a83f6826e111986ee4b7d7971",
+    "apk_bytes": 41727,
+    "signer_sha256": "cdf8f4f4fd70dbb133fe8b05b6ab165eb3e98b033ddcb7d305cf0d84d874bc75",
+    "package": "com.jeremykenedy.nibbleshd",
+    "dreamComponent": "com.jeremykenedy.nibbleshd/.NibblesDreamService",
+    "settingsSchema": "content://com.jeremykenedy.nibbleshd.settings/schema",
+    "settingsCount": 8,
+    "minSdk": 23,
+    "targetSdk": 36,
+    "credit": "Original game/procedural artwork by Jeremy Kenedy, Apache-2.0. See tagged LICENSE/NOTICE."
   }
 }

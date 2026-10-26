@@ -293,6 +293,18 @@ export const SCREENSAVERS = [
     repo: 'jeremykenedy/helios-lightfield',
     blurb: 'Animated luminous filaments looping around a dark field, with adjustable solar or polar palette, strand density, motion speed and glow.',
   },
+  {
+    id: 'nibbles-hd',
+    name: 'Nibbles HD',
+    pkg: 'com.jeremykenedy.nibbleshd',
+    dreamComponent: 'com.jeremykenedy.nibbleshd/.NibblesDreamService',
+    repo: 'jeremykenedy/nibbles-hd',
+    asset: 'nibbles-hd.apk',
+    tag: 'v1.0.0',
+    sha256: 'c49bc22e5cbf5067da4bbcb1cd63140d31b0a49a83f6826e111986ee4b7d7971',
+    bytes: 41727,
+    blurb: 'Autonomous matte snakes find food, grow and begin fresh rounds. Offline, with eight scene controls.',
+  },
 ];
 
 /**

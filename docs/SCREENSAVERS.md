@@ -36,6 +36,7 @@
 | `skyburst-nocturne` | Skyburst Nocturne | `com.jeremykenedy.skyburstnocturne` | [jeremykenedy/skyburst-nocturne](https://github.com/jeremykenedy/skyburst-nocturne) | Animated fireworks with adjustable frequency, size, speed, star density, palette and scene brightness |
 | `pulse-circuit` | Pulse Circuit | `com.jeremykenedy.pulsecircuit` | [jeremykenedy/pulse-circuit](https://github.com/jeremykenedy/pulse-circuit) | Animated geometric patterns with adjustable arena, shape density, geometry, motion, palette, pulse rhythm and light intensity |
 | `helios-lightfield` | Helios Lightfield | `com.jeremykenedy.helioslightfield` | [jeremykenedy/helios-lightfield](https://github.com/jeremykenedy/helios-lightfield) | Animated luminous filaments looping around a dark field, with adjustable solar or polar palette, strand density, motion speed and glow |
+| `nibbles-hd` | Nibbles HD | `com.jeremykenedy.nibbleshd` | [jeremykenedy/nibbles-hd](https://github.com/jeremykenedy/nibbles-hd) | Original autonomous matte snakes with real food, growth, collisions and fresh rounds |
 
 Aerial Views installs from its author's own release, pinned by tag and SHA-256
 because its releases publish no checksum. AndroSaver and Snoozy are forks of
@@ -190,3 +191,10 @@ independently of the reviewed installation baseline.
 
 Install or replace with `firetv-screensavers --install=hearth-presence`; selection
 is separate. [Tagged app contract](https://github.com/jeremykenedy/hearth-presence/blob/v1.1.0/docs/INTEGRATION.md).
+
+
+## Nibbles HD 1.0
+
+Install with `firetv-screensavers --install=nibbles-hd` and select separately with `screensaver --set=nibbles-hd`. The reviewed baseline pins the signed 1.0.0/code 3 APK: 41,727 bytes, SHA-256 `c49bc22e5cbf5067da4bbcb1cd63140d31b0a49a83f6826e111986ee4b7d7971`. Signer SHA-256 is `cdf8f4f4fd70dbb133fe8b05b6ab165eb3e98b033ddcb7d305cf0d84d874bc75`; minimum/target SDK is 23/36. Runtime has no requested permissions, network client, ads or tracking. The [tagged integration contract](https://github.com/jeremykenedy/nibbles-hd/blob/v1.0.0/docs/integration-contract.md) defines its eight-key local provider.
+
+Native settings control speed, snake count, palette, stage, board scale, effects, lighting and randomization. Toolkit opens app-owned settings rather than a generic property editor. The native gallery uses actual physical API 30 matte code 2, whose game/renderer/provider/Dream/Preview source and class bytes are identical to public code 3. Exact code 3 metadata/settings/Preview/credits/retention passed on the API 34 emulator. Physical normal idle/moving evidence belongs to equivalent code 2; mixed short pacing samples do not establish universal 60 FPS, 4K or thermal endurance. [Verification and device limits](https://github.com/jeremykenedy/nibbles-hd/blob/v1.0.0/docs/verification.md).
