@@ -24,9 +24,9 @@ Home Redirect shares Toolkit's repository, but its Android app version is separa
 
 The check downloads the checksum-verified helper temporarily, reads its compiled package and Android version code, and removes the inspection file. It compares that code with the installed app. For example, Home Redirect 1.2.6 is attached to repository release v3.9.1; v3.9.1 is not the helper's app version. The desktop and CLI show both values. Missing assets, integrity failures and unavailable history remain failed checks.
 
-## Private Fire TV UI
+## Fire TV UI
 
-Keep the repository private. Authenticate on the computer using `gh auth login`, `GH_TOKEN` or `GITHUB_TOKEN` with repository access. No token is copied to the TV or written into update metadata.
+Fire TV UI releases are public. Checking and downloading them does not require GitHub sign-in. Optional computer authentication through `gh auth login`, `GH_TOKEN` or `GITHUB_TOKEN` can raise the GitHub API request limit. No token is copied to the TV or written into update metadata.
 
 A checked UI update is sent to the TV's fixed Downloads handoff files. The UI's DUMP-protected receiver verifies the package, published hash, byte count, current signing certificate and higher version code before acknowledging it. Open **Advanced > Updates** on the TV to confirm normal Android installation. The UI must already include this update screen; an older UI rejects the handoff rather than silently installing. Handoff metadata expires after six hours.
 

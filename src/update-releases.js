@@ -8,7 +8,7 @@ import { IPTV_APPS } from './iptv-registry.js';
 
 export const UI_UPDATE = Object.freeze({
   id: 'fire-tv-ui', name: 'Fire TV UI', pkg: 'com.jeremykenedy.firetv.ui',
-  repo: 'jeremykenedy/fire-tv-ui', asset: 'fire-tv-ui.apk', private: true,
+  repo: 'jeremykenedy/fire-tv-ui', asset: 'fire-tv-ui.apk',
 });
 
 /** Version names that cannot be ordered remain unknown, never current. */
@@ -114,7 +114,7 @@ async function replaceVerifiedApp(ip, row, apk, api) {
       tag: row.published.tag, sha256: row.published.sha256, bytes: row.published.bytes,
       url: row.published.url, checked_at: row.published.checkedAt,
     });
-    return { staged: true, message: 'Verified private UI update sent. Open Advanced > Updates on the TV and confirm installation.' };
+    return { staged: true, message: 'Verified UI update sent. Open Advanced > Updates on the TV and confirm installation.' };
   }
   const output = await (api.installApk ?? installApk)(ip, apk);
   if (!/^Success\b/m.test(output ?? '')) throw new Error('Android did not confirm the replacement install.');

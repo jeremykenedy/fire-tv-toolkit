@@ -761,7 +761,7 @@ export function createController({
         const row = checkedUpdates.rows.find((item) => item.id === id);
         if (!row) throw new Error('Choose an app from the checked update list.');
         if (!await confirm({ ip, title: `Update ${row.name}`,
-          detail: 'Verify its published checksum, package and newer version code. Retain app data. Private UI updates require confirmation on the TV.' }))
+          detail: 'Verify its published checksum, package and newer version code. Retain app data. UI updates require confirmation on the TV.' }))
           return { cancelled: true };
         await requireConnection();
         return api.installAppUpdate(ip, row);
