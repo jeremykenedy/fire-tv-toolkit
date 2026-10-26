@@ -4,7 +4,19 @@
 
 ## Desktop app
 
-The current Live TV, update and About captures come from the actual packaged macOS 4.4.4 app. Its release check contacted GitHub and correctly reported the installed 4.4.4 candidate as newer than the published 4.4.3 release at capture time. No TV was connected and no installer was opened. [Capture provenance](../art/screenshots/desktop-4.4.4-provenance.json) records the native build and image hashes.
+The current 4.5.0 captures come from the actual installed Windows x64 app in the isolated native package test. Setup and About show the release version with no TV connected. The Live TV image deliberately shows synthetic test-channel content and a local HLS color-bar fixture, not a real broadcast or household playlist. No Connect action or physical-TV call was made. [Capture provenance](../art/screenshots/desktop-4.5.0-provenance.json) records exact source/image hashes.
+
+<table><tr>
+<td><a href="../art/screenshots/desktop-setup-4.5.0.png"><img src="../art/screenshots/desktop-setup-4.5.0.png" alt="Native Windows Toolkit 4.5 device setup without a connected TV" width="320"></a></td>
+<td><a href="../art/screenshots/desktop-about-4.5.0.png"><img src="../art/screenshots/desktop-about-4.5.0.png" alt="Native Windows Toolkit About showing desktop version 4.5.0" width="320"></a></td>
+<td><a href="../art/screenshots/desktop-live-tv-fixture-4.5.0.png"><img src="../art/screenshots/desktop-live-tv-fixture-4.5.0.png" alt="Native Toolkit 4.5 HLS lifecycle test with synthetic channels and color bars" width="320"></a></td>
+</tr></table>
+
+### Historical desktop captures
+
+The following packaged macOS 4.4.4 images retain their original capture provenance. They are historical interface evidence, not new 4.5.0 captures.
+
+The previous Live TV, update and About captures come from the actual packaged macOS 4.4.4 app. Its release check contacted GitHub and correctly reported the installed 4.4.4 candidate as newer than the published 4.4.3 release at capture time. No TV was connected and no installer was opened. [Capture provenance](../art/screenshots/desktop-4.4.4-provenance.json) records the native build and image hashes.
 
 <table><tr>
 <td><a href="../art/screenshots/desktop-live-tv-4.4.4.png"><img src="../art/screenshots/desktop-live-tv-4.4.4.png" alt="Native Toolkit 4.4.4 public Live TV catalog" width="320"></a></td>
@@ -12,7 +24,6 @@ The current Live TV, update and About captures come from the actual packaged mac
 <td><a href="../art/screenshots/desktop-about-4.4.4.png"><img src="../art/screenshots/desktop-about-4.4.4.png" alt="Native Toolkit 4.4.4 About and platform information" width="320"></a></td>
 </tr></table>
 
-### Historical desktop captures
 
 The following 4.4.1 capture records its check of 37 installed catalog apps and the correct distinction between Home Redirect's Android version and the Toolkit repository tag. It is historical evidence, not a new catalog-wide update audit.
 
@@ -30,6 +41,8 @@ Captured on an Insignia Fire TV Edition TV, Android TV emulators, and in macOS T
 Cloud Drift Clock 2.0 uses the current unretouched physical Fire TV API 28 capture, resized for the gallery. Its filmed scene is by [anotherview](https://www.youtube.com/watch?v=kKPvF0rwqHA), licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). The source audio was omitted, the footage edited into a 34-second loop and the clock disabled for this capture. [Capture and release provenance](screenshots/candidate-sources.json) records the exact source and APK hashes.
 
 Blue Meridian 1.0.1 uses the current physical Fire TV API 30 capture at 1920x1080. Its archival satellite imagery and modifications are documented in the [tagged upstream media guide](https://github.com/jeremykenedy/blue-meridian/blob/v1.0.1/docs/MEDIA.md).
+
+Skycast Weather 1.0 uses an untouched physical Fire TV API28 code4 London five-day Preview, resized for this gallery. The cloud film is independent of the selected city. [Release and capture provenance](screenshots/candidate-sources.json) records the exact APK and image hashes. Film credit: anotherview, [CC BY3.0](https://creativecommons.org/licenses/by/3.0/); weather presentation: Open-Meteo, CC BY4.0 under separate service terms.
 
 ## The home screen and the on-TV picker
 
@@ -53,6 +66,7 @@ Twilight Hearth shows actual physical Fire TV modern/bright output from its veri
     <a href="screenshots/screensaver-aquarium-4k.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-aquarium-4k-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-aquarium-4k-tablet.jpg 2x"><img src="screenshots/screensaver-aquarium-4k.jpg" alt="Aquarium 4K" title="Aquarium 4K"></picture></a>
     <a href="screenshots/screensaver-aquarium-live.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-aquarium-live-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-aquarium-live-tablet.jpg 2x"><img src="screenshots/screensaver-aquarium-live.jpg" alt="Aquarium Live" title="Aquarium Live"></picture></a>
     <a href="screenshots/screensaver-cloud-drift-clock.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-cloud-drift-clock-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-cloud-drift-clock-tablet.jpg 2x"><img src="screenshots/screensaver-cloud-drift-clock.jpg" alt="Cloud Drift Clock 2.0, real forward flight through sunset clouds with the clock disabled" title="Cloud Drift Clock"></picture></a>
+    <a href="screenshots/screensaver-skycast-weather.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-skycast-weather-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-skycast-weather-tablet.jpg 2x"><img src="screenshots/screensaver-skycast-weather.jpg" alt="Skycast Weather 1.0 physical Fire TV London forecast over real cloud flight" title="Skycast Weather"></picture></a>
     <a href="screenshots/screensaver-prism-clock.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-prism-clock-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-prism-clock-tablet.jpg 2x"><img src="screenshots/screensaver-prism-clock.jpg" alt="Prism Clock with a drifting clock over moving silver facets on a physical Fire TV" title="Prism Clock"></picture></a>
     <a href="screenshots/screensaver-perseid-passage.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-perseid-passage-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-perseid-passage-tablet.jpg 2x"><img src="screenshots/screensaver-perseid-passage.jpg" alt="Perseid Passage with bright meteors crossing a deep blue starfield" title="Perseid Passage"></picture></a>
     <a href="screenshots/screensaver-split-flap-drift.jpg"><picture><source media="(min-width: 1280px)" srcset="screenshots/grid/screensaver-split-flap-drift-desktop.jpg 2x"><source media="(min-width: 600px)" srcset="screenshots/grid/screensaver-split-flap-drift-tablet.jpg 2x"><img src="screenshots/screensaver-split-flap-drift.jpg" alt="Split-Flap Drift with an illuminated split-flap clock floating on a dark background" title="Split-Flap Drift"></picture></a>

@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.5.0] - 2026-10-26
+
+### Added
+
+- Install and select published Skycast Weather through the shared CLI and desktop catalog, with real forecasts and a clouds-only option.
+- Record the exact signed release contract and current physical forecast preview with media attribution.
+
+### Changed
+
+- Refresh current native desktop setup/About captures from the isolated installed Windows 4.5.0 package; retain historical captures with their provenance.
+
+See the [4.5.0 upgrade guide](docs/RELEASE-4.5.0.md).
+
 ## [4.4.4] - 2026-10-25
 
 ### Fixed

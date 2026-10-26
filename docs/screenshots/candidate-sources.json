@@ -134,5 +134,20 @@
     "dreamComponent": "com.jeremykenedy.clouddriftclock/.CloudDreamService",
     "settingsSchema": "content://com.jeremykenedy.clouddriftclock.settings/schema",
     "minSdk": 23
+  },
+  "skycast-weather": {
+    "capture": "Untouched physical Fire TV API28,1920x1080,1.0.0/code4 London five-day metric Preview. Gallery files are plain resized derivatives.",
+    "raw_source": "art/screenshots/weather-london-five-physical-api28.png",
+    "source_sha256": "c0618efbf28a6e892db08b0401a8a9beac695e73236ed3839b342bf5c02165c8",
+    "source_repository": "https://github.com/jeremykenedy/skycast-weather/tree/v1.0.0",
+    "release": "https://github.com/jeremykenedy/skycast-weather/releases/tag/v1.0.0",
+    "apk_sha256": "b8680ebc7314e8687281e5d405aa84d1b0f38d1f6505193f652b96fc9cf0e7e0",
+    "apk_bytes": 39552020,
+    "thumbnail_sha256": "043d2fd05eeaf7ec5fba6062b6ed93d11da2e8d10fdb85f393c80b2e557a1f77",
+    "package": "com.jeremykenedy.skycastweather",
+    "dreamComponent": "com.jeremykenedy.skycastweather/.WeatherDreamService",
+    "settingsSchema": "content://com.jeremykenedy.skycastweather.settings/schema",
+    "minSdk": 23,
+    "credit": "Film by anotherview,CC BY3.0,https://www.youtube.com/watch?v=kKPvF0rwqHA; edited silent loop, screenshot resized. Weather: Open-Meteo,CC BY4.0; free API service terms separate."
   }
 }
