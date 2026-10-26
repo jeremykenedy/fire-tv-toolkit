@@ -1,6 +1,6 @@
-import { getSetting, putSetting, deleteSetting, listPackages, listDisabledPackages, enablePackage, disablePackage, grantPermission, installApk, uninstallPackage, pressHome, describeAdbError, sendGuard, setNativeUiHome } from '../adb.js';
+import { getSetting, putSetting, deleteSetting, listPackages, listDisabledPackages, enablePackage, disablePackage, grantPermission, installApk, uninstallPackage, pressHome, describeAdbError, sendGuard, setNativeUiHome, nativeUiHomePreference, packageDetails } from '../adb.js';
 import { downloadApk, removeDownload } from './screensavers.js';
-import { AT4K, LTV, FIRE_TV_UI, HOME_REDIRECT, HOME_LAUNCHERS, launcherApps } from '../launcher-registry.js';
+import { AT4K, LTV, FIRE_TV_UI, HOME_REDIRECT, HOME_LAUNCHERS, launcherApps, UI_HOME_MIN_CODE } from '../launcher-registry.js';
 
 const SERVICES_KEY = 'enabled_accessibility_services';
 const ENABLED_KEY = 'accessibility_enabled';
@@ -67,6 +67,7 @@ async function homeTarget(ip, value) {
 export async function launcherState(ip) {
   const packages = await listPackages(ip);
   const disabled = await listDisabledPackages(ip);
+  const ui = packages.includes(FIRE_TV_UI.pkg) ? await packageDetails(ip, FIRE_TV_UI.pkg) : null;
   const services = parseServices(await getSetting(ip, 'secure', SERVICES_KEY));
   let home = 'amazon';
   if (packages.includes(FIRE_TV_UI.pkg) && !disabled.includes(FIRE_TV_UI.pkg) && services.includes(FIRE_TV_UI.service) && services.includes(FIRE_TV_UI.controlsService)
@@ -80,6 +81,7 @@ export async function launcherState(ip) {
     disabled: KNOWN_APPS.filter((app) => disabled.includes(app.pkg)).map((app) => app.id),
     services,
     home,
+    ...(ui ? { uiHomeSupported: ui.versionCode !== null && ui.versionCode >= UI_HOME_MIN_CODE } : {}),
   };
 }
 
@@ -126,6 +128,9 @@ export async function installLauncherApp(ip, app) {
   let enabledBefore;
   let servicesBefore;
   try {
+    if (app.id === FIRE_TV_UI.id && (!Number.isSafeInteger(app.versionCode) || BigInt(app.versionCode) < UI_HOME_MIN_CODE)) {
+      throw new Error('Fire TV UI version code69 or later is required for safe Home preference preservation.');
+    }
     apkPath = await downloadApk(app);
     if (app.id === FIRE_TV_UI.id) {
       before = await launcherState(ip);
@@ -134,6 +139,11 @@ export async function installLauncherApp(ip, app) {
     }
     await installApk(ip, apkPath);
     await enablePackage(ip, app.pkg);
+    if (before) {
+      const installed = await packageDetails(ip, FIRE_TV_UI.pkg);
+      if (installed.versionCode === null || installed.versionCode < UI_HOME_MIN_CODE)
+        throw new Error('Installed Fire TV UI does not provide the code69 Home preservation API.');
+    }
     if (!before || !before.installed.includes(FIRE_TV_UI.id)) {
       for (const permission of app.grants || []) {
         await grantPermission(ip, app.pkg, permission);
@@ -167,6 +177,15 @@ export async function useHome(ip, mode) {
   const enabledBefore = await getSetting(ip, 'secure', ENABLED_KEY);
   const servicesBefore = await getSetting(ip, 'secure', SERVICES_KEY);
   const hasUi = before.installed.includes(FIRE_TV_UI.id);
+  let preferenceBefore;
+  if (hasUi) {
+    if (!before.uiHomeSupported) return false;
+    try {
+      preferenceBefore = await nativeUiHomePreference(ip);
+    } catch {
+      return false;
+    }
+  }
   const requested = servicesFor(before.services, mode);
   let uiChanged = false;
   const enabledApps = [];
@@ -179,7 +198,7 @@ export async function useHome(ip, mode) {
     }
     // Remember the choice before the native guard can repair an old Home route.
     if (hasUi) {
-      await setNativeUiHome(ip, mode === FIRE_TV_UI.id);
+      await setNativeUiHome(ip, mode === FIRE_TV_UI.id, true);
       uiChanged = true;
     }
     if (mode !== FIRE_TV_UI.id && mode !== 'amazon') {
@@ -194,9 +213,10 @@ export async function useHome(ip, mode) {
       throw new Error('The TV did not save the Home button setting.');
     }
     if ((await launcherState(ip)).home !== mode) throw new Error('The TV did not retain Home routing.');
+    if (hasUi) await setNativeUiHome(ip, mode === FIRE_TV_UI.id);
   } catch {
     try {
-      if (uiChanged) await setNativeUiHome(ip, before.home === FIRE_TV_UI.id, true);
+      if (uiChanged) await setNativeUiHome(ip, preferenceBefore, true);
       if ([AT4K.id, LTV.id].includes(before.home) && before.home !== mode) {
         await homeTarget(ip, before.home);
       }

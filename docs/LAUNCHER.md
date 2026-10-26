@@ -10,8 +10,10 @@ Fire TV UI uses its own DUMP-protected `BackupReceiver` and `HomeControl` API.
 Selecting it enables its `Hra` and `HomeRedirectService` accessibility services,
 removes the conflicting legacy redirect and AT4K Home service, and preserves all
 other services. It does not install Toolkit's separate Home Redirect app.
-Switching away calls the UI's `home-off` operation before writing the requested
-route, so `ProtectionService` cannot keep repairing the previous Home choice.
+A switch first changes only the narrow Home preference, then writes and verifies
+the route. Only after successful readback does explicit Use commit through
+`home-on` or `home-off`, so a failed route does not normalize private startup
+flags. `ProtectionService` cannot repair a stale Home preference during the switch.
 The protection service itself, screensaver selection, timers and unrelated
 preferences are left alone. No microphone or notification access is granted.
 
@@ -20,7 +22,9 @@ HomeControl interface. For an existing installation it never calls HomeControl o
 Home/startup preferences; it restores the exact accessibility services/enabled
 settings after the in-place APK update. Fresh installation uses preference-off
 without selecting Home. Explicit Home switching validates readback before pressing Home; failed
-readback restores the previous routing preference and settings. A restore failure
+readback restores the previous routing preference, including absence, and the
+exact settings. The full code69 HomeControl transaction must restore all four
+private Home flags on native failure before Toolkit restores the earlier preference. A restore failure
 is reported rather than claimed as successful. Mocked checks cover these paths;
 this new Toolkit integration still needs a separately authorized physical gate.
 
@@ -126,6 +130,9 @@ firetv-ltv-backup --pull=ltv-backup.json   # copy the newest LTvLauncher backup 
 - `HOME_LAUNCHERS[0]` is Fire TV UI, with `recommended: true`.
 - `launcherApps('fire-tv-ui')` returns only the UI entry. Desktop readiness must
   inspect that list instead of requiring the legacy Home Redirect globally.
+- `launcherState().uiHomeSupported` is exposed when UI is installed and is true
+  only for version code69 or newer. Desktop must disable unsupported Home changes
+  without changing an existing active launcher.
 - `launcherState().home` includes `fire-tv-ui` only when both own services are
   enabled and `accessibility_enabled=1`. Existing AT4K/LTvLauncher/Amazon choices
   keep their original identifiers.
@@ -136,6 +143,12 @@ firetv-ltv-backup --pull=ltv-backup.json   # copy the newest LTvLauncher backup 
 
 ### Pending native update-preservation gate
 
+All Home mutations involving the native UI require version code69 or newer.
+Unknown and older installed codes are refused before a preference or OS write.
+A pinned installation descriptor must also declare code69 or newer; the current
+public68 baseline is intentionally unavailable for fresh installation until its
+reviewed successor is pinned.
+
 The reviewed public UI68 receiver handles its own package replacement by calling
 HomeControl, which can normalize its four Home/startup flags independently of
 Toolkit. The mocked Toolkit update fixture deliberately proves that Toolkit
@@ -145,3 +158,12 @@ Before releasing this integration, the UI release must rebind after an update
 without rewriting those private choices, and its exact signed APK must pass a
 native upgrade/preservation gate. Explicit `--use=fire-tv-ui` remains a separate
 user action that uses HomeControl's supported Home-on behavior.
+
+The code69 protected API reads only `home-preference-state`, returning exactly
+`home-preference=unset|on|off`. Preference-on/off change only
+`fire_tv_ui_home_enabled`; preference-clear restores its absence. They must
+preserve the other three Home flags and their presence. A failed explicit Use
+restores that exact preference and raw OS settings; it does not use a broad
+preference export. The full Home-on/off commit occurs only after route readback
+and requires native four-key rollback on error. These contracts remain subject
+to verification against the final signed code69 APK.

@@ -8,7 +8,7 @@ import { installFakeAdb, AERIAL, captured } from './helpers/fake-adb.js';
 import { launcherFetch } from './helpers/launcher-fakes.js';
 import { FIRE_TV_UI as UI, AT4K, LTV, HOME_REDIRECT, HOME_LAUNCHERS, launcherApps } from '../src/launcher-registry.js';
 import { launcherState, servicesFor, useHome, installLauncherApp, removeLauncherApp } from '../src/apply/launcher.js';
-import { setNativeUiHome } from '../src/adb.js';
+import { setNativeUiHome, nativeUiHomePreference } from '../src/adb.js';
 import { manageLauncher, FLAG_SPEC } from '../src/steps/launcher.js';
 
 let fake;
@@ -19,10 +19,11 @@ const uiServices = `${UI.controlsService}:${UI.service}`;
 function installed(services = 'reader/Service', enabled = '1') {
   fake.setState({ installed: [AERIAL, UI.pkg, AT4K.pkg, LTV.pkg, HOME_REDIRECT.pkg],
     secure: { ...fake.readState().secure, [key]: services, accessibility_enabled: enabled },
-    uiHomeWanted: services.includes(UI.service) });
+    uiHomeWanted: services.includes(UI.service),
+    uiHomeFlags: { fire_tv_ui_home_enabled: services.includes(UI.service) } });
 }
 before(() => { fake = installFakeAdb(); fetchBefore = globalThis.fetch; globalThis.fetch = launcherFetch(); });
-beforeEach(() => { fake.reset(); process.exitCode = undefined; });
+beforeEach(() => { fake.reset(); fake.setState({ versionCodes: { [UI.pkg]: 69 } }); process.exitCode = undefined; });
 after(() => { globalThis.fetch = fetchBefore; fake.restore(); process.exitCode = undefined; });
 
 test('recommended UI is first and needs no legacy redirect package', () => {
@@ -78,7 +79,7 @@ test('invalid mode and incomplete UI accessibility state never report UI as sele
 test('fresh UI install keeps Amazon selected and preserves services, idle timer and other options', async () => {
   fake.setState({ secure: { ...fake.readState().secure, [key]: 'reader/Service' } });
   const before = fake.readState();
-  assert.deepEqual(await installLauncherApp(ip, { ...UI, sha256: undefined }), { ok: true });
+  assert.deepEqual(await installLauncherApp(ip, { ...UI, versionCode: 69, sha256: undefined }), { ok: true });
   const after = fake.readState();
   assert.equal(after.uiHomeWanted, false);
   assert.deepEqual(after.secure, before.secure);
@@ -91,7 +92,7 @@ test('UI update restores the selected UI and all unrelated accessibility service
   installed(`reader/Service:${uiServices}`);
   fake.setState({ dropServicesOnInstall: true });
   const before = fake.readState().secure;
-  assert.deepEqual(await installLauncherApp(ip, { ...UI, sha256: undefined }), { ok: true });
+  assert.deepEqual(await installLauncherApp(ip, { ...UI, versionCode: 69, sha256: undefined }), { ok: true });
   assert.deepEqual(fake.readState().secure, before);
   assert.equal(fake.readState().uiHomeWanted, true);
 });
@@ -100,11 +101,11 @@ test('UI update keeps LTvLauncher selected, and a failed install preserves it to
   installed(`reader/Service:${HOME_REDIRECT.service}`);
   fake.setState({ guard: { home: 'ltv' }, dropServicesOnInstall: true });
   const before = fake.readState().secure;
-  assert.deepEqual(await installLauncherApp(ip, { ...UI, sha256: undefined }), { ok: true });
+  assert.deepEqual(await installLauncherApp(ip, { ...UI, versionCode: 69, sha256: undefined }), { ok: true });
   assert.equal((await launcherState(ip)).home, 'ltv');
   assert.deepEqual(fake.readState().secure, before);
   fake.setState({ installFail: 'Failure [INSTALL_FAILED_UPDATE_INCOMPATIBLE]' });
-  assert.equal((await installLauncherApp(ip, { ...UI, sha256: undefined })).ok, false);
+  assert.equal((await installLauncherApp(ip, { ...UI, versionCode: 69, sha256: undefined })).ok, false);
   assert.deepEqual(fake.readState().secure, before);
 });
 
@@ -129,16 +130,16 @@ test('failed Home readback restores UI preference and the exact original service
 test('installation preserves an explicitly empty services setting and disabled accessibility', async () => {
   fake.setState({ secure: { ...fake.readState().secure, [key]: '', accessibility_enabled: '0' } });
   const before = fake.readState().secure;
-  assert.equal((await installLauncherApp(ip, { ...UI, sha256: undefined })).ok, true);
+  assert.equal((await installLauncherApp(ip, { ...UI, versionCode: 69, sha256: undefined })).ok, true);
   assert.deepEqual(fake.readState().secure, before);
 });
 
-test('direct selection refuses an absent UI, and install-ui reports checksum failure without choosing Home', async () => {
+test('direct selection refuses an absent UI, and install-ui refuses an unsafe pinned release without choosing Home', async () => {
   const before = fake.readState();
   assert.equal(await useHome(ip, UI.id), false);
   assert.deepEqual(fake.readState(), before);
   const result = await captured(() => manageLauncher(ip, { 'install-ui': true, use: UI.id }));
-  assert.match(result.out, /Checksum mismatch/);
+  assert.match(result.out, /version code69 or later/);
   assert.equal(process.exitCode, 1);
   assert.deepEqual(fake.readState().secure, before.secure);
   assert.ok(!fake.readState().installed.includes(HOME_REDIRECT.pkg));
@@ -146,7 +147,7 @@ test('direct selection refuses an absent UI, and install-ui reports checksum fai
 
 test('failed rollback is reported explicitly rather than falsely claiming restoration', async () => {
   installed(`reader/Service:${uiServices}`);
-  fake.setState({ dropNextSettingWrites: 3 });
+  fake.setState({ uiCommitFail: true, dropRollbackSettingWrites: 1 });
   await assert.rejects(useHome(ip, AT4K.id), /did not restore its previous accessibility settings/);
 });
 
@@ -171,13 +172,13 @@ test('guided default recommends UI installation without silently switching Home'
     { expect: 'Nothing has been changed yet. Continue?', send: ENTER },
   ], { env: { NODE_OPTIONS: `--import=${preload}` } });
   assert.equal(result.code, 1, result.out);
-  assert.match(result.out, /Checksum mismatch/);
+  assert.match(result.out, /version code69 or later/);
   assert.equal(fake.readState().secure[key], undefined);
   assert.ok(!fake.readState().installed.includes(HOME_REDIRECT.pkg));
 });
 
 test('fresh install preserves absent accessibility keys and partial uninstall removes the remaining UI control service', async () => {
-  assert.equal((await installLauncherApp(ip, { ...UI, sha256: undefined })).ok, true);
+  assert.equal((await installLauncherApp(ip, { ...UI, versionCode: 69, sha256: undefined })).ok, true);
   assert.equal(fake.readState().secure[key], undefined);
   assert.equal(fake.readState().secure.accessibility_enabled, undefined);
   fake.setState({ secure: { ...fake.readState().secure, [key]: UI.controlsService, accessibility_enabled: '1' } });
@@ -211,7 +212,7 @@ test('updating the legacy redirect rebinds the existing AT4K Home choice after A
 test('installer reports an unsuccessful restoration and still removes its downloaded APK', async () => {
   installed(`reader/Service:${uiServices}`);
   fake.setState({ dropServicesOnInstall: true, dropNextSettingWrites: 4 });
-  await assert.rejects(installLauncherApp(ip, { ...UI, sha256: undefined }), /did not restore its previous accessibility settings/);
+  await assert.rejects(installLauncherApp(ip, { ...UI, versionCode: 69, sha256: undefined }), /did not restore its previous accessibility settings/);
   assert.equal(fs.existsSync(fake.readState().lastInstallPath), false);
 });
 
@@ -236,7 +237,7 @@ test('disabled UI is not current Home; failed selection restores its disabled st
 test('installer detects a TV that restores the services list but rejects the previous accessibility flag', async () => {
   installed('reader/Service', '0');
   fake.setState({ lockedKeys: ['accessibility_enabled'], accessibilityOnInstall: '1' });
-  await assert.rejects(installLauncherApp(ip, { ...UI, sha256: undefined }), /did not restore its previous accessibility settings/);
+  await assert.rejects(installLauncherApp(ip, { ...UI, versionCode: 69, sha256: undefined }), /did not restore its previous accessibility settings/);
   assert.equal(fs.existsSync(fake.readState().lastInstallPath), false);
 });
 
@@ -260,7 +261,7 @@ test('existing UI updates never normalize any private Home flags, including nons
     fake.setState({ uiHomeFlags: flags, uiOperations: [], dropServicesOnInstall: true,
       grants: { [UI.pkg]: ['owner-retained-permission'] } });
     const services = fake.readState().secure;
-    assert.equal((await installLauncherApp(ip, { ...UI, sha256: undefined })).ok, true);
+    assert.equal((await installLauncherApp(ip, { ...UI, versionCode: 69, sha256: undefined })).ok, true);
     assert.deepEqual(fake.readState().uiHomeFlags, flags);
     assert.deepEqual(fake.readState().uiOperations, []);
     assert.deepEqual(fake.readState().grants[UI.pkg], ['owner-retained-permission']);
@@ -269,7 +270,120 @@ test('existing UI updates never normalize any private Home flags, including nons
 });
 
 test('fresh install opts out of Home through preference-only API, without a Home rebind', async () => {
-  assert.equal((await installLauncherApp(ip, { ...UI, sha256: undefined })).ok, true);
+  assert.equal((await installLauncherApp(ip, { ...UI, versionCode: 69, sha256: undefined })).ok, true);
   assert.deepEqual(fake.readState().uiOperations, ['home-preference-off']);
   assert.equal(fake.readState().uiHomeFlags.fire_tv_ui_home_enabled, false);
+});
+
+
+test('failed readback preserves mixed and missing private flags and never performs the full Home commit', async () => {
+  const samples = [
+    { fire_tv_ui_home_enabled: false, start_on_boot: true, override_home_button: false, better_home_detection: false },
+    { start_on_boot: false, better_home_detection: false },
+    { fire_tv_ui_home_enabled: true },
+  ];
+  for (const flags of samples) {
+    const selectingUi = flags.fire_tv_ui_home_enabled !== true;
+    installed(selectingUi ? 'reader/Service' : `reader/Service:${uiServices}`);
+    fake.setState({ uiHomeFlags: flags, uiOperations: [], dropNextSettingWrites: 1 });
+    const original = fake.readState();
+    assert.equal(await useHome(ip, selectingUi ? UI.id : 'amazon'), false);
+    assert.deepEqual(fake.readState().uiHomeFlags, flags);
+    assert.deepEqual(fake.readState().secure, original.secure);
+    assert.ok(!fake.readState().uiOperations.some(operation => operation === 'home-on' || operation === 'home-off'));
+    assert.deepEqual(fake.readState().inputs || [], []);
+  }
+});
+
+test('native full-commit failure rolls back all private flags including missing keys, then Toolkit restores the old preference and OS', async () => {
+  for (const flags of [
+    { fire_tv_ui_home_enabled: false, start_on_boot: true, override_home_button: false, better_home_detection: false },
+    { start_on_boot: false },
+  ]) {
+    installed('reader/Service');
+    fake.setState({ uiHomeFlags: flags, uiCommitFail: true, uiOperations: [] });
+    const original = fake.readState().secure;
+    assert.equal(await useHome(ip, UI.id), false);
+    assert.deepEqual(fake.readState().uiHomeFlags, flags);
+    assert.deepEqual(fake.readState().secure, original);
+    assert.ok(fake.readState().uiOperations.includes('home-on'));
+    assert.deepEqual(fake.readState().inputs || [], []);
+  }
+});
+
+test('full Home commit happens after verified routing, and successful explicit Use may normalize its Home flags', async () => {
+  installed('reader/Service');
+  fake.setState({ uiHomeFlags: { start_on_boot: false, better_home_detection: false }, uiOperations: [] });
+  assert.equal(await useHome(ip, UI.id), true);
+  assert.equal(fake.readState().uiCommitServicesBefore, `reader/Service:${uiServices}`);
+  assert.equal(fake.readState().uiCommitEnabledBefore, '1');
+  assert.deepEqual(fake.readState().uiOperations, ['home-preference-on', 'home-on']);
+  assert.deepEqual(fake.readState().uiHomeFlags, { fire_tv_ui_home_enabled: true, start_on_boot: true, override_home_button: true, better_home_detection: true });
+  assert.equal(fake.readState().inputs.length, 1);
+});
+
+test('code68 and unknown versions cannot mutate Home, while state exposes compatibility to the desktop', async () => {
+  for (const codes of [{ [UI.pkg]: 68 }, {}]) {
+    installed('reader/Service');
+    fake.setState({ versionCodes: codes, uiHomeFlags: { start_on_boot: false } });
+    const original = fake.readState();
+    assert.equal((await launcherState(ip)).uiHomeSupported, false);
+    assert.equal(await useHome(ip, UI.id), false);
+    assert.deepEqual(fake.readState(), original);
+  }
+});
+
+test('unsafe registry code68 refuses installation before any device or private preference change', async () => {
+  const original = fake.readState();
+  const result = await installLauncherApp(ip, { ...UI, sha256: undefined });
+  assert.equal(result.ok, false);
+  assert.match(result.error, /version code69 or later/);
+  assert.deepEqual(fake.readState(), original);
+});
+
+test('narrow preference state and clear preserve absence and the other three values', async () => {
+  installed('reader/Service');
+  fake.setState({ uiHomeFlags: { start_on_boot: false, override_home_button: true } });
+  assert.equal(await nativeUiHomePreference(ip), null);
+  await setNativeUiHome(ip, false, true);
+  assert.equal(await nativeUiHomePreference(ip), false);
+  await setNativeUiHome(ip, true, true);
+  assert.equal(await nativeUiHomePreference(ip), true);
+  await setNativeUiHome(ip, null, true);
+  assert.deepEqual(fake.readState().uiHomeFlags, { start_on_boot: false, override_home_button: true });
+});
+
+test('CLI explains the code69 requirement for an older installed UI without changing its state', async () => {
+  installed('reader/Service');
+  fake.setState({ versionCodes: { [UI.pkg]: 68 }, uiHomeFlags: { start_on_boot: false } });
+  const original = fake.readState();
+  const result = await captured(() => manageLauncher(ip, { use: UI.id }));
+  assert.match(result.out, /Update Fire TV UI to version code69 or later/);
+  assert.equal(process.exitCode, 1);
+  assert.deepEqual(fake.readState(), original);
+});
+
+test('unreviewed descriptor codes and mismatched installed versions cannot use the new API', async () => {
+  const original = fake.readState();
+  assert.equal((await installLauncherApp(ip, { ...UI, versionCode: undefined, sha256: undefined })).ok, false);
+  assert.deepEqual(fake.readState(), original);
+  for (const codes of [{ [UI.pkg]: 68 }, {}]) {
+    fake.reset();
+    fake.setState({ versionCodes: codes });
+    const result = await installLauncherApp(ip, { ...UI, versionCode: 69, sha256: undefined });
+    assert.equal(result.ok, false);
+    assert.match(result.error, /does not provide the code69/);
+    assert.equal(fake.readState().uiOperations, undefined);
+    assert.equal(fake.readState().grants, undefined);
+  }
+});
+
+test('upgrading an existing code68 UI to a reviewed code69 candidate never invokes HomeControl or normalizes its private flags', async () => {
+  installed(uiServices);
+  const flags = { fire_tv_ui_home_enabled: true, start_on_boot: false, better_home_detection: false };
+  fake.setState({ versionCodes: { [UI.pkg]: 68 }, installVersionCodes: { [UI.pkg]: 69 }, uiHomeFlags: flags, uiOperations: [] });
+  assert.equal((await installLauncherApp(ip, { ...UI, versionCode: 69, sha256: undefined })).ok, true);
+  assert.deepEqual(fake.readState().uiHomeFlags, flags);
+  assert.deepEqual(fake.readState().uiOperations, []);
+  assert.equal((await launcherState(ip)).uiHomeSupported, true);
 });

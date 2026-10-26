@@ -291,13 +291,24 @@ const NATIVE_UI_PKG = 'com.jeremykenedy.firetv.ui';
 
 /** Use the native UI's own HomeControl without changing its protection service. */
 export async function setNativeUiHome(ip, enabled, preferenceOnly = false) {
-  const operation = `home-${preferenceOnly ? 'preference-' : ''}${enabled ? 'on' : 'off'}`;
+  const operation = preferenceOnly && enabled === null
+    ? 'home-preference-clear'
+    : `home-${preferenceOnly ? 'preference-' : ''}${enabled ? 'on' : 'off'}`;
   const out = await run(['-s', target(ip), 'shell', 'am', 'broadcast', '--include-stopped-packages',
     '-n', `${NATIVE_UI_PKG}/.BackupReceiver`, '--es', 'operation', operation]);
   if (!/Broadcast completed: result=0, data="ok"(?:\s|$)/.test(out)) {
     throw new Error('Fire TV UI did not accept Home routing. Update or configure Fire TV UI before trying again.');
   }
 }
+/** Read only the Home preference, including absence, through the code69 API. */
+export async function nativeUiHomePreference(ip) {
+  const out = await run(['-s', target(ip), 'shell', 'am', 'broadcast', '--include-stopped-packages',
+    '-n', `${NATIVE_UI_PKG}/.BackupReceiver`, '--es', 'operation', 'home-preference-state']);
+  const state = /Broadcast completed: result=0, data="home-preference=(unset|on|off)"(?:\s|$)/.exec(out)?.[1];
+  if (!state) throw new Error('Fire TV UI did not report its Home preference. Version code69 or later is required.');
+  return state === 'unset' ? null : state === 'on';
+}
+
 const NATIVE_UI_SETTINGS = new Set([
   'secure/sleep_timeout',
   'system/screen_off_timeout',

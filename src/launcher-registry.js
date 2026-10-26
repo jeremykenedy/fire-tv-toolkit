@@ -61,6 +61,7 @@ export const FIRE_TV_UI = {
   controlsService: 'com.jeremykenedy.firetv.ui/com.jeremykenedy.firetv.ui.Hra',
   repo: 'jeremykenedy/fire-tv-ui',
   tag: 'v1.10.1',
+  versionCode: 68,
   asset: 'fire-tv-ui-1.10.1.apk',
   sha256: 'ab7b501954f23f9bbc1f4f3e8bab8580afcfd4be9a0f853003d300841a131dc1',
   grants: ['android.permission.WRITE_SECURE_SETTINGS'],
@@ -70,6 +71,9 @@ export const LAUNCHER_APPS = [FIRE_TV_UI, AT4K, HOME_REDIRECT];
 
 /** Available Home screens; launcherApps supplies each entry's dependencies. */
 export const HOME_LAUNCHERS = [FIRE_TV_UI, AT4K, LTV];
+
+/** First native UI with narrow Home preference operations and full rollback. */
+export const UI_HOME_MIN_CODE = 69n;
 
 /** Home Redirect version that can open a launcher other than AT4K. */
 export const HOME_TARGET_VERSION = '1.2.5';

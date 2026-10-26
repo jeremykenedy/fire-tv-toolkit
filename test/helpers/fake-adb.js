@@ -28,6 +28,7 @@ else if (cmd === 'install') {
   const body = fs.readFileSync(args[args.length - 1], 'utf8');
   const named = body.startsWith('pkg:') ? [body.slice(4).trim()] : state.installOnApk || [];
   for (const p of named) if (!state.installed.includes(p)) state.installed.push(p);
+  for (const p of named) if (state.installVersionCodes?.[p]) state.versionCodes = { ...state.versionCodes, [p]: state.installVersionCodes[p] };
   for (const p of named) if (state.installVersions?.[p]) {
     state.versions = { ...state.versions, [p]: state.installVersions[p] };
   }
@@ -36,7 +37,7 @@ else if (cmd === 'install') {
   if (state.accessibilityOnInstall !== undefined) state.secure.accessibility_enabled = state.accessibilityOnInstall;
   save(); out('Success');
 }
-else if (cmd === 'shell' && a === 'input') { out(''); }
+else if (cmd === 'shell' && a === 'input') { state.inputs = [...(state.inputs || []), args.slice(2)]; save(); out(''); }
 else if (cmd === 'shell' && a === 'monkey') {
   const p = args[args.indexOf('-p') + 1];
   if (!state.installed.includes(p) || (state.unopenable || []).includes(p)) fail('** No activities found to run, monkey aborted.');
@@ -107,13 +108,31 @@ else if (cmd === 'shell' && a === 'am' && b === 'broadcast' && args.includes('co
 }
 else if (cmd === 'shell' && a === 'am' && b === 'broadcast' && args.includes('com.jeremykenedy.firetv.ui/.BackupReceiver')) {
   const operation = args[args.indexOf('operation') + 1];
-  if (!state.installed.includes('com.jeremykenedy.firetv.ui') || state.uiHomeReject) {
+  const modern = (state.versionCodes || {})['com.jeremykenedy.firetv.ui'] >= 69;
+  if (!state.installed.includes('com.jeremykenedy.firetv.ui') || state.uiHomeReject || (!modern && ['home-preference-state', 'home-preference-clear'].includes(operation))) {
     out('Broadcast completed: result=1, data="unsupported"');
+  } else if (operation === 'home-preference-state') {
+    const flags = state.uiHomeFlags || {};
+    const value = Object.hasOwn(flags, 'fire_tv_ui_home_enabled') ? (flags.fire_tv_ui_home_enabled ? 'on' : 'off') : 'unset';
+    out('Broadcast completed: result=0, data="home-preference=' + value + '"');
   } else {
     state.uiOperations = [...(state.uiOperations || []), operation];
+    const beforeFlags = { ...(state.uiHomeFlags || {}) };
+    const beforeServices = state.secure.enabled_accessibility_services;
+    const beforeEnabled = state.secure.accessibility_enabled;
     state.uiHomeWanted = operation.endsWith('-on');
-    state.uiHomeFlags = { fire_tv_ui_home_enabled: state.uiHomeWanted, start_on_boot: state.uiHomeWanted, override_home_button: state.uiHomeWanted, better_home_detection: true };
+    if (operation === 'home-preference-clear') {
+      state.uiHomeFlags = { ...beforeFlags };
+      delete state.uiHomeFlags.fire_tv_ui_home_enabled;
+      state.uiHomeWanted = true;
+    } else if (modern && operation.includes('preference')) {
+      state.uiHomeFlags = { ...beforeFlags, fire_tv_ui_home_enabled: state.uiHomeWanted };
+    } else {
+      state.uiHomeFlags = { fire_tv_ui_home_enabled: state.uiHomeWanted, start_on_boot: state.uiHomeWanted, override_home_button: state.uiHomeWanted, better_home_detection: true };
+    }
     if (!operation.includes('preference')) {
+      state.uiCommitServicesBefore = beforeServices;
+      state.uiCommitEnabledBefore = beforeEnabled;
       const own = ['com.jeremykenedy.firetv.ui/com.jeremykenedy.firetv.ui.Hra', 'com.jeremykenedy.firetv.ui/com.jeremykenedy.firetv.ui.HomeRedirectService'];
       let list = (state.secure.enabled_accessibility_services || '').split(':').filter(Boolean).filter(s => !own.includes(s));
       if (state.uiHomeWanted) {
@@ -122,13 +141,24 @@ else if (cmd === 'shell' && a === 'am' && b === 'broadcast' && args.includes('co
       }
       state.secure.enabled_accessibility_services = list.join(':');
       state.secure.accessibility_enabled = list.length ? '1' : '0';
+      if (state.uiCommitFail) {
+        state.uiHomeFlags = beforeFlags;
+        state.uiHomeWanted = Object.hasOwn(beforeFlags, 'fire_tv_ui_home_enabled') ? beforeFlags.fire_tv_ui_home_enabled : true;
+        if (beforeServices === undefined) delete state.secure.enabled_accessibility_services;
+        else state.secure.enabled_accessibility_services = beforeServices;
+        if (beforeEnabled === undefined) delete state.secure.accessibility_enabled;
+        else state.secure.accessibility_enabled = beforeEnabled;
+        state.dropNextSettingWrites = state.dropRollbackSettingWrites || 0;
+        save(); out('Broadcast completed: result=1, data="write failed"'); process.exit(0);
+      }
     }
     save(); out('Broadcast completed: result=0, data="ok"');
   }
 }
 else if (cmd === 'shell' && a === 'dumpsys' && b === 'package') {
   const v = (state.versions || {})[c];
-  out(state.installed.includes(c) ? 'Packages:\\n    versionName=' + (v || '1.0.0') : 'Unable to find package: ' + c);
+  const code = (state.versionCodes || {})[c];
+  out(state.installed.includes(c) ? 'Packages:\\n    versionName=' + (v || '1.0.0') + (code === undefined ? '' : '\\n    versionCode=' + code) : 'Unable to find package: ' + c);
 }
 else if (cmd === 'shell' && a === 'pm' && b === 'disable-user') {
   const pkg = args[args.length - 1];

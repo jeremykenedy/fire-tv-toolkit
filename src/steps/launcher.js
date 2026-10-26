@@ -77,6 +77,11 @@ async function switchHome(ip, mode) {
     print(chalk.gray(`\nThe Home button already goes to ${HOME_NAMES[mode]}.\n`));
     return;
   }
+  if (state.installed.includes(FIRE_TV_UI.id) && !state.uiHomeSupported) {
+    print(chalk.red('\nUpdate Fire TV UI to version code69 or later before changing Home. Older releases cannot preserve private Home preferences on failure.\n'));
+    markFailed();
+    return;
+  }
   if (await useHome(ip, mode)) {
     print(chalk.green(`\nDone. The Home button now goes to ${HOME_NAMES[mode]}.\n`));
   } else {
