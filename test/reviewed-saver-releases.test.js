@@ -3,31 +3,39 @@ import assert from 'node:assert/strict';
 import { SCREENSAVERS } from '../src/screensaver-registry.js';
 import { publishedApk } from '../src/update-releases.js';
 
-const hearth = SCREENSAVERS.find((entry) => entry.id === 'hearth-presence');
+const releases = [
+  {id: 'hearth-presence', pkg: 'com.jeremykenedy.hearthpresence', dream: '.HearthDreamService',
+    bytes: 121223466, sha256: '9541eb4fe2f4d7d69ac1f85b38144f5b5926274291ebec796d8150d27e07b781'},
+  {id: 'prism-clock', pkg: 'com.jeremykenedy.prismclock', dream: '.PrismDreamService',
+    bytes: 127947, sha256: '6d1a3204ca648033c3c0c1d68adcceb29e90ed1ff61ec24b7f65e1326b7621e8'},
+];
 
-test('Hearth installation uses the reviewed public artifact without changing its identity', () => {
-  assert.equal(hearth.pkg, 'com.jeremykenedy.hearthpresence');
-  assert.equal(hearth.dreamComponent, hearth.pkg + '/.HearthDreamService');
-  assert.equal(hearth.tag, 'v1.1.0');
-  assert.equal(hearth.asset, 'hearth-presence.apk');
-  assert.equal(hearth.bytes, 121223466);
-  assert.equal(hearth.sha256, '9541eb4fe2f4d7d69ac1f85b38144f5b5926274291ebec796d8150d27e07b781');
-});
-
-test('a reviewed installation baseline does not hide newer published Hearth updates', async () => {
-  let requestedTag = 'not called';
-  const next = await publishedApk(hearth, {
-    latestRelease: async (repo, asset, tag) => {
-      assert.equal(repo, hearth.repo);
-      assert.equal(asset, hearth.asset);
-      requestedTag = tag;
-      return {
-        tag: 'v1.2.0', asset, sha256: 'a'.repeat(64), bytes: 54321,
-        apkUrl: 'https://github.com/jeremykenedy/hearth-presence/releases/download/v1.2.0/hearth-presence.apk',
-      };
-    },
+for (const release of releases) {
+  const entry = SCREENSAVERS.find((item) => item.id === release.id);
+  test(`${entry.name} installs its reviewed public artifact without changing identity`, () => {
+    assert.equal(entry.pkg, release.pkg);
+    assert.equal(entry.dreamComponent, release.pkg + '/' + release.dream);
+    assert.equal(entry.tag, 'v1.1.0');
+    assert.equal(entry.asset, release.id + '.apk');
+    assert.equal(entry.bytes, release.bytes);
+    assert.equal(entry.sha256, release.sha256);
   });
-  assert.equal(requestedTag, undefined);
-  assert.equal(next.tag, 'v1.2.0');
-  assert.equal(next.sha256, 'a'.repeat(64));
-});
+
+  test(`${entry.name} latest checks ignore the reviewed installation baseline`, async () => {
+    let requestedTag = 'not called';
+    const next = await publishedApk(entry, {
+      latestRelease: async (repo, asset, tag) => {
+        assert.equal(repo, entry.repo);
+        assert.equal(asset, entry.asset);
+        requestedTag = tag;
+        return {
+          tag: 'v1.2.0', asset, sha256: 'a'.repeat(64), bytes: 54321,
+          apkUrl: `https://github.com/${repo}/releases/download/v1.2.0/${asset}`,
+        };
+      },
+    });
+    assert.equal(requestedTag, undefined);
+    assert.equal(next.tag, 'v1.2.0');
+    assert.equal(next.sha256, 'a'.repeat(64));
+  });
+}

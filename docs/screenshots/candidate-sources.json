@@ -10,7 +10,7 @@
     "state": "Published signed release independently downloaded and verified; physical cabinet and fullscreen pacing near30buffers/s; hostintegrationinprogress"
   },
   "hearth-presence": {
-    "capture": "Unretouched physical Fire TV AFTDEC012E API30, exact1.1.0/code7 Large wood Preview,1920x1080; gallery files are plain resized derivatives.",
+    "capture": "Unretouched physical Fire TV AFTDEC012E API 30, exact 1.1.0/code 7 Large wood Preview,1920x1080; gallery files are plain resized derivatives.",
     "source_sha256": "db8e739a682b636db28d15b7fbdacdd2189e1ae31365999e7a6528813311df35",
     "raw_source": "art/screenshots/hearth-presence-wood-large-fire-tv-api30.png",
     "thumbnail_sha256": "21757c92e919d126fa3cbbc95e49ec1a437fe2c616c4d311a4a203ef82c392aa",
@@ -23,7 +23,7 @@
     "release": "https://github.com/jeremykenedy/hearth-presence/releases/tag/v1.1.0",
     "apk_sha256": "9541eb4fe2f4d7d69ac1f85b38144f5b5926274291ebec796d8150d27e07b781",
     "apk_bytes": 121223466,
-    "credit": "Wood footage by free video library (2018), CC BY3.0; height adaptation and native screenshot resized. See tagged upstreamNOTICE.",
+    "credit": "Wood footage by free video library (2018), CC BY 3.0; height adaptation and native screenshot resized. See tagged upstreamNOTICE.",
     "attribution_notice": "https://github.com/jeremykenedy/hearth-presence/blob/v1.1.0/NOTICE",
     "settings_schema_count": 11,
     "state": "Published signed artifact independently downloaded and verified; physical remote/normalDream and preservation passed. New filmed linear gas, audible crackle quality, owner-wide visual acceptance and thermal durability remain open."
@@ -87,19 +87,28 @@
     "state": "Published signed release; physical settled motion, Preview/Back and Dream/Back passed with exact six preferences/five settings/asleep restoration. Latest-release installer behavior preserved."
   },
   "prism-clock": {
-    "capture": "2026-10-22 physical Fire TV API30 actual silver Preview,1920x1080 resized without scene changes",
-    "source_sha256": "7217ea6e4efd79d177cbbaef77ec95c1faaebf7be80811ad8554b7172b5c41cb",
-    "thumbnail_sha256": "9b70da709b92221a847b7611d30da7ffef6c12dcb02aabc60e719293eb605fa1",
+    "capture": "Unretouched physical Fire TV AFTALMO API 28, final 1.1.0/code 4 clock ON Preview,1920x1080. Gallery files are plain resized derivatives.",
+    "source_sha256": "fa716030ec0baeed32a627998977284aeff1743e5296a7320d4e7a90a5a4b303",
+    "raw_source": "art/screenshots/prism-clock-clock-visible-fire-tv-api28.png",
+    "thumbnail_sha256": "723b5504d97e545c9916e451d550810eb665ac561e0636d96c53613c2cd286be",
     "responsive_sha256": {
-      "desktop": "3ec41c0f8a710bf117ccaca158b2a0bf1781d6bfeadda4a111d74642c08545b1",
-      "tablet": "fe389af220b3e1eacfae041154ce7210fb7ae9287a2c2937f717f663a14c3e1d"
+      "desktop": "c9664dc00ecf65428718a51ae4d05bd8abcddd9e111d02c4ae4e9816f5f18563",
+      "tablet": "22d564b03b678ed41bc5d3fbca4c9210441cc120a21b7d54d244074408131e89"
     },
-    "source_repository": "https://github.com/jeremykenedy/prism-clock/tree/v1.0.0",
-    "source_image": "https://github.com/jeremykenedy/prism-clock/blob/v1.0.0/art/screenshots/physical-silver-preview.png",
-    "release": "https://github.com/jeremykenedy/prism-clock/releases/tag/v1.0.0",
-    "apk_sha256": "edbf475c4a2b253ccc069adaee8cac2cbba4d16b5579d5299e2e2d1bdaa21fd5",
+    "source_repository": "https://github.com/jeremykenedy/prism-clock/tree/v1.1.0",
+    "source_image": "https://github.com/jeremykenedy/prism-clock/blob/v1.1.0/art/screenshots/clock-visible-fire-tv-api28.png",
+    "release": "https://github.com/jeremykenedy/prism-clock/releases/tag/v1.1.0",
+    "apk_sha256": "6d1a3204ca648033c3c0c1d68adcceb29e90ed1ff61ec24b7f65e1326b7621e8",
     "apk_bytes": 127947,
-    "state": "Published signed artifact independently downloaded and verified; actual native Preview/Dream/remote routes and owner visual acceptance. Physical max preset measured24.67FPS, with limited headroom."
+    "settings_schema_count": 12,
+    "clock_visibility": {
+      "key": "show_clock",
+      "type": "boolean",
+      "default": true,
+      "randomAllowed": false
+    },
+    "credit": "Original Prism Clock art and adapted native scaffolding, Apache 2.0; preserve tagged NOTICE. Native screenshot resized only.",
+    "state": "Published exact signed artifact independently verified. Final code 4 controls/Preview/retention passed; natural idle evidence is equivalent code 2, not a new final4 idle run. Original renderer unchanged; API 28 default 17-18 presents/s, no performance-upgrade claim."
   },
   "jellyfish-drift": {
     "capture": "Actual physical Fire TV output with clock disabled; resized without scene changes",

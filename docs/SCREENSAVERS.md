@@ -10,7 +10,7 @@
 | `aquarium-4k` | Aquarium 4K | `com.jeremykenedy.firetv.aquarium` | [jeremykenedy/fire-tv-aquarium](https://github.com/jeremykenedy/fire-tv-aquarium) | Offline 4K aquarium footage with custom fish, sea life and backgrounds |
 | `cloud-drift-clock` | Cloud Drift Clock | `com.jeremykenedy.clouddriftclock` | [jeremykenedy/cloud-drift-clock](https://github.com/jeremykenedy/cloud-drift-clock) | Real filmed flight through sunset clouds, with an optional drifting clock and playback speed |
 | `skycast-weather` | Skycast Weather | `com.jeremykenedy.skycastweather` | [jeremykenedy/skycast-weather](https://github.com/jeremykenedy/skycast-weather) | Real city forecasts over filmed clouds, with units, forecast range, playback speed and a clouds-only option |
-| `prism-clock` | Prism Clock | `com.jeremykenedy.prismclock` | [jeremykenedy/prism-clock](https://github.com/jeremykenedy/prism-clock) | A moving faceted surface with a drifting clock, adjustable materials, lighting, time format and motion |
+| `prism-clock` | Prism Clock | `com.jeremykenedy.prismclock` | [jeremykenedy/prism-clock](https://github.com/jeremykenedy/prism-clock) | Original moving faceted materials with an optional drifting clock, adjustable lighting and motion |
 | `jellyfish-drift` | Jellyfish Drift | `com.jeremykenedy.jellyfishdrift` | [jeremykenedy/jellyfish-drift](https://github.com/jeremykenedy/jellyfish-drift) | Animated jellyfish with adjustable water, density, motion, species and light rays |
 | `jellyfish-drift-v2` | Jellyfish Drift V2 | `com.jeremykenedy.jellyfishdriftv2` | [jeremykenedy/jellyfish-drift-v2](https://github.com/jeremykenedy/jellyfish-drift-v2) | Real filmed jellyfish in blue aquarium and deep ocean scenes, with playback speed and random selection |
 | `firefly-grove` | Firefly Grove | `com.jeremykenedy.fireflygrove` | [jeremykenedy/firefly-grove](https://github.com/jeremykenedy/firefly-grove) | Animated fireflies in a grove with adjustable density, motion and color |
@@ -129,11 +129,22 @@ The existing `pipeworks-dream` entry downloads the latest signed release. Versio
 
 The exact released APK passed physical signed-update preservation, remote Preview/Credits/Back and actual bound DreamService/Back, independent moving review and exact restoration. The [upstream verification](https://github.com/jeremykenedy/pipeworks-dream/blob/v1.1.0/docs/VERIFICATION.md) records short dense-scene presentation samples and their limits. Automatic idle activation, native 4K and sustained thermal behavior remain unverified. The gallery and desktop catalog now use the final physical capture identified in [capture provenance](screenshots/candidate-sources.json).
 
-## Prism Clock
+## Prism Clock 1.1
 
-Install with `firetv-screensavers --install=prism-clock`. The published 1.0.0 APK retains the app package and settings on replacement. Materials, facet size, surface motion, lighting, contrast, clock size, time format, seconds, date and clock movement are configurable in the native settings screen.
+The reviewed 1.1.0/code 4 APK keeps the original renderer, package and signer.
+Its twelve-row settings provider adds Show clock as a boolean that defaults On
+and is never randomized. Turning it Off hides clock/date/seconds together while
+retaining all eleven original choices. Install or update with
+`firetv-screensavers --install=prism-clock`; the existing latest-update checker
+continues to consult current published releases independently of this baseline.
 
-The silver preview in the gallery is actual physical Fire TV output. Its maximum tested preset presented approximately 24.67 frames per second, with limited performance headroom. The user's existing screensaver selection remains unchanged during installation.
+The current preview is actual physical API 28 output with the clock On. Default
+performance on that hardware is approximately 17-18 compositor presents/s, not a
+GPU improvement. Final code 4 Preview/controls and retention passed; natural idle
+evidence belongs to equivalent code 2. Other hardware and thermal endurance remain
+unverified. The current APK is 127,947 bytes, SHA-256
+`6d1a3204ca648033c3c0c1d68adcceb29e90ed1ff61ec24b7f65e1326b7621e8`.
+[Tagged app contract](https://github.com/jeremykenedy/prism-clock/blob/v1.1.0/docs/configuration.md).
 
 ## Separate jellyfish editions
 

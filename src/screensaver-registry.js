@@ -82,7 +82,10 @@ export const SCREENSAVERS = [
     dreamComponent: 'com.jeremykenedy.prismclock/.PrismDreamService',
     repo: 'jeremykenedy/prism-clock',
     asset: 'prism-clock.apk',
-    blurb: 'A moving faceted surface with a drifting clock, adjustable materials, lighting, time format and motion.',
+    tag: 'v1.1.0',
+    sha256: '6d1a3204ca648033c3c0c1d68adcceb29e90ed1ff61ec24b7f65e1326b7621e8',
+    bytes: 127947,
+    blurb: 'Original moving faceted materials with an optional drifting clock, adjustable lighting and motion.',
   },
   {
     id: 'jellyfish-drift',
