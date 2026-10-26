@@ -32,6 +32,7 @@ const RETRO_FLIGHT = SCREENSAVERS.find((s) => s.id === 'retro-flight');
 const PIPEWORKS_DREAM = SCREENSAVERS.find((s) => s.id === 'pipeworks-dream');
 const AQUA_SURFACE = SCREENSAVERS.find((s) => s.id === 'aqua-surface');
 const CLOUD_DRIFT_CLOCK = SCREENSAVERS.find((s) => s.id === 'cloud-drift-clock');
+const SKYCAST_WEATHER = SCREENSAVERS.find((s) => s.id === 'skycast-weather');
 const EARTHBOUND_ORBIT = SCREENSAVERS.find((s) => s.id === 'earthbound-orbit');
 const HELIOS_LIGHTFIELD = SCREENSAVERS.find((s) => s.id === 'helios-lightfield');
 const apkBytes = (pkg) => Buffer.from(`pkg:${pkg}`);
@@ -377,7 +378,7 @@ test('Twilight Hearth can be installed and selected through the CLI', async () =
   assert.equal(fake.readState().secure.screensaver_components, TWILIGHT_HEARTH.dreamComponent);
 });
 
-for (const saver of [SCREENSAVERS.find((entry) => entry.id === 'black-screen-dream'), NEBULA_DRIFT, VORTEX_SPIRAL, SIGNAL_RAIN, RETRO_FLIGHT, PIPEWORKS_DREAM, CLOUD_DRIFT_CLOCK, EARTHBOUND_ORBIT, HELIOS_LIGHTFIELD]) {
+for (const saver of [SCREENSAVERS.find((entry) => entry.id === 'black-screen-dream'), NEBULA_DRIFT, VORTEX_SPIRAL, SIGNAL_RAIN, RETRO_FLIGHT, PIPEWORKS_DREAM, CLOUD_DRIFT_CLOCK, SKYCAST_WEATHER, EARTHBOUND_ORBIT, HELIOS_LIGHTFIELD]) {
   test(`${saver.name} can be installed and selected through the CLI`, async () => {
     const installed = await captured(() => withFetch(
       pkgFetch(saver),

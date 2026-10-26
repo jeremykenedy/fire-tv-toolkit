@@ -68,6 +68,14 @@ export const SCREENSAVERS = [
     blurb: 'Real filmed flight through sunset clouds, with an optional drifting clock and playback speed. No ads, analytics or tracking.',
   },
   {
+    id: 'skycast-weather',
+    name: 'Skycast Weather',
+    pkg: 'com.jeremykenedy.skycastweather',
+    dreamComponent: 'com.jeremykenedy.skycastweather/.WeatherDreamService',
+    repo: 'jeremykenedy/skycast-weather',
+    blurb: 'Real city forecasts over filmed cloud flight, with units, forecast range, playback speed and a clouds-only option. No ads, analytics or tracking.',
+  },
+  {
     id: 'prism-clock',
     name: 'Prism Clock',
     pkg: 'com.jeremykenedy.prismclock',
