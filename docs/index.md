@@ -4,7 +4,7 @@
 
 | Guide | Contents |
 |-------|----------|
-| [Desktop app](DESKTOP.md) | Install and use the graphical app. |
+| [Desktop app](DESKTOP.md) | Install the graphical app, save TV profiles and switch devices. |
 | [TV setup](SETUP.md) | Developer mode, ADB and CLI setup. |
 | [Features](FEATURES.md) | Behavior, defaults and limits. |
 | [Commands](COMMANDS.md) | Every command and flag. |
@@ -12,7 +12,7 @@
 | [Configuration](CONFIGURATION.md) | Saved settings and environment values. |
 | [How it works](HOW-IT-WORKS.md) | The ADB changes behind each tool. |
 | [Screensavers](SCREENSAVERS.md) | Catalog, sources and download checks. |
-| [Home screen](LAUNCHER.md) | AT4K, LTvLauncher and the TV picker. |
+| [Home screen](LAUNCHER.md) | Recommended Fire TV UI, AT4K, LTvLauncher and the TV picker. |
 | [TV guide and IPTV](IPTV.md) | fire-iptv, OwnTV and source setup. |
 | [Guard](GUARD.md) | Settings protection and limits. |
 | [Optimizing](OPTIMIZE.md) | Checks that help screensavers run. |
@@ -23,6 +23,7 @@
 | [Troubleshooting](TROUBLESHOOTING.md) | Connection and settings problems. |
 | [Development](DEVELOPMENT.md) | Source builds, tests and releasing. |
 | [Signing installers](SIGNING.md) | Signing and notarization. |
+| [4.6.0 release](RELEASE-4.6.0.md) | Named TV profiles, recommended Fire TV UI, Nibbles HD and Lumen Breaker. |
 | [4.5.2 release](RELEASE-4.5.2.md) | Patched Electron certificate trust and build-time URI parsing. |
 | [4.5.1 release](RELEASE-4.5.1.md) | Current Hearth and Prism app releases and previews. |
 | [4.5.0 release](RELEASE-4.5.0.md) | Skycast Weather forecasts and clouds-only scenes. |

@@ -22,9 +22,11 @@ import {
 import {
   HOME_LAUNCHERS,
   HOME_REDIRECT,
+  FIRE_TV_UI,
   launcherApps,
 } from 'fire-tv-toolkit/src/launcher-registry.js';
 import { OWNTV, FIRE_IPTV, IPTV_PLAYLIST } from 'fire-tv-toolkit/src/iptv-registry.js';
+import { createTvProfiles } from './tv-profiles.js';
 
 const toolkit = {
   ...adb,
@@ -65,6 +67,7 @@ export function createController({
   let busy = false;
   let shellAbort = null;
   let checkedUpdates = null;
+  const profiles = createTvProfiles(dataDir, api.isValidIp);
   const preferencesFile = path.join(dataDir, 'desktop-settings.json');
   let advanced = false;
   try {
@@ -118,6 +121,7 @@ export function createController({
       sleepMs,
       screensaverMs,
       home: launcher.home,
+      homeChangesSupported: launcher.uiHomeSupported !== false,
       guardConfigured: api.guardState().on,
       ownTvInstalled: installed.includes(OWNTV.pkg),
       fireIptvInstalled: installed.includes(FIRE_IPTV.pkg),
@@ -133,7 +137,11 @@ export function createController({
       launchers: HOME_LAUNCHERS.map((entry) => ({
         id: entry.id,
         name: entry.name,
+        recommended: entry.recommended === true,
         installed: installed.includes(entry.pkg),
+        ready: launcherApps(entry.id).every(app => installed.includes(app.pkg)) &&
+          launcher.uiHomeSupported !== false,
+        requiresUpdate: entry.id === 'fire-tv-ui' && launcher.uiHomeSupported === false,
       })),
       playlist: IPTV_PLAYLIST,
     };
@@ -228,7 +236,7 @@ export function createController({
         return {
           title: `Install ${HOME_LAUNCHERS.find((entry) => entry.id === action.id).name}`,
           detail:
-            'Download and verify the launcher and Home Redirect, then grant their required permissions. Your Home button changes only when you choose Use.',
+            `Download and verify ${launcherApps(action.id).map(app => app.name).join(' and ')}${action.id === FIRE_TV_UI.id ? ' and its shared HD icons' : ''}, then apply the required setup. Your Home button changes only when you choose Use.`,
         };
       case 'home':
         return {
@@ -408,7 +416,7 @@ export function createController({
             launcherApps(action.id).every((entry) =>
               installed.includes(entry.pkg),
             ),
-            'Install this launcher and Home Redirect first.',
+            `Install ${launcherApps(action.id).map(app => app.name).join(' and ')} first.`,
           );
         }
         requireVerified(
@@ -558,7 +566,7 @@ export function createController({
       if (request.home !== 'amazon') {
         const entry = state.launchers.find((item) => item.id === request.home);
         if (!entry) throw new Error('Choose a supported home screen.');
-        if (!entry.installed || !state.homeRedirectInstalled)
+        if (!entry.ready)
           add('install-launcher', { id: entry.id });
       }
       add('home', { id: request.home });
@@ -590,19 +598,29 @@ export function createController({
 
   return {
     initial() {
-      let savedIp = '';
-      try {
-        savedIp = JSON.parse(
-          fs.readFileSync(path.join(dataDir, 'last-device.json'), 'utf8'),
-        ).ip;
-      } catch {
-        /* First launch has no saved device. */
-      }
-      return {
-        advanced,
-        savedIp:
-          typeof savedIp === 'string' && api.isValidIp(savedIp) ? savedIp : '',
-      };
+      return { advanced, ...profiles.snapshot() };
+    },
+    profiles(request) {
+      return exclusive(async () => {
+        if (!request || typeof request !== 'object' || Array.isArray(request))
+          throw new Error('Choose a supported TV profile action.');
+        let result;
+        if (request.operation === 'disconnect') {
+          device = null;
+          checkedUpdates = null;
+          return { ...profiles.snapshot(), disconnected: true };
+        }
+        if (request.operation === 'select') result = profiles.select(request.id);
+        else if (request.operation === 'save') result = profiles.save(request.profile);
+        else if (request.operation === 'remove') result = profiles.remove(request.id);
+        else throw new Error('Choose a supported TV profile action.');
+        const disconnected = !!device && result.savedIp !== device.ip;
+        if (disconnected) {
+          device = null;
+          checkedUpdates = null;
+        }
+        return { ...result, disconnected };
+      });
     },
     setAdvanced(value, confirm) {
       return exclusive(async () => {
@@ -711,6 +729,7 @@ export function createController({
         if (typeof value !== 'string' || !api.isValidIp(value))
           throw new Error('Enter a valid IPv4 address, such as 192.168.1.50.');
         device = null;
+        checkedUpdates = null;
         const ip = value.trim();
         if (!(await api.isAdbInstalled()))
           throw new Error(
@@ -734,11 +753,12 @@ export function createController({
         let state;
         try {
           state = await readState();
+          writeJson(path.join(dataDir, 'last-device.json'), { ip });
+          profiles.remember(ip);
         } catch (error) {
           device = null;
           throw error;
         }
-        writeJson(path.join(dataDir, 'last-device.json'), { ip });
         return state;
       });
     },

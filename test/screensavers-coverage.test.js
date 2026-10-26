@@ -273,6 +273,25 @@ test('Earthbound Orbit registry entry points to its released app and installer r
   });
 });
 
+test('Nibbles HD released artifact and native gallery stay aligned', () => {
+  const entry = SCREENSAVERS.find((item) => item.id === 'nibbles-hd');
+  assert.equal(entry.pkg, 'com.jeremykenedy.nibbleshd');
+  assert.equal(entry.dreamComponent, `${entry.pkg}/.NibblesDreamService`);
+  assert.equal(entry.repo, 'jeremykenedy/nibbles-hd');
+  assert.equal(entry.tag, 'v1.0.0');
+  assert.equal(entry.asset, 'nibbles-hd.apk');
+  assert.equal(entry.bytes, 41727);
+  assert.equal(entry.sha256, 'c49bc22e5cbf5067da4bbcb1cd63140d31b0a49a83f6826e111986ee4b7d7971');
+  const sources = JSON.parse(fs.readFileSync(new URL('../docs/screenshots/candidate-sources.json', import.meta.url)));
+  const source = sources['nibbles-hd'];
+  assert.equal(source.apk_sha256, entry.sha256);
+  assert.equal(source.apk_bytes, entry.bytes);
+  assert.equal(source.settingsCount, 8);
+  assert.equal(source.signer_sha256, 'cdf8f4f4fd70dbb133fe8b05b6ab165eb3e98b033ddcb7d305cf0d84d874bc75');
+  const thumbnail = fs.readFileSync(new URL('../docs/screenshots/screensaver-nibbles-hd.jpg', import.meta.url));
+  assert.equal(sha(thumbnail), source.thumbnail_sha256);
+});
+
 test('latestRelease asks for a pinned tag by name when one is given', async () => {
   const seen = [];
   const r = await withFetch(pkgFetch(ANDRO, { seen }), () => sv.latestRelease(ANDRO.repo, undefined, 'v 1/x'));
@@ -500,4 +519,25 @@ test('unchecking a screensaver and not typing yes cancels the removal', async ()
   assert.equal(r.code, 0, r.out);
   assert.match(r.out, /Cancelled\. Nothing was changed/);
   assert.deepEqual(fake.readState().installed, [AERIAL]);
+});
+
+
+test('Lumen Breaker public artifact and native preview retain the verified contract', () => {
+  const entry = SCREENSAVERS.find((item) => item.id === 'lumen-breaker');
+  assert.equal(entry.pkg, 'com.jeremykenedy.lumenbreaker');
+  assert.equal(entry.dreamComponent, `${entry.pkg}/.LumenDreamService`);
+  assert.equal(entry.tag, 'v1.0.0');
+  assert.equal(entry.asset, 'lumen-breaker.apk');
+  assert.equal(entry.bytes, 74551);
+  assert.equal(entry.sha256, 'fc0513f85fc8563cd8463546108bbf5ea9c459ab72465c669b126fcc6c14269c');
+  const sources = JSON.parse(fs.readFileSync(new URL('../docs/screenshots/candidate-sources.json', import.meta.url)));
+  const source = sources['lumen-breaker'];
+  assert.equal(source.apk_sha256, entry.sha256);
+  assert.equal(source.apk_bytes, entry.bytes);
+  assert.equal(source.settingsCount, 9);
+  assert.equal(source.signer_sha256, 'd3404786108a0b54fab7bedb1119d3851bd688cdea9c4712155a9582852182e4');
+  assert.equal(source.minSdk, 23);
+  assert.equal(source.targetSdk, 36);
+  const image = fs.readFileSync(new URL('../docs/screenshots/screensaver-lumen-breaker.jpg', import.meta.url));
+  assert.equal(sha(image), source.thumbnail_sha256);
 });

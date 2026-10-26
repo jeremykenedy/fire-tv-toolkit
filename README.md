@@ -6,6 +6,7 @@
 <p align="center">Watch live TV and manage your Fire TV with a desktop app or CLI.</p>
 
 <p align="center">
+    <a href="https://github.com/jeremykenedy/fire-tv-toolkit/releases"><img src="https://img.shields.io/github/downloads/jeremykenedy/fire-tv-toolkit/total" alt="Total downloads"></a>
     <a href="https://github.com/jeremykenedy/fire-tv-toolkit/releases/latest"><img src="https://img.shields.io/github/v/release/jeremykenedy/fire-tv-toolkit" alt="Latest release"></a>
     <a href="https://github.com/jeremykenedy/fire-tv-toolkit/actions/workflows/tests.yml"><img src="https://github.com/jeremykenedy/fire-tv-toolkit/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
     <a href="https://github.com/jeremykenedy/fire-tv-toolkit/actions/workflows/gitguardian.yml"><img src="https://github.com/jeremykenedy/fire-tv-toolkit/actions/workflows/gitguardian.yml/badge.svg" alt="GitGuardian scan"></a>
@@ -20,10 +21,9 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/jeremykenedy"><img src="https://img.shields.io/github/followers/jeremykenedy?label=Follow%20me&amp;style=social" alt="Follow me"></a>
-    <a href="https://github.com/jeremykenedy/fire-tv-toolkit"><img src="https://img.shields.io/badge/Star-this%20repo-yellow?logo=github" alt="Star this repo"></a>
-    <a href="https://github.com/jeremykenedy/fire-tv-toolkit/stargazers"><img src="https://img.shields.io/github/stars/jeremykenedy/fire-tv-toolkit?style=social" alt="Stars"></a>
-    <a href="https://github.com/sponsors/jeremykenedy"><img src="https://img.shields.io/badge/Sponsor-jeremykenedy-ea4aaa?logo=githubsponsors&amp;logoColor=white" alt="Sponsor"></a>
+    <a href="https://github.com/jeremykenedy"><img src="https://img.shields.io/github/followers/jeremykenedy?label=Follow&amp;style=social" alt="Follow"></a>
+    <a href="https://github.com/jeremykenedy/fire-tv-toolkit/stargazers"><img src="https://img.shields.io/github/stars/jeremykenedy/fire-tv-toolkit?label=Star&amp;style=social" alt="Star"></a>
+    <a href="https://github.com/sponsors/jeremykenedy"><img src="https://img.shields.io/badge/Sponsor-EA4AAA?logo=githubsponsors&amp;logoColor=white" alt="Sponsor"></a>
 </p>
 
 | Desktop App | CLI App |
@@ -43,10 +43,10 @@
 
 ## Desktop App
 
-Browse live channels, save favorites, and manage screensavers, home screens and TV settings.
+Browse live channels, save favorites and named TVs, and manage screensavers, Home screens and TV settings.
 
 <p align="center">
-  <a href="https://github.com/jeremykenedy/fire-tv-toolkit/releases/latest/download/Fire-TV-Toolkit-mac-arm64.dmg"><img src="art/screenshots/desktop-setup-4.5.2.png" alt="Toolkit 4.5.2 native Windows setup, with no TV connected. Click to download for macOS Apple silicon." width="900"></a>
+  <a href="https://github.com/jeremykenedy/fire-tv-toolkit/releases/latest/download/Fire-TV-Toolkit-mac-arm64.dmg"><img src="art/screenshots/desktop-4.6.0-macos-tv-profiles.png" alt="Toolkit 4.6.0 native macOS saved TV editor with safe sample addresses. Click to download for macOS Apple silicon." width="900"></a>
 </p>
 
 | macOS | Windows | Linux |
@@ -83,7 +83,9 @@ See [TV setup](docs/SETUP.md) for ADB debugging and upgrades, or the [command re
 | [Desktop live TV](docs/DESKTOP.md#watch-iptv) | Browse worldwide IPTV channels, filter sources and save favorites. |
 | [TV guide and sports](docs/IPTV.md) | Install fire-iptv or OwnTV on your TV. |
 | [Screensavers](docs/SCREENSAVERS.md) | Install ad-free screensavers and choose one from your computer or TV. |
-| [Home screens](docs/LAUNCHER.md) | Switch between AT4K, LTvLauncher and Amazon Home. |
+| [Saved TVs](docs/DESKTOP.md#saved-tvs) | Name, edit and switch TV addresses before connecting. |
+| [Home screens](docs/LAUNCHER.md) | Choose Fire TV UI, AT4K, LTvLauncher or Amazon Home. |
+| [Shared HD icons](docs/LAUNCHER.md#how-it-works) | Send matching input icons with UI installs and updates. |
 | [Alexa wake](docs/HOW-IT-WORKS.md#the-alexa-deep-sleep-fix) | Keep Alexa able to reach the TV during sleep. |
 | [Idle timers](docs/TIMEOUTS.md) | Change sleep and screensaver delays. |
 | [Setup protection](docs/GUARD.md) | Restore selected settings when Fire OS changes them. |
@@ -94,13 +96,13 @@ See [TV setup](docs/SETUP.md) for ADB debugging and upgrades, or the [command re
 
 See the [feature guide](docs/FEATURES.md) for behavior and limits, or browse the [screenshot gallery](docs/SCREENSHOTS.md).
 
-<p align="center"><a href="docs/DESKTOP.md"><img src="art/screenshots/desktop-about-4.5.2.png" alt="Fire TV Toolkit 4.5.2 native Windows About and platform information" width="900"></a></p>
+<p align="center"><a href="docs/DESKTOP.md"><img src="art/screenshots/desktop-4.6.0-windows-about.png" alt="Fire TV Toolkit 4.6.0 native Windows About and platform information" width="900"></a></p>
 
 ## Platform support
 
 | Platform | Status |
 |----------|--------|
-| macOS desktop | Intel and Apple silicon packages; checked against a physical TV. |
+| macOS desktop | Intel and Apple silicon packages; native app checks in CI. |
 | Windows and Linux desktop | Native installation, playback and removal checked in CI. |
 | Terminal CLI | macOS tested; Linux tests pass in CI. Windows CLI is unsupported. |
 | Fire TV Edition | Tested on Insignia AFTDEC012E, Fire OS 8.1.8.5. |

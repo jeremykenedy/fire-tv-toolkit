@@ -1,14 +1,14 @@
 import { latestRelease, githubToken, fetchSha256File } from './apply/screensavers.js';
-import { packageVersion, packageDetails, installApk, stageUiUpdate } from './adb.js';
+import { packageVersion, packageDetails, installApk, stageUiUpdate, installSharedIcons } from './adb.js';
+import { prepareUiIcons } from './ui-icons.js';
 import { downloadApk, removeDownload } from './apply/screensavers.js';
 import { inspectApk } from './apk-manifest.js';
 import { SCREENSAVERS } from './screensaver-registry.js';
-import { HOME_LAUNCHERS, HOME_REDIRECT } from './launcher-registry.js';
+import { HOME_LAUNCHERS, HOME_REDIRECT, FIRE_TV_UI } from './launcher-registry.js';
 import { IPTV_APPS } from './iptv-registry.js';
 
 export const UI_UPDATE = Object.freeze({
-  id: 'fire-tv-ui', name: 'Fire TV UI', pkg: 'com.jeremykenedy.firetv.ui',
-  repo: 'jeremykenedy/fire-tv-ui', asset: 'fire-tv-ui.apk',
+  ...FIRE_TV_UI, asset: 'fire-tv-ui.apk',
 });
 
 /** Version names that cannot be ordered remain unknown, never current. */
@@ -71,7 +71,7 @@ export async function checkAppUpdates(ip, api = {}) {
   let token;
   try { token = await (api.githubToken ?? githubToken)(); } catch { /* Public checks can proceed without sign-in. */ }
   let rateLimited = false;
-  for (const entry of [UI_UPDATE, ...SCREENSAVERS.filter((item) => item.pkg !== UI_UPDATE.pkg), ...HOME_LAUNCHERS, HOME_REDIRECT, ...IPTV_APPS]) {
+  for (const entry of [UI_UPDATE, ...SCREENSAVERS.filter((item) => item.pkg !== UI_UPDATE.pkg), ...HOME_LAUNCHERS.filter((item) => item.pkg !== UI_UPDATE.pkg), HOME_REDIRECT, ...IPTV_APPS]) {
     const installed = await (api.packageVersion ?? packageVersion)(ip, entry.pkg);
     if (!installed) continue;
     try {
@@ -109,12 +109,16 @@ async function replaceVerifiedApp(ip, row, apk, api) {
   if (before.versionCode === null || archive.versionCode <= before.versionCode)
     throw new Error('APK version code is not newer than the installed app.');
   if (row.id === UI_UPDATE.id) {
-    await (api.stageUiUpdate ?? stageUiUpdate)(ip, apk, {
-      name: UI_UPDATE.name, package: UI_UPDATE.pkg, repo: UI_UPDATE.repo, dream: '', preview: '',
-      tag: row.published.tag, sha256: row.published.sha256, bytes: row.published.bytes,
-      url: row.published.url, checked_at: row.published.checkedAt,
-    });
-    return { staged: true, message: 'Verified UI update sent. Open Advanced > Updates on the TV and confirm installation.' };
+    const icons = await (api.prepareUiIcons ?? prepareUiIcons)(row.published);
+    try {
+      await (api.installSharedIcons ?? installSharedIcons)(ip, icons.files);
+      await (api.stageUiUpdate ?? stageUiUpdate)(ip, apk, {
+        name: UI_UPDATE.name, package: UI_UPDATE.pkg, repo: UI_UPDATE.repo, dream: '', preview: '',
+        tag: row.published.tag, sha256: row.published.sha256, bytes: row.published.bytes,
+        url: row.published.url, checked_at: row.published.checkedAt,
+      });
+    } finally { icons.cleanup(); }
+    return { staged: true, message: 'Verified UI update and shared icons sent. Open Advanced > Updates on the TV and confirm installation.' };
   }
   const output = await (api.installApk ?? installApk)(ip, apk);
   if (!/^Success\b/m.test(output ?? '')) throw new Error('Android did not confirm the replacement install.');

@@ -6,6 +6,7 @@ import path from 'node:path';
 import { createController } from '../controller.js';
 import { FIRE_IPTV, OWNTV } from 'fire-tv-toolkit/src/iptv-registry.js';
 import { SCREENSAVERS } from 'fire-tv-toolkit/src/screensaver-registry.js';
+import { FIRE_TV_UI } from 'fire-tv-toolkit/src/launcher-registry.js';
 
 const aerial = SCREENSAVERS.find((entry) => entry.id === 'aerial');
 
@@ -110,10 +111,11 @@ test('connecting reads state and preserves the first captured timer values', asy
   h.state.sleep = 60000;
   await h.controller.refresh();
   assert.equal(h.baselines.get(`${originalDirectory}:sleep`), 1200000);
-  assert.deepEqual(h.controller.initial(), {
-    savedIp: '192.168.1.10',
-    advanced: false,
-  });
+  const initial = h.controller.initial();
+  assert.equal(initial.savedIp, '192.168.1.10');
+  assert.equal(initial.advanced, false);
+  assert.equal(initial.profiles.length, 1);
+  assert.equal(initial.profiles[0].ip, '192.168.1.10');
   await h.controller.connect('192.168.1.11');
   assert.notEqual(h.state.directory, originalDirectory);
   assert.equal(h.baselines.get(`${h.state.directory}:sleep`), 60000);
@@ -133,6 +135,112 @@ test('a declined native confirmation performs no writes', async (t) => {
   assert.deepEqual(result, { cancelled: true });
   assert.equal(proposal.ip, '192.168.1.10');
   assert.deepEqual(h.writes, []);
+});
+
+test('switching a saved TV clears the previous action target without contacting either TV', async t => {
+  const h = harness(t);
+  await h.controller.connect('192.168.1.10');
+  const oldDirectory = h.state.directory;
+  const currentId = h.controller.initial().activeProfileId;
+  const connect = t.mock.method(h.api, 'connect');
+  const reach = t.mock.method(h.api, 'isReachable');
+  const saved = await h.controller.profiles({ operation: 'save', profile: {
+    name: 'Bedroom', ip: '192.168.1.11',
+  } });
+  assert.equal(saved.disconnected, true);
+  assert.equal(h.controller.isConnected(), false);
+  assert.equal(connect.mock.callCount(), 0);
+  assert.equal(reach.mock.callCount(), 0);
+  await assert.rejects(h.controller.action({ type: 'alexa', value: true }, async () => true), /Connect/);
+  assert.deepEqual(h.writes, []);
+  await h.controller.profiles({ operation: 'select', id: currentId });
+  assert.equal(h.controller.isConnected(), false);
+  await h.controller.connect('192.168.1.10');
+  assert.equal(h.state.directory, oldDirectory);
+  assert.equal(h.baselines.get(`${oldDirectory}:sleep`), 1200000);
+});
+
+test('renaming the connected TV preserves its connection; removing it clears the target', async t => {
+  const h = harness(t);
+  await h.controller.connect('192.168.1.10');
+  const id = h.controller.initial().activeProfileId;
+  const result = await h.controller.profiles({ operation: 'save', profile: {
+    id, name: 'Main TV', ip: '192.168.1.10',
+  } });
+  assert.equal(result.disconnected, false);
+  assert.equal(h.controller.isConnected(), true);
+  const removed = await h.controller.profiles({ operation: 'remove', id });
+  assert.equal(removed.disconnected, true);
+  assert.equal(h.controller.isConnected(), false);
+  assert.equal(h.controller.initial().savedIp, '');
+  assert.deepEqual(h.writes, []);
+});
+
+test('a TV at a new address retains the same hardware-specific restoration history', async t => {
+  const h = harness(t);
+  h.api.deviceInfo = async () => ({ model: 'Test Fire TV', serial: 'same-hardware', android: '11' });
+  await h.controller.connect('192.168.1.10');
+  const directory = h.state.directory;
+  const id = h.controller.initial().activeProfileId;
+  await h.controller.profiles({ operation: 'save', profile: {
+    id, name: 'Main TV', ip: '192.168.1.11',
+  } });
+  h.state.sleep = 60000;
+  await h.controller.connect('192.168.1.11');
+  assert.equal(h.state.directory, directory);
+  assert.equal(h.baselines.get(`${directory}:sleep`), 1200000);
+  assert.equal(h.controller.initial().profiles.length, 1);
+});
+
+test('manual address edits disconnect locally and unsupported profile requests do nothing', async t => {
+  const h = harness(t);
+  await h.controller.connect('192.168.1.10');
+  const before = h.controller.initial();
+  for (const request of [null, [], { operation: 'run' }])
+    await assert.rejects(h.controller.profiles(request), /supported/);
+  assert.deepEqual(h.controller.initial(), before);
+  await h.controller.profiles({ operation: 'disconnect' });
+  assert.equal(h.controller.isConnected(), false);
+  assert.deepEqual(h.controller.initial(), before);
+  assert.deepEqual(h.writes, []);
+});
+
+test('a failed local connection save cannot leave an undisplayed TV as the action target', async t => {
+  const h = harness(t);
+  t.mock.method(fs, 'renameSync', () => { throw new Error('Disk unavailable'); });
+  await assert.rejects(h.controller.connect('192.168.1.10'), /Disk unavailable/);
+  assert.equal(h.controller.isConnected(), false);
+  await assert.rejects(h.controller.refresh(), /Connect/);
+});
+
+test('Fire TV UI is recommended and needs its own package without legacy Home Redirect', async t => {
+  const h = harness(t);
+  let home = 'amazon';
+  h.api.listPackages = async () => [FIRE_TV_UI.pkg];
+  h.api.launcherState = async () => ({ home, uiHomeSupported: true });
+  h.api.useHome = async (_ip, id) => { home = id; return true; };
+  h.api.installLauncherApp = async () => { throw new Error('Unexpected installation'); };
+  const connected = await h.controller.connect('192.168.1.10');
+  assert.equal(connected.launchers[0].id, FIRE_TV_UI.id);
+  assert.equal(connected.launchers[0].recommended, true);
+  assert.equal(connected.launchers[0].ready, true);
+  assert.equal(connected.homeRedirectInstalled, false);
+  const result = await h.controller.assistant({ mode: 'setup', home: FIRE_TV_UI.id,
+    screensaver: 'keep', ownTv: false, fireIptv: false }, async () => true);
+  assert.equal(result.state.home, FIRE_TV_UI.id);
+});
+
+test('an older Fire TV UI remains detected but cannot be selected before its update', async t => {
+  const h = harness(t);
+  h.api.listPackages = async () => [FIRE_TV_UI.pkg];
+  h.api.launcherState = async () => ({ home: FIRE_TV_UI.id, uiHomeSupported: false });
+  const result = await h.controller.connect('192.168.1.10');
+  assert.equal(result.home, FIRE_TV_UI.id);
+  assert.equal(result.launchers[0].installed, true);
+  assert.equal(result.launchers[0].ready, false);
+  assert.equal(result.launchers[0].requiresUpdate, true);
+  assert.equal(result.homeChangesSupported, false);
+  assert.equal(result.launchers.every(launcher => !launcher.ready), true);
 });
 
 test('actions target the connected TV and verify the resulting state', async (t) => {
@@ -190,6 +298,9 @@ test('a pending action prevents a second action or a device switch', async (t) =
   });
   await ready;
   await assert.rejects(h.controller.connect('192.168.1.11'), /current task/);
+  await assert.rejects(h.controller.profiles({ operation: 'save', profile: {
+    name: 'Another TV', ip: '192.168.1.11',
+  } }), /current task/);
   await assert.rejects(
     h.controller.action({ type: 'alexa', value: false }, async () => true),
     /current task/,

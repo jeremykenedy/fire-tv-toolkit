@@ -1,5 +1,21 @@
 # Changelog
 
+## [4.6.0] - 2026-10-26
+
+### Added
+
+- Save named TVs, manage their addresses and switch the active desktop target before connecting.
+- Recommend Fire TV UI with its own Home services, keeping legacy launcher choices available.
+- Register verified Nibbles HD and Lumen Breaker releases with real native previews.
+
+### Fixed
+
+- Clear stale device actions and checked updates when a target changes or connection fails.
+- Preserve mixed and missing private Home preferences on failed routing, using verified UI code 69.
+- Keep older UI Home controls unavailable until its preservation API is supported.
+
+See the [4.6.0 upgrade guide](docs/RELEASE-4.6.0.md).
+
 ## [4.5.2] - 2026-10-26
 
 ### Security

@@ -126,6 +126,12 @@
       </header>
       <form id="connection-form" class="connection-bar" hidden>
         <div>
+          <label for="tv-profile">Saved TV</label>
+          <select id="tv-profile" aria-label="Saved TV">
+            <option value="">Enter another address</option>
+          </select>
+        </div>
+        <div>
           <label for="address">Fire TV address</label
           ><input
             id="address"
@@ -138,10 +144,30 @@
           />
         </div>
         <button id="connect" type="submit">Connect</button>
+        <button id="manage-profiles" type="button" class="quiet">Manage TVs</button>
         <p id="device-summary">
           Use the IP address shown in your TV's network settings.
         </p>
       </form>
+      <dialog id="profile-dialog" aria-labelledby="profile-title">
+        <form id="profile-form" class="profile-editor">
+          <h2 id="profile-title">Saved TVs</h2>
+          <p class="muted">Save an address, then connect when you are ready.</p>
+          <label for="profile-edit">TV to edit</label>
+          <select id="profile-edit"><option value="">Add a TV</option></select>
+          <label for="profile-name">TV name</label>
+          <input id="profile-name" maxlength="64" placeholder="Living room" required />
+          <label for="profile-address">IP address</label>
+          <input id="profile-address" placeholder="192.168.1.50" autocomplete="off" spellcheck="false" inputmode="decimal" required />
+          <p id="profile-error" class="profile-error" role="alert" hidden></p>
+          <div class="actions">
+            <button type="submit">Save TV</button>
+            <button id="profile-remove" type="button" class="quiet" hidden>Remove saved TV</button>
+            <button id="profile-cancel" type="button" class="quiet">Cancel</button>
+          </div>
+          <p class="muted">Removing a saved TV keeps its apps and settings.</p>
+        </form>
+      </dialog>
       <div
         id="notice"
         class="notice"
@@ -282,7 +308,7 @@
             <section class="utility-panel">
               <h3>Your home screen</h3>
               <p id="active-home" class="current-value"></p>
-              <p class="muted">Keep Amazon Home or use AT4K or LTvLauncher.</p>
+              <p class="muted">Fire TV UI is recommended. You can keep your current home screen or choose another.</p>
               <button data-navigate="home">Manage home screen</button>
             </section>
             <section class="utility-panel">
@@ -346,6 +372,7 @@
             </div>
           </div>
           <div id="launcher-list" class="app-list"></div>
+          <p id="home-update-note" class="muted" hidden>Update Fire TV UI before changing the Home button destination.</p>
           <section class="live-tv">
             <div>
               <span class="eyebrow">Alternative player</span>
@@ -461,9 +488,10 @@
                 <option value="keep">Keep current screensaver</option>
               </select>
               <label for="setup-home">Home screen</label
-              ><select id="setup-home">
+              ><select id="setup-home" aria-describedby="setup-home-help">
                 <option value="keep">Keep current home screen</option>
               </select>
+              <p id="setup-home-help" class="muted" hidden>Update Fire TV UI in Home &amp; live TV to change this choice.</p>
               <label class="check-choice">
                 <input id="setup-fire-iptv" type="checkbox" checked />
                 <span><strong>Install fire-iptv</strong><small>

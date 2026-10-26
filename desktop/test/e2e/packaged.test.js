@@ -177,6 +177,127 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
   await page.screenshot({
     path: path.join(output, `${process.platform}-device-setup.png`),
   });
+  await page.getByRole('button', { name: 'Manage TVs', exact: true }).click();
+  await page.getByLabel('TV name', { exact: true }).fill('Main TV');
+  await page.getByLabel('IP address', { exact: true }).fill('192.0.2.10');
+  await page.getByRole('button', { name: 'Save TV', exact: true }).click();
+  await page.locator('#profile-dialog').waitFor({ state: 'hidden' });
+  await page.getByRole('button', { name: 'Manage TVs', exact: true }).click();
+  await page.getByLabel('TV to edit', { exact: true }).selectOption('');
+  await page.getByLabel('TV name', { exact: true }).fill('Bedroom');
+  await page.getByLabel('IP address', { exact: true }).fill('192.0.2.11');
+  await page.getByRole('button', { name: 'Save TV', exact: true }).click();
+  await page.locator('#profile-dialog').waitFor({ state: 'hidden' });
+  const saved = (await page.evaluate(() => window.toolkit.initial())).data;
+  assert.equal(saved.profiles.length, 2);
+  const mainTv = saved.profiles.find(profile => profile.name === 'Main TV');
+  await page.getByLabel('Saved TV', { exact: true }).selectOption(mainTv.id);
+  await page.locator('#notice').filter({ hasText: 'TV selected' }).waitFor();
+  assert.equal(await page.locator('#address').inputValue(), '192.0.2.10');
+  assert.equal(await page.locator('#refresh').isEnabled(), false);
+  assert.equal(await page.locator('#connection-label').innerText(), 'No TV connected');
+  await page.getByRole('button', { name: 'Manage TVs', exact: true }).click();
+  await page.getByLabel('TV name', { exact: true }).fill('Living room');
+  await page.getByRole('button', { name: 'Save TV', exact: true }).click();
+  await page.locator('#profile-dialog').waitFor({ state: 'hidden' });
+  await page.getByRole('button', { name: 'Manage TVs', exact: true }).click();
+  await page.getByLabel('TV to edit', { exact: true }).selectOption('');
+  await page.getByLabel('TV name', { exact: true }).fill('Duplicate');
+  await page.getByLabel('IP address', { exact: true }).fill('192.0.2.10');
+  await page.getByRole('button', { name: 'Save TV', exact: true }).click();
+  await page.locator('#profile-error').filter({ hasText: 'already saved' }).waitFor();
+  assert.equal((await page.evaluate(() => window.toolkit.initial())).data.profiles.length, 2);
+  await page.getByRole('button', { name: 'Cancel', exact: true }).click();
+  await page.getByRole('button', { name: 'Manage TVs', exact: true }).click();
+  await page.screenshot({ path: path.join(output, `${process.platform}-tv-profiles.png`) });
+  await page.getByRole('button', { name: 'Cancel', exact: true }).click();
+  await page.getByRole('button', { name: 'Manage TVs', exact: true }).click();
+  await page.getByLabel('TV to edit', { exact: true }).selectOption('');
+  await page.getByLabel('TV name', { exact: true }).fill('Temporary TV');
+  await page.getByLabel('IP address', { exact: true }).fill('192.0.2.12');
+  await page.getByRole('button', { name: 'Save TV', exact: true }).click();
+  await page.locator('#profile-dialog').waitFor({ state: 'hidden' });
+  await page.getByRole('button', { name: 'Manage TVs', exact: true }).click();
+  await page.getByRole('button', { name: 'Remove saved TV', exact: true }).click();
+  await page.locator('#profile-dialog').waitFor({ state: 'hidden' });
+  const remainingProfiles = (await page.evaluate(() => window.toolkit.initial())).data;
+  assert.equal(remainingProfiles.profiles.length, 2);
+  assert.equal(remainingProfiles.profiles.some(profile => profile.name === 'Temporary TV'), false);
+  assert.equal(await page.locator('#address').inputValue(), '');
+  await page.getByLabel('Saved TV', { exact: true }).selectOption(mainTv.id);
+  await page.locator('#notice').filter({ hasText: 'TV selected' }).waitFor();
+  // Exercise native launcher views with sample device data, without contacting a TV.
+  await application.evaluate(({ ipcMain, app }) => {
+    const require = process.getBuiltinModule('module').createRequire(`${app.getAppPath()}/package.json`);
+    const { SCREENSAVERS } = require('fire-tv-toolkit/src/screensaver-registry.js');
+    const screensavers = SCREENSAVERS.map(entry => ({
+      id: entry.id, name: entry.name, description: entry.blurb || '',
+      installed: entry.id === 'aerial', active: entry.id === 'aerial', downloadable: true,
+    }));
+    ipcMain.removeHandler('toolkit:connect');
+    let connections = 0;
+    ipcMain.handle('toolkit:connect', () => {
+      const existing = connections++ > 0;
+      const olderUi = connections > 2;
+      return { ok: true, data: {
+        device: { ip: '192.0.2.10', model: 'Sample Fire TV', android: '11' },
+        home: existing ? 'ltv' : 'amazon',
+        homeChangesSupported: !olderUi,
+        alexaEnabled: false, sleepMs: 1200000, screensaverMs: 300000,
+        guardConfigured: false, ownTvInstalled: false, fireIptvInstalled: false,
+        homeRedirectInstalled: existing, screensavers, playlist: '',
+        launchers: [
+          { id: 'fire-tv-ui', name: 'Fire TV UI', recommended: true, installed: olderUi, ready: false, requiresUpdate: olderUi },
+          { id: 'at4k', name: 'AT4K Launcher', recommended: false, installed: false, ready: false },
+          { id: 'ltv', name: 'LTvLauncher', recommended: false, installed: existing, ready: existing && !olderUi },
+        ],
+      } };
+    });
+  });
+  await page.getByRole('button', { name: 'Connect', exact: true }).click();
+  await page.locator('#connection-label').filter({ hasText: 'Living room / 192.0.2.10' }).waitFor();
+  await page.locator('[data-view="screensavers"]').click();
+  assert.equal(await page.locator('#saver-list .app-row').count(), 36);
+  for (const [name, id] of [['Nibbles HD', 'nibbles-hd'], ['Lumen Breaker', 'lumen-breaker']]) {
+    await page.locator('#saver-search').fill(name);
+    const row = page.locator('#saver-list .app-row');
+    assert.equal(await row.count(), 1);
+    assert.match(await row.innerText(), new RegExp(name));
+    const install = row.getByRole('button', { name: 'Install', exact: true });
+    assert.equal(await install.getAttribute('data-id'), id);
+    assert.equal(await install.getAttribute('data-task'), 'install-screensaver');
+    assert.equal(await install.isEnabled(), true);
+    await page.screenshot({ path: path.join(output, `${process.platform}-${id}-catalog.png`) });
+  }
+  await page.locator('#saver-search').fill('');
+  await page.locator('[data-view="home"]').click();
+  assert.match(await page.locator('#launcher-list .app-row').first().innerText(), /Fire TV UI.*Recommended/s);
+  assert.equal(await page.locator('#launcher-list .app-row').first().getByRole('button', { name: 'Install', exact: true }).isVisible(), true);
+  await page.locator('#launcher-list').scrollIntoViewIfNeeded();
+  await page.screenshot({ path: path.join(output, `${process.platform}-preferred-fire-tv-ui.png`) });
+  await page.locator('[data-view="setup"]').click();
+  assert.equal(await page.locator('#setup-home').inputValue(), 'fire-tv-ui');
+  await page.locator('[data-view="overview"]').click();
+  await page.getByRole('button', { name: 'Connect again', exact: true }).click();
+  await page.locator('#notice').filter({ hasText: 'Connected to Sample Fire TV' }).waitFor();
+  await page.locator('[data-view="home"]').click();
+  assert.equal(await page.locator('#launcher-list button[data-task="home"]').count(), 1);
+  await page.locator('[data-view="setup"]').click();
+  assert.equal(await page.locator('#setup-home').inputValue(), 'keep');
+  await page.locator('[data-view="overview"]').click();
+  await page.getByRole('button', { name: 'Connect again', exact: true }).click();
+  await page.locator('#notice').filter({ hasText: 'Connected to Sample Fire TV' }).waitFor();
+  await page.locator('[data-view="home"]').click();
+  assert.equal(await page.locator('#home-update-note').isVisible(), true);
+  assert.equal(await page.locator('#launcher-list button[data-task="home"]').count(), 0);
+  assert.equal(await page.locator('#launcher-list .app-row').first().getByRole('button', { name: 'Update', exact: true }).isVisible(), true);
+  await page.locator('#launcher-list').scrollIntoViewIfNeeded();
+  await page.screenshot({ path: path.join(output, `${process.platform}-older-ui-home-controls.png`) });
+  await page.locator('[data-view="setup"]').click();
+  assert.equal(await page.locator('#setup-home').isEnabled(), false);
+  assert.equal(await page.locator('#setup-home-help').isVisible(), true);
+  await page.locator('#refresh').click();
+  await page.locator('#connection-label').filter({ hasText: 'No TV connected' }).waitFor();
   await page.getByRole('button', { name: 'About', exact: true }).click();
   await page
     .getByRole('heading', { name: 'Where it works', exact: true })
@@ -237,6 +358,10 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
   await application.close();
   application = null;
   page = await launch();
+  const restoredProfiles = (await page.evaluate(() => window.toolkit.initial())).data;
+  assert.equal(restoredProfiles.profiles.length, 2);
+  assert.equal(restoredProfiles.savedIp, '192.0.2.10');
+  assert.equal(restoredProfiles.profiles.find(profile => profile.id === restoredProfiles.activeProfileId).name, 'Living room');
   assert.equal(await page.locator('[data-view="terminal"]').isVisible(), true);
   await page.getByLabel('Favorites', { exact: true }).check();
   await page

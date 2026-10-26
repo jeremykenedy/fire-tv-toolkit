@@ -8,6 +8,8 @@ let advanced = false;
 let shellRunning = false;
 let wizardStep = 0;
 let wizardIdentity = '';
+let savedProfiles = [];
+let activeProfileId = '';
 const titles = {
   live: 'Live TV',
   overview: 'Overview',
@@ -143,6 +145,11 @@ function updateControls() {
     });
   $('#connect').disabled = busy;
   $('#address').disabled = busy;
+  $('#tv-profile').disabled = busy;
+  $('#manage-profiles').disabled = busy;
+  $('#profile-form').querySelectorAll('button, input, select').forEach(control => {
+    control.disabled = busy;
+  });
   $('#refresh').disabled = busy || !state;
   $('#advanced-toggle').disabled = busy;
   $('#run-shell').disabled = busy || !advanced || !state;
@@ -159,6 +166,7 @@ function updateControls() {
     });
   $('#setup-sleep').disabled = busy || !$('#setup-timers').checked;
   $('#setup-delay').disabled = busy || !$('#setup-timers').checked;
+  $('#setup-home').disabled = busy || state?.homeChangesSupported === false;
   $('#terminal-target').textContent = state
     ? `Commands run on ${state.device.model} at ${state.device.ip}:5555.`
     : 'Connect a Fire TV to run commands.';
@@ -254,21 +262,24 @@ function renderSavers() {
 
 function renderHome() {
   const list = $('#launcher-list');
+  $('#home-update-note').hidden = state.homeChangesSupported !== false;
   list.replaceChildren();
   const launchers = [
-    { id: 'amazon', name: 'Amazon Home', installed: true },
     ...state.launchers,
+    { id: 'amazon', name: 'Amazon Home', installed: true, ready: state.homeChangesSupported !== false },
   ];
   for (const launcher of launchers) {
     const active = state.home === launcher.id;
     const description =
       launcher.id === 'amazon'
         ? 'The original Fire TV home screen.'
-        : 'Installed with Home Redirect for the remote Home button.';
+        : launcher.recommended
+          ? `Recommended custom interface, with featured feeds, menu backgrounds and screensaver controls.${launcher.requiresUpdate ? ' Update it before changing Home.' : ''}`
+          : 'Installed with Home Redirect for the remote Home button.';
     const { row, actions } = appRow(
       launcher.name,
       description,
-      active ? 'Active' : launcher.installed ? 'Installed' : 'Available',
+      active ? 'Active' : launcher.recommended ? 'Recommended' : launcher.installed ? 'Installed' : 'Available',
       active,
     );
     if (launcher.id !== 'amazon')
@@ -282,8 +293,7 @@ function renderHome() {
       );
     if (
       !active &&
-      launcher.installed &&
-      (launcher.id === 'amazon' || state.homeRedirectInstalled)
+      launcher.ready
     )
       actions.append(taskButton('Use', 'home', launcher.id));
     list.append(row);
@@ -296,7 +306,7 @@ function renderHome() {
 function render() {
   document.body.classList.toggle('connected', !!state);
   $('#connection-label').textContent = state
-    ? 'TV connected'
+    ? `${savedProfiles.find(profile => profile.ip === state.device.ip)?.name || state.device.model} / ${state.device.ip}`
     : 'No TV connected';
   $('#device-summary').textContent = state
     ? `${state.device.model} at ${state.device.ip}`
@@ -331,6 +341,84 @@ function render() {
   navigate(selectedView);
   updateControls();
 }
+
+function renderProfiles(result) {
+  savedProfiles = result.profiles;
+  activeProfileId = result.activeProfileId;
+  const selector = $('#tv-profile');
+  selector.replaceChildren(element('option', '', 'Enter another address'));
+  selector.firstChild.value = '';
+  for (const profile of savedProfiles) {
+    const option = element('option', '', `${profile.name} (${profile.ip})`);
+    option.value = profile.id;
+    selector.append(option);
+  }
+  selector.value = activeProfileId;
+  $('#address').value = result.savedIp;
+  $('#address').readOnly = !!activeProfileId;
+  if (result.disconnected) state = null;
+  render();
+  if (result.profileError) showNotice(result.profileError, true);
+}
+
+function editProfile() {
+  const profile = savedProfiles.find(item => item.id === $('#profile-edit').value);
+  $('#profile-name').value = profile?.name || '';
+  $('#profile-address').value = profile?.ip || '';
+  $('#profile-remove').hidden = !profile;
+  $('#profile-error').hidden = true;
+}
+
+async function changeProfiles(request, message, close = false) {
+  await run(() => bridge.profiles(request), result => {
+    renderProfiles(result);
+    if (close) $('#profile-dialog').close();
+    showNotice(message);
+  });
+  if ($('#profile-dialog').open && !$('#notice').hidden) {
+    $('#profile-error').textContent = $('#notice').textContent;
+    $('#profile-error').hidden = false;
+  }
+}
+
+$('#tv-profile').addEventListener('change', () => changeProfiles(
+  { operation: 'select', id: $('#tv-profile').value },
+  'TV selected. Choose Connect to read its settings.',
+));
+$('#manage-profiles').addEventListener('click', () => {
+  const selector = $('#profile-edit');
+  selector.replaceChildren(element('option', '', 'Add a TV'));
+  selector.firstChild.value = '';
+  for (const profile of savedProfiles) {
+    const option = element('option', '', profile.name);
+    option.value = profile.id;
+    selector.append(option);
+  }
+  selector.value = activeProfileId;
+  editProfile();
+  $('#profile-dialog').showModal();
+});
+$('#profile-edit').addEventListener('change', editProfile);
+$('#profile-cancel').addEventListener('click', () => $('#profile-dialog').close());
+$('#profile-form').addEventListener('submit', event => {
+  event.preventDefault();
+  changeProfiles({ operation: 'save', profile: {
+    id: $('#profile-edit').value,
+    name: $('#profile-name').value,
+    ip: $('#profile-address').value,
+  } }, 'TV saved. Choose Connect to read its settings.', true);
+});
+$('#profile-remove').addEventListener('click', () => changeProfiles(
+  { operation: 'remove', id: $('#profile-edit').value },
+  'Saved TV removed. Its apps and settings are unchanged.', true,
+));
+$('#address').addEventListener('input', () => {
+  if (state && $('#address').value.trim() !== state.device.ip) {
+    state = null;
+    render();
+    bridge.profiles({ operation: 'disconnect' }).catch(error => showNotice(error.message, true));
+  }
+});
 
 async function action(request) {
   await run(
@@ -372,8 +460,10 @@ $('#connection-form').addEventListener('submit', (event) => {
   event.preventDefault();
   run(
     () => bridge.connect($('#address').value.trim()),
-    (result) => {
+    async (result) => {
       state = result;
+      const initial = await bridge.initial();
+      if (initial.ok) renderProfiles(initial.data);
       render();
       showNotice(`Connected to ${state.device.model}.`);
       log(`Connected to ${state.device.model} at ${state.device.ip}.`);
@@ -426,10 +516,14 @@ function initializeWizard() {
     $('#setup-screensaver').append(option(entry.id, entry.name));
   $('#setup-home').replaceChildren(
     option('keep', 'Keep current home screen'),
-    option('amazon', 'Amazon Home'),
   );
   for (const entry of state.launchers)
-    $('#setup-home').append(option(entry.id, entry.name));
+    $('#setup-home').append(option(entry.id, `${entry.name}${entry.recommended ? ' (Recommended)' : ''}`));
+  $('#setup-home').append(option('amazon', 'Amazon Home'));
+  const preferred = state.launchers.find(entry => entry.recommended);
+  $('#setup-home-help').hidden = state.homeChangesSupported !== false;
+  if (preferred && state.home === 'amazon' && !state.launchers.some(entry => entry.installed))
+    $('#setup-home').value = preferred.id;
   $('#setup-owntv').checked = false;
   $('#setup-fire-iptv').checked = !state.fireIptvInstalled;
   $('#setup-timers').checked = false;
@@ -732,7 +826,7 @@ if (bridge) {
         showNotice(result.error, true);
         return;
       }
-      $('#address').value = result.data.savedIp;
+      renderProfiles(result.data);
       $('#version').textContent = `Desktop ${result.data.version}`;
       $('#about-version').textContent =
         `Desktop version ${result.data.version}`;

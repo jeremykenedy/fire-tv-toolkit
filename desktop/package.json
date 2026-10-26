@@ -1,7 +1,7 @@
 {
   "name": "fire-tv-toolkit-desktop",
   "productName": "Fire TV Toolkit",
-  "version": "4.5.2",
+  "version": "4.6.0",
   "description": "Manage Fire TV screensavers, home screens, Alexa and device settings from your desktop.",
   "author": "Jeremy Kenedy",
   "license": "Apache-2.0",
@@ -41,6 +41,7 @@
       "main.js",
       "preload.cjs",
       "controller.js",
+      "tv-profiles.js",
       "iptv.js",
       "player-network.js",
       "tv-shell.js",

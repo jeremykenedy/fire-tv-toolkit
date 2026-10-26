@@ -79,14 +79,18 @@ test('public UI releases remain available without GitHub authentication', async 
 });
 
 test('UI update sends only reviewed metadata, never directly installs',async()=>{
-  let sent,removed=false;
+  let sent,removed=false,iconsCleaned=false;
+  const copied=[];
   const row={id:'fire-tv-ui',status:'checked',comparison:1,published:{...UI_UPDATE,...release,url:release.apkUrl,checkedAt:Date.now()}};
   const result=await installAppUpdate('192.0.2.2',row,{downloadApk:async()=>'/private/apk',
     inspectApk:()=>({package:UI_UPDATE.pkg,versionCode:38n}), packageDetails:async()=>({versionCode:37n}),
+    prepareUiIcons:async app=>{assert.equal(app.tag,row.published.tag);return {files:['/private/pc.png'],cleanup:()=>{iconsCleaned=true;}};},
+    installSharedIcons:async(ip,files)=>{copied.push(ip,...files);},
     stageUiUpdate:async(ip,apk,metadata)=>{sent={ip,apk,metadata};},
     installApk:async()=>{throw new Error('Must not install UI silently');},removeDownload:()=>{removed=true;}});
   assert.equal(result.staged,true);assert.equal(sent.ip,'192.0.2.2');assert.equal(sent.metadata.package,UI_UPDATE.pkg);
   assert.equal(sent.metadata.checked_at,row.published.checkedAt);assert.equal(removed,true);
+  assert.deepEqual(copied,['192.0.2.2','/private/pc.png']);assert.equal(iconsCleaned,true);
   assert.deepEqual(Object.keys(sent.metadata).sort(),['bytes','checked_at','dream','name','package','preview','repo','sha256','tag','url']);
 });
 
@@ -224,4 +228,26 @@ test('Home Redirect compares Android codes rather than the Toolkit release versi
   assert.equal(rejected[0].status, 'unavailable');
   assert.equal(rejected[0].published, undefined);
   assert.equal(removed, 4);
+});
+
+
+test('preferred UI launcher has one latest-published update row and remains staged rather than a second launcher update', async () => {
+  let checks = 0;
+  const rows = await checkAppUpdates('192.0.2.2', {
+    githubToken: async () => undefined,
+    packageVersion: async (_ip, pkg) => pkg === UI_UPDATE.pkg ? '1.10.1' : null,
+    latestRelease: async (repo, asset, tag) => {
+      checks++;
+      assert.equal(repo, UI_UPDATE.repo);
+      assert.equal(tag, undefined);
+      return { tag: 'v1.11.0', asset: 'fire-tv-ui-1.11.0.apk', bytes: 123,
+        apkUrl: 'https://github.com/jeremykenedy/fire-tv-ui/releases/download/v1.11.0/fire-tv-ui-1.11.0.apk',
+        digest: 'sha256:' + 'a'.repeat(64) };
+    },
+  });
+  assert.equal(checks, 1);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].id, 'fire-tv-ui');
+  assert.equal(rows[0].published.tag, 'v1.11.0');
+  assert.equal(rows[0].comparison, 1);
 });

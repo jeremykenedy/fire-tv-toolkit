@@ -7,35 +7,37 @@ const ZIP_CENTRAL = Buffer.from('504b0102', 'hex').readUInt32LE(0);
 const ZIP_LOCAL = Buffer.from('504b0304', 'hex').readUInt32LE(0);
 const NO_STRING = 2 ** 32 - 1;
 
-function manifestBytes(apk) {
+/** Reads one bounded ZIP member without extracting archive paths to disk. */
+export function readZipEntry(apk, requestedName, maxBytes = MAX_MANIFEST) {
+  if (apk.length < 22) throw new Error('Truncated ZIP archive.');
   const lower = Math.max(0, apk.length - 65557);
   let end = apk.length - 22;
   while (end >= lower && apk.readUInt32LE(end) !== ZIP_END) end -= 1;
   if (end < lower || apk.readUInt16LE(end + 4) || apk.readUInt16LE(end + 6))
-    throw new Error('Unsupported APK ZIP directory.');
+    throw new Error('Unsupported ZIP directory.');
   let at = apk.readUInt32LE(end + 16);
   const entries = apk.readUInt16LE(end + 10);
   for (let i = 0; i < entries; i += 1) {
     if (at + 46 > apk.length || apk.readUInt32LE(at) !== ZIP_CENTRAL) break;
     const nameLength = apk.readUInt16LE(at + 28);
     const name = apk.subarray(at + 46, at + 46 + nameLength).toString('utf8');
-    if (name === 'AndroidManifest.xml') {
+    if (name === requestedName) {
       const method = apk.readUInt16LE(at + 10);
       const compressed = apk.readUInt32LE(at + 20), size = apk.readUInt32LE(at + 24);
       const local = apk.readUInt32LE(at + 42);
-      if ((apk.readUInt16LE(at + 8) & 1) || size > MAX_MANIFEST || compressed > MAX_MANIFEST
+      if ((apk.readUInt16LE(at + 8) & 1) || size > maxBytes || compressed > maxBytes
           || local + 30 > apk.length || apk.readUInt32LE(local) !== ZIP_LOCAL)
-        throw new Error('Unsupported APK manifest entry.');
+        throw new Error('Unsupported ZIP entry.');
       const start = local + 30 + apk.readUInt16LE(local + 26) + apk.readUInt16LE(local + 28);
-      if (start + compressed > apk.length) throw new Error('Truncated APK manifest.');
+      if (start + compressed > apk.length) throw new Error('Truncated ZIP entry.');
       const data = apk.subarray(start, start + compressed);
-      const result = method === 0 ? data : method === 8 ? inflateRawSync(data, {maxOutputLength: MAX_MANIFEST}) : null;
-      if (!result || result.length !== size) throw new Error('Invalid APK manifest compression.');
+      const result = method === 0 ? data : method === 8 ? inflateRawSync(data, {maxOutputLength: maxBytes}) : null;
+      if (!result || result.length !== size) throw new Error('Invalid ZIP compression.');
       return result;
     }
     at += 46 + nameLength + apk.readUInt16LE(at + 30) + apk.readUInt16LE(at + 32);
   }
-  throw new Error('APK has no Android manifest.');
+  throw new Error(`ZIP member is unavailable: ${requestedName}`);
 }
 
 function readStringPool(data, at, header, size) {
@@ -107,5 +109,5 @@ export function parseBinaryManifest(data) {
 export function inspectApk(file) {
   const size = fs.statSync(file).size;
   if (size < 22 || size > 250 * 1048576) throw new Error('APK exceeds its allowed size.');
-  return parseBinaryManifest(manifestBytes(fs.readFileSync(file)));
+  return parseBinaryManifest(readZipEntry(fs.readFileSync(file), 'AndroidManifest.xml'));
 }

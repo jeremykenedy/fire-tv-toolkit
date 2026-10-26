@@ -293,6 +293,30 @@ export const SCREENSAVERS = [
     repo: 'jeremykenedy/helios-lightfield',
     blurb: 'Animated luminous filaments looping around a dark field, with adjustable solar or polar palette, strand density, motion speed and glow.',
   },
+  {
+    id: 'lumen-breaker',
+    name: 'Lumen Breaker',
+    pkg: 'com.jeremykenedy.lumenbreaker',
+    dreamComponent: 'com.jeremykenedy.lumenbreaker/.LumenDreamService',
+    repo: 'jeremykenedy/lumen-breaker',
+    asset: 'lumen-breaker.apk',
+    tag: 'v1.0.0',
+    sha256: 'fc0513f85fc8563cd8463546108bbf5ea9c459ab72465c669b126fcc6c14269c',
+    bytes: 74551,
+    blurb: 'Autonomous brick breaking with varied stages, up to three balls and restrained matte materials.',
+  },
+  {
+    id: 'nibbles-hd',
+    name: 'Nibbles HD',
+    pkg: 'com.jeremykenedy.nibbleshd',
+    dreamComponent: 'com.jeremykenedy.nibbleshd/.NibblesDreamService',
+    repo: 'jeremykenedy/nibbles-hd',
+    asset: 'nibbles-hd.apk',
+    tag: 'v1.0.0',
+    sha256: 'c49bc22e5cbf5067da4bbcb1cd63140d31b0a49a83f6826e111986ee4b7d7971',
+    bytes: 41727,
+    blurb: 'Autonomous matte snakes find food, grow and begin fresh rounds. Offline, with eight scene controls.',
+  },
 ];
 
 /**
