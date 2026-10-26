@@ -273,6 +273,7 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
   await page.locator('[data-view="home"]').click();
   assert.match(await page.locator('#launcher-list .app-row').first().innerText(), /Fire TV UI.*Recommended/s);
   assert.equal(await page.locator('#launcher-list .app-row').first().getByRole('button', { name: 'Install', exact: true }).isVisible(), true);
+  await page.locator('#launcher-list').scrollIntoViewIfNeeded();
   await page.screenshot({ path: path.join(output, `${process.platform}-preferred-fire-tv-ui.png`) });
   await page.locator('[data-view="setup"]').click();
   assert.equal(await page.locator('#setup-home').inputValue(), 'fire-tv-ui');
@@ -290,6 +291,7 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
   assert.equal(await page.locator('#home-update-note').isVisible(), true);
   assert.equal(await page.locator('#launcher-list button[data-task="home"]').count(), 0);
   assert.equal(await page.locator('#launcher-list .app-row').first().getByRole('button', { name: 'Update', exact: true }).isVisible(), true);
+  await page.locator('#launcher-list').scrollIntoViewIfNeeded();
   await page.screenshot({ path: path.join(output, `${process.platform}-older-ui-home-controls.png`) });
   await page.locator('[data-view="setup"]').click();
   assert.equal(await page.locator('#setup-home').isEnabled(), false);
