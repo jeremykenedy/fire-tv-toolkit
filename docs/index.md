@@ -23,6 +23,7 @@
 | [Troubleshooting](TROUBLESHOOTING.md) | Connection and settings problems. |
 | [Development](DEVELOPMENT.md) | Source builds, tests and releasing. |
 | [Signing installers](SIGNING.md) | Signing and notarization. |
+| [4.5.1 release](RELEASE-4.5.1.md) | Current Hearth and Prism app releases and previews. |
 | [4.5.0 release](RELEASE-4.5.0.md) | Skycast Weather forecasts and clouds-only scenes. |
 | [4.4.4 release](RELEASE-4.4.4.md) | Public UI updates and current Cloud/Earth scenes. |
 | [4.4.3 release](RELEASE-4.4.3.md) | Black Screen Dream installation and selection. |

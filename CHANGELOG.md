@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.5.1] - Unreleased
+
+### Fixed
+
+- Refresh the existing Hearth Presence and Prism Clock reviewed release baselines, native previews and media provenance.
+- Retain latest-published update checks independently of reviewed installation pins.
+- Align the desktop package and its bundled local Toolkit dependency.
+
+See the [4.5.1 upgrade guide](docs/RELEASE-4.5.1.md).
+
 ## [4.5.0] - 2026-10-26
 
 ### Added

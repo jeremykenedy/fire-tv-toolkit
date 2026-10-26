@@ -4,17 +4,17 @@
 
 ## Desktop app
 
-The current 4.5.0 captures come from the actual installed Windows x64 app in the isolated native package test. Setup and About show the release version with no TV connected. The Live TV image deliberately shows synthetic test-channel content and a local HLS color-bar fixture, not a real broadcast or household playlist. No Connect action or physical-TV call was made. [Capture provenance](../art/screenshots/desktop-4.5.0-provenance.json) records exact source/image hashes.
+The current 4.5.1 captures come from the actual installed Windows x64 app in the isolated native package test. Setup and About show the release version with no TV connected. The Live TV image deliberately shows synthetic test-channel content and a local HLS color-bar fixture, not a real broadcast or household playlist. No Connect action or physical-TV call was made. [Capture provenance](../art/screenshots/desktop-4.5.1-provenance.json) records exact source/image hashes.
 
 <table><tr>
-<td><a href="../art/screenshots/desktop-setup-4.5.0.png"><img src="../art/screenshots/desktop-setup-4.5.0.png" alt="Native Windows Toolkit 4.5 device setup without a connected TV" width="320"></a></td>
-<td><a href="../art/screenshots/desktop-about-4.5.0.png"><img src="../art/screenshots/desktop-about-4.5.0.png" alt="Native Windows Toolkit About showing desktop version 4.5.0" width="320"></a></td>
-<td><a href="../art/screenshots/desktop-live-tv-fixture-4.5.0.png"><img src="../art/screenshots/desktop-live-tv-fixture-4.5.0.png" alt="Native Toolkit 4.5 HLS lifecycle test with synthetic channels and color bars" width="320"></a></td>
+<td><a href="../art/screenshots/desktop-setup-4.5.1.png"><img src="../art/screenshots/desktop-setup-4.5.1.png" alt="Native Windows Toolkit 4.5.1 device setup without a connected TV" width="320"></a></td>
+<td><a href="../art/screenshots/desktop-about-4.5.1.png"><img src="../art/screenshots/desktop-about-4.5.1.png" alt="Native Windows Toolkit About showing desktop version 4.5.1" width="320"></a></td>
+<td><a href="../art/screenshots/desktop-live-tv-fixture-4.5.1.png"><img src="../art/screenshots/desktop-live-tv-fixture-4.5.1.png" alt="Native Toolkit 4.5.1 HLS lifecycle test with synthetic channels and color bars" width="320"></a></td>
 </tr></table>
 
 ### Historical desktop captures
 
-The following packaged macOS 4.4.4 images retain their original capture provenance. They are historical interface evidence, not new 4.5.0 captures.
+The following packaged macOS 4.4.4 images retain their original capture provenance. They are historical interface evidence, not new 4.5.1 captures.
 
 The previous Live TV, update and About captures come from the actual packaged macOS 4.4.4 app. Its release check contacted GitHub and correctly reported the installed 4.4.4 candidate as newer than the published 4.4.3 release at capture time. No TV was connected and no installer was opened. [Capture provenance](../art/screenshots/desktop-4.4.4-provenance.json) records the native build and image hashes.
 
