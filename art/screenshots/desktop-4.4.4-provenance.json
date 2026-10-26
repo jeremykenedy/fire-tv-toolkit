@@ -1,0 +1,12 @@
+{
+  "version": "4.4.4",
+  "platform": "Native packaged macOS arm64 application, actual window2320x1640 pixels",
+  "source": "desktop/dist/mac-arm64/Fire TV Toolkit.app",
+  "capture": "Unretouched native application screenshots. About, LiveTV catalog and actual published Toolkit release check. No TV connected, no TV app or update installer opened.",
+  "localDependency": "Bundled file dependency4.4.4 and registry bytes matched current root source after clean npmci.",
+  "images": {
+    "desktop-about-4.4.4.png": "b658de99ddadaf8a40c970af30c476763e63e5af695457fe358450f0682a3712",
+    "desktop-updates-4.4.4.png": "8706d8059caf367b9ef3ca34d96eb5838ffcefb88ac0b0c95c95d003dd8263df",
+    "desktop-live-tv-4.4.4.png": "1a232ba42aa2d9dff3a73b653f333ef01d99c29317dcbc5eac6cb87ab1c1a428"
+  }
+}
