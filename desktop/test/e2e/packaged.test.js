@@ -211,22 +211,39 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
   await page.getByRole('button', { name: 'Manage TVs', exact: true }).click();
   await page.screenshot({ path: path.join(output, `${process.platform}-tv-profiles.png`) });
   await page.getByRole('button', { name: 'Cancel', exact: true }).click();
+  await page.getByRole('button', { name: 'Manage TVs', exact: true }).click();
+  await page.getByLabel('TV to edit', { exact: true }).selectOption('');
+  await page.getByLabel('TV name', { exact: true }).fill('Temporary TV');
+  await page.getByLabel('IP address', { exact: true }).fill('192.0.2.12');
+  await page.getByRole('button', { name: 'Save TV', exact: true }).click();
+  await page.locator('#profile-dialog').waitFor({ state: 'hidden' });
+  await page.getByRole('button', { name: 'Manage TVs', exact: true }).click();
+  await page.getByRole('button', { name: 'Remove saved TV', exact: true }).click();
+  await page.locator('#profile-dialog').waitFor({ state: 'hidden' });
+  const remainingProfiles = (await page.evaluate(() => window.toolkit.initial())).data;
+  assert.equal(remainingProfiles.profiles.length, 2);
+  assert.equal(remainingProfiles.profiles.some(profile => profile.name === 'Temporary TV'), false);
+  assert.equal(await page.locator('#address').inputValue(), '');
+  await page.getByLabel('Saved TV', { exact: true }).selectOption(mainTv.id);
+  await page.locator('#notice').filter({ hasText: 'TV selected' }).waitFor();
   // Exercise native launcher views with sample device data, without contacting a TV.
   await application.evaluate(({ ipcMain }) => {
     ipcMain.removeHandler('toolkit:connect');
     let connections = 0;
     ipcMain.handle('toolkit:connect', () => {
       const existing = connections++ > 0;
+      const olderUi = connections > 2;
       return { ok: true, data: {
         device: { ip: '192.0.2.10', model: 'Sample Fire TV', android: '11' },
         home: existing ? 'ltv' : 'amazon',
+        homeChangesSupported: !olderUi,
         alexaEnabled: false, sleepMs: 1200000, screensaverMs: 300000,
         guardConfigured: false, ownTvInstalled: false, fireIptvInstalled: false,
         homeRedirectInstalled: existing, screensavers: [], playlist: '',
         launchers: [
-          { id: 'fire-tv-ui', name: 'Fire TV UI', recommended: true, installed: false, ready: false },
+          { id: 'fire-tv-ui', name: 'Fire TV UI', recommended: true, installed: olderUi, ready: false, requiresUpdate: olderUi },
           { id: 'at4k', name: 'AT4K Launcher', recommended: false, installed: false, ready: false },
-          { id: 'ltv', name: 'LTvLauncher', recommended: false, installed: existing, ready: existing },
+          { id: 'ltv', name: 'LTvLauncher', recommended: false, installed: existing, ready: existing && !olderUi },
         ],
       } };
     });
@@ -244,6 +261,16 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
   await page.locator('#notice').filter({ hasText: 'Connected to Sample Fire TV' }).waitFor();
   await page.locator('[data-view="setup"]').click();
   assert.equal(await page.locator('#setup-home').inputValue(), 'keep');
+  await page.locator('[data-view="overview"]').click();
+  await page.getByRole('button', { name: 'Connect again', exact: true }).click();
+  await page.locator('#notice').filter({ hasText: 'Connected to Sample Fire TV' }).waitFor();
+  await page.locator('[data-view="home"]').click();
+  assert.equal(await page.locator('#home-update-note').isVisible(), true);
+  assert.equal(await page.locator('#launcher-list button[data-action="home"]').count(), 0);
+  assert.equal(await page.locator('#launcher-list .app-row').first().getByRole('button', { name: 'Update', exact: true }).isVisible(), true);
+  await page.locator('[data-view="setup"]').click();
+  assert.equal(await page.locator('#setup-home').isEnabled(), false);
+  assert.equal(await page.locator('#setup-home-help').isVisible(), true);
   await page.locator('#refresh').click();
   await page.locator('#connection-label').filter({ hasText: 'No TV connected' }).waitFor();
   await page.getByRole('button', { name: 'About', exact: true }).click();
