@@ -43,6 +43,37 @@ export async function readDiagnostic(ip, args) {
   return run(['-s', target(ip), 'shell', ...args], { timeout: 6000 });
 }
 
+/** Copies the UI's published shared icons and makes Android's picker see them. */
+export async function installSharedIcons(ip, files) {
+  const names = files.map(file => path.basename(file));
+  if (!files.length || files.length > 128 || new Set(names).size !== names.length
+      || names.some(name => !/^[a-z0-9-]+\.png$/.test(name)))
+    throw new Error('Invalid shared UI icon files.');
+  const destination = '/sdcard/Pictures/Icons';
+  const shell = (...args) => run(['-s', target(ip), 'shell', ...args]);
+  await shell('mkdir', '-p', destination);
+  await run(['-s', target(ip), 'push', ...files, `${destination}/`], { timeout: INSTALL_TIMEOUT_MS });
+  for (const name of names) await shell('am', 'broadcast', '-a',
+    'android.intent.action.MEDIA_SCANNER_SCAN_FILE', '-d', `file://${destination}/${name}`);
+  const sdk = await shell('getprop', 'ro.build.version.sdk');
+  if (!/^\d+$/.test(sdk)) throw new Error('Android version is unavailable for icon indexing.');
+  if (Number(sdk) >= 29) {
+    // One remote command preserves the SQL string's quotes through adb shell.
+    const query = 'content query --uri content://media/external/images/media --projection _id:_display_name:is_pending --where "relative_path=\'Pictures/Icons/\'"';
+    const rows = text => [...text.matchAll(/_id=(\d+), _display_name=([^,\r\n]+), is_pending=(\d+)/g)];
+    const indexed = rows(await shell(query));
+    for (const name of names) {
+      const row = indexed.find(item => item[2] === name);
+      if (!row) throw new Error(`Android did not index the shared UI icon: ${name}`);
+      await shell('content', 'update', '--uri', `content://media/external/images/media/${row[1]}`, '--bind', 'is_pending:i:0');
+    }
+    const visible = rows(await shell(query));
+    if (names.some(name => !visible.some(row => row[2] === name && row[3] === '0')))
+      throw new Error('Android has not made all shared UI icons visible.');
+  }
+  return names.length;
+}
+
 /**
  * One short line saying why an adb call failed, so a failure can be reported
  * as more than "could not reach the TV".

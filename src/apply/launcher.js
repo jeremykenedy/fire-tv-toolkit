@@ -1,6 +1,7 @@
-import { getSetting, putSetting, deleteSetting, listPackages, listDisabledPackages, enablePackage, disablePackage, grantPermission, installApk, uninstallPackage, pressHome, describeAdbError, sendGuard, setNativeUiHome, nativeUiHomePreference, packageDetails } from '../adb.js';
+import { getSetting, putSetting, deleteSetting, listPackages, listDisabledPackages, enablePackage, disablePackage, grantPermission, installApk, uninstallPackage, pressHome, describeAdbError, sendGuard, setNativeUiHome, nativeUiHomePreference, packageDetails, installSharedIcons } from '../adb.js';
 import { downloadApk, removeDownload } from './screensavers.js';
 import { AT4K, LTV, FIRE_TV_UI, HOME_REDIRECT, HOME_LAUNCHERS, launcherApps, UI_HOME_MIN_CODE } from '../launcher-registry.js';
+import { prepareUiIcons } from '../ui-icons.js';
 
 const SERVICES_KEY = 'enabled_accessibility_services';
 const ENABLED_KEY = 'accessibility_enabled';
@@ -127,11 +128,13 @@ export async function installLauncherApp(ip, app) {
   let before;
   let enabledBefore;
   let servicesBefore;
+  let icons;
   try {
     if (app.id === FIRE_TV_UI.id && (!Number.isSafeInteger(app.versionCode) || BigInt(app.versionCode) < UI_HOME_MIN_CODE)) {
       throw new Error('Fire TV UI version code 69 or later is required for safe Home preference preservation.');
     }
     apkPath = await downloadApk(app);
+    if (app.id === FIRE_TV_UI.id) icons = await prepareUiIcons(app);
     if (app.id === FIRE_TV_UI.id) {
       before = await launcherState(ip);
       enabledBefore = await getSetting(ip, 'secure', ENABLED_KEY);
@@ -153,12 +156,14 @@ export async function installLauncherApp(ip, app) {
       if (!before.installed.includes(FIRE_TV_UI.id)) await setNativeUiHome(ip, false, true);
       await restoreServices(ip, enabledBefore, servicesBefore);
     }
+    if (icons) await installSharedIcons(ip, icons.files);
     result = { ok: true };
   } catch (err) {
     if (before) await restoreServices(ip, enabledBefore, servicesBefore);
     result = { ok: false, error: explainInstallFailure(err) };
   } finally {
     if (apkPath) removeDownload(apkPath);
+    icons?.cleanup();
   }
   return result;
 }

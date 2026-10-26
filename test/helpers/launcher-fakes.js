@@ -4,6 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { LAUNCHER_APPS, LTV } from '../../src/launcher-registry.js';
 import { OWNTV, FIRE_IPTV } from '../../src/iptv-registry.js';
+import { iconZip } from './ui-icons-fixture.js';
 
 const sha = (text) => crypto.createHash('sha256').update(text).digest('hex');
 
@@ -26,13 +27,22 @@ export function launcherFetch() {
       throw new Error(`unexpected fetch in a test: ${u}`);
     }
     const bytes = `pkg:${app.pkg}`;
+    const icons = iconZip();
+    const iconAsset = `fire-tv-ui-icons-${app.tag.slice(1)}.zip`;
+    const assetUrl = name => `https://github.com/${app.repo}/releases/download/${app.tag}/${name}`;
     if (api) {
       return Response.json({
         tag_name: app.tag,
         body: `SHA-256 (${app.asset}): ${sha(bytes)}`,
-        assets: [{ name: app.asset, browser_download_url: `https://github.com/${app.repo}/releases/download/${app.tag}/${app.asset}` }],
+        assets: [{ name: app.asset, browser_download_url: assetUrl(app.asset) },
+          ...(app.id === 'fire-tv-ui' ? [
+            {name:iconAsset, size:icons.length, digest:`sha256:${sha(icons)}`, browser_download_url:assetUrl(iconAsset)},
+            {name:`${iconAsset}.sha256`, browser_download_url:assetUrl(`${iconAsset}.sha256`)},
+          ] : [])],
       });
     }
+    if (u.endsWith(`${iconAsset}.sha256`)) return new Response(`${sha(icons)}  ${iconAsset}\n`);
+    if (u.endsWith(iconAsset)) return new Response(icons);
     return new Response(bytes, { status: 200 });
   };
 }

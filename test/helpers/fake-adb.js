@@ -187,7 +187,27 @@ else if (cmd === 'shell' && a === 'settings' && b === 'get') {
 } else if (cmd === 'shell' && a === 'getprop') {
   out(state.sdk === undefined ? '30' : state.sdk);
 } else if (cmd === 'push') {
-  state.files = state.files || {}; state.files[b] = fs.readFileSync(a,'utf8'); save();
+  if (args[args.length - 1] === '/sdcard/Pictures/Icons/') {
+    state.sharedIcons = state.sharedIcons || {};
+    for (const file of args.slice(1, -1)) state.sharedIcons[require('node:path').basename(file)] = fs.readFileSync(file).toString('base64');
+  } else { state.files = state.files || {}; state.files[b] = fs.readFileSync(a,'utf8'); }
+  save();
+} else if (cmd === 'shell' && a === 'mkdir' && c === '/sdcard/Pictures/Icons') {
+  out('');
+} else if (cmd === 'shell' && a === 'am' && b === 'broadcast' && args.includes('android.intent.action.MEDIA_SCANNER_SCAN_FILE')) {
+  const name = args[args.length - 1].split('/').pop();
+  if (!state.iconIndexMissing) {
+    state.iconMedia = state.iconMedia || {};
+    if (!state.iconMedia[name]) state.iconMedia[name] = {id:Object.keys(state.iconMedia).length + 1,pending:1};
+  }
+  save(); out('Broadcast completed: result=0');
+} else if (cmd === 'shell' && a.startsWith('content query --uri content://media/external/images/media ')) {
+  if (!a.endsWith(${JSON.stringify('--where "relative_path=\'Pictures/Icons/\'"')})) fail('incorrect SQL quoting');
+  for (const [name,row] of Object.entries(state.iconMedia || {})) out('_id=' + row.id + ', _display_name=' + name + ', is_pending=' + row.pending);
+} else if (cmd === 'shell' && a === 'content' && b === 'update') {
+  const id = Number(d.split('/').pop());
+  for (const row of Object.values(state.iconMedia || {})) if (row.id === id && !state.iconPublishIgnored) row.pending = 0;
+  save(); out('Updated 1 rows.');
 } else if (cmd === 'pull') {
   if (!Object.hasOwn(state.files || {}, a)) fail('remote file does not exist');
   fs.writeFileSync(b,state.transferMismatch ? 'corrupt' : state.files[a]);

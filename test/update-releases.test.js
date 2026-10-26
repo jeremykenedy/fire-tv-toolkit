@@ -79,14 +79,18 @@ test('public UI releases remain available without GitHub authentication', async 
 });
 
 test('UI update sends only reviewed metadata, never directly installs',async()=>{
-  let sent,removed=false;
+  let sent,removed=false,iconsCleaned=false;
+  const copied=[];
   const row={id:'fire-tv-ui',status:'checked',comparison:1,published:{...UI_UPDATE,...release,url:release.apkUrl,checkedAt:Date.now()}};
   const result=await installAppUpdate('192.0.2.2',row,{downloadApk:async()=>'/private/apk',
     inspectApk:()=>({package:UI_UPDATE.pkg,versionCode:38n}), packageDetails:async()=>({versionCode:37n}),
+    prepareUiIcons:async app=>{assert.equal(app.tag,row.published.tag);return {files:['/private/pc.png'],cleanup:()=>{iconsCleaned=true;}};},
+    installSharedIcons:async(ip,files)=>{copied.push(ip,...files);},
     stageUiUpdate:async(ip,apk,metadata)=>{sent={ip,apk,metadata};},
     installApk:async()=>{throw new Error('Must not install UI silently');},removeDownload:()=>{removed=true;}});
   assert.equal(result.staged,true);assert.equal(sent.ip,'192.0.2.2');assert.equal(sent.metadata.package,UI_UPDATE.pkg);
   assert.equal(sent.metadata.checked_at,row.published.checkedAt);assert.equal(removed,true);
+  assert.deepEqual(copied,['192.0.2.2','/private/pc.png']);assert.equal(iconsCleaned,true);
   assert.deepEqual(Object.keys(sent.metadata).sort(),['bytes','checked_at','dream','name','package','preview','repo','sha256','tag','url']);
 });
 

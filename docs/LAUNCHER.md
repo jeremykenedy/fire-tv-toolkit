@@ -28,6 +28,15 @@ private Home flags on native failure before Toolkit restores the earlier prefere
 is reported rather than claimed as successful. Mocked checks cover these paths;
 this new Toolkit integration still needs a separately authorized physical gate.
 
+UI installation also verifies the matching release's icon ZIP and SHA-256
+sidecar before writing to the TV. It copies the catalog's 32 full HD PNGs to
+`/sdcard/Pictures/Icons`, scans them and, on Android 10 or newer, publishes their
+MediaStore rows so the native image picker can see them. Other pictures are
+retained. The checked UI update flow sends the matching icons before staging
+the APK for confirmation on the TV; it still does not install a UI update
+silently or change Home preferences and grants. An incomplete icon transfer or
+indexing result is reported as a failure.
+
 For AT4K and LTvLauncher, Fire OS has no setting for choosing a Home app, so the
 toolkit uses its legacy helper:
 

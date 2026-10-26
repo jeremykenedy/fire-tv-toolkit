@@ -62,6 +62,10 @@ unaffected. CLI `--install` still installs AT4K; the new UI flag is `--install-u
   saved choices through the verified UI contract.
 - Existing UI replacement does not issue Home operations or regrant setup
   permissions. Fresh installation grants its declared setup permission.
+- Deliver the matching release's shared HD icons with UI installation and
+  staged updates. Verify its archive and safe full HD catalog before TV writes,
+  then copy, scan and publish the images for Android's picker without changing
+  Home preferences or deleting unrelated pictures.
 - Keep hardware-specific restoration history independent of a profile rename
   or address change. Corrupt profile files remain available for recovery rather
   than being silently overwritten.

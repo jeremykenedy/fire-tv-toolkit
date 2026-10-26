@@ -65,6 +65,11 @@ export const FIRE_TV_UI = {
   asset: 'fire-tv-ui-1.11.0.apk',
   sha256: 'd5abce3b88a9311ef9c9094858f7f3c3982cff6c61fd088360043acfd6163af4',
   bytes: 9037158,
+  icons: {
+    tag: 'v1.11.0',
+    bytes: 8505979,
+    sha256: 'ba74f7a6725ff466116bb52b1541e6d6f778d7f08d2ab6d4f36540e3dccafa94',
+  },
   signerSha256: '9a6416b9dc3c996d591b185d600b8ab76e1c7b01846db8d6063b399caf7b5a11',
   minSdk: 27,
   targetSdk: 36,

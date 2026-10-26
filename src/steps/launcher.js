@@ -38,7 +38,7 @@ async function installAll(ip, id) {
     const spinner = startSpinner(`Installing ${app.name}`);
     const result = await installLauncherApp(ip, app);
     if (result.ok) {
-      spinner.succeed(`${app.name} installed.`);
+      spinner.succeed(`${app.name} installed${app.id === FIRE_TV_UI.id ? ' with shared HD icons' : ''}.`);
     } else {
       spinner.fail(`${app.name}: ${result.error}.`);
       ok = false;

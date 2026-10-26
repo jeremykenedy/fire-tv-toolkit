@@ -22,6 +22,7 @@ import {
 import {
   HOME_LAUNCHERS,
   HOME_REDIRECT,
+  FIRE_TV_UI,
   launcherApps,
 } from 'fire-tv-toolkit/src/launcher-registry.js';
 import { OWNTV, FIRE_IPTV, IPTV_PLAYLIST } from 'fire-tv-toolkit/src/iptv-registry.js';
@@ -235,7 +236,7 @@ export function createController({
         return {
           title: `Install ${HOME_LAUNCHERS.find((entry) => entry.id === action.id).name}`,
           detail:
-            `Download and verify ${launcherApps(action.id).map(app => app.name).join(' and ')}, then apply the required setup. Your Home button changes only when you choose Use.`,
+            `Download and verify ${launcherApps(action.id).map(app => app.name).join(' and ')}${action.id === FIRE_TV_UI.id ? ' and its shared HD icons' : ''}, then apply the required setup. Your Home button changes only when you choose Use.`,
         };
       case 'home':
         return {
