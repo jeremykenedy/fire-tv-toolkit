@@ -23,7 +23,7 @@ Home/startup preferences; it restores the exact accessibility services/enabled
 settings after the in-place APK update. Fresh installation uses preference-off
 without selecting Home. Explicit Home switching validates readback before pressing Home; failed
 readback restores the previous routing preference, including absence, and the
-exact settings. The full code69 HomeControl transaction must restore all four
+exact settings. The full code 69 HomeControl transaction must restore all four
 private Home flags on native failure before Toolkit restores the earlier preference. A restore failure
 is reported rather than claimed as successful. Mocked checks cover these paths;
 this new Toolkit integration still needs a separately authorized physical gate.
@@ -131,7 +131,7 @@ firetv-ltv-backup --pull=ltv-backup.json   # copy the newest LTvLauncher backup 
 - `launcherApps('fire-tv-ui')` returns only the UI entry. Desktop readiness must
   inspect that list instead of requiring the legacy Home Redirect globally.
 - `launcherState().uiHomeSupported` is exposed when UI is installed and is true
-  only for version code69 or newer. Desktop must disable unsupported Home changes
+  only for version code 69 or newer. Desktop must disable unsupported Home changes
   without changing an existing active launcher.
 - `launcherState().home` includes `fire-tv-ui` only when both own services are
   enabled and `accessibility_enabled=1`. Existing AT4K/LTvLauncher/Amazon choices
@@ -141,29 +141,37 @@ firetv-ltv-backup --pull=ltv-backup.json   # copy the newest LTvLauncher backup 
   published metadata. Installed UI updates keep their staged-update path.
 - No new native or physical behavior has been proved by these mocked tests.
 
-### Pending native update-preservation gate
+### Verified UI update and Home preference contract
 
-All Home mutations involving the native UI require version code69 or newer.
-Unknown and older installed codes are refused before a preference or OS write.
-A pinned installation descriptor must also declare code69 or newer; the current
-public68 baseline is intentionally unavailable for fresh installation until its
-reviewed successor is pinned.
+The reviewed installation pin is public [Fire TV UI 1.11.0/code 69](https://github.com/jeremykenedy/fire-tv-ui/releases/tag/v1.11.0):
+`fire-tv-ui-1.11.0.apk`, 9,037,158 bytes, SHA-256
+`d5abce3b88a9311ef9c9094858f7f3c3982cff6c61fd088360043acfd6163af4`.
+Its production certificate is
+`9a6416b9dc3c996d591b185d600b8ab76e1c7b01846db8d6063b399caf7b5a11`;
+Android minimum 27 and target 36 are unchanged. All four published APK/icon and
+checksum assets were downloaded anonymously and verified before this pin changed.
 
-The reviewed public UI68 receiver handles its own package replacement by calling
-HomeControl, which can normalize its four Home/startup flags independently of
-Toolkit. The mocked Toolkit update fixture deliberately proves that Toolkit
-issues no Home operation for an existing install and retains nonstandard flag
-combinations; it does not prove that upstream receiver behavior is fixed.
-Before releasing this integration, the UI release must rebind after an update
-without rewriting those private choices, and its exact signed APK must pass a
-native upgrade/preservation gate. Explicit `--use=fire-tv-ui` remains a separate
-user action that uses HomeControl's supported Home-on behavior.
+All Home mutations involving Fire TV UI require code 69 or newer. Unknown or
+older installed codes are refused before a preference or OS write, and the
+desktop disables Home changes until the UI is updated. An installation
+descriptor must also declare at least code 69. Existing UI updates issue no Home
+operation and retain private choices and grants; fresh Toolkit installation
+starts with the UI Home preference Off until you choose Use.
 
-The code69 protected API reads only `home-preference-state`, returning exactly
-`home-preference=unset|on|off`. Preference-on/off change only
-`fire_tv_ui_home_enabled`; preference-clear restores its absence. They must
-preserve the other three Home flags and their presence. A failed explicit Use
-restores that exact preference and raw OS settings; it does not use a broad
-preference export. The full Home-on/off commit occurs only after route readback
-and requires native four-key rollback on error. These contracts remain subject
-to verification against the final signed code69 APK.
+The exact signed UI passed an actual public 68-to-69 replacement on the TV
+emulator. Enabled=true, startup=false, detection=false and an absent override key
+survived before Main initialized. Both native Home services rebound. The
+protected API reports exactly `home-preference=unset|on|off`; preference-on/off
+change only the enabled key and preference-clear restores its absence. Actual
+permission-denied full Home operations restored all four prior values and key
+presence, with OS accessibility unchanged. The temporary permission and fixture
+were removed and the complete baseline restored. These are emulator functional
+results, not new physical Fire OS Home or hardware-remote claims.
+
+Toolkit sets the narrow preference before its OS route change so the native
+guard cannot repair the old route. It verifies readback before applying the
+ordinary full Home-on/off choices. A failed Use restores the exact enabled
+preference, including absence, and the original raw OS accessibility values;
+it does not export a broad private profile. An ordinary first Main launch still
+initializes missing defaults. Code 68's receiver and preference operations could
+normalize choices, so this contract must not be claimed for that version.

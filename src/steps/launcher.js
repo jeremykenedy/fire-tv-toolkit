@@ -78,7 +78,7 @@ async function switchHome(ip, mode) {
     return;
   }
   if (state.installed.includes(FIRE_TV_UI.id) && !state.uiHomeSupported) {
-    print(chalk.red('\nUpdate Fire TV UI to version code69 or later before changing Home. Older releases cannot preserve private Home preferences on failure.\n'));
+    print(chalk.red('\nUpdate Fire TV UI to version code 69 or later before changing Home. Older releases cannot preserve private Home preferences on failure.\n'));
     markFailed();
     return;
   }

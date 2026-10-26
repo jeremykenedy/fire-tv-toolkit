@@ -134,12 +134,12 @@ test('installation preserves an explicitly empty services setting and disabled a
   assert.deepEqual(fake.readState().secure, before);
 });
 
-test('direct selection refuses an absent UI, and install-ui refuses an unsafe pinned release without choosing Home', async () => {
+test('direct selection refuses an absent UI, and a rejected CLI download never chooses Home', async () => {
   const before = fake.readState();
   assert.equal(await useHome(ip, UI.id), false);
   assert.deepEqual(fake.readState(), before);
   const result = await captured(() => manageLauncher(ip, { 'install-ui': true, use: UI.id }));
-  assert.match(result.out, /version code69 or later/);
+  assert.match(result.out, /checksum/i);
   assert.equal(process.exitCode, 1);
   assert.deepEqual(fake.readState().secure, before.secure);
   assert.ok(!fake.readState().installed.includes(HOME_REDIRECT.pkg));
@@ -171,8 +171,9 @@ test('guided default recommends UI installation without silently switching Home'
     { expect: 'Install Fire TV UI (recommended)', send: ENTER },
     { expect: 'Nothing has been changed yet. Continue?', send: ENTER },
   ], { env: { NODE_OPTIONS: `--import=${preload}` } });
-  assert.equal(result.code, 1, result.out);
-  assert.match(result.out, /version code69 or later/);
+  assert.equal(result.code, 0, result.out);
+  assert.ok(fake.readState().installed.includes(UI.pkg));
+  assert.equal(fake.readState().uiHomeWanted, false);
   assert.equal(fake.readState().secure[key], undefined);
   assert.ok(!fake.readState().installed.includes(HOME_REDIRECT.pkg));
 });
@@ -322,7 +323,7 @@ test('full Home commit happens after verified routing, and successful explicit U
   assert.equal(fake.readState().inputs.length, 1);
 });
 
-test('code68 and unknown versions cannot mutate Home, while state exposes compatibility to the desktop', async () => {
+test('code 68 and unknown versions cannot mutate Home, while state exposes compatibility to the desktop', async () => {
   for (const codes of [{ [UI.pkg]: 68 }, {}]) {
     installed('reader/Service');
     fake.setState({ versionCodes: codes, uiHomeFlags: { start_on_boot: false } });
@@ -333,11 +334,11 @@ test('code68 and unknown versions cannot mutate Home, while state exposes compat
   }
 });
 
-test('unsafe registry code68 refuses installation before any device or private preference change', async () => {
+test('unsafe registry code 68 refuses installation before any device or private preference change', async () => {
   const original = fake.readState();
-  const result = await installLauncherApp(ip, { ...UI, sha256: undefined });
+  const result = await installLauncherApp(ip, { ...UI, versionCode: 68, sha256: undefined });
   assert.equal(result.ok, false);
-  assert.match(result.error, /version code69 or later/);
+  assert.match(result.error, /version code 69 or later/);
   assert.deepEqual(fake.readState(), original);
 });
 
@@ -353,12 +354,12 @@ test('narrow preference state and clear preserve absence and the other three val
   assert.deepEqual(fake.readState().uiHomeFlags, { start_on_boot: false, override_home_button: true });
 });
 
-test('CLI explains the code69 requirement for an older installed UI without changing its state', async () => {
+test('CLI explains the code 69 requirement for an older installed UI without changing its state', async () => {
   installed('reader/Service');
   fake.setState({ versionCodes: { [UI.pkg]: 68 }, uiHomeFlags: { start_on_boot: false } });
   const original = fake.readState();
   const result = await captured(() => manageLauncher(ip, { use: UI.id }));
-  assert.match(result.out, /Update Fire TV UI to version code69 or later/);
+  assert.match(result.out, /Update Fire TV UI to version code 69 or later/);
   assert.equal(process.exitCode, 1);
   assert.deepEqual(fake.readState(), original);
 });
@@ -372,13 +373,13 @@ test('unreviewed descriptor codes and mismatched installed versions cannot use t
     fake.setState({ versionCodes: codes });
     const result = await installLauncherApp(ip, { ...UI, versionCode: 69, sha256: undefined });
     assert.equal(result.ok, false);
-    assert.match(result.error, /does not provide the code69/);
+    assert.match(result.error, /does not provide the code 69/);
     assert.equal(fake.readState().uiOperations, undefined);
     assert.equal(fake.readState().grants, undefined);
   }
 });
 
-test('upgrading an existing code68 UI to a reviewed code69 candidate never invokes HomeControl or normalizes its private flags', async () => {
+test('upgrading an existing code 68 UI to a reviewed code 69 candidate never invokes HomeControl or normalizes its private flags', async () => {
   installed(uiServices);
   const flags = { fire_tv_ui_home_enabled: true, start_on_boot: false, better_home_detection: false };
   fake.setState({ versionCodes: { [UI.pkg]: 68 }, installVersionCodes: { [UI.pkg]: 69 }, uiHomeFlags: flags, uiOperations: [] });

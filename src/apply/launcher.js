@@ -129,7 +129,7 @@ export async function installLauncherApp(ip, app) {
   let servicesBefore;
   try {
     if (app.id === FIRE_TV_UI.id && (!Number.isSafeInteger(app.versionCode) || BigInt(app.versionCode) < UI_HOME_MIN_CODE)) {
-      throw new Error('Fire TV UI version code69 or later is required for safe Home preference preservation.');
+      throw new Error('Fire TV UI version code 69 or later is required for safe Home preference preservation.');
     }
     apkPath = await downloadApk(app);
     if (app.id === FIRE_TV_UI.id) {
@@ -142,7 +142,7 @@ export async function installLauncherApp(ip, app) {
     if (before) {
       const installed = await packageDetails(ip, FIRE_TV_UI.pkg);
       if (installed.versionCode === null || installed.versionCode < UI_HOME_MIN_CODE)
-        throw new Error('Installed Fire TV UI does not provide the code69 Home preservation API.');
+        throw new Error('Installed Fire TV UI does not provide the code 69 Home preservation API.');
     }
     if (!before || !before.installed.includes(FIRE_TV_UI.id)) {
       for (const permission of app.grants || []) {

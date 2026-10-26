@@ -60,10 +60,14 @@ export const FIRE_TV_UI = {
   service: 'com.jeremykenedy.firetv.ui/com.jeremykenedy.firetv.ui.HomeRedirectService',
   controlsService: 'com.jeremykenedy.firetv.ui/com.jeremykenedy.firetv.ui.Hra',
   repo: 'jeremykenedy/fire-tv-ui',
-  tag: 'v1.10.1',
-  versionCode: 68,
-  asset: 'fire-tv-ui-1.10.1.apk',
-  sha256: 'ab7b501954f23f9bbc1f4f3e8bab8580afcfd4be9a0f853003d300841a131dc1',
+  tag: 'v1.11.0',
+  versionCode: 69,
+  asset: 'fire-tv-ui-1.11.0.apk',
+  sha256: 'd5abce3b88a9311ef9c9094858f7f3c3982cff6c61fd088360043acfd6163af4',
+  bytes: 9037158,
+  signerSha256: '9a6416b9dc3c996d591b185d600b8ab76e1c7b01846db8d6063b399caf7b5a11',
+  minSdk: 27,
+  targetSdk: 36,
   grants: ['android.permission.WRITE_SECURE_SETTINGS'],
 };
 
