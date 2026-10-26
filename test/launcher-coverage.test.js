@@ -185,12 +185,12 @@ test('firetv-launcher --use=at4k needs both apps first', async () => {
   assert.equal(process.exitCode, 1);
 });
 
-test('launcher --use no longer accepts fire-tv-ui, and changes nothing', async () => {
+test('launcher --use=fire-tv-ui requires its own installed app and changes nothing', async () => {
   installedEnv();
   fake.setState({ secure: secure({ [SERVICES]: 'reader/Service' }) });
   const r = await drive('bin/launcher.js', ['--use=fire-tv-ui', '--yes'], []);
   assert.equal(r.code, 1, r.out);
-  assert.match(r.out, /fire-tv-ui/);
+  assert.match(r.out, /Fire TV UI needs to be installed first/);
   assert.equal(fake.readState().secure[SERVICES], 'reader/Service');
 });
 
@@ -222,7 +222,7 @@ const withFetchStub = { env: { NODE_OPTIONS: `${process.env.NODE_OPTIONS || ''} 
 test('firetv-launcher menu: install from a fresh TV', async () => {
   installedEnv();
   const r = await drive('bin/firetv-launcher.js', [], [
-    { expect: 'What would you like to do?', send: ENTER },
+    { expect: 'What would you like to do?', send: `${DOWN}${ENTER}` },
     CONTINUE,
   ], withFetchStub);
   assert.equal(r.code, 1, r.out);
@@ -236,7 +236,7 @@ test('launcher menu: switch the Home button to AT4K, then back with firetv-launc
   installedEnv();
   bothInstalled();
   const on = await drive('bin/launcher.js', [], [
-    { expect: 'What would you like to do?', send: `${DOWN}${DOWN}${ENTER}` },
+    { expect: 'What would you like to do?', send: `${DOWN}${DOWN}${DOWN}${ENTER}` },
     CONTINUE,
   ], withFetchStub);
   assert.equal(on.code, 0, on.out);
@@ -245,7 +245,7 @@ test('launcher menu: switch the Home button to AT4K, then back with firetv-launc
   assert.match(fake.readState().secure[SERVICES], /HomeRedirectService/);
 
   const off = await drive('bin/firetv-launcher.js', [], [
-    { expect: 'What would you like to do?', send: `${DOWN}${DOWN}${ENTER}` },
+    { expect: 'What would you like to do?', send: `${DOWN}${DOWN}${DOWN}${ENTER}` },
     CONTINUE,
   ], withFetchStub);
   assert.equal(off.code, 0, off.out);
@@ -339,7 +339,7 @@ test('launcher menu offers LTvLauncher once installed, then AT4K and Amazon from
   installedEnv();
   ltvInstalled();
   const on = await drive('bin/firetv-launcher.js', [], [
-    { expect: 'What would you like to do?', send: `${DOWN}${DOWN}${DOWN}${ENTER}` },
+    { expect: 'What would you like to do?', send: `${DOWN}${DOWN}${DOWN}${DOWN}${ENTER}` },
     CONTINUE,
   ], withFetchStub);
   assert.equal(on.code, 0, on.out);
@@ -347,7 +347,7 @@ test('launcher menu offers LTvLauncher once installed, then AT4K and Amazon from
   assert.match(on.out, /now goes to LTvLauncher/);
 
   const back = await drive('bin/firetv-launcher.js', [], [
-    { expect: 'What would you like to do?', send: `${DOWN}${DOWN}${ENTER}` },
+    { expect: 'What would you like to do?', send: `${DOWN}${DOWN}${DOWN}${ENTER}` },
     CONTINUE,
   ], withFetchStub);
   assert.equal(back.code, 0, back.out);

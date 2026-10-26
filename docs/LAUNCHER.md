@@ -1,13 +1,31 @@
 # Home screen
 
-Two optional home screens can replace the Amazon menu: AT4K and LTvLauncher.
-Both are clean and ad-free, both can be installed side by side, and the Home
-button can be switched between them, or back to the Amazon menu, at any time.
+**Fire TV UI** is the recommended launcher. AT4K, LTvLauncher and the Amazon
+menu remain available. Recommendation affects menu order only: updating Toolkit
+or installing a launcher does not automatically select a different Home screen.
 
 ## How it works
 
-Fire OS has no setting for choosing a home app, and it does not hand the Home
-key to accessibility services, so the toolkit uses its own helper:
+Fire TV UI uses its own DUMP-protected `BackupReceiver` and `HomeControl` API.
+Selecting it enables its `Hra` and `HomeRedirectService` accessibility services,
+removes the conflicting legacy redirect and AT4K Home service, and preserves all
+other services. It does not install Toolkit's separate Home Redirect app.
+Switching away calls the UI's `home-off` operation before writing the requested
+route, so `ProtectionService` cannot keep repairing the previous Home choice.
+The protection service itself, screensaver selection, timers and unrelated
+preferences are left alone. No microphone or notification access is granted.
+
+UI installation grants only `WRITE_SECURE_SETTINGS`, required by that supported
+HomeControl interface. For an existing installation it never calls HomeControl or rewrites private
+Home/startup preferences; it restores the exact accessibility services/enabled
+settings after the in-place APK update. Fresh installation uses preference-off
+without selecting Home. Explicit Home switching validates readback before pressing Home; failed
+readback restores the previous routing preference and settings. A restore failure
+is reported rather than claimed as successful. Mocked checks cover these paths;
+this new Toolkit integration still needs a separately authorized physical gate.
+
+For AT4K and LTvLauncher, Fire OS has no setting for choosing a Home app, so the
+toolkit uses its legacy helper:
 
 - **Home Redirect** (`com.jeremykenedy.firetv.homeredirect`), built from
   [`android/home-redirect`](../android/home-redirect) in this repo. It watches
@@ -55,7 +73,9 @@ show up there.
 ## Commands
 
 ```bash
-launcher                    # guided menu
+launcher                    # guided menu, Fire TV UI recommended first
+launcher --install-ui       # install/update Fire TV UI, keep the current Home choice
+launcher --use=fire-tv-ui    # explicitly select Fire TV UI
 launcher --install          # install or update AT4K and Home Redirect
 launcher --install-ltv      # install or update LTvLauncher and Home Redirect
 launcher --use=at4k         # Home goes to AT4K
@@ -67,6 +87,12 @@ firetv-ltv-backup --pull=ltv-backup.json   # copy the newest LTvLauncher backup 
 ```
 
 ## Where the apps come from
+
+- **Fire TV UI** comes from its own signed public release
+  ([jeremykenedy/fire-tv-ui](https://github.com/jeremykenedy/fire-tv-ui)).
+  The reviewed installation baseline is pinned in `src/launcher-registry.js`;
+  the update catalog still checks the latest published release and stages an
+  existing UI update through its supported updater, without duplicate rows.
 
 - **AT4K** is installed from its author's own release
   ([avadhesh18/at4k](https://github.com/avadhesh18/at4k), v1.2), unmodified, and
@@ -94,3 +120,28 @@ firetv-ltv-backup --pull=ltv-backup.json   # copy the newest LTvLauncher backup 
   remove the apps. AT4K and LTvLauncher hold your home screen layout, which
   uninstalling deletes, so they start unticked and `firetv-revert --all` leaves
   them installed. Tick them to remove them.
+
+## Integration contract
+
+- `HOME_LAUNCHERS[0]` is Fire TV UI, with `recommended: true`.
+- `launcherApps('fire-tv-ui')` returns only the UI entry. Desktop readiness must
+  inspect that list instead of requiring the legacy Home Redirect globally.
+- `launcherState().home` includes `fire-tv-ui` only when both own services are
+  enabled and `accessibility_enabled=1`. Existing AT4K/LTvLauncher/Amazon choices
+  keep their original identifiers.
+- CLI accepts `--install-ui` and `--use=fire-tv-ui`; `--install` remains AT4K.
+- `UI_UPDATE` derives shared identity from the registry but resolves latest
+  published metadata. Installed UI updates keep their staged-update path.
+- No new native or physical behavior has been proved by these mocked tests.
+
+### Pending native update-preservation gate
+
+The reviewed public UI68 receiver handles its own package replacement by calling
+HomeControl, which can normalize its four Home/startup flags independently of
+Toolkit. The mocked Toolkit update fixture deliberately proves that Toolkit
+issues no Home operation for an existing install and retains nonstandard flag
+combinations; it does not prove that upstream receiver behavior is fixed.
+Before releasing this integration, the UI release must rebind after an update
+without rewriting those private choices, and its exact signed APK must pass a
+native upgrade/preservation gate. Explicit `--use=fire-tv-ui` remains a separate
+user action that uses HomeControl's supported Home-on behavior.

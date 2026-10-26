@@ -33,6 +33,7 @@ else if (cmd === 'install') {
   }
   // Like Android dropping an updated accessibility app from the enabled list.
   if (state.dropServicesOnInstall && state.secure) delete state.secure.enabled_accessibility_services;
+  if (state.accessibilityOnInstall !== undefined) state.secure.accessibility_enabled = state.accessibilityOnInstall;
   save(); out('Success');
 }
 else if (cmd === 'shell' && a === 'input') { out(''); }
@@ -97,11 +98,32 @@ else if (cmd === 'shell' && a === 'am' && b === 'broadcast' && args.includes('co
     else if (cmdName === 'home' && !state.homeRedirectWithoutTargets) {
       const value = extra('value');
       if (value === undefined || value === 'at4k' || value === 'ltv') {
-        if (value) g.home = value;
+        if (value && !state.homeWriteIgnored) g.home = value;
         reply = 'home=' + (g.home || 'at4k');
       }
     }
     save(); out('Broadcasting: Intent\\nBroadcast completed: result=0, data="' + reply + '"');
+  }
+}
+else if (cmd === 'shell' && a === 'am' && b === 'broadcast' && args.includes('com.jeremykenedy.firetv.ui/.BackupReceiver')) {
+  const operation = args[args.indexOf('operation') + 1];
+  if (!state.installed.includes('com.jeremykenedy.firetv.ui') || state.uiHomeReject) {
+    out('Broadcast completed: result=1, data="unsupported"');
+  } else {
+    state.uiOperations = [...(state.uiOperations || []), operation];
+    state.uiHomeWanted = operation.endsWith('-on');
+    state.uiHomeFlags = { fire_tv_ui_home_enabled: state.uiHomeWanted, start_on_boot: state.uiHomeWanted, override_home_button: state.uiHomeWanted, better_home_detection: true };
+    if (!operation.includes('preference')) {
+      const own = ['com.jeremykenedy.firetv.ui/com.jeremykenedy.firetv.ui.Hra', 'com.jeremykenedy.firetv.ui/com.jeremykenedy.firetv.ui.HomeRedirectService'];
+      let list = (state.secure.enabled_accessibility_services || '').split(':').filter(Boolean).filter(s => !own.includes(s));
+      if (state.uiHomeWanted) {
+        list = list.filter(s => !['com.overdevs.at4k/com.overdevs.at4k.Hra', 'com.jeremykenedy.firetv.homeredirect/com.jeremykenedy.firetv.homeredirect.HomeRedirectService', 'com.overdevs.at4khelper/com.overdevs.at4khelper.HomeRedirectAccessibilityService'].includes(s));
+        list.push(...own);
+      }
+      state.secure.enabled_accessibility_services = list.join(':');
+      state.secure.accessibility_enabled = list.length ? '1' : '0';
+    }
+    save(); out('Broadcast completed: result=0, data="ok"');
   }
 }
 else if (cmd === 'shell' && a === 'dumpsys' && b === 'package') {
@@ -121,6 +143,7 @@ else if (cmd === 'shell' && a === 'settings' && b === 'get') {
 } else if (cmd === 'shell' && a === 'settings' && b === 'put') {
   if (state.rejectOverMax && c === 'system' && d === 'screen_off_timeout' && Number(process.argv.slice(-1)[0]) > 2147460000) fail('java.lang.IllegalArgumentException: value too large');
   // lockedKeys: the TV takes the write without error but nothing changes.
+  if (state.dropNextSettingWrites > 0) { state.dropNextSettingWrites--; save(); process.exit(0); }
   if ((state.lockedKeys || []).includes(d)) { process.exit(0); }
   state[c] = state[c] || {}; state[c][d] = process.argv.slice(-1)[0]; save();
 } else if (cmd === 'shell' && a === 'settings' && b === 'list') {

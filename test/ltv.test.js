@@ -120,7 +120,7 @@ test('the launcher menu offers notification access while LTvLauncher has none', 
   installedEnv();
   ltvInstalled({ versions: { [HOME_REDIRECT.pkg]: '1.2.5' } });
   const r = await drive('bin/firetv-launcher.js', [], [
-    { expect: 'Allow LTvLauncher to read notifications', send: `${DOWN.repeat(4)}${ENTER}` },
+    { expect: 'Allow LTvLauncher to read notifications', send: `${DOWN.repeat(5)}${ENTER}` },
     CONTINUE,
   ]);
   assert.equal(r.code, 0, r.out);

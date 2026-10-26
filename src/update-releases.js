@@ -3,12 +3,11 @@ import { packageVersion, packageDetails, installApk, stageUiUpdate } from './adb
 import { downloadApk, removeDownload } from './apply/screensavers.js';
 import { inspectApk } from './apk-manifest.js';
 import { SCREENSAVERS } from './screensaver-registry.js';
-import { HOME_LAUNCHERS, HOME_REDIRECT } from './launcher-registry.js';
+import { HOME_LAUNCHERS, HOME_REDIRECT, FIRE_TV_UI } from './launcher-registry.js';
 import { IPTV_APPS } from './iptv-registry.js';
 
 export const UI_UPDATE = Object.freeze({
-  id: 'fire-tv-ui', name: 'Fire TV UI', pkg: 'com.jeremykenedy.firetv.ui',
-  repo: 'jeremykenedy/fire-tv-ui', asset: 'fire-tv-ui.apk',
+  ...FIRE_TV_UI, asset: 'fire-tv-ui.apk',
 });
 
 /** Version names that cannot be ordered remain unknown, never current. */
@@ -71,7 +70,7 @@ export async function checkAppUpdates(ip, api = {}) {
   let token;
   try { token = await (api.githubToken ?? githubToken)(); } catch { /* Public checks can proceed without sign-in. */ }
   let rateLimited = false;
-  for (const entry of [UI_UPDATE, ...SCREENSAVERS.filter((item) => item.pkg !== UI_UPDATE.pkg), ...HOME_LAUNCHERS, HOME_REDIRECT, ...IPTV_APPS]) {
+  for (const entry of [UI_UPDATE, ...SCREENSAVERS.filter((item) => item.pkg !== UI_UPDATE.pkg), ...HOME_LAUNCHERS.filter((item) => item.pkg !== UI_UPDATE.pkg), HOME_REDIRECT, ...IPTV_APPS]) {
     const installed = await (api.packageVersion ?? packageVersion)(ip, entry.pkg);
     if (!installed) continue;
     try {

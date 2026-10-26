@@ -1,8 +1,6 @@
-// The optional AT4K and LTvLauncher home screens. Fire OS has no setting for
-// choosing a Home app, so the Home Redirect app built from
-// android/home-redirect in this repo reopens the chosen launcher whenever the
-// Amazon menu comes to the front. With AT4K, AT4K's own accessibility service
-// runs beside it. Home Redirect also carries the on-TV screensaver picker.
+// Fire TV UI is the recommended Home screen and uses its own routing.
+// AT4K and LTvLauncher use the separate Home Redirect app. Recommendation
+// affects menu order; installation never chooses a different Home screen.
 
 /** AT4K comes from its author's own release, never a copy, checked against this pinned hash. */
 export const AT4K = {
@@ -53,10 +51,25 @@ export const HOME_REDIRECT = {
   grants: ['android.permission.WRITE_SECURE_SETTINGS'],
 };
 
-export const LAUNCHER_APPS = [AT4K, HOME_REDIRECT];
+/** Public, signed native UI; its own HomeControl replaces the legacy redirect. */
+export const FIRE_TV_UI = {
+  id: 'fire-tv-ui',
+  name: 'Fire TV UI',
+  recommended: true,
+  pkg: 'com.jeremykenedy.firetv.ui',
+  service: 'com.jeremykenedy.firetv.ui/com.jeremykenedy.firetv.ui.HomeRedirectService',
+  controlsService: 'com.jeremykenedy.firetv.ui/com.jeremykenedy.firetv.ui.Hra',
+  repo: 'jeremykenedy/fire-tv-ui',
+  tag: 'v1.10.1',
+  asset: 'fire-tv-ui-1.10.1.apk',
+  sha256: 'ab7b501954f23f9bbc1f4f3e8bab8580afcfd4be9a0f853003d300841a131dc1',
+  grants: ['android.permission.WRITE_SECURE_SETTINGS'],
+};
 
-/** The launchers Home Redirect can open, each installed together with it. */
-export const HOME_LAUNCHERS = [AT4K, LTV];
+export const LAUNCHER_APPS = [FIRE_TV_UI, AT4K, HOME_REDIRECT];
+
+/** Available Home screens; launcherApps supplies each entry's dependencies. */
+export const HOME_LAUNCHERS = [FIRE_TV_UI, AT4K, LTV];
 
 /** Home Redirect version that can open a launcher other than AT4K. */
 export const HOME_TARGET_VERSION = '1.2.5';
@@ -66,5 +79,6 @@ export const HOME_TARGET_VERSION = '1.2.5';
  * @returns {Array<typeof AT4K | typeof HOME_REDIRECT>} the apps that launcher needs
  */
 export function launcherApps(id) {
+  if (id === FIRE_TV_UI.id) return [FIRE_TV_UI];
   return [HOME_LAUNCHERS.find((app) => app.id === id), HOME_REDIRECT];
 }

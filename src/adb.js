@@ -288,6 +288,16 @@ export async function setAppOp(ip, pkg, op, mode) {
 
 const GUARD_PKG = 'com.jeremykenedy.firetv.homeredirect';
 const NATIVE_UI_PKG = 'com.jeremykenedy.firetv.ui';
+
+/** Use the native UI's own HomeControl without changing its protection service. */
+export async function setNativeUiHome(ip, enabled, preferenceOnly = false) {
+  const operation = `home-${preferenceOnly ? 'preference-' : ''}${enabled ? 'on' : 'off'}`;
+  const out = await run(['-s', target(ip), 'shell', 'am', 'broadcast', '--include-stopped-packages',
+    '-n', `${NATIVE_UI_PKG}/.BackupReceiver`, '--es', 'operation', operation]);
+  if (!/Broadcast completed: result=0, data="ok"(?:\s|$)/.test(out)) {
+    throw new Error('Fire TV UI did not accept Home routing. Update or configure Fire TV UI before trying again.');
+  }
+}
 const NATIVE_UI_SETTINGS = new Set([
   'secure/sleep_timeout',
   'system/screen_off_timeout',

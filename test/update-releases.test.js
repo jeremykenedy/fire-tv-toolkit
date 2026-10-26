@@ -225,3 +225,25 @@ test('Home Redirect compares Android codes rather than the Toolkit release versi
   assert.equal(rejected[0].published, undefined);
   assert.equal(removed, 4);
 });
+
+
+test('preferred UI launcher has one latest-published update row and remains staged rather than a second launcher update', async () => {
+  let checks = 0;
+  const rows = await checkAppUpdates('192.0.2.2', {
+    githubToken: async () => undefined,
+    packageVersion: async (_ip, pkg) => pkg === UI_UPDATE.pkg ? '1.10.1' : null,
+    latestRelease: async (repo, asset, tag) => {
+      checks++;
+      assert.equal(repo, UI_UPDATE.repo);
+      assert.equal(tag, undefined);
+      return { tag: 'v1.11.0', asset: 'fire-tv-ui-1.11.0.apk', bytes: 123,
+        apkUrl: 'https://github.com/jeremykenedy/fire-tv-ui/releases/download/v1.11.0/fire-tv-ui-1.11.0.apk',
+        digest: 'sha256:' + 'a'.repeat(64) };
+    },
+  });
+  assert.equal(checks, 1);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].id, 'fire-tv-ui');
+  assert.equal(rows[0].published.tag, 'v1.11.0');
+  assert.equal(rows[0].comparison, 1);
+});

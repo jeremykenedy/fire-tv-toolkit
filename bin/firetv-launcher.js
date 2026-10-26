@@ -9,7 +9,7 @@ let flags;
 try {
   flags = parseFlags(FLAG_SPEC, process.argv.slice(2));
 } catch (err) {
-  exitOnFlagError(err, 'firetv-launcher --install --use=at4k');
+  exitOnFlagError(err, 'firetv-launcher --install-ui --use=fire-tv-ui');
 }
 
 renderBanner();
