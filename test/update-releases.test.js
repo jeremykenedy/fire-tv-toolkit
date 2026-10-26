@@ -55,17 +55,36 @@ test('invalid or conflicting published integrity is unavailable',async()=>{
 
 test('failed checks stay unavailable rather than up to date',async()=>{
   const rows=await checkAppUpdates('192.0.2.2',{packageVersion:async(_ip,pkg)=>pkg===UI_UPDATE.pkg?'1.3.3':null,
-    githubToken:async()=>{throw new Error('Sign in required');}});
+    githubToken:async()=>{throw new Error('Sign in required');},
+    latestRelease:async()=>{throw new Error('GitHub API returned 503');}});
   assert.equal(rows.length,1);assert.equal(rows[0].status,'unavailable');assert.equal(rows[0].published,undefined);
 });
 
-test('private UI update sends only reviewed metadata, never directly installs',async()=>{
+test('public UI releases remain available without GitHub authentication', async () => {
+  const rows = await checkAppUpdates('192.0.2.2', {
+    packageVersion: async (_ip, pkg) => pkg === UI_UPDATE.pkg ? '1.8.0' : null,
+    githubToken: async () => { throw new Error('GitHub sign-in unavailable'); },
+    latestRelease: async (repo, asset, tag, token) => {
+      assert.equal(repo, UI_UPDATE.repo);
+      assert.equal(asset, 'fire-tv-ui.apk');
+      assert.equal(tag, undefined);
+      assert.equal(token, undefined);
+      return { ...release, tag: 'v1.9.0', asset: 'fire-tv-ui.apk' };
+    },
+  });
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].status, 'checked');
+  assert.equal(rows[0].comparison, 1);
+  assert.equal(rows[0].published.tag, 'v1.9.0');
+});
+
+test('UI update sends only reviewed metadata, never directly installs',async()=>{
   let sent,removed=false;
   const row={id:'fire-tv-ui',status:'checked',comparison:1,published:{...UI_UPDATE,...release,url:release.apkUrl,checkedAt:Date.now()}};
   const result=await installAppUpdate('192.0.2.2',row,{downloadApk:async()=>'/private/apk',
     inspectApk:()=>({package:UI_UPDATE.pkg,versionCode:38n}), packageDetails:async()=>({versionCode:37n}),
     stageUiUpdate:async(ip,apk,metadata)=>{sent={ip,apk,metadata};},
-    installApk:async()=>{throw new Error('Must not install private UI silently');},removeDownload:()=>{removed=true;}});
+    installApk:async()=>{throw new Error('Must not install UI silently');},removeDownload:()=>{removed=true;}});
   assert.equal(result.staged,true);assert.equal(sent.ip,'192.0.2.2');assert.equal(sent.metadata.package,UI_UPDATE.pkg);
   assert.equal(sent.metadata.checked_at,row.published.checkedAt);assert.equal(removed,true);
   assert.deepEqual(Object.keys(sent.metadata).sort(),['bytes','checked_at','dream','name','package','preview','repo','sha256','tag','url']);
