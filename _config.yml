@@ -22,5 +22,4 @@ exclude:
   - package.json
   - package-lock.json
   - setup.js
-  - sonar-project.properties
   - .github
