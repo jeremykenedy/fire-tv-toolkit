@@ -36,6 +36,14 @@ Toolkit screensaver entries or changing the default selection.
 
 ## Minor changes and fixes
 
+Fire TV UI uses public 1.14.0/code 75, including its optional static palettes and
+current saver catalog. Its 17,080,529-byte APK was downloaded anonymously and
+matched SHA-256 `08ca77dd4c8a5bea084872dff62b6fd8bea813da70eea085958ad024c4a4e05e`.
+The paired 8,505,979-byte icon archive matched
+`ddec4b0ca9b18fef0abd386414ad96e5551709ee86c3744baa1cb97338ce6c66`.
+All 32 PNGs remain Full HD. Package, code, SDK metadata and production signer
+were verified; existing installation and Home-selection behavior remain.
+
 Contour Flow uses public 1.1.0/code 6, with its existing package and DreamService.
 The 66,572-byte signed APK and checksum were downloaded anonymously and matched
 SHA-256 `6b4302ee3220c25df5b40c3e7ff6d72d6c859b4403203f0577a01a9b7cc2ebf6`.
@@ -50,8 +58,11 @@ Published APK hashes, Android identity, version checks and signer enforcement
 remain required. Native saver evidence belongs to the companion release; a host
 pin does not establish a new physical TV result.
 
-Final public UI baseline confirmation, relevant package metadata checks, native
-release captures and essential exact-head CI remain publication gates.
+The public pins and actual download preparation helpers are verified. Current
+packaged About/update captures show this patch version; unchanged route captures
+remain explicitly historical. Relevant package metadata and essential exact-head
+CI are verified before publication. Packages remain unsigned; the existing macOS
+Gatekeeper limitation remains.
 
 ## Rollback and recovery
 

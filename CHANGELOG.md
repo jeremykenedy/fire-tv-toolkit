@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Refresh Fire TV UI to verified public 1.14.0/code 75 and its matching icon archive.
 - Refresh the existing Contour Flow entry to verified public 1.1.0/code6.
 - Retain existing defaults, saved choices and independent latest-release update checks.
 
