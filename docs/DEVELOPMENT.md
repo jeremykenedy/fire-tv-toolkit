@@ -29,14 +29,35 @@ for each change.
 
 ## Releasing
 
-1. Bump `version` in `package.json`.
-2. Build Home Redirect and note its SHA-256.
-3. Tag `v<version>`, publish the release, attach `firetv-home-redirect.apk`,
-   and add `SHA-256 (firetv-home-redirect.apk): <hash>` to the notes.
-4. The tool installs Home Redirect from the release named in
-   `HOME_REDIRECT_RELEASE` in `src/launcher-registry.js`. Set it to the new tag
-   once that release has the APK attached, so the code never points at a
-   release that does not exist yet.
+1. Start from the current remote `main` and review the complete change range.
+   Update the root and desktop package versions and both lockfiles together.
+2. For a companion app refresh, verify its already published release, asset name,
+   size, SHA-256, Android package/version/SDK metadata and production certificate.
+   Update only the reviewed registry pin and its documentation. Fire TV UI also
+   requires its matching published icon ZIP and checksum, with every catalog PNG
+   verified. Do not point an installation pin at an unpublished release.
+3. Run the CLI and desktop tests, desktop lint, and relevant download preparation
+   checks. Build the desktop app, capture the current packaged About/update views
+   using isolated sample data, and verify the README and gallery in a browser.
+   Preserve existing local TV profiles and command routes.
+4. Merge the reviewed changes to `main` and require the exact primary-head Tests,
+   Desktop app and Pages workflows to pass. The desktop matrix builds and checks
+   macOS Intel/Apple silicon, Windows x64 and Linux x64 packages. Record actual
+   native/install/removal results and remaining signing limitations accurately.
+5. Confirm the checked-out release commit is the current remote primary tip,
+   create its matching semantic version tag, and verify that tag on the remote.
+   Download the seven installers from the passing primary Desktop workflow,
+   verify their identity/integrity, and create `SHA256SUMS` for those exact files.
+6. Publish the release with the installers, checksum manifest and reviewed notes
+   covering upgrade, breaking changes, major changes, fixes, verification and
+   recovery. Update GitHub About, website and topics. Download the published
+   assets anonymously and verify their sizes and hashes against the manifest.
+
+Rebuild `android/home-redirect` only when that separate helper changes. Its
+`HOME_REDIRECT_RELEASE` registry entry must name a published release containing
+that APK; an ordinary Toolkit/UI catalog patch does not move that pin or rebuild
+Home Redirect. Keep reviewed installation pins separate from latest-published
+update checks.
 
 ## Project site
 
