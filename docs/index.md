@@ -23,6 +23,7 @@
 | [Troubleshooting](TROUBLESHOOTING.md) | Connection and settings problems. |
 | [Development](DEVELOPMENT.md) | Source builds, tests and releasing. |
 | [Signing installers](SIGNING.md) | Signing and notarization. |
+| [4.7.0 release](RELEASE-4.7.0.md) | Verified UI installation baseline, update recovery and deferred provider cleanup. |
 | [4.6.0 release](RELEASE-4.6.0.md) | Named TV profiles, recommended Fire TV UI, Nibbles HD and Lumen Breaker. |
 | [4.5.2 release](RELEASE-4.5.2.md) | Patched Electron certificate trust and build-time URI parsing. |
 | [4.5.1 release](RELEASE-4.5.1.md) | Current Hearth and Prism app releases and previews. |

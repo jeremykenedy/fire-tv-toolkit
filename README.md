@@ -9,15 +9,7 @@
     <a href="https://github.com/jeremykenedy/fire-tv-toolkit/releases"><img src="https://img.shields.io/github/downloads/jeremykenedy/fire-tv-toolkit/total" alt="Total downloads"></a>
     <a href="https://github.com/jeremykenedy/fire-tv-toolkit/releases/latest"><img src="https://img.shields.io/github/v/release/jeremykenedy/fire-tv-toolkit" alt="Latest release"></a>
     <a href="https://github.com/jeremykenedy/fire-tv-toolkit/actions/workflows/tests.yml"><img src="https://github.com/jeremykenedy/fire-tv-toolkit/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
-    <a href="https://github.com/jeremykenedy/fire-tv-toolkit/actions/workflows/gitguardian.yml"><img src="https://github.com/jeremykenedy/fire-tv-toolkit/actions/workflows/gitguardian.yml/badge.svg" alt="GitGuardian scan"></a>
-    <a href="https://sonarcloud.io/summary/new_code?id=jeremykenedy_amazon-fire-tv-fixes"><img src="https://sonarcloud.io/api/project_badges/measure?project=jeremykenedy_amazon-fire-tv-fixes&metric=alert_status" alt="Quality Gate Status"></a>
-    <a href="https://sonarcloud.io/summary/new_code?id=jeremykenedy_amazon-fire-tv-fixes"><img src="https://sonarcloud.io/api/project_badges/measure?project=jeremykenedy_amazon-fire-tv-fixes&metric=coverage" alt="Coverage"></a>
-    <a href="https://app.codacy.com/gh/jeremykenedy/fire-tv-toolkit/dashboard"><img src="https://app.codacy.com/project/badge/Grade/f18b3347eae54aeea4251575b7b2de1f" alt="Codacy Badge"></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License: Apache 2.0"></a>
-</p>
-
-<p align="center">
-    <a href="https://app.aikido.dev/repositories/3225041"><img src="https://app.aikido.dev/assets/badges/full-light-theme.svg" alt="Secured by Aikido" height="32"></a>
 </p>
 
 <p align="center">
@@ -46,7 +38,7 @@
 Browse live channels, save favorites and named TVs, and manage screensavers, Home screens and TV settings.
 
 <p align="center">
-  <a href="https://github.com/jeremykenedy/fire-tv-toolkit/releases/latest/download/Fire-TV-Toolkit-mac-arm64.dmg"><img src="art/screenshots/desktop-4.6.0-macos-tv-profiles.png" alt="Toolkit 4.6.0 native macOS saved TV editor with safe sample addresses. Click to download for macOS Apple silicon." width="900"></a>
+  <a href="https://github.com/jeremykenedy/fire-tv-toolkit/releases/latest/download/Fire-TV-Toolkit-mac-arm64.dmg"><img src="art/screenshots/desktop-4.7.0-macos-tv-profiles.png" alt="Toolkit 4.7.0 native macOS saved TV editor with safe sample addresses. Click to download for macOS Apple silicon." width="900"></a>
 </p>
 
 | macOS | Windows | Linux |
@@ -96,7 +88,7 @@ See [TV setup](docs/SETUP.md) for ADB debugging and upgrades, or the [command re
 
 See the [feature guide](docs/FEATURES.md) for behavior and limits, or browse the [screenshot gallery](docs/SCREENSHOTS.md).
 
-<p align="center"><a href="docs/DESKTOP.md"><img src="art/screenshots/desktop-4.6.0-windows-about.png" alt="Fire TV Toolkit 4.6.0 native Windows About and platform information" width="900"></a></p>
+<p align="center"><a href="docs/DESKTOP.md"><img src="art/screenshots/desktop-4.7.0-macos-about.png" alt="Fire TV Toolkit 4.7.0 native macOS About and platform information" width="900"></a></p>
 
 ## Platform support
 

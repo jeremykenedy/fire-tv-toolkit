@@ -63,9 +63,9 @@ after(() => {
  * hands out. Anything else it is asked for is a test bug.
  */
 function releaseFetch(options) {
-  const { repo, bytes, notes, apiStatus = 200, apkStatus = 200, sumStatus = 200, assets, redirectNoLocation = false, seen = [] } = options;
-  const apkUrl = `https://github.com/${repo}/releases/download/v1/app.apk`;
-  const list = assets === undefined ? [{ name: 'app.apk', browser_download_url: apkUrl }] : assets;
+  const { repo, bytes, notes, apiStatus = 200, apkStatus = 200, sumStatus = 200, assets, asset = 'app.apk', redirectNoLocation = false, seen = [] } = options;
+  const apkUrl = `https://github.com/${repo}/releases/download/v1/${asset}`;
+  const list = assets === undefined ? [{ name: asset, browser_download_url: apkUrl }] : assets;
   return async (url) => {
     const u = String(url);
     seen.push(u);
@@ -92,7 +92,7 @@ async function withFetch(fn, body) {
   }
 }
 
-const pkgFetch = (entry, extra = {}) => releaseFetch({ repo: entry.repo, bytes: apkBytes(entry.pkg), ...extra });
+const pkgFetch = (entry, extra = {}) => releaseFetch({ repo: entry.repo, bytes: apkBytes(entry.pkg), asset: entry.asset, ...extra });
 
 test('parseSha256FromNotes with an asset name reads only that file\'s line', () => {
   const a = 'a'.repeat(64);
@@ -239,6 +239,10 @@ test('Pipeworks Dream registry entry points to its released app and installer re
     pkg: 'com.jeremykenedy.pipeworksdream',
     dreamComponent: 'com.jeremykenedy.pipeworksdream/.PipeworksDreamService',
     repo: 'jeremykenedy/pipeworks-dream',
+    asset: 'pipeworks-dream.apk',
+    tag: 'v1.1.1',
+    sha256: '62a038159d8db3b04346e23b0ae68707781fa48299ae37a6f77626f9ae646082',
+    bytes: 62276,
     blurb: 'Growing 3D pipes with rounded bends, configurable colors, tube shapes, thickness and delayed following tails.',
   });
 });
@@ -399,16 +403,23 @@ test('Twilight Hearth can be installed and selected through the CLI', async () =
 
 for (const saver of [SCREENSAVERS.find((entry) => entry.id === 'black-screen-dream'), NEBULA_DRIFT, VORTEX_SPIRAL, SIGNAL_RAIN, RETRO_FLIGHT, PIPEWORKS_DREAM, CLOUD_DRIFT_CLOCK, SKYCAST_WEATHER, EARTHBOUND_ORBIT, HELIOS_LIGHTFIELD]) {
   test(`${saver.name} can be installed and selected through the CLI`, async () => {
-    const installed = await captured(() => withFetch(
-      pkgFetch(saver),
-      () => manageScreensavers(IP, { install: saver.id })
-    ));
-    assert.match(installed.out, new RegExp(`${saver.name} installed`));
-    assert.ok(fake.readState().installed.includes(saver.pkg));
+    const reviewedSha256 = saver.sha256;
+    // The installer fixture uses its own APK bytes and matching checksum.
+    if (reviewedSha256) saver.sha256 = sha(apkBytes(saver.pkg));
+    try {
+      const installed = await captured(() => withFetch(
+        pkgFetch(saver),
+        () => manageScreensavers(IP, { install: saver.id })
+      ));
+      assert.match(installed.out, new RegExp(`${saver.name} installed`));
+      assert.ok(fake.readState().installed.includes(saver.pkg));
 
-    const selected = await captured(() => setScreensaver(IP, { set: saver.id }));
-    assert.match(selected.out, new RegExp(`Active screensaver is now ${saver.name}`));
-    assert.equal(fake.readState().secure.screensaver_components, saver.dreamComponent);
+      const selected = await captured(() => setScreensaver(IP, { set: saver.id }));
+      assert.match(selected.out, new RegExp(`Active screensaver is now ${saver.name}`));
+      assert.equal(fake.readState().secure.screensaver_components, saver.dreamComponent);
+    } finally {
+      if (reviewedSha256) saver.sha256 = reviewedSha256;
+    }
   });
 }
 

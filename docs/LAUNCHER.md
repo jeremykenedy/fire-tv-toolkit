@@ -162,16 +162,18 @@ firetv-ltv-backup --pull=ltv-backup.json   # copy the newest LTvLauncher backup 
 
 ### Verified UI update and Home preference contract
 
-The reviewed installation pin is public [Fire TV UI 1.11.1/code 70](https://github.com/jeremykenedy/fire-tv-ui/releases/tag/v1.11.1):
-`fire-tv-ui-1.11.1.apk`, 9,053,902 bytes, SHA-256
-`14676d28103f059178de13f4f4a3f8fbce63a4c98317a3635d31f064c63e5d43`.
+The reviewed installation pin is public [Fire TV UI 1.13.0/code 74](https://github.com/jeremykenedy/fire-tv-ui/releases/tag/v1.13.0):
+`fire-tv-ui-1.13.0.apk`, 17,080,529 bytes, SHA-256
+`0592d60d545b05cacecaa3ef49f1f5cfc5d148d279cc307d5d23835537992dc1`.
 Its production certificate is
 `9a6416b9dc3c996d591b185d600b8ab76e1c7b01846db8d6063b399caf7b5a11`;
-Android minimum 27 and target 36 are unchanged. All four published APK/icon and
-checksum assets were downloaded anonymously and verified before this pin changed. The paired
-`fire-tv-ui-icons-1.11.1.zip` is 8,505,979 bytes with SHA-256
-`9c2655584b5c85c8574c1ccb6ace20e6470bd48d6c91c7c4ac0322dcb550ccea`.
-Code 70 adds Lumen catalog data while retaining both code 69 runtime DEX files.
+Android minimum 27 and target 36 are unchanged. Both published APK/icon assets and
+their checksum files were downloaded anonymously and verified against the
+reviewed pin. The Toolkit public download/icon helpers also passed. The paired
+`fire-tv-ui-icons-1.13.0.zip` is 8,505,979 bytes with SHA-256
+`aff64e54ccd5e6199ae852af6bd622bfc0c1e0d58e5f543d87856d9069f4699d`.
+The APK manifest reports package `com.jeremykenedy.firetv.ui`, version 1.13.0
+and version code 74.
 
 All Home mutations involving Fire TV UI require code 69 or newer. Unknown or
 older installed codes are refused before a preference or OS write, and the

@@ -1,5 +1,20 @@
 # Changelog
 
+## [4.7.0] - 2026-10-29
+
+### Changed
+
+- Refresh the reviewed Fire TV UI 1.13.0/code74 installation baseline and its matching verified icon archive.
+- Defer GitGuardian, SonarCloud, Codacy, CodeFactor and Aikido integration while retaining essential builds and tests.
+- Apply lossless image optimizations while preserving banner content hashes, recorded capture originals and all decoded image pixels.
+
+### Fixed
+
+- Refresh Pipeworks Dream to verified public 1.1.1/code3 with empty-start growth and retained settings.
+- Discard previously checked app update choices when a new update check fails, so stale choices cannot be reused.
+
+See the [4.7.0 upgrade guide](docs/RELEASE-4.7.0.md).
+
 ## [4.6.0] - 2026-10-26
 
 ### Added

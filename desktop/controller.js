@@ -768,6 +768,7 @@ export function createController({
     checkUpdates() {
       return exclusive(async () => {
         const ip = await requireConnection();
+        checkedUpdates = null;
         const rows = await api.checkAppUpdates(ip);
         checkedUpdates = { ip, rows };
         return checkedUpdates;

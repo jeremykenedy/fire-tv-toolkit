@@ -739,3 +739,20 @@ test('published updates stay scoped to the checked TV and require confirmation',
   await h.controller.connect('192.168.1.11');
   await assert.rejects(h.controller.installCheckedUpdate('aquarium-live',async()=>true),/Check published/);
 });
+
+
+test('a failed update recheck discards the previous install choices', async (t) => {
+  const h = harness(t);
+  h.api.checkAppUpdates = async () => [{ id: 'aquarium-live', name: 'Aquarium Live' }];
+  h.api.installAppUpdate = async () => { throw new Error('Must not install an outdated choice'); };
+  await h.controller.connect('192.168.1.10');
+  await h.controller.checkUpdates();
+  h.api.checkAppUpdates = async () => { throw new Error('GitHub unavailable'); };
+  await assert.rejects(h.controller.checkUpdates(), /GitHub unavailable/);
+  await assert.rejects(
+    h.controller.installCheckedUpdate('aquarium-live', async () => {
+      throw new Error('Must not confirm an outdated choice');
+    }),
+    /Check published updates for this TV first/,
+  );
+});

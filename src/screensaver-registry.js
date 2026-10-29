@@ -198,6 +198,10 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.pipeworksdream',
     dreamComponent: 'com.jeremykenedy.pipeworksdream/.PipeworksDreamService',
     repo: 'jeremykenedy/pipeworks-dream',
+    asset: 'pipeworks-dream.apk',
+    tag: 'v1.1.1',
+    sha256: '62a038159d8db3b04346e23b0ae68707781fa48299ae37a6f77626f9ae646082',
+    bytes: 62276,
     blurb: 'Growing 3D pipes with rounded bends, configurable colors, tube shapes, thickness and delayed following tails.',
   },
   {
