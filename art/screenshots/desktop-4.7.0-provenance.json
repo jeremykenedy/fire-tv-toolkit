@@ -62,119 +62,119 @@
     {
       "file": "art/screenshots/desktop-4.7.0-windows-about.png",
       "sha256": "4258aacb0a711d13cfa254652e052db8657099da91947da5cbca256aa6b110dc",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-windows-advanced.png",
-      "sha256": "ca4a9cb242d3373bc58ecd660705b3935c5a7bea7887ffe84043d63083dfafaf",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "sha256": "3743a2d7966d2a095d4f8ad2c3eb0ea120b8a695b303dfc9e3b4167ca1d224a0",
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-windows-device-setup.png",
-      "sha256": "c50a1bfd8ed4318b4573dbfb2d220cfb5ac8221722441971c83633fea78b0506",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "sha256": "0e3420f792f8b86f9fce92285e88016bc2b1020da5e4ef117aebe8bd1e3e6d54",
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-windows-final-state.png",
       "sha256": "65b1c3a0a0f3d5e8a5048f62b05769d20b19e2c7765bcccf18c45247aec83964",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-windows-live-tv.png",
-      "sha256": "4f6400afab9362f45a0b9406758bdcc60cd7edbeb411a5dc874a6a007e6e0dae",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "sha256": "2ac58b579e083690b7353c50615bf99003ce57eeb82df9b724576fb46b900a43",
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-windows-lumen-breaker-catalog.png",
-      "sha256": "81d1715ac2ec17d4db60e220eb4106586c620469af1725e226f57a8a211e2e6e",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "sha256": "17df9154ed47b2491ff5acd900cdb892a602c60fc1209c3533ed3f88d37d9338",
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-windows-nibbles-hd-catalog.png",
       "sha256": "bc51ab8a1c000c5a31cd70aa69e2143bfe8d55777021c75ad64b1b6eb719e50c",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-windows-older-ui-home-controls.png",
-      "sha256": "2e7ac4b5603e3c570facf62df215f279090c96fec3f8b51545a007c5449d4068",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "sha256": "c7f31d09a5a88898ffb6d6f3070b974b5b33dabbdf5e0f566cf2ee208fd2ab45",
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-windows-preferred-fire-tv-ui.png",
-      "sha256": "83fc4fe2f0fb8af3fe12431f91ec074d2ae8797c64d444788d95948eeb7a5299",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "sha256": "dfe04b58faf3cf72c8e87534d65694f393bb30aa2c6b1e088330dac56546f670",
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-windows-tv-profiles.png",
-      "sha256": "6c855d35590e6d914124a1d2600f42aea35da8d560a47a639f4534f15d46f39f",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "sha256": "1e256d32129711db0f8659812c57876235bfe271357c7790b93fc3966cb6e53c",
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-linux-about.png",
-      "sha256": "aadfb2b7e40ff45112b87045ef8a4039792ab4f801ec8f6b9a7b92f11256f7b3",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "sha256": "d56087eece20e9aca0f79d64cf08182847769d3f2e68f4bd2fb795f8d09b9197",
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-linux-advanced.png",
       "sha256": "0a1eabee74fc5d9e4704c54afa9f914bcca6c3a3679d3be71b3bfb88d0689334",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-linux-device-setup.png",
       "sha256": "76212a56a90ac3102408045fa56c58567e488e4fedf8edb9f198fb64b334ed12",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-linux-final-state.png",
       "sha256": "55a7661d4a3b997131e444894d7433985c4178cb314ef28a5af79bd21b5ac0e3",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-linux-live-tv.png",
       "sha256": "a14759b52818d5ba445ca5391737f217e50255ca92e7efca0f2ca47a028a8496",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-linux-lumen-breaker-catalog.png",
       "sha256": "7e910d9bf374d63dd59a3a9450b33d7a0507e44c0082940bfa514effb8b27b05",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-linux-nibbles-hd-catalog.png",
       "sha256": "667ac1ac7abb5db425aacb2bc3dbaa161dfec45ed928dec2420960257a55c4ba",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-linux-older-ui-home-controls.png",
-      "sha256": "fb5d4c75707271f31edbfd4195f7afc464aac30c03b783e78bc9561968a6088d",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "sha256": "5af460d740b86479f8a8a348ad761b8d80029ee090f89c76a40f5603f562e0a1",
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-linux-preferred-fire-tv-ui.png",
       "sha256": "6e9b75d35d3f02f62c68107059a7a83bf2693fcdc8f7bf561bbb92269ad28183",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     },
     {
       "file": "art/screenshots/desktop-4.7.0-linux-tv-profiles.png",
       "sha256": "7fd8d9c5b44e6969cf3defee48f35fae6aedbcbcfa50b65f4f507b7cfe621a15",
-      "source": "Native packaged CI smoke test at b555a0d"
+      "source": "Native packaged CI smoke test at e9eb3f3 (final public UI pin)"
     }
   ],
   "limitations": [
-    "Release preparation only; final UI pin and publication remain coordinator-owned.",
     "Unsigned macOS Gatekeeper first-open limitation remains."
   ],
-  "ciWorkflow": "https://github.com/jeremykenedy/fire-tv-toolkit/actions/runs/40850633558",
-  "ciSourceHead": "b555a0df761caee1486006c4f0cf7f456775c916",
+  "ciWorkflow": "https://github.com/jeremykenedy/fire-tv-toolkit/actions/runs/40855514558",
+  "ciSourceHead": "e9eb3f372966aa35383d9f6725855ce1d0b1fc96",
   "ciResult": "All three native desktop jobs passed, including packaged install/playback/profile checks and Windows/Linux removal.",
   "additionalPlatforms": [
     "Windows x64 installed package",
     "Linux x64 installed deb package"
   ],
-  "candidateUiPin": {
+  "publicUiVerifiedAt": "2026-10-29T10:37:47.741848+00:00",
+  "uiPin": {
     "tag": "v1.13.0",
     "versionCode": 74,
     "sha256": "0592d60d545b05cacecaa3ef49f1f5cfc5d148d279cc307d5d23835537992dc1",
-    "publication": "awaiting public release verification"
+    "publication": "Public v1.13.0 assets and checksums downloaded anonymously and verified"
   }
 }

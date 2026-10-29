@@ -38,14 +38,15 @@ at least its preservation API in code 69.
 
 ## Major changes
 
-The candidate UI installation baseline is 1.13.0/code74: 17,080,529 APK bytes,
+The public UI installation baseline is 1.13.0/code74: 17,080,529 APK bytes,
 SHA-256 `0592d60d545b05cacecaa3ef49f1f5cfc5d148d279cc307d5d23835537992dc1`.
 Its matching icon archive is 8,505,979 bytes, SHA-256
 `aff64e54ccd5e6199ae852af6bd622bfc0c1e0d58e5f543d87856d9069f4699d`.
-Local candidate assets were checked by byte count and SHA-256; Android package,
-version and production signer were verified. Public release publication and
-anonymous asset verification remain required before this Toolkit candidate ships. Latest-published update checks
-remain independent of reviewed installation pins.
+The published assets and their checksum files were downloaded anonymously and
+verified against these pins. Android package, version and production signer
+were verified. Toolkit's public APK/icon preparation helpers also passed without
+device calls. Latest-published update checks remain independent of reviewed
+installation pins.
 
 GitGuardian, SonarCloud, Codacy, CodeFactor and Aikido are deferred. Their Toolkit
 workflows, configuration and badges are removed where present. Essential CLI and
@@ -74,9 +75,8 @@ sample TV data and synthetic HLS media. All three desktop CI jobs pass packaged
 installation/playback/profile checks; Windows/Linux removal also passes. No
 physical TV is contacted by the desktop package checks.
 
-Publication requires the final public UI pin, final primary-branch checks,
-verified installer artifacts and matching semantic version tag. The final UI pin must receive its relevant checks before publication. Packages remain unsigned; this
-release does not resolve macOS Gatekeeper's unsigned application limitation.
+Packages remain unsigned; this release does not resolve macOS Gatekeeper's
+unsigned application limitation.
 No new physical TV behavior or owner visual acceptance is established here.
 
 ## Rollback and recovery
