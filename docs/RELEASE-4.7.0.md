@@ -65,14 +65,13 @@ Existing app data is retained by replacement installs.
 
 All 501 CLI tests and 56 desktop unit tests pass, along with desktop lint.
 The native packaged macOS smoke test passes on Electron 44.9.3. Verified public
-UI/icon hashes are recorded in the release evidence. Fresh native macOS captures show this
-version using isolated sample TV data and synthetic HLS media; no physical TV
-is contacted by the desktop package checks.
+UI/icon hashes are recorded in the release evidence. Fresh native macOS, Windows and Linux captures show this version using isolated
+sample TV data and synthetic HLS media. All three desktop CI jobs pass packaged
+installation/playback/profile checks; Windows/Linux removal also passes. No
+physical TV is contacted by the desktop package checks.
 
 Publication requires the final public UI pin, final primary-branch checks,
-verified installer artifacts and matching semantic version tag. Windows and
-Linux package checks must finish on their supported runners before claiming
-those installation results for this release. Packages remain unsigned; this
+verified installer artifacts and matching semantic version tag. The final UI pin must receive its relevant checks before publication. Packages remain unsigned; this
 release does not resolve macOS Gatekeeper's unsigned application limitation.
 No new physical TV behavior or owner visual acceptance is established here.
 
