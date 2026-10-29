@@ -271,6 +271,10 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.contourflow',
     dreamComponent: 'com.jeremykenedy.contourflow/.ContourFlowDreamService',
     repo: 'jeremykenedy/contour-flow',
+    asset: 'contour-flow.apk',
+    tag: 'v1.1.0',
+    sha256: '6b4302ee3220c25df5b40c3e7ff6d72d6c859b4403203f0577a01a9b7cc2ebf6',
+    bytes: 66572,
     blurb: 'Animated topographic contour fields with adjustable relief, palette, density, drift speed, line weight, lighting and brightness.',
   },
   {
