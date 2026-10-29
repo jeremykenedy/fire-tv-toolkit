@@ -1,0 +1,35 @@
+{
+  "version": "4.7.1",
+  "capturedAt": "2026-10-29T11:30:26.768578+00:00",
+  "sourceBase": "88be177720fe227cc7fb2544b2c83cdce62e5c39",
+  "sourceFileSha256": {
+    "package.json": "1c3b0818b0211cd7d2e210dd283a249ca2baae2587285e5dd128ea278cd30345",
+    "package-lock.json": "94a65d2b4c80c47e0f3bc5acd4abd8eb33e3d5781bfe26b60d29520552d5d604",
+    "desktop/package.json": "b72f8f949cbd8001bfcc10c8b63b2520120d692646bb9c576b7dfecf463b1596",
+    "desktop/package-lock.json": "a579cc899500a402339ded6bf2f0cd0e5fe3d72bab87e0bc9d7be0dc69cab4f3",
+    "desktop/main.js": "564728812da0eb36f0c9681f8265b907e6e1e8b228af862843ba47a40de565d7",
+    "desktop/controller.js": "e91496648bd580777e6e7d95a5f6a42e168e62cbccde2906a3f30674376b9042",
+    "desktop/renderer/app.js": "99fd3d7eb093faa3fb88e04cf7d69999f1cabe1888ea9a816f308afaed9c8f3d",
+    "src/launcher-registry.js": "090faf4195d7d6cfb5fee7b724681a1c802727fc8125205d8db4bcd5165b109c",
+    "src/screensaver-registry.js": "19aec5cc6a5cc5804ab804c290098ae3da887f2fe6da88f712140c40bfd79986"
+  },
+  "runtime": {
+    "version": "4.7.1",
+    "packaged": true,
+    "electron": "44.9.3",
+    "coreVersion": "4.7.1",
+    "uiPin": "v1.14.0",
+    "contourPin": "v1.1.0"
+  },
+  "captures": [
+    {
+      "file": "art/screenshots/desktop-4.7.1-macos-about.png",
+      "sha256": "cf746be361ddd88371d76076347aa4d82bcc941b81967ecebdc2d0999afa827e"
+    },
+    {
+      "file": "art/screenshots/desktop-4.7.1-macos-updates.png",
+      "sha256": "d70d1fc7db2523ff8bd4dc95695031471731acc313c0a06bbe0406bdb148f435"
+    }
+  ],
+  "method": "Actual native packaged macOS arm64 app with isolated temporary userData and sample channel cache. No TV connections or synthetic update responses. Current About/update captures only; unchanged route captures remain historical."
+}
