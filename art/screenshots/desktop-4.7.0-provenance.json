@@ -1,0 +1,68 @@
+{
+  "capturedAt": "2026-10-29T09:32:05.912209+00:00",
+  "version": "4.7.0",
+  "platform": "macOS arm64",
+  "electron": "44.9.3",
+  "packaged": true,
+  "command": "CI=true npm run test:packaged --prefix desktop",
+  "result": "passed",
+  "fixtures": "Isolated sample TV profiles, intercepted sample device responses, synthetic local HLS; no physical TV contacted. Clean Overview, Saved TVs and About recaptured in a second isolated packaged-app session.",
+  "sourceBase": "2ad6f0f",
+  "sourceFileSha256": {
+    "package.json": "f2ceb8433279abeeded271c9c5e65c1a722bca198d06ffd51c876cfe6dd30e8d",
+    "package-lock.json": "7ebf1b9dbb63ee818cc16386fa1be906784ce621e0e97bbc0d98fe56881abeaa",
+    "desktop/package.json": "2e663e9a9500943b6a221110e7bb311026aaea70f17182369a9029df9984af57",
+    "desktop/package-lock.json": "0f396add400166be359e3788092904643c6daee61420b59813a83ae4cc2c99fb",
+    "desktop/main.js": "564728812da0eb36f0c9681f8265b907e6e1e8b228af862843ba47a40de565d7",
+    "desktop/controller.js": "e91496648bd580777e6e7d95a5f6a42e168e62cbccde2906a3f30674376b9042",
+    "desktop/renderer/app.js": "99fd3d7eb093faa3fb88e04cf7d69999f1cabe1888ea9a816f308afaed9c8f3d",
+    "src/launcher-registry.js": "615a178620f2373c5cde35f0fc7fb99443f33960b51c518f1b5ce0a5fab2c33e"
+  },
+  "captures": [
+    {
+      "file": "art/screenshots/desktop-4.7.0-macos-about.png",
+      "sha256": "9a25c0a050365879ac36083598d4d84f24fec7e8f9af0765b16c321d80058e68"
+    },
+    {
+      "file": "art/screenshots/desktop-4.7.0-macos-advanced.png",
+      "sha256": "64cd12cfaff539aeb8770974f17c6b34d63ad6b044b4309df83c9a7a9040d5e1"
+    },
+    {
+      "file": "art/screenshots/desktop-4.7.0-macos-device-setup.png",
+      "sha256": "ec8daacbb3cb2fbf8dee3b00e510c706224e79c44d350c6be38257ff637f23b1"
+    },
+    {
+      "file": "art/screenshots/desktop-4.7.0-macos-final-state.png",
+      "sha256": "b5052f341756f9e467c1ac84ec0692d0cbf0d5083ba9ed6a7de4e66c3f4a15c3"
+    },
+    {
+      "file": "art/screenshots/desktop-4.7.0-macos-live-tv.png",
+      "sha256": "639348bfc6299fcd2ac1e4ee6c9187304aa5284ba001817e9b6318edac116f5c"
+    },
+    {
+      "file": "art/screenshots/desktop-4.7.0-macos-lumen-breaker-catalog.png",
+      "sha256": "0c4e1bb82c397cea7e38a439a4df7b3d0d26f237e67f40296133eaf05e13d66b"
+    },
+    {
+      "file": "art/screenshots/desktop-4.7.0-macos-nibbles-hd-catalog.png",
+      "sha256": "0786d304f01c47f92bd769962708cf50a73ee52d5787650556d90337e48735fe"
+    },
+    {
+      "file": "art/screenshots/desktop-4.7.0-macos-older-ui-home-controls.png",
+      "sha256": "7add42e081bc1704f63bac833b2c62f91dae1a220ee401422119d7fdc4f5fa97"
+    },
+    {
+      "file": "art/screenshots/desktop-4.7.0-macos-preferred-fire-tv-ui.png",
+      "sha256": "a6e81c13451db1ac758c52de627ce2ffd1026131ba49200267bca3f2966ce570"
+    },
+    {
+      "file": "art/screenshots/desktop-4.7.0-macos-tv-profiles.png",
+      "sha256": "46f52c9ce5493ca734475830341cd90b907f3a88501b4a771dae98a581b8467f"
+    }
+  ],
+  "limitations": [
+    "Release preparation only; final UI pin and publication remain coordinator-owned.",
+    "Windows and Linux have not been checked for 4.7.0.",
+    "Unsigned macOS Gatekeeper first-open limitation remains."
+  ]
+}
