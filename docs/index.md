@@ -23,6 +23,7 @@
 | [Troubleshooting](TROUBLESHOOTING.md) | Connection and settings problems. |
 | [Development](DEVELOPMENT.md) | Source builds, tests and releasing. |
 | [Signing installers](SIGNING.md) | Signing and notarization. |
+| [4.7.2 candidate](RELEASE-4.7.2.md) | Pending approved public UI 1.15 companion and final release verification. |
 | [4.7.1 release](RELEASE-4.7.1.md) | Current public companion application baselines with preserved settings. |
 | [4.7.0 release](RELEASE-4.7.0.md) | Verified UI installation baseline, update recovery and deferred provider cleanup. |
 | [4.6.0 release](RELEASE-4.6.0.md) | Named TV profiles, recommended Fire TV UI, Nibbles HD and Lumen Breaker. |

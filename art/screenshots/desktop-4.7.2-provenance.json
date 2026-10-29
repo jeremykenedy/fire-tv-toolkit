@@ -1,0 +1,48 @@
+{
+  "version": "4.7.2",
+  "status": "Candidate-only until root PUBLIC upstream confirmation",
+  "capturedAt": "2026-10-29T15:08:00.731Z",
+  "sourceFileSha256": {
+    "package.json": "d5338c862ae108582be1a14c04b3b54c2990db8114fba95768383c6f0533247d",
+    "package-lock.json": "69b158dc839d83dd773c18654daac41e73a9e8599d38debdf2ec15288128f7b0",
+    "desktop/package.json": "8db95416ec0be599f902ca68d38e54136410103973ac5d210ec29378562bcabf",
+    "desktop/package-lock.json": "8d19b088eaa5db9dd0f9e2612550cd54319f447ecb41a0c275404db690843370",
+    "desktop/main.js": "564728812da0eb36f0c9681f8265b907e6e1e8b228af862843ba47a40de565d7",
+    "desktop/controller.js": "e91496648bd580777e6e7d95a5f6a42e168e62cbccde2906a3f30674376b9042",
+    "desktop/renderer/app.js": "99fd3d7eb093faa3fb88e04cf7d69999f1cabe1888ea9a816f308afaed9c8f3d",
+    "src/launcher-registry.js": "7104a9e29919d6e3f4526d882a9f311c37faee47f80b9cd0d8b14b3cbd7ca603",
+    "src/screensaver-registry.js": "19aec5cc6a5cc5804ab804c290098ae3da887f2fe6da88f712140c40bfd79986"
+  },
+  "runtime": {
+    "version": "4.7.2",
+    "packaged": true,
+    "electron": "44.9.3",
+    "userData": "/private/var/folders/h7/qxlbc1tn5t5cwts099pw24kr0000gn/T/toolkit472-capture-jUjFle",
+    "coreVersion": "4.7.2",
+    "ui": {
+      "tag": "v1.15.0",
+      "code": 76,
+      "sha256": "f8a7ac4dd7c40a08e408c517d89a703f0f602af0076a982ec10449c787d6ef29",
+      "bytes": 17089176,
+      "icons": {
+        "tag": "v1.15.0",
+        "bytes": 8505979,
+        "sha256": "7358478cc1cfa8c020a0d32b40991d4de687b806e611e8a4aab35bb534842bbf"
+      }
+    }
+  },
+  "captures": [
+    {
+      "file": "art/screenshots/desktop-4.7.2-macos-about.png",
+      "sha256": "3fe341561e02e41237da00d84425862045f9d9eb635a8bea909f83a3aaefb8dd"
+    },
+    {
+      "file": "art/screenshots/desktop-4.7.2-macos-updates.png",
+      "sha256": "bfc998354f9f7d95acb53a36e05b3065dda499371a1228a209fcb5efc6c21470"
+    }
+  ],
+  "noTVConnection": true,
+  "noPublishedUpdateCheck": true,
+  "method": "Actual native packaged macOS arm64 app, isolated temporary userData and sample channel cache. No real profiles, connections, player stream or synthetic update response.",
+  "sourceBase": "ee2ba90285e731f5d0dc9f8f9f827770ccbe8217"
+}

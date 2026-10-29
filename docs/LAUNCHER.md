@@ -162,18 +162,20 @@ firetv-ltv-backup --pull=ltv-backup.json   # copy the newest LTvLauncher backup 
 
 ### Verified UI update and Home preference contract
 
-The reviewed installation pin is public [Fire TV UI 1.14.0/code 75](https://github.com/jeremykenedy/fire-tv-ui/releases/tag/v1.14.0):
-`fire-tv-ui-1.14.0.apk`, 17,080,529 bytes, SHA-256
-`08ca77dd4c8a5bea084872dff62b6fd8bea813da70eea085958ad024c4a4e05e`.
+The prepared installation pin is a frozen Fire TV UI 1.15.0/code 76 candidate.
+It is not public yet. This Toolkit branch must remain unpublished until the
+upstream native gate closes and its public assets are verified.
+
+The candidate `fire-tv-ui-1.15.0.apk` is 17,089,176 bytes with SHA-256
+`f8a7ac4dd7c40a08e408c517d89a703f0f602af0076a982ec10449c787d6ef29`.
 Its production certificate is
 `9a6416b9dc3c996d591b185d600b8ab76e1c7b01846db8d6063b399caf7b5a11`;
-Android minimum 27 and target 36 are unchanged. Both published APK/icon assets and
-their checksum files were downloaded anonymously and verified against the
-reviewed pin. The Toolkit public download/icon helpers also passed. The paired
-`fire-tv-ui-icons-1.14.0.zip` is 8,505,979 bytes with SHA-256
-`ddec4b0ca9b18fef0abd386414ad96e5551709ee86c3744baa1cb97338ce6c66`.
-The APK manifest reports package `com.jeremykenedy.firetv.ui`, version 1.14.0
-and version code 75.
+Android minimum 27 and target 36 are unchanged. Actual candidate metadata,
+signature, size and bytes match the frozen manifest. The paired candidate
+`fire-tv-ui-icons-1.15.0.zip` is 8,505,979 bytes with SHA-256
+`7358478cc1cfa8c020a0d32b40991d4de687b806e611e8a4aab35bb534842bbf`.
+All 32 PNGs are Full HD. Public APK/icon sidecar and download-helper verification
+remain pending; candidate verification must not be described as publication.
 
 All Home mutations involving Fire TV UI require code 69 or newer. Unknown or
 older installed codes are refused before a preference or OS write, and the
@@ -182,8 +184,9 @@ descriptor must also declare at least code 69. Existing UI updates issue no Home
 operation and retain private choices and grants; fresh Toolkit installation
 starts with the UI Home preference Off until you choose Use.
 
-The exact signed UI passed an actual public 68-to-69 replacement on the TV
-emulator. Enabled=true, startup=false, detection=false and an absent override key
+The historical code 69 UI passed an actual public 68-to-69 replacement on the TV
+emulator. This established the narrow Home API below; it is not a new native
+result for every later installation pin. Enabled=true, startup=false, detection=false and an absent override key
 survived before Main initialized. Both native Home services rebound. The
 protected API reports exactly `home-preference=unset|on|off`; preference-on/off
 change only the enabled key and preference-clear restores its absence. Actual
