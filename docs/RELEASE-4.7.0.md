@@ -38,9 +38,13 @@ at least its preservation API in code 69.
 
 ## Major changes
 
-The reviewed UI installation baseline and matching icon archive advance together.
-Both public assets are checked by byte count and SHA-256 before registration;
-Android package/version identity is also verified. Latest-published update checks
+The candidate UI installation baseline is 1.13.0/code74: 17,080,529 APK bytes,
+SHA-256 `0592d60d545b05cacecaa3ef49f1f5cfc5d148d279cc307d5d23835537992dc1`.
+Its matching icon archive is 8,505,979 bytes, SHA-256
+`aff64e54ccd5e6199ae852af6bd622bfc0c1e0d58e5f543d87856d9069f4699d`.
+Local candidate assets were checked by byte count and SHA-256; Android package,
+version and production signer were verified. Public release publication and
+anonymous asset verification remain required before this Toolkit candidate ships. Latest-published update checks
 remain independent of reviewed installation pins.
 
 GitGuardian, SonarCloud, Codacy, CodeFactor and Aikido are deferred. Their Toolkit

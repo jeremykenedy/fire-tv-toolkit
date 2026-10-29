@@ -4,7 +4,7 @@
 
 ### Changed
 
-- Refresh the reviewed Fire TV UI installation baseline and its matching verified icon archive.
+- Refresh the reviewed Fire TV UI 1.13.0/code74 installation baseline and its matching verified icon archive.
 - Defer GitGuardian, SonarCloud, Codacy, CodeFactor and Aikido integration while retaining essential builds and tests.
 - Apply lossless image optimizations while preserving banner content hashes and all decoded image pixels.
 
