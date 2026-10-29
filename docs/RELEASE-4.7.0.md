@@ -54,10 +54,17 @@ desktop tests, desktop lint, packaging and native checks remain in place.
 
 ## Minor changes and fixes
 
+- Refresh the existing Pipeworks Dream entry to public 1.1.1/code3. Fresh
+  Preview/Dream sessions start empty and grow normally; existing options remain.
+  Its 62,276-byte APK was downloaded anonymously, matched SHA-256
+  `62a038159d8db3b04346e23b0ae68707781fa48299ae37a6f77626f9ae646082`,
+  and retained its production package/signer. Native startup verification belongs
+  to that screensaver release; this host pin does not claim a new TV test.
 - A failed published-app recheck clears the previous checked choices before any
   replacement check starts. Retry Check for updates after a failure.
 - Lossless raster optimizations retain decoded pixels and image dimensions.
   Existing SVG banners and their content-hashed filenames are preserved.
+  Historical raster files referenced by provenance hashes retain their original bytes.
 
 ## Security and data integrity
 
