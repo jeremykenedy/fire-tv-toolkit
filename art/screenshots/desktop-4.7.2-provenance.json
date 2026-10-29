@@ -1,6 +1,6 @@
 {
   "version": "4.7.2",
-  "status": "Candidate-only until root PUBLIC upstream confirmation",
+  "status": "Verified public UI1.15 pin; Toolkit4.7.2 release-build captures",
   "capturedAt": "2026-10-29T15:08:00.731Z",
   "sourceFileSha256": {
     "package.json": "d5338c862ae108582be1a14c04b3b54c2990db8114fba95768383c6f0533247d",
@@ -44,5 +44,7 @@
   "noTVConnection": true,
   "noPublishedUpdateCheck": true,
   "method": "Actual native packaged macOS arm64 app, isolated temporary userData and sample channel cache. No real profiles, connections, player stream or synthetic update response.",
-  "sourceBase": "ee2ba90285e731f5d0dc9f8f9f827770ccbe8217"
+  "sourceBase": "ee2ba90285e731f5d0dc9f8f9f827770ccbe8217",
+  "publicUiPrimaryAndTag": "c62852be71f7d18446d01cd137acdc59d7f2e3e8",
+  "publicUiAssetsVerified": true
 }
