@@ -25,6 +25,10 @@ export const SCREENSAVERS = [
     pkg: 'com.jeremykenedy.blackscreendream',
     dreamComponent: 'com.jeremykenedy.blackscreendream/.BlackScreenDreamService',
     repo: 'jeremykenedy/black-screen-dream',
+    tag: 'v1.0.1',
+    asset: 'black-screen-dream.apk',
+    sha256: '3281db249bcf776ffcd04e55213d86dcda0efc1626881c8895051602567da97c',
+    bytes: 21234,
     blurb: 'A plain black screen without a clock, imagery or animation.',
   },
   {
