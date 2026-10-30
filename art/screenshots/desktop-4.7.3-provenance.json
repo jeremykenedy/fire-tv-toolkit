@@ -1,0 +1,47 @@
+{
+  "version": "4.7.3",
+  "status": "Verified public UI 1.16 and Black Screen 1.0.1 companion baselines",
+  "capturedAt": "2026-10-30T09:36:23.597Z",
+  "sourceFileSha256": {
+    "package.json": "df5586c0b2d86e2c91c73628ec59ff7ff01a0081b4f07c59b75fa0f009a77de0",
+    "package-lock.json": "b97eeba0beca5d090845cb11d0d0c3ae70cfce0b14114a8e04173e79de8e7618",
+    "desktop/package.json": "0c1a550dc266752770d4bad6909d56d56096ac6f0ef8e6ae6cd6cc2904117acf",
+    "desktop/package-lock.json": "d6860cf45df03540fc2c83da739e7bde5e96ad4ba8d294e5984d8f73787bc5ae",
+    "desktop/main.js": "564728812da0eb36f0c9681f8265b907e6e1e8b228af862843ba47a40de565d7",
+    "desktop/controller.js": "e91496648bd580777e6e7d95a5f6a42e168e62cbccde2906a3f30674376b9042",
+    "desktop/renderer/app.js": "99fd3d7eb093faa3fb88e04cf7d69999f1cabe1888ea9a816f308afaed9c8f3d",
+    "src/launcher-registry.js": "9ed902fecacb0ac30fa5c1b48eca9d400f07bad09ef12de1d9aeb44df92260fd",
+    "src/screensaver-registry.js": "78d949d1b84dc8de5b91d5c69c5320dcbc28c45b0d458bab48cc320829d4244a"
+  },
+  "runtime": {
+    "version": "4.7.3",
+    "packaged": true,
+    "electron": "44.9.3",
+    "userData": "/private/var/folders/h7/qxlbc1tn5t5cwts099pw24kr0000gn/T/toolkit473-capture-zb8E6W",
+    "coreVersion": "4.7.3",
+    "ui": {
+      "tag": "v1.16.0",
+      "code": 77,
+      "sha256": "171f16f9b4777d59cd26906b3f6684ef72c3b4586e0af090b32be69f9980f487",
+      "bytes": 17138328,
+      "icons": {
+        "tag": "v1.16.0",
+        "bytes": 8505979,
+        "sha256": "161660ecad562d6813734ce922e44a08d554262a72b8144c5f0734cc1701f8c7"
+      }
+    }
+  },
+  "captures": [
+    {
+      "file": "art/screenshots/desktop-4.7.3-macos-about.png",
+      "sha256": "5ff3e946403121ac4a204392e1f2a55f4ac8a45af691391afabee50887c38545"
+    },
+    {
+      "file": "art/screenshots/desktop-4.7.3-macos-updates.png",
+      "sha256": "1e40cc8fb6aaf0e7ab4334cb259df2e941efef298df0cf91087d55ed2f401d80"
+    }
+  ],
+  "noTVConnection": true,
+  "noPublishedUpdateCheck": true,
+  "method": "Actual native packaged macOS arm64 app, isolated temporary userData and sample channel cache. No real profiles, connections, player stream or synthetic update response."
+}

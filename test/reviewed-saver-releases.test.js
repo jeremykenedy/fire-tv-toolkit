@@ -4,6 +4,8 @@ import { SCREENSAVERS } from '../src/screensaver-registry.js';
 import { publishedApk } from '../src/update-releases.js';
 
 const releases = [
+  {id: 'black-screen-dream', pkg: 'com.jeremykenedy.blackscreendream', dream: '.BlackScreenDreamService', tag: 'v1.0.1',
+    bytes: 21234, sha256: '3281db249bcf776ffcd04e55213d86dcda0efc1626881c8895051602567da97c'},
   {id: 'hearth-presence', pkg: 'com.jeremykenedy.hearthpresence', dream: '.HearthDreamService',
     bytes: 121223466, sha256: '9541eb4fe2f4d7d69ac1f85b38144f5b5926274291ebec796d8150d27e07b781'},
   {id: 'prism-clock', pkg: 'com.jeremykenedy.prismclock', dream: '.PrismDreamService',
@@ -15,7 +17,7 @@ for (const release of releases) {
   test(`${entry.name} installs its reviewed public artifact without changing identity`, () => {
     assert.equal(entry.pkg, release.pkg);
     assert.equal(entry.dreamComponent, release.pkg + '/' + release.dream);
-    assert.equal(entry.tag, 'v1.1.0');
+    assert.equal(entry.tag, release.tag ?? 'v1.1.0');
     assert.equal(entry.asset, release.id + '.apk');
     assert.equal(entry.bytes, release.bytes);
     assert.equal(entry.sha256, release.sha256);

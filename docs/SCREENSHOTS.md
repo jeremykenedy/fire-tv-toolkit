@@ -4,9 +4,9 @@
 
 ## Desktop app
 
-Current 4.7.2 release-version captures come from the actual packaged macOS arm64 app on Electron 44.9.3. About and update controls show this patch; the remaining unchanged routes retain explicitly historical 4.7.0 captures below. Sample catalog data and isolated temporary app data were used, without connecting to a TV or running a sample release check. [Capture provenance](../art/screenshots/desktop-4.7.2-provenance.json) records exact source and image hashes.
+Current 4.7.3 release-version captures come from the actual packaged macOS arm64 app on Electron 44.9.3. About and update controls show this patch; the remaining unchanged routes retain explicitly historical 4.7.0 captures below. Sample catalog data and isolated temporary app data were used, without connecting to a TV or running a sample release check. [Capture provenance](../art/screenshots/desktop-4.7.3-provenance.json) records exact source and image hashes.
 
-<table><tr><td><a href="../art/screenshots/desktop-4.7.2-macos-about.png"><img src="../art/screenshots/desktop-4.7.2-macos-about.png" alt="Native macOS Toolkit 4.7.2 About and release version" width="320"></a><br>About 4.7.2</td><td><a href="../art/screenshots/desktop-4.7.2-macos-updates.png"><img src="../art/screenshots/desktop-4.7.2-macos-updates.png" alt="Native macOS Toolkit 4.7.2 update controls before checking published releases" width="320"></a><br>Update controls 4.7.2</td></tr></table>
+<table><tr><td><a href="../art/screenshots/desktop-4.7.3-macos-about.png"><img src="../art/screenshots/desktop-4.7.3-macos-about.png" alt="Native macOS Toolkit 4.7.3 About and release version" width="320"></a><br>About 4.7.3</td><td><a href="../art/screenshots/desktop-4.7.3-macos-updates.png"><img src="../art/screenshots/desktop-4.7.3-macos-updates.png" alt="Native macOS Toolkit 4.7.3 update controls before checking published releases" width="320"></a><br>Update controls 4.7.3</td></tr></table>
 
 ### Historical 4.7.0 route captures
 

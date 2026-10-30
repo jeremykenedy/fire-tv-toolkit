@@ -162,18 +162,18 @@ firetv-ltv-backup --pull=ltv-backup.json   # copy the newest LTvLauncher backup 
 
 ### Verified UI update and Home preference contract
 
-The reviewed installation pin is public [Fire TV UI 1.15.0/code 76](https://github.com/jeremykenedy/fire-tv-ui/releases/tag/v1.15.0):
-`fire-tv-ui-1.15.0.apk`, 17,089,176 bytes, SHA-256
-`f8a7ac4dd7c40a08e408c517d89a703f0f602af0076a982ec10449c787d6ef29`.
+The reviewed installation pin is public [Fire TV UI 1.16.0/code 77](https://github.com/jeremykenedy/fire-tv-ui/releases/tag/v1.16.0):
+`fire-tv-ui-1.16.0.apk`, 17,138,328 bytes, SHA-256
+`171f16f9b4777d59cd26906b3f6684ef72c3b4586e0af090b32be69f9980f487`.
 Its production certificate is
 `9a6416b9dc3c996d591b185d600b8ab76e1c7b01846db8d6063b399caf7b5a11`;
 Android minimum 27 and target 36 are unchanged. Both public APK/icon assets and
 their checksum files were downloaded anonymously and matched their exact frozen
 identities. Actual Toolkit `downloadApk` and `prepareUiIcons` helpers also passed.
-The paired `fire-tv-ui-icons-1.15.0.zip` is 8,505,979 bytes with SHA-256
-`7358478cc1cfa8c020a0d32b40991d4de687b806e611e8a4aab35bb534842bbf`.
+The paired `fire-tv-ui-icons-1.16.0.zip` is 8,505,979 bytes with SHA-256
+`161660ecad562d6813734ce922e44a08d554262a72b8144c5f0734cc1701f8c7`.
 All 32 PNGs remain Full HD. The APK manifest reports package
-`com.jeremykenedy.firetv.ui`, version 1.15.0 and version code 76.
+`com.jeremykenedy.firetv.ui`, version 1.16.0 and version code 77.
 
 All Home mutations involving Fire TV UI require code 69 or newer. Unknown or
 older installed codes are refused before a preference or OS write, and the
