@@ -162,18 +162,24 @@ firetv-ltv-backup --pull=ltv-backup.json   # copy the newest LTvLauncher backup 
 
 ### Verified UI update and Home preference contract
 
-The reviewed installation pin is public [Fire TV UI 1.16.0/code 77](https://github.com/jeremykenedy/fire-tv-ui/releases/tag/v1.16.0):
-`fire-tv-ui-1.16.0.apk`, 17,138,328 bytes, SHA-256
-`171f16f9b4777d59cd26906b3f6684ef72c3b4586e0af090b32be69f9980f487`.
+The reviewed installation pin is public [Fire TV UI 1.17.0/code 78](https://github.com/jeremykenedy/fire-tv-ui/releases/tag/v1.17.0):
+`fire-tv-ui-1.17.0.apk`, 21,460,807 bytes, SHA-256
+`feec52050090718424e7bada545d8b460583704ffa2fc5af28f187e863264df8`.
 Its production certificate is
 `9a6416b9dc3c996d591b185d600b8ab76e1c7b01846db8d6063b399caf7b5a11`;
 Android minimum 27 and target 36 are unchanged. Both public APK/icon assets and
 their checksum files were downloaded anonymously and matched their exact frozen
 identities. Actual Toolkit `downloadApk` and `prepareUiIcons` helpers also passed.
-The paired `fire-tv-ui-icons-1.16.0.zip` is 8,505,979 bytes with SHA-256
-`161660ecad562d6813734ce922e44a08d554262a72b8144c5f0734cc1701f8c7`.
-All 32 PNGs remain Full HD. The APK manifest reports package
-`com.jeremykenedy.firetv.ui`, version 1.16.0 and version code 77.
+The paired `fire-tv-ui-icons-1.17.0.zip` is 12,818,195 bytes with SHA-256
+`697e1b1df0fa952da50e99b4cd8f575731e6a074cf789c7ddcfc5f29dc471f1c`.
+All 48 PNGs remain Full HD. The APK manifest reports package
+`com.jeremykenedy.firetv.ui`, version 1.17.0 and version code 78.
+
+The companion includes 16 new receiver and soundbar brand icons, individual
+factory icon restoration, HDMI input names with factory name restoration, and
+Settings > Network and IP. Network details show the current physical connection;
+Configure IP opens the TV's own settings. Toolkit does not silently configure a
+static address, router reservation, or a different Home choice.
 
 All Home mutations involving Fire TV UI require code 69 or newer. Unknown or
 older installed codes are refused before a preference or OS write, and the

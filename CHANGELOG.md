@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.7.4] - 2026-11-01
+
+### Fixed
+
+- Refresh the Fire TV UI installation baseline to verified public 1.17.0/code 78 and its 48-image icon archive.
+- Include the companion audio brand icons, individual factory icon/name restoration and Network and IP settings page.
+- Preserve Toolkit profiles, host behavior and all other companion pins.
+
+See the [4.7.4 upgrade guide](docs/RELEASE-4.7.4.md).
+
 ## [4.7.1] - 2026-10-29
 
 ### Fixed
