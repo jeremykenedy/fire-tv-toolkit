@@ -23,6 +23,7 @@
 | [Troubleshooting](TROUBLESHOOTING.md) | Connection and settings problems. |
 | [Development](DEVELOPMENT.md) | Source builds, tests and releasing. |
 | [Signing installers](SIGNING.md) | Signing and notarization. |
+| [4.7.4 release](RELEASE-4.7.4.md) | Verified public UI 1.17 audio icons, input customization and network settings companion. |
 | [4.7.3 release](RELEASE-4.7.3.md) | Verified public UI 1.16 and Black Screen 1.0.1 companion releases. |
 | [4.7.2 release](RELEASE-4.7.2.md) | Verified public UI 1.15 companion with preserved host controls and profiles. |
 | [4.7.1 release](RELEASE-4.7.1.md) | Public UI 1.14 and Contour 1.1 companion baselines. |

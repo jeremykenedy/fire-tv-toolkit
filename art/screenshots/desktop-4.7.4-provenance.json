@@ -1,0 +1,47 @@
+{
+  "version": "4.7.4",
+  "status": "Verified public UI 1.17 audio icons and input customization companion baseline",
+  "capturedAt": "2026-11-01T22:37:15.824Z",
+  "sourceFileSha256": {
+    "package.json": "7e6c17307c48117d6af1f236153867e7a5af6cc732d9a7271253acaf1b9bf308",
+    "package-lock.json": "36b9cb80d9fa4e014935094e91cabb9b0de2e627e322c110bb634471a5a2ba9d",
+    "desktop/package.json": "df20df7891b1baf03d02062263b633ab75b69667235186fcf0a99e729f25e7d8",
+    "desktop/package-lock.json": "1c9247ce2fc0441ec2cfa272b6610c705e4e1ee50e0477f079cd39b0ac9a84ac",
+    "desktop/main.js": "564728812da0eb36f0c9681f8265b907e6e1e8b228af862843ba47a40de565d7",
+    "desktop/controller.js": "e91496648bd580777e6e7d95a5f6a42e168e62cbccde2906a3f30674376b9042",
+    "desktop/renderer/app.js": "99fd3d7eb093faa3fb88e04cf7d69999f1cabe1888ea9a816f308afaed9c8f3d",
+    "src/launcher-registry.js": "120cfdddff3d777a74151ac2630aacd51de361a07e30f460b943f0f95d394dac",
+    "src/screensaver-registry.js": "78d949d1b84dc8de5b91d5c69c5320dcbc28c45b0d458bab48cc320829d4244a"
+  },
+  "runtime": {
+    "version": "4.7.4",
+    "packaged": true,
+    "electron": "44.9.3",
+    "userData": "/private/var/folders/h7/qxlbc1tn5t5cwts099pw24kr0000gn/T/toolkit474-capture-eMP1Pl",
+    "coreVersion": "4.7.4",
+    "ui": {
+      "tag": "v1.17.0",
+      "code": 78,
+      "sha256": "feec52050090718424e7bada545d8b460583704ffa2fc5af28f187e863264df8",
+      "bytes": 21460807,
+      "icons": {
+        "tag": "v1.17.0",
+        "bytes": 12818195,
+        "sha256": "697e1b1df0fa952da50e99b4cd8f575731e6a074cf789c7ddcfc5f29dc471f1c"
+      }
+    }
+  },
+  "captures": [
+    {
+      "file": "art/screenshots/desktop-4.7.4-macos-about.png",
+      "sha256": "98ff650ce6cd6fcb9ab84339f8a04b40b47753a08112bd726f55c5782e872135"
+    },
+    {
+      "file": "art/screenshots/desktop-4.7.4-macos-updates.png",
+      "sha256": "70eb23a53a1b60a29c496d39ad5d618c514d67607156d532614bdfea3bdc1914"
+    }
+  ],
+  "noTVConnection": true,
+  "noPublishedUpdateCheck": true,
+  "method": "Actual native packaged macOS arm64 app, isolated temporary userData and sample channel cache. No real profiles, connections, player stream or synthetic update response."
+}
