@@ -2,6 +2,7 @@ import { test, before, beforeEach, after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import { createHash } from 'node:crypto';
 import { manifest } from './helpers/apk-fixture.js';
 import { installFakeAdb, captured } from './helpers/fake-adb.js';
@@ -71,7 +72,10 @@ test('candidate verification checks actual bytes and manifest but never promotes
   const plan = await preflightIndependentUi(ip, writeContract());
   assert.equal(plan.artifact.versionCode, 79);
   assert.equal(plan.artifact.signatureVerified, false);
+  assert.ok(['unavailable', 'invalid', 'mismatch'].includes(plan.artifact.signatureStatus));
+  assert.equal(plan.artifact.provenanceVerified, false);
   assert.equal(plan.artifact.publishedReleaseVerified, false);
+  assert.ok(plan.blockers.some(message => message.includes('source provenance')));
   assert.equal(plan.installationAllowed, false);
   assert.deepEqual(fake.readState(), before);
   for (const overrides of [{ signerSha256: 'b'.repeat(64) }, { releaseTag: 'v2.0.0-preview' },
@@ -80,6 +84,23 @@ test('candidate verification checks actual bytes and manifest but never promotes
   assert.throws(() => inspectIndependentUiContract(writeContract({ sha256: 'c'.repeat(64) })), /checksum/);
   assert.throws(() => inspectIndependentUiContract(writeContract({}, `${UI.pkg}.preview`)), /package or version/);
   assert.throws(() => inspectIndependentUiContract(writeContract({ versionCode: 80 })), /package or version/);
+  assert.throws(() => inspectIndependentUiContract(writeContract({ provenance: 'other-source' })), /contract/);
+  assert.equal(inspectIndependentUiContract(writeContract({ sourceCommit: 'b'.repeat(40) })).provenanceVerified, false);
+});
+
+test('private APK inspection copies are removed after valid and rejected contracts', () => {
+  const prior = process.env.TMPDIR;
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'firetv-inspection-cleanup-'));
+  process.env.TMPDIR = temp;
+  try {
+    inspectIndependentUiContract(writeContract());
+    assert.deepEqual(fs.readdirSync(temp), []);
+    assert.throws(() => inspectIndependentUiContract(writeContract({ versionCode: 80 })), /package or version/);
+    assert.deepEqual(fs.readdirSync(temp), []);
+  } finally {
+    if (prior === undefined) delete process.env.TMPDIR; else process.env.TMPDIR = prior;
+    fs.rmSync(temp, { recursive: true, force: true });
+  }
 });
 
 test('unsupported capabilities and non-increasing versions produce blockers without installing', async () => {

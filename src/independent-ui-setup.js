@@ -1,10 +1,12 @@
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { deviceInfo, readDiagnostic, packageDetails } from './adb.js';
 import { launcherState } from './apply/launcher.js';
 import { FIRE_TV_UI } from './launcher-registry.js';
 import { inspectApk } from './apk-manifest.js';
+import { verifyApkSigner } from './apk-signature.js';
 
 const MAX_APK = 250 * 1048576;
 
@@ -28,17 +30,28 @@ export function inspectIndependentUiContract(file) {
   const stat = fs.statSync(apk);
   if (!stat.isFile() || stat.size !== contract.bytes)
     throw new Error('The APK size does not match the artifact contract.');
-  if (createHash('sha256').update(fs.readFileSync(apk)).digest('hex') !== contract.sha256)
+  const bytes = fs.readFileSync(apk);
+  if (bytes.length !== contract.bytes || createHash('sha256').update(bytes).digest('hex') !== contract.sha256)
     throw new Error('The APK checksum does not match the artifact contract.');
-  const manifest = inspectApk(apk, { includeSdk: true });
-  if (manifest.package !== FIRE_TV_UI.pkg || manifest.versionCode !== BigInt(contract.versionCode))
-    throw new Error('The APK package or version does not match the production release contract.');
-  if (manifest.minSdk !== contract.minSdk)
-    throw new Error('The APK minimum SDK does not match the production release contract.');
-  return { package: contract.package, versionCode: contract.versionCode, minSdk: manifest.minSdk, targetSdk: manifest.targetSdk,
-    releaseTag: contract.releaseTag, sourceCommit: contract.sourceCommit,
-    sha256: contract.sha256, bytes: contract.bytes, declaredSignerSha256: contract.signerSha256,
-    signatureVerified: false, publishedReleaseVerified: false };
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'firetv-source-inspect-'));
+  try {
+    const copy = path.join(directory, 'candidate.apk');
+    fs.writeFileSync(copy, bytes, { mode: 0o600, flag: 'wx' });
+    const manifest = inspectApk(copy, { includeSdk: true });
+    if (manifest.package !== FIRE_TV_UI.pkg || manifest.versionCode !== BigInt(contract.versionCode))
+      throw new Error('The APK package or version does not match the production release contract.');
+    if (manifest.minSdk !== contract.minSdk)
+      throw new Error('The APK minimum SDK does not match the production release contract.');
+    const signature = verifyApkSigner(copy, FIRE_TV_UI.signerSha256);
+    return { package: contract.package, versionCode: contract.versionCode, minSdk: manifest.minSdk, targetSdk: manifest.targetSdk,
+      releaseTag: contract.releaseTag, sourceCommit: contract.sourceCommit,
+      sha256: contract.sha256, bytes: contract.bytes, declaredSignerSha256: contract.signerSha256,
+      signatureVerified: signature.status === 'verified', signatureStatus: signature.status,
+      ...(signature.signerSha256 ? { actualSignerSha256: signature.signerSha256 } : {}),
+      provenanceVerified: false, publishedReleaseVerified: false };
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
 }
 
 /** Read-only planning for the selected CLI TV or desktop profile address. */
@@ -61,7 +74,11 @@ export async function preflightIndependentUi(ip, contractPath) {
   if (artifact && installed.versionCode !== null && BigInt(artifact.versionCode) <= installed.versionCode)
     blockers.push('The candidate must have a higher version code than the installed UI.');
   if (!artifact) blockers.push('Choose an independently built production release contract when that release is available.');
-  blockers.push('Verify the actual APK signer, published release and source provenance before installation.');
+  if (!artifact) blockers.push('Verify the actual APK signer when a production release is available.');
+  else if (artifact.signatureStatus === 'unavailable') blockers.push('APK signature verification is unavailable. Install the Android SDK build tools and Java, then retry.');
+  else if (artifact?.signatureStatus === 'invalid') blockers.push('The APK signature could not be verified. Keep the installed application.');
+  else if (artifact?.signatureStatus === 'mismatch') blockers.push('The APK signer does not match the approved production signer. Keep the installed application.');
+  if (!artifact?.provenanceVerified) blockers.push('Verify the published release and source provenance before installation.');
   blockers.push('Complete UI parity, migration, recovery and native hardware acceptance before production setup.');
   return { stage: 'preflight', installationAllowed: false, target: { ip, ...identity, sdk, television },
     currentHome: state.home, services: [...state.services], disabled: [...state.disabled],

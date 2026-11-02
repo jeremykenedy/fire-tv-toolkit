@@ -142,7 +142,7 @@ async function showIndependentUiSetup(ip, contractPath) {
     print('\nIndependent Fire TV UI setup: preflight only');
     print(`Selected TV: ${plan.target.model} at ${plan.target.ip}; serial ${plan.target.serial}; Android API ${plan.target.sdk ?? 'unknown'}.`);
     print(`Current Home: ${HOME_NAMES[plan.currentHome]}. Current UI version code: ${plan.installedUiVersionCode ?? 'not installed'}.`);
-    if (plan.artifact) print(`Local APK bytes, package and version match ${plan.artifact.releaseTag}. Signature and release approval remain pending.`);
+    if (plan.artifact) print(`Local APK bytes, package and version match ${plan.artifact.releaseTag}. Signature: ${plan.artifact.signatureStatus}. Source provenance remains unverified.`);
     print('\nBefore installation:');
     for (const blocker of plan.blockers) print(`  ${blocker}`);
     print('\nSetup stages:');
