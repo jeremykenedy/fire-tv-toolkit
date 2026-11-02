@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.8.2] - 2026-11-02
+
+### Fixed
+
+- Verify the actual candidate APK signature against the pinned production signer during source UI preflight.
+- Report unavailable, invalid and mismatched signatures without permitting installation; production provenance remains unverified.
+
+See the [4.8.2 upgrade guide](docs/RELEASE-4.8.2.md).
+
 ## [4.8.1] - 2026-11-02
 
 ### Fixed

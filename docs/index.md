@@ -23,6 +23,7 @@
 | [Troubleshooting](TROUBLESHOOTING.md) | Connection and settings problems. |
 | [Development](DEVELOPMENT.md) | Source builds, tests and releasing. |
 | [Signing installers](SIGNING.md) | Signing and notarization. |
+| [4.8.2 release](RELEASE-4.8.2.md) | APK signer verification and source UI installation limits. |
 | [4.8.1 release](RELEASE-4.8.1.md) | APK minimum SDK contract validation and current desktop captures. |
 | [4.8.0 release](RELEASE-4.8.0.md) | Read-only independent UI setup checks, connected-TV desktop preflight and recovery guidance. |
 | [4.7.4 release](RELEASE-4.7.4.md) | Verified public UI 1.17 audio icons, input customization and network settings companion. |

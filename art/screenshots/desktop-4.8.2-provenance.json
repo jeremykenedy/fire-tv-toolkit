@@ -1,0 +1,94 @@
+{
+  "version": "4.8.2",
+  "sourceBaseCommit": "ae78e0bbd817a8c59a7a59293e65dd0dd6964f20",
+  "platform": "macOS arm64",
+  "runtime": {
+    "packaged": true,
+    "version": "4.8.2",
+    "electron": "44.9.3"
+  },
+  "capture": "Actual packaged native Electron application",
+  "command": "TOOLKIT_SOURCE_UI_PACKAGED=1 TOOLKIT_SOURCE_UI_CAPTURE_ALL=1 node --test test/e2e/source-ui.test.js",
+  "fixture": "Temporary app data, reserved 192.0.2.x addresses, fake ADB, no physical TV or APK installation; LTvLauncher choice retained",
+  "sourceHashes": {
+    "desktop/controller.js": "59f3937827810086766adfd5f9138594f47ebb939dd586efb285762b07a87140",
+    "desktop/main.js": "ace99e05bf2bb508c1ab51704aa016977ee0a9fbd5679df05271b4143d1e153c",
+    "desktop/preload.cjs": "9b6ddac23fb5b5f384f436a0613c61754d4d45d641f9b717e16d5e16f5362f4f",
+    "desktop/renderer/app.js": "dce18fcfc88152944a35e12994baeceb0566cb74d31d5561ea080221e56eee3a",
+    "desktop/renderer/index.html": "60ddcc0558db89e576cb9dff930f50db01c0f411220b23b2e0f37319f9e255ff",
+    "desktop/renderer/style.css": "8971eeb6c8d2f4242a6718b0cdaddfea4e35c53afac65e4b9a259e723bfc888a",
+    "desktop/package.json": "940a9e64b7e95db1ddf1e8109317a52763751ed0df00346419c86cff0fe222dd",
+    "src/independent-ui-setup.js": "88a94a9acae2229bab6e6d27db0bc32021ef8767bd8fdc3b817a864df518b270",
+    "src/apk-manifest.js": "84070557b44c9010b98bcd8b9b54f8006b58c8416e1574dc311054686c1e75a3",
+    "src/apply/launcher.js": "2b31943bbfc786e77c700a463c4833432fbded7dc253b33cfd358283a408e1f1",
+    "src/apk-signature.js": "923cc905b9bbb4ecbc6d382e3dd5b3b11b014f25b5c6d3346f86faf2e61413e1"
+  },
+  "packagedAsarSha256": "b098b6e6c31a606650febba59eb8345f81f79e3da4212aeddc82e598c1d1742b",
+  "images": [
+    {
+      "file": "art/screenshots/desktop-4.8.2-macos-about.png",
+      "sha256": "32de0285dfb4409dfb43d8c7fd62430ac7772ddefe8e28106ff15935b7b80f36",
+      "bytes": 323042
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.2-macos-advanced.png",
+      "sha256": "f7a5b602128bf64220171cc200f8951902b9c49d6a5601c3299287d6b96fe150",
+      "bytes": 184744
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.2-macos-live.png",
+      "sha256": "a28eeb01f8be6459267305b5cbd6287d64a5b145738919753ab424b337c81c94",
+      "bytes": 199731
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.2-macos-overview.png",
+      "sha256": "3d70fe8937cf1feba53371b559cad4bc7334e9d23b7120d94808a7f13d8fc7a1",
+      "bytes": 233141
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.2-macos-preflight.png",
+      "sha256": "74dcb325e265ab1f2002e54fe58e109e8fa289e8f10011b75130259bc7e259ea",
+      "bytes": 372282
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.2-macos-profiles.png",
+      "sha256": "1aecb7072cd4db8a06c53c961c6a6eb3aa7bad32a1a41aa79fc01ae7e1f37c6e",
+      "bytes": 220106
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.2-macos-published.png",
+      "sha256": "251f573c50089a18d841d8ffc1ce926d0646fddf0612fb4302b9badf3b45c785",
+      "bytes": 187292
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.2-macos-recovery.png",
+      "sha256": "1ee1c2211c3b6a0540554206ee4ada41ef38b28ac8ead85c791da7260c7d5c63",
+      "bytes": 359165
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.2-macos-screensavers.png",
+      "sha256": "dc30bf8d7756730e199f59ed38403b04c428d16b7630f2ece84bdd5a0123f76c",
+      "bytes": 255991
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.2-macos-settings.png",
+      "sha256": "c8bfafc31011f8d283bf4a59483ef61125244b075350addfa20444de6fca6c92",
+      "bytes": 234282
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.2-macos-setup.png",
+      "sha256": "ebd23db1bf217d41f7126c0bae655ab30a84953d696035b4dbdb028468b93395",
+      "bytes": 211770
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.2-macos-terminal.png",
+      "sha256": "35e8159a8ab363d1267d4c6c4228c1c3b0a0ce7eb4650fe87e5f0c3ff9fa189c",
+      "bytes": 167346
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.2-macos-update.png",
+      "sha256": "3673f3896e49aecf8e12b7f80a2f3b6a862109dcca18633c081f59300280532a",
+      "bytes": 219183
+    }
+  ]
+}
