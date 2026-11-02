@@ -22,7 +22,7 @@ Connect your TV, then open Setup assistant. Choose a screensaver, a home screen 
 
 Open Guided updater to select supported apps already installed on the TV and revisit timer, Alexa, optimization or protection settings. Choices start unchanged. It downloads supported GitHub releases and verifies each APK against a published or pinned SHA-256. Apps pinned to a specific version require a toolkit update to change that version; other supported apps use their latest published release. App data is retained where Android permits. The desktop releases button opens GitHub so you can download a newer toolkit version.
 
-![Device settings in the guided updater](../art/screenshots/desktop-updater-settings.png)
+![Toolkit 4.8.2 guided updater on macOS](../art/screenshots/desktop-4.8.2-macos-update.png)
 
 ## Advanced settings
 

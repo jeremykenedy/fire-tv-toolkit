@@ -38,7 +38,7 @@
 Browse live channels, save favorites and named TVs, and manage screensavers, Home screens and TV settings.
 
 <p align="center">
-  <a href="https://github.com/jeremykenedy/fire-tv-toolkit/releases/latest/download/Fire-TV-Toolkit-mac-arm64.dmg"><img src="art/screenshots/desktop-4.8.1-macos-about.png" alt="Toolkit 4.8.1 native macOS desktop app. Click to download for macOS Apple silicon." width="900"></a>
+  <a href="https://github.com/jeremykenedy/fire-tv-toolkit/releases/latest/download/Fire-TV-Toolkit-mac-arm64.dmg"><img src="art/screenshots/desktop-4.8.2-macos-about.png" alt="Toolkit 4.8.2 native macOS desktop app. Click to download for macOS Apple silicon." width="900"></a>
 </p>
 
 | macOS | Windows | Linux |
@@ -88,7 +88,7 @@ See [TV setup](docs/SETUP.md) for ADB debugging and upgrades, or the [command re
 
 See the [feature guide](docs/FEATURES.md) for behavior and limits, or browse the [screenshot gallery](docs/SCREENSHOTS.md).
 
-<p align="center"><a href="docs/DESKTOP.md"><img src="art/screenshots/desktop-4.8.1-macos-preflight.png" alt="Fire TV Toolkit 4.8.1 native macOS source UI setup and recovery checks" width="900"></a></p>
+<p align="center"><a href="docs/DESKTOP.md"><img src="art/screenshots/desktop-4.8.2-macos-preflight.png" alt="Fire TV Toolkit 4.8.2 native macOS source UI setup and recovery checks" width="900"></a></p>
 
 ## Platform support
 
