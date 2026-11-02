@@ -178,6 +178,8 @@ else if (cmd === 'shell' && a === 'settings' && b === 'get') {
   state[c] = state[c] || {}; state[c][d] = process.argv.slice(-1)[0]; save();
 } else if (cmd === 'shell' && a === 'settings' && b === 'list') {
   for (const [k, v] of Object.entries(state[c] || {})) out(k + '=' + v);
+} else if (cmd === 'shell' && a === 'pm' && b === 'list' && c === 'features') {
+  for (const feature of state.features || []) out('feature:' + feature);
 } else if (cmd === 'shell' && a === 'pm' && b === 'list') {
   const only = args.includes('-d') ? state.disabled || [] : state.installed;
   for (const p of only) out('package:' + p);
@@ -185,7 +187,7 @@ else if (cmd === 'shell' && a === 'settings' && b === 'get') {
   if (state.installed.includes(c) && !state.stuck) { state.installed = state.installed.filter((p) => p !== c); save(); out('Success'); }
   else out('Failure [DELETE_FAILED_INTERNAL_ERROR]');
 } else if (cmd === 'shell' && a === 'getprop') {
-  out(state.sdk === undefined ? '30' : state.sdk);
+  out(state.properties && Object.hasOwn(state.properties, b) ? state.properties[b] : state.sdk === undefined ? '30' : state.sdk);
 } else if (cmd === 'push') {
   if (args[args.length - 1] === '/sdcard/Pictures/Icons/') {
     state.sharedIcons = state.sharedIcons || {};

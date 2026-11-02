@@ -11,8 +11,11 @@ import { packageVersion } from '../adb.js';
 import { AT4K, LTV, FIRE_TV_UI, HOME_REDIRECT, HOME_LAUNCHERS, HOME_TARGET_VERSION, launcherApps } from '../launcher-registry.js';
 import { markFailed } from '../exit-status.js';
 import { print } from '../output.js';
+import { preflightIndependentUi } from '../independent-ui-setup.js';
 
 export const FLAG_SPEC = {
+  'source-ui': { type: 'boolean', desc: 'Check independent UI setup and recovery without installing or changing Home.' },
+  'artifact-contract': { type: 'string', desc: 'Local independent production release JSON contract for --source-ui.' },
   'install-ui': { type: 'boolean', desc: 'Install or update Fire TV UI (recommended); keep the current Home choice.' },
   install: { type: 'boolean', desc: 'Install or update AT4K and the Home Redirect app.' },
   'install-ltv': { type: 'boolean', desc: 'Install or update LTvLauncher and the Home Redirect app.' },
@@ -129,7 +132,30 @@ function menuChoices(state) {
   if (state.installed.includes(LTV.id) && !state.ltvNotifications) {
     choices.push({ name: 'Allow LTvLauncher to read notifications', value: 'ltv-notifications' });
   }
+  choices.push({ name: 'Check independent UI setup and recovery', value: 'source-ui' });
   return choices;
+}
+
+async function showIndependentUiSetup(ip, contractPath) {
+  try {
+    const plan = await preflightIndependentUi(ip, contractPath);
+    print('\nIndependent Fire TV UI setup: preflight only');
+    print(`Selected TV: ${plan.target.model} at ${plan.target.ip}; serial ${plan.target.serial}; Android API ${plan.target.sdk ?? 'unknown'}.`);
+    print(`Current Home: ${HOME_NAMES[plan.currentHome]}. Current UI version code: ${plan.installedUiVersionCode ?? 'not installed'}.`);
+    if (plan.artifact) print(`Local APK bytes, package and version match ${plan.artifact.releaseTag}. Signature and release approval remain pending.`);
+    print('\nBefore installation:');
+    for (const blocker of plan.blockers) print(`  ${blocker}`);
+    print('\nSetup stages:');
+    for (const step of plan.steps) print(`  ${step}`);
+    print('\nRecovery:');
+    for (const step of plan.recovery) print(`  ${step}`);
+    print('\nPreflight complete. No APK was installed and Home settings were preserved.\n');
+    return plan;
+  } catch (error) {
+    print(chalk.red(`\nIndependent UI preflight stopped: ${error.message}\n`));
+    markFailed();
+    return null;
+  }
 }
 
 /**
@@ -140,6 +166,15 @@ function menuChoices(state) {
  * @returns {Promise<void>}
  */
 export async function manageLauncher(ip, flags = {}) {
+  if (flags['source-ui'] || flags['artifact-contract'] !== undefined) {
+    if (!flags['source-ui'] || flags['install-ui'] || flags.install || flags['install-ltv'] || flags.use) {
+      print(chalk.red('\nUse --source-ui with an optional --artifact-contract by itself. Installation and Home selection are separate actions.\n'));
+      markFailed();
+      return;
+    }
+    await showIndependentUiSetup(ip, flags['artifact-contract']);
+    return;
+  }
   if (flags['install-ui'] || flags.install || flags['install-ltv'] || flags.use) {
     await runFromFlags(ip, flags);
     return;
@@ -174,6 +209,8 @@ export async function manageLauncher(ip, flags = {}) {
       if (answers.action.startsWith('install:')) {
         const id = answers.action.slice('install:'.length);
         await runFromFlags(ip, { [INSTALL_FLAGS[id]]: true });
+      } else if (answers.action === 'source-ui') {
+        await showIndependentUiSetup(ip);
       } else if (answers.action === 'ltv-notifications') {
         await applyLtvNotifications(ip, true);
       } else {
