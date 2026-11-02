@@ -26,9 +26,9 @@ beforeEach(() => {
 });
 after(() => { fake.restore(); process.exitCode = undefined; });
 
-function writeContract(overrides = {}, apkPackage = UI.pkg) {
+function writeContract(overrides = {}, apkPackage = UI.pkg, sdk = { minSdk: 27, targetSdk: 36 }) {
   const name = Buffer.from('AndroidManifest.xml');
-  const body = manifest({ pkg: apkPackage, version: 79 });
+  const body = manifest({ pkg: apkPackage, version: 79, ...sdk });
   const local = Buffer.alloc(30 + name.length);
   local.writeUInt32LE(0x04034b50); local.writeUInt32LE(body.length, 18);
   local.writeUInt32LE(body.length, 22); local.writeUInt16LE(name.length, 26); name.copy(local, 30);
@@ -147,4 +147,23 @@ test('source setup accepts the existing selected named profile without changing 
   assert.equal(plan.currentHome, LTV.id);
   assert.deepEqual(profiles.snapshot(), snapshot);
   assert.equal(fs.readFileSync(file, 'utf8'), before);
+});
+
+test('source contract checks actual compiled minimum SDK before any TV diagnostics', async () => {
+  const before = fake.readState();
+  assert.throws(() => inspectIndependentUiContract(writeContract({}, UI.pkg, { minSdk: 35, targetSdk: 36 })), /minimum SDK/);
+  fake.setState({ offline: true });
+  await assert.rejects(preflightIndependentUi(ip, writeContract({}, UI.pkg, { minSdk: 35 })), /minimum SDK/);
+  fake.setState({ offline: before.offline });
+  assert.throws(() => inspectIndependentUiContract(writeContract({}, UI.pkg, {})), /minimum SDK/);
+  assert.throws(() => inspectIndependentUiContract(writeContract({}, UI.pkg, { minSdk: 27, sdkNamespace: 'urn:other' })), /minimum SDK/);
+  const contract = writeContract({ minSdk: 35 }, UI.pkg, { minSdk: 35, targetSdk: 36 });
+  const inspected = inspectIndependentUiContract(contract);
+  assert.equal(inspected.minSdk, 35);
+  assert.equal(inspected.targetSdk, 36);
+  assert.equal(inspected.signatureVerified, false);
+  const plan = await preflightIndependentUi(ip, contract);
+  assert.ok(plan.blockers.some(message => message.includes('supported Android API level')));
+  assert.equal(plan.installationAllowed, false);
+  assert.deepEqual(fake.readState(), before);
 });

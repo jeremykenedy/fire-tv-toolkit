@@ -61,3 +61,34 @@ test('reads a literal Android app version separately from its repository release
   }
   assert.throws(() => parseBinaryManifest(manifest({versionName: '1.2\u001b[31m'})), /version name/);
 });
+
+test('optional SDK inspection reads compiled requirements without changing the existing manifest result', () => {
+  for (const utf8 of [true, false]) {
+    const bytes = manifest({ utf8, minSdk: 27, targetSdk: 36 });
+    assert.deepEqual(parseBinaryManifest(bytes), { package: 'example.app', versionCode: 42n });
+    assert.deepEqual(parseBinaryManifest(bytes, { includeSdk: true }),
+      { package: 'example.app', versionCode: 42n, minSdk: 27, targetSdk: 36 });
+  }
+  for (const [input, minSdk, targetSdk] of [[{}, 1, 1], [{ minSdk: 27 }, 27, 27], [{ targetSdk: 36 }, 1, 36]]) {
+    const actual = parseBinaryManifest(manifest(input), { includeSdk: true });
+    assert.equal(actual.minSdk, minSdk);
+    assert.equal(actual.targetSdk, targetSdk);
+  }
+});
+
+test('SDK inspection rejects unsupported levels and duplicate declarations and ignores foreign namespaces', () => {
+  for (const input of [{ minSdk: 0 }, { minSdk: 0xffffffff }, { minSdk: 'Preview' }, { minSdk: 27, targetSdk: 'Preview' }])
+    assert.throws(() => parseBinaryManifest(manifest(input), { includeSdk: true }), /numeric API levels/);
+  const foreign = parseBinaryManifest(manifest({ minSdk: 27, targetSdk: 36, sdkNamespace: 'urn:other' }), { includeSdk: true });
+  assert.equal(foreign.minSdk, 1);
+  assert.equal(foreign.targetSdk, 1);
+  const valid = manifest({ minSdk: 27 });
+  const poolEnd = 8 + valid.readUInt32LE(12);
+  const sdkStart = poolEnd + valid.readUInt32LE(poolEnd + 4);
+  const duplicate = Buffer.concat([valid, valid.subarray(sdkStart)]);
+  duplicate.writeUInt32LE(duplicate.length, 4);
+  assert.throws(() => parseBinaryManifest(duplicate, { includeSdk: true }), /Duplicate APK uses-sdk/);
+  const truncated = Buffer.from(valid);
+  truncated.writeUInt32LE(35, sdkStart + 4);
+  assert.throws(() => parseBinaryManifest(truncated, { includeSdk: true }), /Truncated Android manifest element/);
+});

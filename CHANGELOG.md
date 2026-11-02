@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.8.1] - 2026-11-02
+
+### Fixed
+
+- Check the APK manifest minimum Android SDK against the local source UI contract before device preflight.
+- Prepare Home Redirect 1.2.7 with explicit source UI targets. Existing public companion pins remain unchanged.
+
+See the [4.8.1 upgrade guide](docs/RELEASE-4.8.1.md).
+
 ## [4.8.0] - 2026-11-01
 
 ### Added

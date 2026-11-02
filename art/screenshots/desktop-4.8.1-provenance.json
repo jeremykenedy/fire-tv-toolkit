@@ -1,0 +1,93 @@
+{
+  "version": "4.8.1",
+  "sourceCommit": "f6861d9",
+  "platform": "macOS arm64",
+  "runtime": {
+    "packaged": true,
+    "version": "4.8.1",
+    "electron": "44.9.3"
+  },
+  "capture": "Actual packaged native Electron application",
+  "command": "TOOLKIT_SOURCE_UI_PACKAGED=1 TOOLKIT_SOURCE_UI_CAPTURE_ALL=1 node --test test/e2e/source-ui.test.js",
+  "fixture": "Temporary app data, reserved 192.0.2.x addresses, fake ADB, no physical TV or APK installation; LTvLauncher choice retained",
+  "sourceHashes": {
+    "desktop/controller.js": "59f3937827810086766adfd5f9138594f47ebb939dd586efb285762b07a87140",
+    "desktop/main.js": "ace99e05bf2bb508c1ab51704aa016977ee0a9fbd5679df05271b4143d1e153c",
+    "desktop/preload.cjs": "9b6ddac23fb5b5f384f436a0613c61754d4d45d641f9b717e16d5e16f5362f4f",
+    "desktop/renderer/app.js": "dce18fcfc88152944a35e12994baeceb0566cb74d31d5561ea080221e56eee3a",
+    "desktop/renderer/index.html": "60ddcc0558db89e576cb9dff930f50db01c0f411220b23b2e0f37319f9e255ff",
+    "desktop/renderer/style.css": "8971eeb6c8d2f4242a6718b0cdaddfea4e35c53afac65e4b9a259e723bfc888a",
+    "desktop/package.json": "a10c696018f0e05dadcc45e1d40c0e42486295e73255475c3de8067e18f737a4",
+    "src/independent-ui-setup.js": "1a7f80d03e3d0d89f5bd1d3e8ec8ea21fcb305b64c288ba4de92f7bc34e54a64",
+    "src/apk-manifest.js": "84070557b44c9010b98bcd8b9b54f8006b58c8416e1574dc311054686c1e75a3",
+    "src/apply/launcher.js": "2b31943bbfc786e77c700a463c4833432fbded7dc253b33cfd358283a408e1f1"
+  },
+  "packagedAsarSha256": "f1824763ef7deeedd1d24a361f8113491ac9cd573787a577c07efdd092e28c4f",
+  "images": [
+    {
+      "file": "art/screenshots/desktop-4.8.1-macos-preflight.png",
+      "sha256": "1bcbe91227d211e3bdf8a3c98258b00e9629ec616d025912677a45181f83b665",
+      "bytes": 367180
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.1-macos-recovery.png",
+      "sha256": "7dc6e8bea04fcb0e47f152bf7d09ce8579c27756a203272777c056de0bda1f07",
+      "bytes": 354480
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.1-macos-live.png",
+      "sha256": "6e329f7cb591c01aac92eb44fa6a46d99526f227adcf5080e24b0d856dff9396",
+      "bytes": 199527
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.1-macos-overview.png",
+      "sha256": "91be2e00850f9bb3d59fe617fdf4095d66c1e11b7a35f1a083f28423b845bb50",
+      "bytes": 232923
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.1-macos-screensavers.png",
+      "sha256": "4e1a9a1932384c5ea4db895a082106628cbe4e8cdd3bfa085bbc4a267e252e3d",
+      "bytes": 255851
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.1-macos-settings.png",
+      "sha256": "b0b217d50fb12ac76dbc99979520f69209f012e9f9b0b057d707b3832969f9fe",
+      "bytes": 234107
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.1-macos-setup.png",
+      "sha256": "b4cd403017922becdc40e788ede79bf558dcb263b445d0b4cf9dad788691a655",
+      "bytes": 211664
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.1-macos-update.png",
+      "sha256": "a169fe7b8c1a35ed576189fb54b303fa7029cd62f0b6d47a3c784a6ae8b042ac",
+      "bytes": 218985
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.1-macos-about.png",
+      "sha256": "143c4ed0789147da0956d929e704a31ca8663efe61c69d86d3c87976ab895fcf",
+      "bytes": 322436
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.1-macos-published.png",
+      "sha256": "75470d8596b2704528630011b6e5fdaf088a733582b879f6b0027413981d85ab",
+      "bytes": 187120
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.1-macos-profiles.png",
+      "sha256": "e7c7ce8da8afaedeee0ae8fb06b66213c670ae1045765c76ccd3a7f030913f9f",
+      "bytes": 219757
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.1-macos-advanced.png",
+      "sha256": "63a98a277657f7e8662765b717c07695d663a7232c86829a30fe9dd91c57035d",
+      "bytes": 184557
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.1-macos-terminal.png",
+      "sha256": "cdba982419046046d2a78e12705e625e0ab82d6213a1cfc991e07a3c602f8e57",
+      "bytes": 167140
+    }
+  ]
+}
