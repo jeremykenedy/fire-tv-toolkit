@@ -8,8 +8,8 @@
 #   ~/.android/firetv-home-redirect.pass
 set -euo pipefail
 
-VERSION_CODE=10
-VERSION_NAME=1.2.6
+VERSION_CODE=11
+VERSION_NAME=1.2.7
 MIN_SDK=22
 TARGET_SDK=30
 
