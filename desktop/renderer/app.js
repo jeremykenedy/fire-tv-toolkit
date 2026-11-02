@@ -10,6 +10,7 @@ let wizardStep = 0;
 let wizardIdentity = '';
 let savedProfiles = [];
 let activeProfileId = '';
+let sourceUiPlan = null;
 const titles = {
   live: 'Live TV',
   overview: 'Overview',
@@ -151,6 +152,7 @@ function updateControls() {
     control.disabled = busy;
   });
   $('#refresh').disabled = busy || !state;
+  $('#source-ui-check').disabled = busy || !state;
   $('#advanced-toggle').disabled = busy;
   $('#run-shell').disabled = busy || !advanced || !state;
   $('#terminal-command').disabled = busy || !advanced || !state;
@@ -303,6 +305,27 @@ function renderHome() {
   $('#playlist').value = state.playlist;
 }
 
+function renderSourceUi() {
+  if (!state || sourceUiPlan?.target.ip !== state.device.ip || sourceUiPlan.currentHome !== state.home) sourceUiPlan = null;
+  $('#source-ui-result').hidden = !sourceUiPlan;
+  if (!sourceUiPlan) return;
+  const name = savedProfiles.find(profile => profile.ip === state.device.ip)?.name || sourceUiPlan.profileName;
+  $('#source-ui-target').textContent = `${name} at ${sourceUiPlan.target.ip}`;
+  $('#source-ui-current').textContent = `Serial ${sourceUiPlan.target.serial}; Android API ${sourceUiPlan.target.sdk ?? 'unknown'}. Current Home: ${sourceUiPlan.currentHome}. Installation remains pending.`;
+  for (const [selector, values] of [
+    ['#source-ui-blockers', sourceUiPlan.blockers], ['#source-ui-steps', sourceUiPlan.steps], ['#source-ui-recovery', sourceUiPlan.recovery],
+  ]) $(selector).replaceChildren(...values.map(text => element('li', '', text)));
+}
+
+$('#source-ui-check').addEventListener('click', () => {
+  sourceUiPlan = null;
+  renderSourceUi();
+  return run(() => bridge.sourceUiPreflight(), plan => {
+    sourceUiPlan = plan;
+    renderSourceUi();
+  });
+});
+
 function render() {
   document.body.classList.toggle('connected', !!state);
   $('#connection-label').textContent = state
@@ -338,6 +361,7 @@ function render() {
     renderSavers();
     renderHome();
   }
+  renderSourceUi();
   navigate(selectedView);
   updateControls();
 }
@@ -753,6 +777,7 @@ function renderAdvanced() {
     $('#terminal-output').textContent = 'Command output appears here.';
     $('#terminal-command').value = '';
   }
+  renderSourceUi();
   navigate(selectedView);
   updateControls();
 }

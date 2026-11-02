@@ -1,0 +1,104 @@
+{
+  "version": "4.8.0",
+  "sourceCommit": "03fa96b6f117fed2b06717919bb7ba091a22c45c",
+  "platform": "macOS arm64",
+  "runtime": {
+    "packaged": true,
+    "version": "4.8.0",
+    "electron": "44.9.3"
+  },
+  "capture": "Actual packaged native Electron application, unchanged screenshots",
+  "command": "TOOLKIT_SOURCE_UI_PACKAGED=1 TOOLKIT_SOURCE_UI_CAPTURE_ALL=1 node --test test/e2e/source-ui.test.js",
+  "fixture": "Temporary app data; reserved 192.0.2.x TV addresses; fake ADB; no physical TV; LTvLauncher choice retained; no APK installation",
+  "verification": {
+    "desktopTests": 59,
+    "lint": "passed",
+    "packagedNativeFlow": "passed",
+    "browserGallery": "passed: README navigation, all 13 current native images, desktop rows 3/3/3/3/1",
+    "packagedSourceHashes": "Matched current controller/main/preload/renderer inputs extracted from packaged app.asar",
+    "bundledCliVersion": "4.8.0",
+    "bundledSourcePreflight": "matches maintained source",
+    "adbRestoration": "matches verified Platform Tools resource bytes",
+    "requiredPublicationCi": "Coordinator must finish primary-commit three-platform packaging and CI before publication"
+  },
+  "sourceHashes": {
+    "desktop/controller.js": "59f3937827810086766adfd5f9138594f47ebb939dd586efb285762b07a87140",
+    "desktop/main.js": "ace99e05bf2bb508c1ab51704aa016977ee0a9fbd5679df05271b4143d1e153c",
+    "desktop/preload.cjs": "9b6ddac23fb5b5f384f436a0613c61754d4d45d641f9b717e16d5e16f5362f4f",
+    "desktop/renderer/app.js": "dce18fcfc88152944a35e12994baeceb0566cb74d31d5561ea080221e56eee3a",
+    "desktop/renderer/index.html": "60ddcc0558db89e576cb9dff930f50db01c0f411220b23b2e0f37319f9e255ff",
+    "desktop/renderer/style.css": "8971eeb6c8d2f4242a6718b0cdaddfea4e35c53afac65e4b9a259e723bfc888a",
+    "desktop/package.json": "f190c6e697a6e39079692a681c2afaaae20c2f8cba289f26aecd29e38c3d9ded",
+    "src/independent-ui-setup.js": "984129514b45d17165e23006e479df8d34c91e33c7ae4c09512b48a8b3c15bf6",
+    "src/apply/launcher.js": "2b31943bbfc786e77c700a463c4833432fbded7dc253b33cfd358283a408e1f1"
+  },
+  "packagedAsarSha256": "d449065d622defb319ec2c94d59bb71b54a559dff6781fc4afddc1c0e917d51a",
+  "images": [
+    {
+      "file": "art/screenshots/desktop-4.8.0-macos-preflight.png",
+      "sha256": "bc91fb1d37e6e42d99334a43b5ad9ce3223ba1d330c9d6fd93b27ae216a98f18",
+      "bytes": 367445
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.0-macos-recovery.png",
+      "sha256": "43caccc496a6344347c2b56a7c503995d1a6b86592f0c71833d11c46a614105e",
+      "bytes": 354688
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.0-macos-live.png",
+      "sha256": "957230a0fc519bcc73f104c7adbedbcbb4683a2612ba841f755d052d81e19c77",
+      "bytes": 199784
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.0-macos-overview.png",
+      "sha256": "1972026b2a70363ca10fcc7c7cefdcc28004ae9f6a286148ecc3baff665e4706",
+      "bytes": 233055
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.0-macos-screensavers.png",
+      "sha256": "80ff440bc2c6d3d727347ad95822a5039e57602c84658c3c82293008c76fd6c5",
+      "bytes": 256059
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.0-macos-settings.png",
+      "sha256": "47119f3809f94a1a6039747250503fa5ce1ff13ea1c736b5f41c432dc9694f5d",
+      "bytes": 234412
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.0-macos-setup.png",
+      "sha256": "16264d3b8dbe7000ecb3b0dba20cafd682eca6ee3721742a6f13264fe67a5389",
+      "bytes": 211934
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.0-macos-update.png",
+      "sha256": "0e1096ac301af232febd4515fc796a57f8c253d71875aef215c7f6e86d363f76",
+      "bytes": 219352
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.0-macos-about.png",
+      "sha256": "ef24e1a7e3b85026f972a041d94cb23d7f29661335eadbc8a5096f3f96ea1669",
+      "bytes": 321236
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.0-macos-published.png",
+      "sha256": "228550f6240f22e5ed8c9986eea0404373c1d9b41161470955727e77ce3d0ec2",
+      "bytes": 187302
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.0-macos-profiles.png",
+      "sha256": "9a251f73362350b2d7a019dbc2091e3b8dc03e0fe0c330b3d06e2ada26b5ebc0",
+      "bytes": 219870
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.0-macos-advanced.png",
+      "sha256": "b610585219e317c9a51ba3c015f4e39bc34fce638b154003cb4fdf960ed8021b",
+      "bytes": 184758
+    },
+    {
+      "file": "art/screenshots/desktop-4.8.0-macos-terminal.png",
+      "sha256": "9f3c85fd22420b266f54d899e00f00e89a08a03aeb1bd5fffa644dcf8ab1ee68",
+      "bytes": 167375
+    }
+  ],
+  "captureScriptSha256": "c70303186189f215d98a2a206a32bf3968b4e109ae0cebcbf07f2b9c63f92669"
+}

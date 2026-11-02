@@ -756,3 +756,54 @@ test('a failed update recheck discards the previous install choices', async (t) 
     /Check published updates for this TV first/,
   );
 });
+
+test('source UI preflight follows the connected named TV and preserves its profile and Home choices', async t => {
+  const h = harness(t);
+  await assert.rejects(h.controller.sourceUiPreflight(), /Connect/);
+  const ip = '192.168.1.10';
+  await h.controller.connect(ip);
+  const profile = h.controller.initial().profiles[0];
+  await h.controller.profiles({ operation: 'save', profile: { ...profile, name: 'Living room' } });
+  h.api.preflightIndependentUi = async target => ({ target: { ip: target, serial: `serial:${target}` },
+    currentHome: 'ltv', installationAllowed: false, blockers: ['Production acceptance pending'] });
+  const file = path.join(h.dataDir, 'tv-profiles.json');
+  const before = fs.readFileSync(file, 'utf8');
+  const result = await h.controller.sourceUiPreflight();
+  assert.equal(result.profileName, 'Living room');
+  assert.equal(result.target.ip, ip);
+  assert.equal(result.currentHome, 'ltv');
+  assert.equal(result.installationAllowed, false);
+  assert.equal(fs.readFileSync(file, 'utf8'), before);
+  assert.deepEqual(h.writes, []);
+  await h.controller.profiles({ operation: 'save', profile: { name: 'Bedroom', ip: '192.168.1.11' } });
+  await assert.rejects(h.controller.sourceUiPreflight(), /Connect/);
+  await h.controller.connect('192.168.1.11');
+  assert.equal((await h.controller.sourceUiPreflight()).profileName, 'Bedroom');
+});
+
+test('source UI preflight rejects changed identity and disconnects stale targets', async t => {
+  const h = harness(t);
+  await h.controller.connect('192.168.1.10');
+  h.api.preflightIndependentUi = async ip => ({ target: { ip, serial: 'another-TV' } });
+  await assert.rejects(h.controller.sourceUiPreflight(), /identity changed/);
+  assert.equal(h.controller.isConnected(), false);
+  assert.deepEqual(h.writes, []);
+});
+
+test('source UI preflight holds the existing task lock and rejects disconnected TVs', async t => {
+  const h = harness(t);
+  await h.controller.connect('192.168.1.10');
+  let release;
+  const pending = new Promise(resolve => { release = resolve; });
+  h.api.preflightIndependentUi = async ip => {
+    await pending;
+    return { target: { ip, serial: `serial:${ip}` } };
+  };
+  const checking = h.controller.sourceUiPreflight();
+  await assert.rejects(h.controller.profiles({ operation: 'disconnect' }), /current task/);
+  release();
+  await checking;
+  h.state.online = false;
+  await assert.rejects(h.controller.sourceUiPreflight(), /disconnected/);
+  assert.deepEqual(h.writes, []);
+});

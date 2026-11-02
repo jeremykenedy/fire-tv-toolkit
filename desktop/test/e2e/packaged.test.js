@@ -234,6 +234,14 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
       id: entry.id, name: entry.name, description: entry.blurb || '',
       installed: entry.id === 'aerial', active: entry.id === 'aerial', downloadable: true,
     }));
+    ipcMain.removeHandler('toolkit:source-ui-preflight');
+    ipcMain.handle('toolkit:source-ui-preflight', () => ({ ok: true, data: {
+      target: { ip: '192.0.2.10', serial: 'sample-tv', sdk: 30 },
+      profileName: 'Living room', currentHome: 'amazon', installationAllowed: false,
+      blockers: ['Independent production release and hardware acceptance remain pending.'],
+      steps: ['Keep the current Home choice during setup.'],
+      recovery: ['Reconnect to this same TV and use firetv-launcher --use=amazon if Home routing fails.'],
+    } }));
     ipcMain.removeHandler('toolkit:connect');
     let connections = 0;
     ipcMain.handle('toolkit:connect', () => {
@@ -275,12 +283,19 @@ test('the installed app browses IPTV, plays HLS and retains favorites', async (t
   assert.equal(await page.locator('#launcher-list .app-row').first().getByRole('button', { name: 'Install', exact: true }).isVisible(), true);
   await page.locator('#launcher-list').scrollIntoViewIfNeeded();
   await page.screenshot({ path: path.join(output, `${process.platform}-preferred-fire-tv-ui.png`) });
+  await page.getByRole('button', { name: 'Check setup and recovery', exact: true }).click();
+  await page.locator('#source-ui-target').filter({ hasText: 'Living room at 192.0.2.10' }).waitFor();
+  assert.match(await page.locator('#source-ui-current').innerText(), /Installation remains pending/);
+  assert.match(await page.locator('#source-ui-recovery').innerText(), /--use=amazon/);
+  await page.locator('#source-ui-title').evaluate(node => node.scrollIntoView({ block: 'start' }));
+  await page.screenshot({ path: path.join(output, `${process.platform}-source-ui-preflight.png`) });
   await page.locator('[data-view="setup"]').click();
   assert.equal(await page.locator('#setup-home').inputValue(), 'fire-tv-ui');
   await page.locator('[data-view="overview"]').click();
   await page.getByRole('button', { name: 'Connect again', exact: true }).click();
   await page.locator('#notice').filter({ hasText: 'Connected to Sample Fire TV' }).waitFor();
   await page.locator('[data-view="home"]').click();
+  assert.equal(await page.locator('#source-ui-result').isVisible(), false);
   assert.equal(await page.locator('#launcher-list button[data-task="home"]').count(), 1);
   await page.locator('[data-view="setup"]').click();
   assert.equal(await page.locator('#setup-home').inputValue(), 'keep');

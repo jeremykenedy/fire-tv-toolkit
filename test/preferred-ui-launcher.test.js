@@ -398,3 +398,41 @@ test('upgrading an existing code 68 UI to a reviewed code 69 candidate never inv
   assert.deepEqual(fake.readState().uiOperations, []);
   assert.equal((await launcherState(ip)).uiHomeSupported, true);
 });
+
+test('explicit source-helper UI target is reported without selecting either alternative launcher', async () => {
+  installed(`reader/Service:${HOME_REDIRECT.service}`);
+  fake.setState({ guard: { home: UI.id } });
+  const before = fake.readState();
+  assert.equal((await launcherState(ip)).home, UI.id);
+  assert.deepEqual(fake.readState().secure, before.secure);
+  assert.equal(fake.readState().guard.home, UI.id);
+  for (const mode of [AT4K.id, LTV.id]) {
+    assert.equal(await useHome(ip, mode), true);
+    assert.equal(fake.readState().guard.home, mode);
+    assert.equal((await launcherState(ip)).home, mode);
+  }
+});
+
+test('missing or disabled helper UI target leaves Amazon available without claiming another Home choice', async () => {
+  for (const disabled of [[], [UI.pkg], [HOME_REDIRECT.pkg]]) {
+    installed(HOME_REDIRECT.service);
+    fake.setState({ guard: { home: UI.id }, disabled,
+      ...(disabled.length ? {} : { installed: [HOME_REDIRECT.pkg, AT4K.pkg] }) });
+    assert.equal((await launcherState(ip)).home, 'amazon');
+    assert.equal(fake.readState().guard.home, UI.id);
+  }
+  installed(HOME_REDIRECT.service, '0');
+  fake.setState({ guard: { home: UI.id } });
+  assert.equal((await launcherState(ip)).home, 'amazon');
+});
+
+test('failed alternative Home selection restores the explicit source-helper UI target and exact settings', async () => {
+  installed(`reader/Service:${HOME_REDIRECT.service}`);
+  fake.setState({ guard: { home: UI.id }, dropNextSettingWrites: 1 });
+  const original = fake.readState();
+  assert.equal(await useHome(ip, AT4K.id), false);
+  assert.equal(fake.readState().guard.home, UI.id);
+  assert.deepEqual(fake.readState().secure, original.secure);
+  assert.deepEqual(fake.readState().uiHomeFlags, original.uiHomeFlags);
+  assert.deepEqual(fake.readState().inputs || [], []);
+});

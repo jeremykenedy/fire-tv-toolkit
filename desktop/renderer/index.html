@@ -371,6 +371,22 @@
               <p>Choose where the remote's Home button takes you.</p>
             </div>
           </div>
+          <section class="utility-panel" aria-labelledby="source-ui-title">
+            <h3 id="source-ui-title">Independent Fire TV UI setup</h3>
+            <p>Check the connected TV, setup stages and recovery before a future source release. Your installed apps and Home choice stay as they are.</p>
+            <button id="source-ui-check" type="button" class="secondary">Check setup and recovery</button>
+            <section id="source-ui-result" aria-live="polite" hidden>
+              <h4 id="source-ui-target"></h4>
+              <p id="source-ui-current"></p>
+              <h4>Before installation</h4>
+              <ul id="source-ui-blockers"></ul>
+              <h4>Setup stages</h4>
+              <ol id="source-ui-steps"></ol>
+              <h4>Recovery</h4>
+              <ul id="source-ui-recovery"></ul>
+              <p class="muted">This check does not install an APK or change Home.</p>
+            </section>
+          </section>
           <div id="launcher-list" class="app-list"></div>
           <p id="home-update-note" class="muted" hidden>Update Fire TV UI before changing the Home button destination.</p>
           <section class="live-tv">

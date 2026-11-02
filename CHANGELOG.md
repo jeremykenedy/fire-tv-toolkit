@@ -1,5 +1,22 @@
 # Changelog
 
+## [4.8.0] - 2026-11-01
+
+### Added
+
+- Read-only independent UI setup checks with TV identity, compatibility, upgrade prerequisites and recovery guidance.
+- CLI `firetv-launcher --source-ui` and optional local production-contract inspection.
+- Desktop preflight for the connected named TV, with stale-target rejection and result clearing when profiles change.
+
+### Fixed
+
+- Recognize and restore explicit source helper Fire TV UI targets while preserving alternative-launcher defaults.
+- Align the desktop's bundled CLI lock metadata with the current host and published-updates command.
+
+Existing companion pins stay unchanged. The prepared helper and independent production UI are not published by this host release.
+
+See the [4.8.0 upgrade guide](docs/RELEASE-4.8.0.md).
+
 ## [4.7.4] - 2026-11-01
 
 ### Fixed

@@ -2,6 +2,7 @@ package com.jeremykenedy.firetv.homeredirect;
 
 import android.accessibilityservice.AccessibilityService;
 import android.content.ContentResolver;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.database.ContentObserver;
 import android.net.Uri;
@@ -12,7 +13,7 @@ import android.provider.Settings;
 import android.view.accessibility.AccessibilityEvent;
 
 /**
- * Sends the Home button to the chosen launcher, AT4K or LTvLauncher. Fire OS
+ * Sends the Home button to the chosen launcher. Fire OS
  * has no setting for choosing a Home app and does not hand the Home key to
  * accessibility services, so this watches for the Amazon home screen coming
  * to the front and opens the launcher over it.
@@ -155,7 +156,11 @@ public class HomeRedirectService extends AccessibilityService {
         launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
                 | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(launch);
+        try {
+            startActivity(launch);
+        } catch (ActivityNotFoundException | SecurityException ex) {
+            Log.w(TAG, launcher + " cannot open, leaving the Amazon home screen up", ex);
+        }
     }
 
     @Override
