@@ -98,7 +98,7 @@ public final class AdbTest {
   execFileSync('java', ['-cp', dir, 'com.jeremykenedy.firetv.homeredirect.AdbTest']);
 });
 
-test('the native helper opens AT4K unless told to open LTvLauncher', () => {
+test('the native helper preserves AT4K by default and accepts explicit launcher targets', () => {
   const dir = path.join(fake.dir, 'native-home');
   fs.mkdirSync(dir);
   const source = path.join(dir, 'HomeTest.java');
@@ -107,12 +107,14 @@ public final class HomeTest {
   public static void main(String[] args) {
     if (!HomeTarget.packageFor("ltv").equals("com.leanbitlab.ltvL"))
       throw new AssertionError("ltv must open LTvLauncher");
+    if (!HomeTarget.packageFor("fire-tv-ui").equals("com.jeremykenedy.firetv.ui"))
+      throw new AssertionError("fire-tv-ui must open Fire TV UI");
     for (String other : new String[] {"at4k", null, "", "launcher"}) {
       if (!HomeTarget.packageFor(other).equals("com.overdevs.at4k"))
         throw new AssertionError("anything else must keep opening AT4K: " + other);
     }
-    if (!HomeTarget.isKnown("at4k") || !HomeTarget.isKnown("ltv") || HomeTarget.isKnown("amazon") || HomeTarget.isKnown(null))
-      throw new AssertionError("only AT4K and LTvLauncher are Home targets");
+    if (!HomeTarget.isKnown("at4k") || !HomeTarget.isKnown("ltv") || !HomeTarget.isKnown("fire-tv-ui") || HomeTarget.isKnown("amazon") || HomeTarget.isKnown(null))
+      throw new AssertionError("only explicit supported launchers are Home targets");
     if (!HomeTarget.DEFAULT.equals("at4k"))
       throw new AssertionError("AT4K stays the default");
   }

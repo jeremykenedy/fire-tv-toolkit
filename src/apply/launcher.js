@@ -75,7 +75,14 @@ export async function launcherState(ip) {
       && await getSetting(ip, 'secure', ENABLED_KEY) === '1') {
     home = FIRE_TV_UI.id;
   } else if (services.includes(HOME_REDIRECT.service)) {
-    home = (await homeTarget(ip)) === `home=${LTV.id}` ? LTV.id : AT4K.id;
+    const target = await homeTarget(ip);
+    if (target === `home=${FIRE_TV_UI.id}`) {
+      if (packages.includes(FIRE_TV_UI.pkg) && packages.includes(HOME_REDIRECT.pkg)
+          && !disabled.includes(FIRE_TV_UI.pkg) && !disabled.includes(HOME_REDIRECT.pkg)
+          && await getSetting(ip, 'secure', ENABLED_KEY) === '1') home = FIRE_TV_UI.id;
+    } else {
+      home = target === `home=${LTV.id}` ? LTV.id : AT4K.id;
+    }
   }
   return {
     installed: KNOWN_APPS.filter((app) => packages.includes(app.pkg)).map((app) => app.id),
@@ -192,6 +199,7 @@ export async function useHome(ip, mode) {
       return false;
     }
   }
+  const helperTargetBefore = before.installed.includes(HOME_REDIRECT.id) ? await homeTarget(ip) : null;
   const requested = servicesFor(before.services, mode);
   let uiChanged = false;
   const enabledApps = [];
@@ -223,10 +231,14 @@ export async function useHome(ip, mode) {
   } catch {
     try {
       if (uiChanged) await setNativeUiHome(ip, preferenceBefore, true);
-      if ([AT4K.id, LTV.id].includes(before.home) && before.home !== mode) {
-        await homeTarget(ip, before.home);
+      let helperRestored = true;
+      const previousTarget = HOME_LAUNCHERS.find((app) => helperTargetBefore === `home=${app.id}`);
+      if (previousTarget && mode !== FIRE_TV_UI.id && mode !== 'amazon') {
+        const reply = await homeTarget(ip, previousTarget.id);
+        helperRestored = reply === helperTargetBefore;
       }
       await restoreServices(ip, enabledBefore, servicesBefore);
+      if (!helperRestored) throw new Error('The TV did not restore its previous Home Redirect target.');
     } finally {
       for (const app of enabledApps) await disablePackage(ip, app.pkg);
     }

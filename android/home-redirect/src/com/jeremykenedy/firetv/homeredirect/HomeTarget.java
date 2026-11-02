@@ -9,6 +9,8 @@ final class HomeTarget {
 
     static final String LTV = "ltv";
 
+    static final String FIRE_TV_UI = "fire-tv-ui";
+
     /** AT4K, the launcher Home Redirect has always opened. */
     static final String DEFAULT = AT4K;
 
@@ -17,11 +19,14 @@ final class HomeTarget {
 
     /** Whether a name is a launcher Home Redirect can open. */
     static boolean isKnown(String target) {
-        return AT4K.equals(target) || LTV.equals(target);
+        return AT4K.equals(target) || LTV.equals(target) || FIRE_TV_UI.equals(target);
     }
 
     /** The package for a launcher name; anything unknown opens AT4K. */
     static String packageFor(String target) {
+        if (FIRE_TV_UI.equals(target)) {
+            return "com.jeremykenedy.firetv.ui";
+        }
         return LTV.equals(target) ? "com.leanbitlab.ltvL" : "com.overdevs.at4k";
     }
 }

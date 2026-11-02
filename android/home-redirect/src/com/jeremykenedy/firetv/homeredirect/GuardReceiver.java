@@ -15,7 +15,7 @@ import android.content.Intent;
  * and for remember: --es setting secure/screensaver_components --es value X
  * and for forget: --es setting secure/screensaver_components
  * and for ADB debugging: --es cmd adb --es value on|off (no value just reports)
- * and for the Home launcher: --es cmd home --es value at4k|ltv (no value just reports)
+ * and for the Home launcher: --es cmd home --es value at4k|ltv|fire-tv-ui (no value just reports)
  */
 public class GuardReceiver extends BroadcastReceiver {
     static final String ACTION = "com.jeremykenedy.firetv.homeredirect.GUARD";

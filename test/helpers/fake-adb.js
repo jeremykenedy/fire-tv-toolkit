@@ -98,7 +98,7 @@ else if (cmd === 'shell' && a === 'am' && b === 'broadcast' && args.includes('co
     else if (cmdName === 'check') { reply = state.guardReply || 'guard=' + (g.locked ? 'on' : 'off') + ' restored=' + (state.guardRestored || 'none'); }
     else if (cmdName === 'home' && !state.homeRedirectWithoutTargets) {
       const value = extra('value');
-      if (value === undefined || value === 'at4k' || value === 'ltv') {
+      if (value === undefined || value === 'at4k' || value === 'ltv' || value === 'fire-tv-ui') {
         if (value && !state.homeWriteIgnored) g.home = value;
         reply = 'home=' + (g.home || 'at4k');
       }

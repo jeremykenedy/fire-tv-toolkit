@@ -12,6 +12,7 @@
     <queries>
         <package android:name="com.overdevs.at4k" />
         <package android:name="com.leanbitlab.ltvL" />
+        <package android:name="com.jeremykenedy.firetv.ui" />
         <intent>
             <action android:name="android.service.dreams.DreamService" />
         </intent>
