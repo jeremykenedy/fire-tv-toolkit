@@ -9,6 +9,7 @@ import * as timerConfig from 'fire-tv-toolkit/src/timeout-config.js';
 import * as dreams from 'fire-tv-toolkit/src/apply/set-screensaver.js';
 import * as downloads from 'fire-tv-toolkit/src/apply/screensavers.js';
 import * as home from 'fire-tv-toolkit/src/apply/launcher.js';
+import * as independentUi from 'fire-tv-toolkit/src/independent-ui-setup.js';
 import * as protection from 'fire-tv-toolkit/src/apply/guard.js';
 import * as guardConfig from 'fire-tv-toolkit/src/guard-config.js';
 import * as publishedUpdates from 'fire-tv-toolkit/src/update-releases.js';
@@ -37,6 +38,7 @@ const toolkit = {
   ...dreams,
   ...downloads,
   ...home,
+  ...independentUi,
   ...protection,
   ...guardConfig,
   ...optimizer,
@@ -749,7 +751,7 @@ export function createController({
         fs.mkdirSync(directory, { recursive: true });
         api.setConfigDirectory(directory);
         api.saveIp(ip);
-        device = { ip, model: info.model, android: info.android };
+        device = { ip, model: info.model, android: info.android, serial: info.serial || '' };
         let state;
         try {
           state = await readState();
@@ -764,6 +766,18 @@ export function createController({
     },
     refresh() {
       return exclusive(readState);
+    },
+    sourceUiPreflight() {
+      return exclusive(async () => {
+        const ip = await requireConnection();
+        const serial = device.serial;
+        const plan = await api.preflightIndependentUi(ip);
+        if (plan.target.ip !== ip || (serial && plan.target.serial !== serial)) {
+          device = null;
+          throw new Error('The connected TV identity changed. Reconnect and check the selected TV before continuing.');
+        }
+        return { ...plan, profileName: profiles.snapshot().profiles.find(profile => profile.ip === ip)?.name || device.model };
+      });
     },
     checkUpdates() {
       return exclusive(async () => {

@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('toolkit', {
   connect: (ip) => ipcRenderer.invoke('toolkit:connect', ip),
   profiles: (request) => ipcRenderer.invoke('toolkit:profiles', request),
   refresh: () => ipcRenderer.invoke('toolkit:refresh'),
+  sourceUiPreflight: () => ipcRenderer.invoke('toolkit:source-ui-preflight'),
   updates: (request) => ipcRenderer.invoke('toolkit:updates', request),
   action: (request) => ipcRenderer.invoke('toolkit:action', request),
   assistant: (request) => ipcRenderer.invoke('toolkit:assistant', request),

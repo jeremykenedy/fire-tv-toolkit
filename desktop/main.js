@@ -267,6 +267,10 @@ if (!app.requestSingleInstanceLock()) {
         return controller.profiles(request);
       });
       handle('toolkit:refresh', () => controller.refresh());
+      handle('toolkit:source-ui-preflight', () => {
+        if (updatingToolkit) throw new Error('Wait for the current task to finish.');
+        return controller.sourceUiPreflight();
+      });
       handle('toolkit:updates', async (request) => {
         if (!request || typeof request !== 'object' || Array.isArray(request))
           throw new Error('Choose a supported update action.');
