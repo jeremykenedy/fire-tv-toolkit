@@ -30,10 +30,12 @@ export function inspectIndependentUiContract(file) {
     throw new Error('The APK size does not match the artifact contract.');
   if (createHash('sha256').update(fs.readFileSync(apk)).digest('hex') !== contract.sha256)
     throw new Error('The APK checksum does not match the artifact contract.');
-  const manifest = inspectApk(apk);
+  const manifest = inspectApk(apk, { includeSdk: true });
   if (manifest.package !== FIRE_TV_UI.pkg || manifest.versionCode !== BigInt(contract.versionCode))
     throw new Error('The APK package or version does not match the production release contract.');
-  return { package: contract.package, versionCode: contract.versionCode, minSdk: contract.minSdk,
+  if (manifest.minSdk !== contract.minSdk)
+    throw new Error('The APK minimum SDK does not match the production release contract.');
+  return { package: contract.package, versionCode: contract.versionCode, minSdk: manifest.minSdk, targetSdk: manifest.targetSdk,
     releaseTag: contract.releaseTag, sourceCommit: contract.sourceCommit,
     sha256: contract.sha256, bytes: contract.bytes, declaredSignerSha256: contract.signerSha256,
     signatureVerified: false, publishedReleaseVerified: false };
