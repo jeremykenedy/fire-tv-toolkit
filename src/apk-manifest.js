@@ -110,36 +110,41 @@ function readSdkAttributes(data, strings, at, size) {
   return sdk;
 }
 
+function readStartElement(data, strings, at, size, state) {
+  if (size < 36) throw new Error('Truncated Android manifest element.');
+  const name = strings[data.readUInt32LE(at + 20)];
+  if (state.depth === 0) {
+    if (name !== 'manifest' || state.manifest) throw new Error('Invalid APK manifest root.');
+    state.manifest = readManifestAttributes(data, strings, at, size);
+  } else if (state.includeSdk && state.depth === 1 && name === 'uses-sdk' && data.readUInt32LE(at + 16) === NO_STRING) {
+    if (state.sdk !== null) throw new Error('Duplicate APK uses-sdk element.');
+    state.sdk = readSdkAttributes(data, strings, at, size);
+  }
+  state.depth += 1;
+}
+
 /** Reads Android's compiled manifest without executing the APK or requiring an SDK. */
 export function parseBinaryManifest(data, { includeSdk = false } = {}) {
   if (data.length < 8 || data.readUInt16LE(0) !== 3 || data.readUInt32LE(4) !== data.length)
     throw new Error('Invalid compiled Android manifest.');
-  let strings = [], manifest = null, sdk = null, depth = 0;
+  let strings = [];
+  const state = { manifest: null, sdk: null, depth: 0, includeSdk };
   for (let at = data.readUInt16LE(2); at + 8 <= data.length;) {
     const kind = data.readUInt16LE(at), header = data.readUInt16LE(at + 2), size = data.readUInt32LE(at + 4);
     if (header < 8 || size < header || at + size > data.length) throw new Error('Truncated Android manifest chunk.');
     if (kind === 1) strings = readStringPool(data, at, header, size);
     else if (kind === 0x0102) {
-      if (size < 36) throw new Error('Truncated Android manifest element.');
-      const name = strings[data.readUInt32LE(at + 20)];
-      if (depth === 0) {
-        if (name !== 'manifest' || manifest) throw new Error('Invalid APK manifest root.');
-        manifest = readManifestAttributes(data, strings, at, size);
-        if (!includeSdk) return manifest;
-      } else if (includeSdk && depth === 1 && name === 'uses-sdk' && data.readUInt32LE(at + 16) === NO_STRING) {
-        if (sdk !== null) throw new Error('Duplicate APK uses-sdk element.');
-        sdk = readSdkAttributes(data, strings, at, size);
-      }
-      depth += 1;
+      readStartElement(data, strings, at, size, state);
+      if (!includeSdk && state.manifest) return state.manifest;
     } else if (kind === 0x0103) {
-      if (size < 24 || depth === 0) throw new Error('Invalid Android manifest closing element.');
-      depth -= 1;
+      if (size < 24 || state.depth === 0) throw new Error('Invalid Android manifest closing element.');
+      state.depth -= 1;
     }
     at += size;
   }
-  if (manifest && includeSdk) {
-    const minSdk = sdk?.minSdk ?? 1;
-    return { ...manifest, minSdk, targetSdk: sdk?.targetSdk ?? minSdk };
+  if (state.manifest && includeSdk) {
+    const minSdk = state.sdk?.minSdk ?? 1;
+    return { ...state.manifest, minSdk, targetSdk: state.sdk?.targetSdk ?? minSdk };
   }
   throw new Error('APK manifest root is unavailable.');
 }
